@@ -30,6 +30,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Details(int id = 0)
         {
             SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
+            subtipoelemento.TipoElemento = db.TipoElementos.Find(subtipoelemento.IdTipoElemento);
             if (subtipoelemento == null)
             {
                 return HttpNotFound();
@@ -101,6 +102,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id = 0)
         {
             SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
+            subtipoelemento.TipoElemento = db.TipoElementos.Find(subtipoelemento.IdTipoElemento);
             if (subtipoelemento == null)
             {
                 return HttpNotFound();

@@ -1,0 +1,41 @@
+﻿@model TesisProj.Areas.Plantilla.Models.Parametro
+
+@{
+    ViewBag.Title = "Parámetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Está seguro de eliminar este registro?</h3>
+<fieldset>
+    <legend>Parámetro</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlantillaElemento.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TipoParametro.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipoParametro.Nombre)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Eliminar" /> |
+        @Html.ActionLink("Regresar", "Index")
+    </p>
+}
