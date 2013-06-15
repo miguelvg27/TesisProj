@@ -9,22 +9,26 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Models
 {
-    [Table("PlantillaElemento")]
-    public class PlantillaElemento : DbObject
+    public class Parametro : DbObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
-        [DisplayName("Plantilla")]
+        [DisplayName("Parámetro")]
         public string Nombre { get; set; }
+
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Plantilla")]
+        public int IdPlantillaElemento { get; set; }
+
+        [ForeignKey("IdPlantillaElemento")]
+        public PlantillaElemento PlantillaElemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
-        public int IdTipoElemento { get; set; }
+        public int IdTipoParametro { get; set; }
 
-        [ForeignKey("IdTipoElemento")]
-        public TipoElemento TipoElemento { get; set; }
-
-        [InverseProperty("PlantillaElemento")]
-        List<Parametro> Parametros { get; set; }
+        [ForeignKey("IdTipoParametro")]
+        public TipoParametro TipoParametro { get; set; }
     }
 }

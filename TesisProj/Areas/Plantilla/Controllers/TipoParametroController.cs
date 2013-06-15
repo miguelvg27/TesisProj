@@ -11,33 +11,33 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
-    public class TipoElementoController : Controller
+    public class TipoParametroController : Controller
     {
         private TProjContext db = new TProjContext();
 
         //
-        // GET: /Plantilla/TipoElemento/
+        // GET: /Plantilla/TipoParametro/
 
         public ActionResult Index()
         {
-            return View(db.TipoElementos.ToList());
+            return View(db.TipoParametros.ToList());
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Details/5
+        // GET: /Plantilla/TipoParametro/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            TipoParametro tipoparametro = db.TipoParametros.Find(id);
+            if (tipoparametro == null)
             {
                 return HttpNotFound();
             }
-            return View(tipoelemento);
+            return View(tipoparametro);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Create
+        // GET: /Plantilla/TipoParametro/Create
 
         public ActionResult Create()
         {
@@ -45,73 +45,73 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Create
+        // POST: /Plantilla/TipoParametro/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TipoElemento tipoelemento)
+        public ActionResult Create(TipoParametro tipoparametro)
         {
             if (ModelState.IsValid)
             {
-                db.TipoElementos.Add(tipoelemento);
+                db.TipoParametros.Add(tipoparametro);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(tipoelemento);
+            return View(tipoparametro);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Edit/5
+        // GET: /Plantilla/TipoParametro/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            TipoParametro tipoparametro = db.TipoParametros.Find(id);
+            if (tipoparametro == null)
             {
                 return HttpNotFound();
             }
-            return View(tipoelemento);
+            return View(tipoparametro);
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Edit/5
+        // POST: /Plantilla/TipoParametro/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(TipoElemento tipoelemento)
+        public ActionResult Edit(TipoParametro tipoparametro)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tipoelemento).State = EntityState.Modified;
+                db.Entry(tipoparametro).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tipoelemento);
+            return View(tipoparametro);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Delete/5
+        // GET: /Plantilla/TipoParametro/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            TipoParametro tipoparametro = db.TipoParametros.Find(id);
+            if (tipoparametro == null)
             {
                 return HttpNotFound();
             }
-            return View(tipoelemento);
+            return View(tipoparametro);
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Delete/5
+        // POST: /Plantilla/TipoParametro/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            db.TipoElementos.Remove(tipoelemento);
+            TipoParametro tipoparametro = db.TipoParametros.Find(id);
+            db.TipoParametros.Remove(tipoparametro);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

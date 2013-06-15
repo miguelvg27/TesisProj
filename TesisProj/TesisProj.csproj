@@ -179,6 +179,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\Plantilla\Controllers\SubTipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\TipoParametroController.cs" />
+    <Compile Include="Areas\Plantilla\Models\Parametro.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\SubTipoElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoParametro.cs" />
@@ -265,6 +267,11 @@
     <Content Include="Areas\Plantilla\Views\SubTipoElemento\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\SubTipoElemento\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\SubTipoElemento\Delete.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoParametro\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoParametro\Details.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoParametro\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoParametro\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoParametro\Delete.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

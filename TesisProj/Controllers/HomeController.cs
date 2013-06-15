@@ -15,7 +15,7 @@ namespace TesisProj.Controllers
             ViewBag.Message = "Administra las evaluaciones financieras de tus proyectos de inversión.";
             using (TProjContext context = new TProjContext()) 
             {
-                context.TipoElementos.All();
+                context.TipoElementosRequester.All();
             }
             return View();
         }

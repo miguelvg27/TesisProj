@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
@@ -19,7 +20,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Index()
         {
-            var subtipoelementos = db.InternalSubTipoElementos.Include(s => s.TipoElemento).OrderBy(s => s.TipoElemento.Nombre);
+            var subtipoelementos = db.SubTipoElementos.Include(s => s.TipoElemento).OrderBy(s => s.TipoElemento.Nombre);
             return View(subtipoelementos.ToList());
         }
 
@@ -28,7 +29,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            SubTipoElemento subtipoelemento = db.InternalSubTipoElementos.Find(id);
+            SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
             if (subtipoelemento == null)
             {
                 return HttpNotFound();
@@ -41,7 +42,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.IdTipoElemento = new SelectList(db.InternalTipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre");
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre");
             return View();
         }
 
@@ -54,12 +55,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.InternalSubTipoElementos.Add(subtipoelemento);
+                db.SubTipoElementos.Add(subtipoelemento);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdTipoElemento = new SelectList(db.InternalTipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
             return View(subtipoelemento);
         }
 
@@ -68,12 +69,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            SubTipoElemento subtipoelemento = db.InternalSubTipoElementos.Find(id);
+            SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
             if (subtipoelemento == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdTipoElemento = new SelectList(db.InternalTipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
             return View(subtipoelemento);
         }
 
@@ -90,7 +91,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdTipoElemento = new SelectList(db.InternalTipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
             return View(subtipoelemento);
         }
 
@@ -99,7 +100,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            SubTipoElemento subtipoelemento = db.InternalSubTipoElementos.Find(id);
+            SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
             if (subtipoelemento == null)
             {
                 return HttpNotFound();
@@ -114,8 +115,8 @@ namespace TesisProj.Areas.Plantilla.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SubTipoElemento subtipoelemento = db.InternalSubTipoElementos.Find(id);
-            db.InternalSubTipoElementos.Remove(subtipoelemento);
+            SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
+            db.SubTipoElementos.Remove(subtipoelemento);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
