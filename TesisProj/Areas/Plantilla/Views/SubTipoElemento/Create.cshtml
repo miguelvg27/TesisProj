@@ -1,0 +1,45 @@
+﻿@model TesisProj.Areas.Plantilla.Models.SubTipoElemento
+
+@{
+    ViewBag.Title = "Subtipos de elemento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Subtipo de elemento</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoElemento)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoElemento", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdTipoElemento)
+        </div>
+
+        <p>
+            <input type="submit" value="Crear" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

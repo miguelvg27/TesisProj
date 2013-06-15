@@ -1,0 +1,23 @@
+﻿@model TesisProj.Areas.Plantilla.Models.TipoElemento
+
+@{
+    ViewBag.Title = "Tipos de elemento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle</h2>
+
+<fieldset>
+    <legend>Tipo de elemento</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Regresar", "Index")
+</p>

@@ -177,6 +177,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\SubTipoElementoController.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
+    <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
+    <Compile Include="Areas\Plantilla\Models\SubTipoElemento.cs" />
+    <Compile Include="Areas\Plantilla\Models\TipoParametro.cs" />
+    <Compile Include="Areas\Plantilla\Models\TProjContext.cs" />
+    <Compile Include="Areas\Plantilla\PlantillaAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -187,7 +194,7 @@
     <Compile Include="Models\Storage\DbObject.cs" />
     <Compile Include="Models\Storage\DbRequester.cs" />
     <Compile Include="Models\Storage\TProjContext.cs" />
-    <Compile Include="Models\TipoElemento.cs" />
+    <Compile Include="Areas\Plantilla\Models\TipoElemento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +254,17 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Areas\Plantilla\Views\Web.config" />
+    <Content Include="Areas\Plantilla\Views\TipoElemento\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoElemento\Details.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoElemento\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoElemento\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoElemento\Delete.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SubTipoElemento\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SubTipoElemento\Details.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SubTipoElemento\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SubTipoElemento\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SubTipoElemento\Delete.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -302,10 +320,13 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Plantilla\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

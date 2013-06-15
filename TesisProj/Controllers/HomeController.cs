@@ -12,7 +12,7 @@ namespace TesisProj.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            ViewBag.Message = "Administra las evaluaciones financieras de tus proyectos de inversión.";
             using (TProjContext context = new TProjContext()) 
             {
                 context.TipoElementos.All();
@@ -22,14 +22,14 @@ namespace TesisProj.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your app description page.";
+            ViewBag.Message = "En desarrollo";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Miguel AVG y asociados";
 
             return View();
         }

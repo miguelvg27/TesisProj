@@ -4,13 +4,13 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Plantilla.Models;
 
 namespace TesisProj.Models.Storage
 {
-    public class TProjContext : DbContext
+    public partial class TProjContext : DbContext
     {
-        public DbSet<TipoElemento> InternalTipoElementos { get; set; }
-        public DbRequester<TipoElemento> TipoElementos;
+        
         public TProjContext() : base("TProjDb") 
         {
             RegistrarTablas();
@@ -25,18 +25,11 @@ namespace TesisProj.Models.Storage
 
         public void RegistrarTablas()
         {
-            TipoElementos = new DbRequester<TipoElemento>(this, InternalTipoElementos);
+            RegistrarTablasPlantilla();
         }
 
         public void Seed(){
-            SeedTipoElementos();
-        }
-
-        public void SeedTipoElementos(){
-            TipoElementos.AddElement(new TipoElemento { Nombre = "Activo" });
-            TipoElementos.AddElement(new TipoElemento { Nombre = "Gasto" });
-            TipoElementos.AddElement(new TipoElemento { Nombre = "Operativo" });
-            TipoElementos.AddElement(new TipoElemento { Nombre = "Financiamiento" });
+            SeedPlantilla();
         }
     }
 

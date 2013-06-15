@@ -12,6 +12,7 @@ namespace TesisProj.Models.Storage
     {
         [Key]
         public int Id { get; set; }
+        [ScaffoldColumn(false)]
         public bool IsEliminado { get; set; }
     }
 }
