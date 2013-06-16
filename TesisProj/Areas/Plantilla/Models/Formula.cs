@@ -30,10 +30,10 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
-        public int IdSubTipoElemento { get; set; }
+        public int IdTipoFormula { get; set; }
 
-        [ForeignKey("IdSubTipoElemento")]
-        public SubTipoElemento SubTipoElemento { get; set; }
+        [ForeignKey("IdTipoFormula")]
+        public TipoFormula TipoFormula { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]

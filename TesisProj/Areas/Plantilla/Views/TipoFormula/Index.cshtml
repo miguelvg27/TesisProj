@@ -1,11 +1,11 @@
-﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.SubTipoElemento>
+﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.TipoFormula>
 
 @{
-    ViewBag.Title = "Subtipos de elemento";
+    ViewBag.Title = "Tipos de fórmula";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Subtipos de elemento</h2>
+<h2>Tipos de fórmula</h2>
 
 <p>
     @Html.ActionLink("Crear", "Create")
@@ -16,7 +16,7 @@
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TipoElemento.Nombre)
+            @Html.DisplayNameFor(model => model.IdTipoElemento)
         </th>
         <th></th>
     </tr>

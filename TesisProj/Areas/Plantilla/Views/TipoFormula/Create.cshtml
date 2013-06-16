@@ -1,7 +1,7 @@
-﻿@model TesisProj.Areas.Plantilla.Models.SubTipoElemento
+﻿@model TesisProj.Areas.Plantilla.Models.TipoFormula
 
 @{
-    ViewBag.Title = "Subtipos de elemento";
+    ViewBag.Title = "Tipos de fórmula";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +12,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Subtipo de elemento</legend>
+        <legend>Tipos de fórmula</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Nombre)

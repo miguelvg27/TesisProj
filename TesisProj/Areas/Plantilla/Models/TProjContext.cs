@@ -10,14 +10,14 @@ namespace TesisProj.Models.Storage
     public partial class TProjContext : DbContext
     {
         public DbSet<TipoElemento> TipoElementos { get; set; }
-        public DbSet<SubTipoElemento> SubTipoElementos { get; set; }
+        public DbSet<TipoFormula> TipoFormulas { get; set; }
         public DbSet<TipoParametro> TipoParametros { get; set; }
         public DbSet<Parametro> Parametros { get; set; }
         public DbSet<PlantillaElemento> PlantillaElementos { get; set; }
         public DbSet<Formula> Formulas { get; set; }
 
         public DbRequester<TipoElemento> TipoElementosRequester { get; set; }
-        public DbRequester<SubTipoElemento> SubTipoElementosRequester { get; set; }
+        public DbRequester<TipoFormula> TipoFormulasRequester { get; set; }
         public DbRequester<TipoParametro> TipoParametrosRequester { get; set; }
         public DbRequester<Parametro> ParametrosRequester { get; set; }
         public DbRequester<PlantillaElemento> PlantillaElementosRequester { get; set; }
@@ -26,7 +26,7 @@ namespace TesisProj.Models.Storage
         public void RegistrarTablasPlantilla()
         {
             TipoElementosRequester = new DbRequester<TipoElemento>(this, TipoElementos);
-            SubTipoElementosRequester = new DbRequester<SubTipoElemento>(this, SubTipoElementos);
+            TipoFormulasRequester = new DbRequester<TipoFormula>(this, TipoFormulas);
             TipoParametrosRequester = new DbRequester<TipoParametro>(this, TipoParametros);
             ParametrosRequester = new DbRequester<Parametro>(this, Parametros);
             PlantillaElementosRequester = new DbRequester<PlantillaElemento>(this, PlantillaElementos);
@@ -36,7 +36,7 @@ namespace TesisProj.Models.Storage
         public void SeedPlantilla()
         {
             SeedTipoElementos();
-            SeedSubTipoElementos();
+            SeedTipoFormulas();
             SeedTipoParametros();
             SeedPlantillaElementos();
             SeedParametros();
@@ -55,32 +55,32 @@ namespace TesisProj.Models.Storage
             TipoElementosRequester.AddElement(new TipoElemento { Id = 9, Nombre = "Otros" });
         }
         
-        public void SeedSubTipoElementos()
+        public void SeedTipoFormulas()
         {
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 1, Nombre = "Depreciación", IdTipoElemento = 1 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 2, Nombre = "Amortización", IdTipoElemento = 2 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 1, Nombre = "Depreciación", IdTipoElemento = 1 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 2, Nombre = "Amortización", IdTipoElemento = 2 });
 
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 3, Nombre = "Gasto operativo", IdTipoElemento = 3 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 4, Nombre = "Gasto administrativo", IdTipoElemento = 3 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 5, Nombre = "Gasto de venta", IdTipoElemento = 3 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 6, Nombre = "Gasto financiero", IdTipoElemento = 3 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 3, Nombre = "Gasto operativo", IdTipoElemento = 3 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 4, Nombre = "Gasto administrativo", IdTipoElemento = 3 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 5, Nombre = "Gasto de venta", IdTipoElemento = 3 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 6, Nombre = "Gasto financiero", IdTipoElemento = 3 });
 
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 7, Nombre = "Ventas", IdTipoElemento = 4 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 8, Nombre = "Costos", IdTipoElemento = 4 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 7, Nombre = "Ventas", IdTipoElemento = 4 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 8, Nombre = "Costos", IdTipoElemento = 4 });
 
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id =  9, Nombre = "Saldo inicial", IdTipoElemento = 5 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 10, Nombre = "Saldo final", IdTipoElemento = 5 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 11, Nombre = "Amortización", IdTipoElemento = 5 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 12, Nombre = "Cuota", IdTipoElemento = 5 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 13, Nombre = "Intereses", IdTipoElemento = 5 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id =  9, Nombre = "Saldo inicial", IdTipoElemento = 5 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 10, Nombre = "Saldo final", IdTipoElemento = 5 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 11, Nombre = "Amortización", IdTipoElemento = 5 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 12, Nombre = "Cuota", IdTipoElemento = 5 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 13, Nombre = "Intereses", IdTipoElemento = 5 });
 
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 14, Nombre = "Renta", IdTipoElemento = 6 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 15, Nombre = "Operativo", IdTipoElemento = 6 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 14, Nombre = "Renta", IdTipoElemento = 6 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 15, Nombre = "Operativo", IdTipoElemento = 6 });
 
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 16, Nombre = "Otros ingresos", IdTipoElemento = 9 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 17, Nombre = "Otros egresos", IdTipoElemento = 9 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 18, Nombre = "Ingresos extraordinarios", IdTipoElemento = 9 });
-            SubTipoElementosRequester.AddElement(new SubTipoElemento { Id = 19, Nombre = "Egresos extraordinarios", IdTipoElemento = 9 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 16, Nombre = "Otros ingresos", IdTipoElemento = 9 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 17, Nombre = "Otros egresos", IdTipoElemento = 9 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 18, Nombre = "Ingresos extraordinarios", IdTipoElemento = 9 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 19, Nombre = "Egresos extraordinarios", IdTipoElemento = 9 });
 
 
         }

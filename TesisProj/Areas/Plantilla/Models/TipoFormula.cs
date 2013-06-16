@@ -10,16 +10,16 @@ using TesisProj.Areas.Plantilla.Models;
 
 namespace TesisProj.Areas.Plantilla.Models
 {
-    [Table("SubTipoElemento")]
-    public class SubTipoElemento : DbObject, IValidatableObject
+    [Table("TipoFormula")]
+    public class TipoFormula : DbObject, IValidatableObject
     {
         [Required(ErrorMessage="El campo {0} es obligatorio")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
-        [DisplayName("Subtipo")]
+        [DisplayName("Tipo")]
         public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Tipo")]
+        [DisplayName("Tipo de plantilla")]
         public int IdTipoElemento { get; set; }
 
         [ForeignKey("IdTipoElemento")]
@@ -29,7 +29,7 @@ namespace TesisProj.Areas.Plantilla.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.SubTipoElementos.Any(s => s.Nombre == this.Nombre && s.IdTipoElemento == this.IdTipoElemento && s.Id != this.Id))
+                if (context.TipoFormulas.Any(s => s.Nombre == this.Nombre && s.IdTipoElemento == this.IdTipoElemento && s.Id != this.Id))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre .", new string[] { "Nombre" });
                 }
