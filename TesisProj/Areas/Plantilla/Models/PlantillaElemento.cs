@@ -27,6 +27,9 @@ namespace TesisProj.Areas.Plantilla.Models
         [InverseProperty("PlantillaElemento")]
         List<Parametro> Parametros { get; set; }
 
+        [InverseProperty("PlantillaElemento")]
+        List<Formula> Formulas { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

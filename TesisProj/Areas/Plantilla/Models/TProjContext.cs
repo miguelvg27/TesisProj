@@ -14,12 +14,14 @@ namespace TesisProj.Models.Storage
         public DbSet<TipoParametro> TipoParametros { get; set; }
         public DbSet<Parametro> Parametros { get; set; }
         public DbSet<PlantillaElemento> PlantillaElementos { get; set; }
+        public DbSet<Formula> Formulas { get; set; }
 
         public DbRequester<TipoElemento> TipoElementosRequester { get; set; }
         public DbRequester<SubTipoElemento> SubTipoElementosRequester { get; set; }
         public DbRequester<TipoParametro> TipoParametrosRequester { get; set; }
         public DbRequester<Parametro> ParametrosRequester { get; set; }
         public DbRequester<PlantillaElemento> PlantillaElementosRequester { get; set; }
+        public DbRequester<Formula> FormulasRequester { get; set; }
 
         public void RegistrarTablasPlantilla()
         {
@@ -28,6 +30,7 @@ namespace TesisProj.Models.Storage
             TipoParametrosRequester = new DbRequester<TipoParametro>(this, TipoParametros);
             ParametrosRequester = new DbRequester<Parametro>(this, Parametros);
             PlantillaElementosRequester = new DbRequester<PlantillaElemento>(this, PlantillaElementos);
+            FormulasRequester = new DbRequester<Formula>(this, Formulas);
         }
 
         public void SeedPlantilla()

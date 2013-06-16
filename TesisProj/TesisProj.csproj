@@ -182,6 +182,7 @@
     <Compile Include="Areas\Plantilla\Controllers\SubTipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoParametroController.cs" />
+    <Compile Include="Areas\Plantilla\Models\Formula.cs" />
     <Compile Include="Areas\Plantilla\Models\Parametro.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\SubTipoElemento.cs" />
