@@ -33,5 +33,5 @@
 </fieldset>
 <p>
     @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Regresar", "Index")
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
 </p>

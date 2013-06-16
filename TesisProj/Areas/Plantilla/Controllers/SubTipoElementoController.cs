@@ -58,6 +58,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 db.SubTipoElementos.Add(subtipoelemento);
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
 
@@ -75,7 +76,8 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
+            
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento); 
             return View(subtipoelemento);
         }
 
@@ -92,6 +94,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", subtipoelemento.IdTipoElemento);
             return View(subtipoelemento);
         }
@@ -119,7 +122,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             SubTipoElemento subtipoelemento = db.SubTipoElementos.Find(id);
             db.SubTipoElementos.Remove(subtipoelemento);
-            db.SaveChanges();
+            db.SaveChanges();  
             return RedirectToAction("Index");
         }
 

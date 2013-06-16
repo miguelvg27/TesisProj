@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Parámetros de @ViewBag.Plantilla (@ViewBag.TipoPlantilla)</h2>
 
 <p>
-    @Html.ActionLink("Crear", "Create")
+    @Html.ActionLink("Crear", "Create", new { id = ViewBag.IdPlantilla })
 </p>
 <table>
     <tr>
@@ -44,3 +44,7 @@
 }
 
 </table>
+
+<div>
+    @Html.ActionLink("Regresar", "Index", "PlantillaElemento", routeValues: new { Area = "Plantilla" }, htmlAttributes: null)
+</div>

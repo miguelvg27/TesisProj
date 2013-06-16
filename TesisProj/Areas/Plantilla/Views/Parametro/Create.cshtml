@@ -26,7 +26,7 @@
             @Html.LabelFor(model => model.IdPlantillaElemento)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("IdPlantillaElemento", String.Empty)
+            @Html.DropDownList("IdPlantillaElemento")
             @Html.ValidationMessageFor(model => model.IdPlantillaElemento)
         </div>
 
@@ -45,7 +45,7 @@
 }
 
 <div>
-    @Html.ActionLink("Regresar", "Index")
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = ViewBag.IdPlantilla }, htmlAttributes: null)
 </div>
 
 @section Scripts {

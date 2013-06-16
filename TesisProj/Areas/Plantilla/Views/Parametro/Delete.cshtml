@@ -36,6 +36,6 @@
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Eliminar" /> |
-        @Html.ActionLink("Regresar", "Index")
+        @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
     </p>
 }

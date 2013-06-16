@@ -10,10 +10,10 @@ using TesisProj.Models.Storage;
 namespace TesisProj.Areas.Plantilla.Models
 {
     [Table("PlantillaElemento")]
-    public class PlantillaElemento : DbObject
+    public class PlantillaElemento : DbObject, IValidatableObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
         [DisplayName("Plantilla")]
         public string Nombre { get; set; }
 
@@ -26,5 +26,16 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [InverseProperty("PlantillaElemento")]
         List<Parametro> Parametros { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            using (TProjContext context = new TProjContext())
+            {
+                if (context.PlantillaElementos.Any(p => p.Nombre == this.Nombre && p.Id != this.Id))
+                {
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre bajo el mismo tipo.", new string[] { "Nombre" });
+                }
+            }
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Index()
         {
-            return View(db.TipoElementos.ToList());
+            return View(db.TipoElementos.OrderBy(t => t.Nombre).ToList());
         }
 
         //
@@ -55,9 +55,9 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 db.TipoElementos.Add(tipoelemento);
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
-
             return View(tipoelemento);
         }
 
@@ -85,6 +85,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 db.Entry(tipoelemento).State = EntityState.Modified;
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
             return View(tipoelemento);

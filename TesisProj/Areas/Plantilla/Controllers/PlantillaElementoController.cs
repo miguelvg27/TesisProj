@@ -19,7 +19,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Index()
         {
-            var plantillaelementos = db.PlantillaElementos.Include(p => p.TipoElemento);
+            var plantillaelementos = db.PlantillaElementos.Include(p => p.TipoElemento).OrderBy(p => p.TipoElemento.Nombre);
             return View(plantillaelementos.ToList());
         }
 
@@ -29,11 +29,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Details(int id = 0)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
             if (plantillaelemento == null)
             {
                 return HttpNotFound();
             }
+
+            plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
             return View(plantillaelemento);
         }
 
@@ -42,7 +43,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos, "Id", "Nombre");
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre");
             return View();
         }
 
@@ -60,7 +61,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos, "Id", "Nombre", plantillaelemento.IdTipoElemento);
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaelemento.IdTipoElemento);
             return View(plantillaelemento);
         }
 
@@ -74,7 +75,8 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos, "Id", "Nombre", plantillaelemento.IdTipoElemento);
+
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaelemento.IdTipoElemento);
             return View(plantillaelemento);
         }
 
@@ -91,7 +93,8 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos, "Id", "Nombre", plantillaelemento.IdTipoElemento);
+
+            ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaelemento.IdTipoElemento);
             return View(plantillaelemento);
         }
 
@@ -101,11 +104,11 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id = 0)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
             if (plantillaelemento == null)
             {
                 return HttpNotFound();
             }
+            plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
             return View(plantillaelemento);
         }
 

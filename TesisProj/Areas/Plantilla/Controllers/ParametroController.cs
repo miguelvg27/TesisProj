@@ -19,7 +19,19 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Index(int id = 0)
         {
-            var parametros = db.Parametros.Include(p => p.PlantillaElemento).Include(p => p.TipoParametro).Where(p => id > 0? p.IdPlantillaElemento == id : true);
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(id);
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            var parametros = db.Parametros.Include(p => p.PlantillaElemento).Include(p => p.TipoParametro).Where(p => p.IdPlantillaElemento == id).OrderBy(p => p.TipoParametro.Nombre);
+
+            ViewBag.IdPlantilla = id;
+            ViewBag.Plantilla = plantilla.Nombre;
+            TipoElemento tipo = db.TipoElementos.Find(plantilla.IdTipoElemento);
+            ViewBag.TipoPlantilla = tipo != null ? tipo.Nombre : "";
+            
             return View(parametros.ToList());
         }
 
@@ -29,22 +41,30 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Details(int id = 0)
         {
             Parametro parametro = db.Parametros.Find(id);
-            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-            parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
             if (parametro == null)
             {
                 return HttpNotFound();
             }
+            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
+            parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
             return View(parametro);
         }
 
         //
         // GET: /Plantilla/Parametro/Create
 
-        public ActionResult Create()
+        public ActionResult Create(int id = 0)
         {
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos, "Id", "Nombre");
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre");
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(id);
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.IdPlantilla = id;
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == id), "Id", "Nombre");
+            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre");
+
             return View();
         }
 
@@ -53,17 +73,18 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Parametro parametro)
+        public ActionResult Create(Parametro parametro, int id)
         {
             if (ModelState.IsValid)
             {
                 db.Parametros.Add(parametro);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = id });
             }
 
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos, "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
+            
             return View(parametro);
         }
 
@@ -77,8 +98,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos, "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
+
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
+            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
+            
             return View(parametro);
         }
 
@@ -93,10 +116,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 db.Entry(parametro).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
             }
+            
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos, "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
+            
             return View(parametro);
         }
 
@@ -106,12 +131,14 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id = 0)
         {
             Parametro parametro = db.Parametros.Find(id);
-            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-            parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
             if (parametro == null)
             {
                 return HttpNotFound();
             }
+
+            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
+            parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            
             return View(parametro);
         }
 
@@ -125,7 +152,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             Parametro parametro = db.Parametros.Find(id);
             db.Parametros.Remove(parametro);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
         }
 
         protected override void Dispose(bool disposing)

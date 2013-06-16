@@ -11,7 +11,7 @@ using TesisProj.Areas.Plantilla.Models;
 namespace TesisProj.Areas.Plantilla.Models
 {
     [Table("SubTipoElemento")]
-    public class SubTipoElemento : DbObject
+    public class SubTipoElemento : DbObject, IValidatableObject
     {
         [Required(ErrorMessage="El campo {0} es obligatorio")]
         [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
@@ -24,5 +24,16 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [ForeignKey("IdTipoElemento")]
         public TipoElemento TipoElemento { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            using (TProjContext context = new TProjContext())
+            {
+                if (context.SubTipoElementos.Any(s => s.Nombre == this.Nombre && s.IdTipoElemento == this.IdTipoElemento && s.Id != this.Id))
+                {
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre .", new string[] { "Nombre" });
+                }
+            }
+        }
     }
 }

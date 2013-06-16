@@ -20,7 +20,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Index()
         {
-            return View(db.TipoParametros.ToList());
+            return View(db.TipoParametros.OrderBy(p => p.Nombre).ToList());
         }
 
         //
@@ -54,10 +54,9 @@ namespace TesisProj.Areas.Plantilla.Controllers
             if (ModelState.IsValid)
             {
                 db.TipoParametros.Add(tipoparametro);
-                db.SaveChanges();
+                db.SaveChanges();     
                 return RedirectToAction("Index");
             }
-
             return View(tipoparametro);
         }
 
@@ -70,7 +69,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             if (tipoparametro == null)
             {
                 return HttpNotFound();
-            }
+            }      
             return View(tipoparametro);
         }
 
@@ -85,8 +84,9 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 db.Entry(tipoparametro).State = EntityState.Modified;
                 db.SaveChanges();
+                
                 return RedirectToAction("Index");
-            }
+            }    
             return View(tipoparametro);
         }
 
@@ -99,7 +99,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             if (tipoparametro == null)
             {
                 return HttpNotFound();
-            }
+            }   
             return View(tipoparametro);
         }
 
@@ -112,7 +112,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             TipoParametro tipoparametro = db.TipoParametros.Find(id);
             db.TipoParametros.Remove(tipoparametro);
-            db.SaveChanges();
+            db.SaveChanges();    
             return RedirectToAction("Index");
         }
 
