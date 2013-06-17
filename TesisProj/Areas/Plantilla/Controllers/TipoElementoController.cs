@@ -10,6 +10,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
+    [Authorize]
     public class TipoElementoController : Controller
     {
         private TProjContext db = new TProjContext();

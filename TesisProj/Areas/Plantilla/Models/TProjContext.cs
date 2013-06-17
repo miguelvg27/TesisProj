@@ -18,6 +18,7 @@ namespace TesisProj.Models.Storage
         public DbSet<SalidaElemento> SalidaElementos { get; set; }
         public DbSet<PlantillaProyecto> PlantillaProyectos { get; set; }
         public DbSet<PlantillaElementoProyecto> PlantillaElementoProyectos { get; set; }
+        public DbSet<SalidaProyecto> SalidaProyectos { get; set; }
 
         public DbRequester<TipoElemento> TipoElementosRequester { get; set; }
         public DbRequester<TipoFormula> TipoFormulasRequester { get; set; }
@@ -28,6 +29,7 @@ namespace TesisProj.Models.Storage
         public DbRequester<SalidaElemento> SalidaElementosRequester { get; set; }
         public DbRequester<PlantillaProyecto> PlantillaProyectosRequester { get; set; }
         public DbRequester<PlantillaElementoProyecto> PlantillaElementoProyectosRequester { get; set; }
+        public DbRequester<SalidaProyecto> SalidaProyectosDbRequester { get; set; }
 
         public void RegistrarTablasPlantilla()
         {
@@ -40,6 +42,7 @@ namespace TesisProj.Models.Storage
             SalidaElementosRequester = new DbRequester<SalidaElemento>(this, SalidaElementos);
             PlantillaProyectosRequester = new DbRequester<PlantillaProyecto>(this, PlantillaProyectos);
             PlantillaElementoProyectosRequester = new DbRequester<PlantillaElementoProyecto>(this, PlantillaElementoProyectos);
+            SalidaProyectosDbRequester = new DbRequester<SalidaProyecto>(this, SalidaProyectos);
         }
 
         public void SeedPlantilla()
@@ -52,6 +55,8 @@ namespace TesisProj.Models.Storage
             SeedFormulas();
             SeedSalidaElementos();
             SeedPlantillaProyectos();
+            SeedPlantillaElementoProyectos();
+            SeedSalidaProyectos();
         }
 
         public void SeedTipoElementos()
@@ -149,6 +154,18 @@ namespace TesisProj.Models.Storage
         public void SeedPlantillaProyectos()
         {
             PlantillaProyectosRequester.AddElement(new PlantillaProyecto { Id = 1, Nombre = "Proyecto genérico" });
+        }
+
+        public void SeedPlantillaElementoProyectos()
+        {
+            PlantillaElementoProyectosRequester.AddElement(new PlantillaElementoProyecto { Id = 1, IdElemento = 1, IdProyecto = 1 });
+            PlantillaElementoProyectosRequester.AddElement(new PlantillaElementoProyecto { Id = 1, IdElemento = 2, IdProyecto = 1 });
+            PlantillaElementoProyectosRequester.AddElement(new PlantillaElementoProyecto { Id = 1, IdElemento = 3, IdProyecto = 1 });
+        }
+
+        public void SeedSalidaProyectos()
+        {
+            SalidaProyectosDbRequester.AddElement(new SalidaProyecto { Id = 1, Nombre = "Gastos", Secuencia = 1, IdPlantillaProyecto = 1, Cadena = "DepreciacionLineal" });
         }
     }
 }

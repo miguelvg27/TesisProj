@@ -92,10 +92,16 @@ namespace TesisProj.Areas.Plantilla.Models
                 double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
                 var parametros = context.Parametros.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento);
+                var formulas = context.Formulas.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento && p.Secuencia < this.Secuencia);
 
                 foreach (Parametro parametro in parametros)
                 {
                     parser.AddVariable(parametro.Referencia, Math.PI);
+                }
+
+                foreach (Formula formula in formulas)
+                {
+                    parser.AddVariable(formula.Referencia, Math.PI);
                 }
 
                 try

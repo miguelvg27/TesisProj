@@ -10,6 +10,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
+    [Authorize]
     public class FormulaController : Controller
     {
         private TProjContext db = new TProjContext();
@@ -25,7 +26,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return HttpNotFound();
             }
 
-            var formulas = db.Formulas.Include(f => f.PlantillaElemento).Include(f => f.TipoFormula).Where(f => f.IdPlantillaElemento == id).OrderBy(f => f.Secuencia);;
+            var formulas = db.Formulas.Include(f => f.PlantillaElemento).Include(f => f.TipoFormula).Where(f => f.IdPlantillaElemento == id).OrderBy(f => f.Secuencia);
 
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;

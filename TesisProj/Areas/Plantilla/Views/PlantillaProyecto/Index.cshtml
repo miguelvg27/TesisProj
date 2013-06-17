@@ -25,6 +25,7 @@
         </td>
         <td>
             @Html.ActionLink("Asociar elementos", "Assoc", new { id=item.Id }) |
+            @Html.ActionLink("Salidas", "Index", "SalidaProyecto", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })
@@ -33,3 +34,7 @@
 }
 
 </table>
+
+<div>
+    @Html.ActionLink("Regresar", "Index", "Home", routeValues: new { Area = "" }, htmlAttributes: null)
+</div>
