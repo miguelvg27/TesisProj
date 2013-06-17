@@ -40,6 +40,7 @@ namespace TesisProj.Models.Storage
             SeedTipoParametros();
             SeedPlantillaElementos();
             SeedParametros();
+            SeedFormulas();
         }
 
         public void SeedTipoElementos()
@@ -123,6 +124,11 @@ namespace TesisProj.Models.Storage
             ParametrosRequester.AddElement(new Parametro { Id = 16, Nombre = "Tasa", IdTipoParametro = 4, IdPlantillaElemento = 3 });
             ParametrosRequester.AddElement(new Parametro { Id = 17, Nombre = "Plazo", IdTipoParametro = 2, IdPlantillaElemento = 3 });
 
+        }
+
+        public void SeedFormulas()
+        {
+            FormulasRequester.AddElement(new Formula { Id = 1, Nombre = "Depreciación lineal", Secuencia = 1, IdTipoFormula = 1, IdPlantillaElemento = 1, Cadena = "[Valor inicial (US$)]" });
         }
     }
 }
