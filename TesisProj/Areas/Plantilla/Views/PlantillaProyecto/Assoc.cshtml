@@ -1,0 +1,57 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaProyecto
+
+@{
+    ViewBag.Title = "Plantillas de proyectos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asociar elementos</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Plantilla de proyecto</legend>
+
+        <table>
+            <tr>
+                <th>
+                    Elementos disponibles
+                </th>
+                <th></th>
+                <th>
+                     Elementos asociados
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ListBox("Opciones")
+                </td>
+                <td>
+                    <input type="submit" value=">" name="add" id="add"/>
+                    <br />
+                    <input type="submit" value="<" name="remove" id="remove"/>
+                    <br />
+                    <input type="submit" value=">>" name="addall" id="addall"/>
+                    <br />
+                    <input type="submit" value="<<" name="removeall" id="removeall"/>
+                </td>
+                <td>
+                    @Html.ListBox("Asociados")
+                </td>
+            </tr>
+        </table>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Nombre)
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
