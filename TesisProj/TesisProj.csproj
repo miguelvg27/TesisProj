@@ -177,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\FormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoFormulaController.cs" />
@@ -285,6 +286,11 @@
     <Content Include="Areas\Plantilla\Views\Parametro\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\Parametro\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\Parametro\Delete.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Formula\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Formula\Details.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Formula\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Formula\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Formula\Delete.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

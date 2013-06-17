@@ -1,0 +1,70 @@
+﻿@model TesisProj.Areas.Plantilla.Models.Formula
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Formula</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Secuencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Secuencia)
+            @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdPlantillaElemento, "PlantillaElemento")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdPlantillaElemento", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdPlantillaElemento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoFormula, "TipoFormula")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoFormula", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdTipoFormula)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cadena)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Cadena)
+            @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
