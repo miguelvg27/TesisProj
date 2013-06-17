@@ -20,7 +20,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Index()
         {
-            var tipoformulas = db.TipoFormulas.Include(s => s.TipoElemento).OrderBy(s => s.TipoElemento.Nombre);
+            var tipoformulas = db.TipoFormulas.Include(f => f.TipoElemento).OrderBy(f => f.TipoElemento.Nombre);
             return View(tipoformulas.ToList());
         }
 

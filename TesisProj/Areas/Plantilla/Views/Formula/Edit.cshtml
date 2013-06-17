@@ -23,6 +23,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.Referencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Referencia)
+            @Html.ValidationMessageFor(model => model.Referencia)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Secuencia)
         </div>
         <div class="editor-field">
@@ -47,10 +55,28 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoInicial)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoInicial)
+            @Html.ValidationMessageFor(model => model.PeriodoInicial)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoFinal)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoFinal)
+            @Html.ValidationMessageFor(model => model.PeriodoFinal)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.Cadena)
+        </div>
+        <div>
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
 

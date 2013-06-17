@@ -90,9 +90,8 @@ namespace TesisProj.Models.Storage
         {
             TipoParametrosRequester.AddElement(new TipoParametro { Id = 1, Nombre = "Real" });
             TipoParametrosRequester.AddElement(new TipoParametro { Id = 2, Nombre = "Entero" });
-            TipoParametrosRequester.AddElement(new TipoParametro { Id = 3, Nombre = "Período" });
-            TipoParametrosRequester.AddElement(new TipoParametro { Id = 4, Nombre = "Porcentaje" });
-            TipoParametrosRequester.AddElement(new TipoParametro { Id = 5, Nombre = "Monetario" });
+            TipoParametrosRequester.AddElement(new TipoParametro { Id = 3, Nombre = "Porcentaje" });
+            TipoParametrosRequester.AddElement(new TipoParametro { Id = 4, Nombre = "Monetario" });
         }
 
         public void SeedPlantillaElementos()
@@ -104,31 +103,31 @@ namespace TesisProj.Models.Storage
 
         public void SeedParametros()
         {
-            ParametrosRequester.AddElement(new Parametro { Id = 1, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 3, IdPlantillaElemento = 1 });
-            ParametrosRequester.AddElement(new Parametro { Id = 2, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 3, IdPlantillaElemento = 1 });
+            ParametrosRequester.AddElement(new Parametro { Id = 1, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 2, IdPlantillaElemento = 1 });
+            ParametrosRequester.AddElement(new Parametro { Id = 2, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 2, IdPlantillaElemento = 1 });
             ParametrosRequester.AddElement(new Parametro { Id = 3, Nombre = "Vida útil (períodos)", Referencia = "VidaUtil", IdTipoParametro = 2, IdPlantillaElemento = 1 });
-            ParametrosRequester.AddElement(new Parametro { Id = 4, Nombre = "Valor inicial (US$)", Referencia = "ValorInicial", IdTipoParametro = 5, IdPlantillaElemento = 1 });
+            ParametrosRequester.AddElement(new Parametro { Id = 4, Nombre = "Valor inicial (US$)", Referencia = "ValorInicial", IdTipoParametro = 4, IdPlantillaElemento = 1 });
 
-            ParametrosRequester.AddElement(new Parametro { Id = 5, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 3, IdPlantillaElemento = 2 });
-            ParametrosRequester.AddElement(new Parametro { Id = 6, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 3, IdPlantillaElemento = 2 });
+            ParametrosRequester.AddElement(new Parametro { Id = 5, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 2, IdPlantillaElemento = 2 });
+            ParametrosRequester.AddElement(new Parametro { Id = 6, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 2, IdPlantillaElemento = 2 });
             ParametrosRequester.AddElement(new Parametro { Id = 7, Nombre = "Tamaño de mina (kTM/período)", Referencia = "TamanoMina", IdTipoParametro = 1, IdPlantillaElemento = 2 });
             ParametrosRequester.AddElement(new Parametro { Id = 8, Nombre = "Ley mineral (oz/TM)", Referencia = "LeyMineral", IdTipoParametro = 1, IdPlantillaElemento = 2 });
-            ParametrosRequester.AddElement(new Parametro { Id = 9, Nombre = "Precio metal (US$/oz)", Referencia = "PrecioMetal", IdTipoParametro = 5, IdPlantillaElemento = 2 });
-            ParametrosRequester.AddElement(new Parametro { Id = 10, Nombre = "Recuperación", Referencia = "Recuperacion", IdTipoParametro = 4, IdPlantillaElemento = 2 });
-            ParametrosRequester.AddElement(new Parametro { Id = 11, Nombre = "Costo de producción (US$/TM)", Referencia = "CostoProduccion", IdTipoParametro = 5, IdPlantillaElemento = 2 });
+            ParametrosRequester.AddElement(new Parametro { Id = 9, Nombre = "Precio metal (US$/oz)", Referencia = "PrecioMetal", IdTipoParametro = 4, IdPlantillaElemento = 2 });
+            ParametrosRequester.AddElement(new Parametro { Id = 10, Nombre = "Recuperación", Referencia = "Recuperacion", IdTipoParametro = 3, IdPlantillaElemento = 2 });
+            ParametrosRequester.AddElement(new Parametro { Id = 11, Nombre = "Costo de producción (US$/TM)", Referencia = "CostoProduccion", IdTipoParametro = 4, IdPlantillaElemento = 2 });
 
-            ParametrosRequester.AddElement(new Parametro { Id = 12, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 3, IdPlantillaElemento = 3 });
-            ParametrosRequester.AddElement(new Parametro { Id = 13, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 3, IdPlantillaElemento = 3 });
-            ParametrosRequester.AddElement(new Parametro { Id = 14, Nombre = "Valor inicial (US$)", Referencia = "ValorInicial", IdTipoParametro = 5, IdPlantillaElemento = 3 });
+            ParametrosRequester.AddElement(new Parametro { Id = 12, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 2, IdPlantillaElemento = 3 });
+            ParametrosRequester.AddElement(new Parametro { Id = 13, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 2, IdPlantillaElemento = 3 });
+            ParametrosRequester.AddElement(new Parametro { Id = 14, Nombre = "Valor inicial (US$)", Referencia = "ValorInicial", IdTipoParametro = 4, IdPlantillaElemento = 3 });
             ParametrosRequester.AddElement(new Parametro { Id = 15, Nombre = "Períodos de gracia", Referencia = "PeriodosGracia", IdTipoParametro = 2, IdPlantillaElemento = 3 });
-            ParametrosRequester.AddElement(new Parametro { Id = 16, Nombre = "Tasa", Referencia = "Tasa", IdTipoParametro = 4, IdPlantillaElemento = 3 });
+            ParametrosRequester.AddElement(new Parametro { Id = 16, Nombre = "Tasa", Referencia = "Tasa", IdTipoParametro = 3, IdPlantillaElemento = 3 });
             ParametrosRequester.AddElement(new Parametro { Id = 17, Nombre = "Plazo", Referencia = "Plazo", IdTipoParametro = 2, IdPlantillaElemento = 3 });
 
         }
 
         public void SeedFormulas()
         {
-            FormulasRequester.AddElement(new Formula { Id = 1, Nombre = "Depreciación lineal", Secuencia = 1, IdTipoFormula = 1, IdPlantillaElemento = 1, Cadena = "[Valor inicial (US$)]" });
+            FormulasRequester.AddElement(new Formula { Id = 1, Nombre = "Depreciación lineal", Referencia = "DepreciacionLineal", Secuencia = 1, IdTipoFormula = 1, IdPlantillaElemento = 1, PeriodoInicial = "PeriodoInicial", PeriodoFinal = "PeriodoFinal", Cadena = "ValorInicial/VidaUtil" });
         }
     }
 }
