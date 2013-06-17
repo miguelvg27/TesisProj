@@ -25,7 +25,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return HttpNotFound();
             }
 
-            var salidaelementos = db.SalidaElementos.Include(s => s.PlantillaElemento).Include(s => s.Formula);
+            var salidaelementos = db.SalidaElementos.Include(s => s.PlantillaElemento).Include(s => s.Formula).OrderBy(s => s.Secuencia);
 
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;
