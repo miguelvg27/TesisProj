@@ -25,7 +25,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return HttpNotFound();
             }
 
-            var formulas = db.Formulas.Include(f => f.PlantillaElemento).Include(f => f.TipoFormula).Where(f => f.IdPlantillaElemento == id).OrderBy(f => f.TipoFormula.Nombre);;
+            var formulas = db.Formulas.Include(f => f.PlantillaElemento).Include(f => f.TipoFormula).Where(f => f.IdPlantillaElemento == id).OrderBy(f => f.Secuencia);;
 
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;
@@ -129,7 +129,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 db.Entry(formula).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = formula.IdTipoFormula });
+                return RedirectToAction("Index", new { id = formula.IdPlantillaElemento });
             }
 
             PlantillaElemento plantilla = db.PlantillaElementos.Find(formula.IdPlantillaElemento);

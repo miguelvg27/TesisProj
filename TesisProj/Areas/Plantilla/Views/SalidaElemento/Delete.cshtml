@@ -1,7 +1,7 @@
-﻿@model TesisProj.Areas.Plantilla.Models.Formula
+﻿@model TesisProj.Areas.Plantilla.Models.SalidaElemento
 
 @{
-    ViewBag.Title = "Fórmulas";
+    ViewBag.Title = "Salidas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,20 +9,13 @@
 
 <h3>¿Está seguro de eliminar este registro?</h3>
 <fieldset>
-    <legend>Fórmula</legend>
+    <legend>Salida</legend>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.Nombre)
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Nombre)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Referencia)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Referencia)
     </div>
 
     <div class="display-label">
@@ -40,17 +33,10 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.TipoFormula.Nombre)
+         @Html.DisplayNameFor(model => model.Formula.Nombre)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.TipoFormula.Nombre)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cadena)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cadena)
+        @Html.DisplayFor(model => model.Formula.Nombre)
     </div>
 </fieldset>
 @using (Html.BeginForm()) {

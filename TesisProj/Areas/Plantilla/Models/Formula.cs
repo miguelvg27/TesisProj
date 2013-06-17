@@ -19,7 +19,7 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Secuencia")]
-        [Range(1, int.MaxValue)]
+        [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Secuencia { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]

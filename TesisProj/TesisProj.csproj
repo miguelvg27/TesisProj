@@ -183,12 +183,14 @@
     <Compile Include="Areas\Plantilla\Controllers\FormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\SalidaElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoParametroController.cs" />
     <Compile Include="Areas\Plantilla\Models\Formula.cs" />
     <Compile Include="Areas\Plantilla\Models\Parametro.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
+    <Compile Include="Areas\Plantilla\Models\SalidaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoFormula.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoParametro.cs" />
     <Compile Include="Areas\Plantilla\Models\TProjContext.cs" />
@@ -294,6 +296,11 @@
     <Content Include="Areas\Plantilla\Views\Formula\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\Formula\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\Formula\Delete.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SalidaElemento\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SalidaElemento\Details.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SalidaElemento\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SalidaElemento\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\SalidaElemento\Delete.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
