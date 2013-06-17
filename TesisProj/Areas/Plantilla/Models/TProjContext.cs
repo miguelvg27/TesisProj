@@ -16,6 +16,7 @@ namespace TesisProj.Models.Storage
         public DbSet<PlantillaElemento> PlantillaElementos { get; set; }
         public DbSet<Formula> Formulas { get; set; }
         public DbSet<SalidaElemento> SalidaElementos { get; set; }
+        public DbSet<PlantillaProyecto> PlantillaProyectos { get; set; }
 
         public DbRequester<TipoElemento> TipoElementosRequester { get; set; }
         public DbRequester<TipoFormula> TipoFormulasRequester { get; set; }
@@ -24,6 +25,7 @@ namespace TesisProj.Models.Storage
         public DbRequester<PlantillaElemento> PlantillaElementosRequester { get; set; }
         public DbRequester<Formula> FormulasRequester { get; set; }
         public DbRequester<SalidaElemento> SalidaElementosRequester { get; set; }
+        public DbRequester<PlantillaProyecto> PlantillaProyectosRequester { get; set; }
 
         public void RegistrarTablasPlantilla()
         {
@@ -34,6 +36,7 @@ namespace TesisProj.Models.Storage
             PlantillaElementosRequester = new DbRequester<PlantillaElemento>(this, PlantillaElementos);
             FormulasRequester = new DbRequester<Formula>(this, Formulas);
             SalidaElementosRequester = new DbRequester<SalidaElemento>(this, SalidaElementos);
+            PlantillaProyectosRequester = new DbRequester<PlantillaProyecto>(this, PlantillaProyectos);
         }
 
         public void SeedPlantilla()
@@ -44,6 +47,7 @@ namespace TesisProj.Models.Storage
             SeedPlantillaElementos();
             SeedParametros();
             SeedFormulas();
+            SeedSalidaElementos();
         }
 
         public void SeedTipoElementos()
@@ -131,6 +135,11 @@ namespace TesisProj.Models.Storage
         public void SeedFormulas()
         {
             FormulasRequester.AddElement(new Formula { Id = 1, Nombre = "Depreciación lineal", Referencia = "DepreciacionLineal", Secuencia = 1, IdTipoFormula = 1, IdPlantillaElemento = 1, PeriodoInicial = "PeriodoInicial", PeriodoFinal = "PeriodoFinal", Cadena = "ValorInicial/VidaUtil" });
+        }
+
+        public void SeedSalidaElementos()
+        {
+            SalidaElementosRequester.AddElement(new SalidaElemento { Id = 1, IdFormula = 1, IdPlantillaElemento = 1, Secuencia = 1, Nombre = "Depreciación" });
         }
     }
 }

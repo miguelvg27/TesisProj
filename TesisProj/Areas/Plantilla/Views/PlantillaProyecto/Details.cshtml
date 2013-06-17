@@ -1,0 +1,22 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaProyecto
+
+@{
+    ViewBag.Title = "Plantillas de proyectos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+<h2>Detalle</h2>
+
+<fieldset>
+    <legend>Plantilla de proyecto</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Regresar", "Index")
+</p>

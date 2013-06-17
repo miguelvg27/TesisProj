@@ -10,34 +10,34 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
-    public class TipoElementoController : Controller
+    public class PlantillaProyectoController : Controller
     {
         private TProjContext db = new TProjContext();
 
         //
-        // GET: /Plantilla/TipoElemento/
+        // GET: /Plantilla/PlantillaProyecto/
 
         public ActionResult Index()
         {
-            return View(db.TipoElementos.OrderBy(t => t.Nombre).ToList());
+            return View(db.PlantillaProyectos.OrderBy(t => t.Nombre).ToList());
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Details/5
+        // GET: /Plantilla/PlantillaProyecto/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
+            if (plantillaproyecto == null)
             {
                 return HttpNotFound();
             }
 
-            return View(tipoelemento);
+            return View(plantillaproyecto);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Create
+        // GET: /Plantilla/PlantillaProyecto/Create
 
         public ActionResult Create()
         {
@@ -45,78 +45,78 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Create
+        // POST: /Plantilla/PlantillaProyecto/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TipoElemento tipoelemento)
+        public ActionResult Create(PlantillaProyecto plantillaproyecto)
         {
             if (ModelState.IsValid)
             {
-                db.TipoElementos.Add(tipoelemento);
+                db.PlantillaProyectos.Add(plantillaproyecto);
                 db.SaveChanges();
-                
+
                 return RedirectToAction("Index");
             }
 
-            return View(tipoelemento);
+            return View(plantillaproyecto);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Edit/5
+        // GET: /Plantilla/PlantillaProyecto/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
+            if (plantillaproyecto == null)
             {
                 return HttpNotFound();
             }
 
-            return View(tipoelemento);
+            return View(plantillaproyecto);
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Edit/5
+        // POST: /Plantilla/PlantillaProyecto/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(TipoElemento tipoelemento)
+        public ActionResult Edit(PlantillaProyecto plantillaproyecto)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tipoelemento).State = EntityState.Modified;
+                db.Entry(plantillaproyecto).State = EntityState.Modified;
                 db.SaveChanges();
-                
+
                 return RedirectToAction("Index");
             }
 
-            return View(tipoelemento);
+            return View(plantillaproyecto);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Delete/5
+        // GET: /Plantilla/PlantillaProyecto/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
+            if (plantillaproyecto == null)
             {
                 return HttpNotFound();
             }
 
-            return View(tipoelemento);
+            return View(plantillaproyecto);
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Delete/5
+        // POST: /Plantilla/PlantillaProyecto/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            db.TipoElementos.Remove(tipoelemento);
+            PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
+            db.PlantillaProyectos.Remove(plantillaproyecto);
             db.SaveChanges();
 
             return RedirectToAction("Index");

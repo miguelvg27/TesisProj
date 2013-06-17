@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Plantilla.Models;
-using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
