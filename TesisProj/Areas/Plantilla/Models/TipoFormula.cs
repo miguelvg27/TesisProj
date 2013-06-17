@@ -29,7 +29,7 @@ namespace TesisProj.Areas.Plantilla.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.TipoFormulas.Any(s => s.Nombre == this.Nombre && s.IdTipoElemento == this.IdTipoElemento && s.Id != this.Id))
+                if (context.TipoFormulas.Any(t => t.Nombre == this.Nombre && t.IdTipoElemento == this.IdTipoElemento && (this.Id > 0 ? t.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre .", new string[] { "Nombre" });
                 }

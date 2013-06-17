@@ -9,6 +9,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Models
 {
+    [Table("Formula")]
     public class Formula : DbObject, IValidatableObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -44,14 +45,14 @@ namespace TesisProj.Areas.Plantilla.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.Formulas.Any(f => f.Nombre == this.Nombre && f.IdPlantillaElemento == this.IdPlantillaElemento && f.Id != this.Id))
+                if (context.Formulas.Any(f => f.Nombre == this.Nombre && f.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre en la misma plantilla.", new string[] { "Nombre" });
                 }
 
-                if (context.Formulas.Any(f => f.Secuencia == this.Secuencia && f.IdPlantillaElemento == this.IdPlantillaElemento && f.Id != this.Id))
+                if (context.Formulas.Any(f => f.Secuencia == this.Secuencia && f.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
-                    yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Nombre" });
+                    yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
                 }
             }
         }

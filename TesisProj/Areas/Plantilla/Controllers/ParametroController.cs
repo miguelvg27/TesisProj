@@ -55,16 +55,16 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/Parametro/Create
 
-        public ActionResult Create(int id = 0)
+        public ActionResult Create(int idPlantilla = 0)
         {
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(id);
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(idPlantilla);
             if (plantilla == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.IdPlantilla = id;
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == id), "Id", "Nombre");
+            ViewBag.IdPlantilla = idPlantilla;
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre");
 
             return View();
@@ -75,15 +75,16 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Parametro parametro, int id)
+        public ActionResult Create(Parametro parametro)
         {
             if (ModelState.IsValid)
             {
                 db.Parametros.Add(parametro);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = id });
+                return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
             }
 
+            ViewBag.IdPlantilla = parametro.IdPlantillaElemento;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
             

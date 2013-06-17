@@ -1,17 +1,18 @@
 ﻿@model TesisProj.Areas.Plantilla.Models.Formula
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Fórmulas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Crear</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Formula</legend>
+        <legend>Fórmula</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Nombre)
@@ -25,20 +26,20 @@
             @Html.LabelFor(model => model.Secuencia)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Secuencia)
+            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
             @Html.ValidationMessageFor(model => model.Secuencia)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.IdPlantillaElemento, "PlantillaElemento")
+            @Html.LabelFor(model => model.IdPlantillaElemento)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("IdPlantillaElemento", String.Empty)
+            @Html.DropDownList("IdPlantillaElemento")
             @Html.ValidationMessageFor(model => model.IdPlantillaElemento)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.IdTipoFormula, "TipoFormula")
+            @Html.LabelFor(model => model.IdTipoFormula)
         </div>
         <div class="editor-field">
             @Html.DropDownList("IdTipoFormula", String.Empty)
@@ -49,18 +50,18 @@
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Cadena)
+            @Html.TextAreaFor(model => model.Cadena)
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Guardar" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+   @Html.ActionLink("Regresar", "Index", routeValues: new { id = ViewBag.IdPlantilla }, htmlAttributes: null)
 </div>
 
 @section Scripts {

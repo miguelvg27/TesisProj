@@ -21,7 +21,7 @@ namespace TesisProj.Areas.Plantilla.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.TipoParametros.Any(t => t.Nombre == this.Nombre && t.Id != this.Id))
+                if (context.TipoParametros.Any(t => t.Nombre == this.Nombre && (this.Id > 0 ? t.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre.", new string[] { "Nombre" });
                 }

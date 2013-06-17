@@ -31,6 +31,7 @@
         </td>
         <td>
             @Html.ActionLink("Parámetros", "Index", "Parametro", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
+            @Html.ActionLink("Fórmulas", "Index", "Formula", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })

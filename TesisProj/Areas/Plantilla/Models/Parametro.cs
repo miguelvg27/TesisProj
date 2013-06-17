@@ -9,6 +9,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Models
 {
+    [Table("Parametro")]
     public class Parametro : DbObject, IValidatableObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -35,7 +36,7 @@ namespace TesisProj.Areas.Plantilla.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.Parametros.Any(p => p.Nombre == this.Nombre && p.IdPlantillaElemento == this.IdPlantillaElemento && p.Id != this.Id))
+                if (context.Parametros.Any(p => p.Nombre == this.Nombre && p.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? p.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre en la misma plantilla.", new string[] { "Nombre" });
                 }

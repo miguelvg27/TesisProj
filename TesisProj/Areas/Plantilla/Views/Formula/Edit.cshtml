@@ -1,10 +1,11 @@
 ﻿@model TesisProj.Areas.Plantilla.Models.Formula
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Fórmulas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Editar</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -30,15 +31,15 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.IdPlantillaElemento, "PlantillaElemento")
+            @Html.LabelFor(model => model.IdPlantillaElemento)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("IdPlantillaElemento", String.Empty)
+            @Html.DropDownList("IdPlantillaElemento")
             @Html.ValidationMessageFor(model => model.IdPlantillaElemento)
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.IdTipoFormula, "TipoFormula")
+            @Html.LabelFor(model => model.IdTipoFormula)
         </div>
         <div class="editor-field">
             @Html.DropDownList("IdTipoFormula", String.Empty)
@@ -49,20 +50,20 @@
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Cadena)
+            @Html.TextAreaFor(model => model.Cadena)
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
 
         @Html.HiddenFor(model => model.Id)
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Guardar" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
 </div>
 
 @section Scripts {
