@@ -16,6 +16,9 @@
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Referencia)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
         </th>
         <th>
@@ -28,6 +31,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Referencia)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PlantillaElemento.Nombre)

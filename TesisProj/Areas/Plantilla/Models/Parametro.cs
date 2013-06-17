@@ -17,6 +17,11 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Parámetro")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [DisplayName("Referencia")]
+        [RegularExpression("[A-Za-z]+[A-Za-z1-9]*", ErrorMessage = "El campo solo puede contener alfanuméricos y debe comenzar con una letra.")]
+        public string Referencia { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Plantilla")]
@@ -39,6 +44,11 @@ namespace TesisProj.Areas.Plantilla.Models
                 if (context.Parametros.Any(p => p.Nombre == this.Nombre && p.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? p.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre en la misma plantilla.", new string[] { "Nombre" });
+                }
+
+                if (context.Parametros.Any(p => p.Referencia == this.Referencia && p.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? p.Id != this.Id : true)))
+                {
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
                 }
             }
         }
