@@ -119,6 +119,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Assoc(PlantillaProyecto plantillaproyecto, FormCollection form, string add, string remove, string addall, string removeall)
         {
             string seleccionados;
+            int idElemento;
             int idProyecto = plantillaproyecto.Id;
 
             seleccionados = form["Opciones"];
@@ -126,7 +127,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             {
                 foreach(string sIdElemento in seleccionados.Split(','))
                 {
-                    int idElemento = int.Parse(sIdElemento);
+                    idElemento = int.Parse(sIdElemento);
                     if(!db.PlantillaElementoProyectos.Any(p => p.IdProyecto == idProyecto && p.IdElemento == idElemento))
                     {
                         db.PlantillaElementoProyectos.Add(new PlantillaElementoProyecto { IdProyecto = idProyecto, IdElemento = idElemento });
@@ -142,7 +143,8 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 PlantillaElementoProyecto elemento;
                 foreach (string sIdElemento in seleccionados.Split(','))
                 {
-                    elemento = db.PlantillaElementoProyectos.Find(int.Parse(sIdElemento));
+                    idElemento = int.Parse(sIdElemento);
+                    elemento = db.PlantillaElementoProyectos.FirstOrDefault(p => p.IdElemento == idElemento && p.IdProyecto == idProyecto);
                     if (elemento != null)
                     {
                         db.PlantillaElementoProyectos.Remove(elemento);
@@ -153,7 +155,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             if (!string.IsNullOrEmpty(addall))
             {
-                int idElemento;
                 var plantillas = db.PlantillaElementos.ToList();
                 foreach(PlantillaElemento elemento in plantillas)
                 {
