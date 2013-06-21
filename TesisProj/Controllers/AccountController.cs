@@ -10,6 +10,7 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using TesisProj.Filters;
 using TesisProj.Models;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Controllers
 {
@@ -41,7 +42,7 @@ namespace TesisProj.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            ModelState.AddModelError("", "El usuario es incorrecto.");
             return View(model);
         }
 
@@ -128,8 +129,8 @@ namespace TesisProj.Controllers
         public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                message == ManageMessageId.ChangePasswordSuccess ? "Su contraseña ha sido modificada."
+                : message == ManageMessageId.SetPasswordSuccess ? "Su contraseña ha sido establecida."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
@@ -168,7 +169,7 @@ namespace TesisProj.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+                        ModelState.AddModelError("", "La contraseña es inválida.");
                     }
                 }
             }
@@ -191,7 +192,7 @@ namespace TesisProj.Controllers
                     }
                     catch (Exception)
                     {
-                        ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
+                        ModelState.AddModelError("", String.Format("No se pudo crear una cuenta. Puede que una con el nombre de \"{0}\" ya exista.", User.Identity.Name));
                     }
                 }
             }
@@ -280,7 +281,7 @@ namespace TesisProj.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+                        ModelState.AddModelError("UserName", "El nombre de usuario ya existe.");
                     }
                 }
             }
@@ -372,34 +373,34 @@ namespace TesisProj.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "El nombre de usuario ya existe. Por favor, ingrese otro.";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return "Un usuario con este correo electrónico ya existe. Por favor, ingrese otro.";
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return "La contraseña es inválida.";
 
                 case MembershipCreateStatus.InvalidEmail:
-                    return "The e-mail address provided is invalid. Please check the value and try again.";
+                    return "El correo electrónico es inválido.";
 
                 case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
+                    return "No se pudo recuperar la contraseña.";
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+                    return "La pregunta es inválida.";
 
                 case MembershipCreateStatus.InvalidUserName:
-                    return "The user name provided is invalid. Please check the value and try again.";
+                    return "El nombre de usuario es inválido.";
 
                 case MembershipCreateStatus.ProviderError:
                     return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
 
                 case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return "La solicitud de creación fue rechazada. Si el problema persiste, contacte a su administrador.";
 
                 default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return "Ha sucedido un error desconocido. Si el problema persiste, contacte a su administrador.";
             }
         }
         #endregion

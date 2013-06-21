@@ -9,18 +9,16 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
             ViewBag.Message = "Administra las evaluaciones financieras de tus proyectos de inversión.";
-            using (TProjContext context = new TProjContext()) 
-            {
-                context.TipoElementosRequester.All();
-            }
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult About()
         {
             ViewBag.Message = "En desarrollo";
@@ -28,10 +26,17 @@ namespace TesisProj.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Contact()
         {
             ViewBag.Message = "Miguel AVG y asociados";
 
+            return View();
+        }
+
+        public ActionResult Administracion()
+        {
+            ViewBag.Message = "Administra los parámetros y plantillas de las evaluaciones financieras.";
             return View();
         }
     }
