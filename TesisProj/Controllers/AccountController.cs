@@ -42,7 +42,7 @@ namespace TesisProj.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "El usuario es incorrecto.");
+            ModelState.AddModelError("", "La combinación usuario/contraseña es incorrecta.");
             return View(model);
         }
 
