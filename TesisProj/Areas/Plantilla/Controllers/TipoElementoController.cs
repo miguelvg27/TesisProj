@@ -117,8 +117,16 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            db.TipoElementos.Remove(tipoelemento);
-            db.SaveChanges();
+            try
+            {
+                db.TipoElementos.Remove(tipoelemento);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                return View("Delete", tipoelemento);
+            }
 
             return RedirectToAction("Index");
         }

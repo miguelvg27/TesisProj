@@ -111,8 +111,17 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             TipoParametro tipoparametro = db.TipoParametros.Find(id);
-            db.TipoParametros.Remove(tipoparametro);
-            db.SaveChanges();    
+            try
+            {
+                db.TipoParametros.Remove(tipoparametro);
+                db.SaveChanges();   
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                return View("Delete", tipoparametro);
+            }
+ 
             return RedirectToAction("Index");
         }
 

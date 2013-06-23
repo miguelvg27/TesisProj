@@ -121,8 +121,18 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             TipoFormula tipoformula = db.TipoFormulas.Find(id);
-            db.TipoFormulas.Remove(tipoformula);
-            db.SaveChanges();  
+            try
+            {
+                db.TipoFormulas.Remove(tipoformula);
+                db.SaveChanges(); 
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                tipoformula.TipoElemento = db.TipoElementos.Find(tipoformula.IdTipoElemento);
+                return View("Delete", tipoformula);
+            }
+             
             return RedirectToAction("Index");
         }
 

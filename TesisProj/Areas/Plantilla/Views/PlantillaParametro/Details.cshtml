@@ -1,0 +1,44 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaParametro
+
+@{
+    ViewBag.Title = "Parámetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle</h2>
+
+<fieldset>
+    <legend>Parámetro</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Referencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Referencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlantillaElemento.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TipoParametro.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipoParametro.Nombre)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
+</p>

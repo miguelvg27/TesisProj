@@ -1,0 +1,63 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaSalidaProyecto
+
+@{
+    ViewBag.Title = "Salidas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Salida</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Secuencia)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
+            @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdPlantillaProyecto)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdPlantillaProyecto")
+            @Html.ValidationMessageFor(model => model.IdPlantillaProyecto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cadena)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Cadena)
+        </div>
+        <div>
+            @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = ViewBag.IdPlantilla }, htmlAttributes: null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

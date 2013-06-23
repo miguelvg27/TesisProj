@@ -1,0 +1,44 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaSalidaElemento
+
+@{
+    ViewBag.Title = "Salidas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle</h2>
+
+<fieldset>
+    <legend>Salida</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Secuencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Secuencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlantillaElemento.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Formula.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Formula.Nombre)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
+</p>

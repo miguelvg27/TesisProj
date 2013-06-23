@@ -25,10 +25,10 @@ namespace TesisProj.Areas.Plantilla.Models
         public TipoElemento TipoElemento { get; set; }
 
         [InverseProperty("PlantillaElemento")]
-        List<Parametro> Parametros { get; set; }
+        List<PlantillaParametro> Parametros { get; set; }
 
         [InverseProperty("PlantillaElemento")]
-        List<Formula> Formulas { get; set; }
+        List<PlantillaFormula> Formulas { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

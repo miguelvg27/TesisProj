@@ -1,0 +1,63 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaSalidaElemento
+
+@{
+    ViewBag.Title = "Salidas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editar</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Salida</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Secuencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Secuencia)
+            @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdPlantillaElemento)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdPlantillaElemento")
+            @Html.ValidationMessageFor(model => model.IdPlantillaElemento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdFormula)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdFormula", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdFormula)
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

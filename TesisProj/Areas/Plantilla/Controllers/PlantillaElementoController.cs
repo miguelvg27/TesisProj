@@ -121,8 +121,18 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            db.PlantillaElementos.Remove(plantillaelemento);
-            db.SaveChanges();
+            try
+            {
+                db.PlantillaElementos.Remove(plantillaelemento);
+                db.SaveChanges();
+            }
+            catch (Exception)
+            {
+                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
+                return View("Delete", plantillaelemento);
+            }
+
             return RedirectToAction("Index");
         }
 

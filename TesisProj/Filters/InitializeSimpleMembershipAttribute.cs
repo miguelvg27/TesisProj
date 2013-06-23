@@ -39,6 +39,7 @@ namespace TesisProj.Filters
                     }
 
                     WebSecurity.InitializeDatabaseConnection("TProjDb", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.CreateUserAndAccount("miguelavg", "miguelavg");
                 }
                 catch (Exception ex)
                 {
