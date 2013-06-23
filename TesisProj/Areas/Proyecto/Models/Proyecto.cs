@@ -49,6 +49,11 @@ namespace TesisProj.Areas.Proyecto.Models
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Horizonte { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Versión")]
+        [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
+        public int Version { get; set; }
+
         [InverseProperty("Proyecto")]
         public List<SalidaProyecto> Salidas { get; set; }
 
