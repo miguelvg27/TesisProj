@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using TesisProj.Models;
+using System.Web.Security;
 
 namespace TesisProj.Filters
 {
@@ -39,7 +40,17 @@ namespace TesisProj.Filters
                     }
 
                     WebSecurity.InitializeDatabaseConnection("TProjDb", "UserProfile", "UserId", "UserName", autoCreateTables: true);
-                    WebSecurity.CreateUserAndAccount("miguelavg", "miguelavg");
+
+                    if (!Roles.RoleExists("admin"))
+                    {
+                        Roles.CreateRole("admin");
+                    }
+
+                    if (!WebSecurity.UserExists("miguelavg"))
+                    {
+                        WebSecurity.CreateUserAndAccount("miguelavg", "miguelavg");
+                        Roles.AddUserToRole("miguelavg", "admin");
+                    }
                 }
                 catch (Exception ex)
                 {

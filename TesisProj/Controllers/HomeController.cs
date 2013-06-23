@@ -33,11 +33,5 @@ namespace TesisProj.Controllers
 
             return View();
         }
-
-        public ActionResult Administracion()
-        {
-            ViewBag.Message = "Administra los parámetros y plantillas de las evaluaciones financieras.";
-            return View();
-        }
     }
 }

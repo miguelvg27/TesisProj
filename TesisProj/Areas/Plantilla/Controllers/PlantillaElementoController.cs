@@ -10,14 +10,13 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class PlantillaElementoController : Controller
     {
         private TProjContext db = new TProjContext();
 
         //
         // GET: /Plantilla/PlantillaElemento/
-
         public ActionResult Index()
         {
             var plantillaelementos = db.PlantillaElementos.Include(p => p.TipoElemento).OrderBy(p => p.TipoElemento.Nombre);
