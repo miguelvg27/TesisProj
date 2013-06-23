@@ -26,10 +26,12 @@ namespace TesisProj.Models.Storage
         public void RegistrarTablas()
         {
             RegistrarTablasPlantilla();
+            RegistrarTablasProyecto();
         }
 
         public void Seed(){
             SeedPlantilla();
+            SeedProyecto();
         }
     }
 

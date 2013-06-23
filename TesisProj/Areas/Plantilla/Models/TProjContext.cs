@@ -51,12 +51,12 @@ namespace TesisProj.Models.Storage
             SeedTipoFormulas();
             SeedTipoParametros();
             SeedPlantillaElementos();
-            SeedParametros();
-            SeedFormulas();
-            SeedSalidaElementos();
+            SeedPlantillaParametros();
+            SeedPlantillaFormulas();
+            SeedPlantillaSalidaElementos();
             SeedPlantillaProyectos();
             SeedPlantillaElementoProyectos();
-            SeedSalidaProyectos();
+            SeedPlantillaSalidaProyectos();
         }
 
         public void SeedTipoElementos()
@@ -117,7 +117,7 @@ namespace TesisProj.Models.Storage
             PlantillaElementosRequester.AddElement(new PlantillaElemento { Id = 3, Nombre = "Préstamo con cuotas constantes y períodos de gracia", IdTipoElemento = 5 });
         }
 
-        public void SeedParametros()
+        public void SeedPlantillaParametros()
         {
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 1, Nombre = "Período inicial", Referencia = "PeriodoInicial", IdTipoParametro = 2, IdPlantillaElemento = 1 });
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 2, Nombre = "Período final", Referencia = "PeriodoFinal", IdTipoParametro = 2, IdPlantillaElemento = 1 });
@@ -141,12 +141,12 @@ namespace TesisProj.Models.Storage
 
         }
 
-        public void SeedFormulas()
+        public void SeedPlantillaFormulas()
         {
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 1, Nombre = "Depreciación lineal", Referencia = "DepreciacionLineal", Secuencia = 1, IdTipoFormula = 1, IdPlantillaElemento = 1, PeriodoInicial = "PeriodoInicial", PeriodoFinal = "PeriodoFinal", Cadena = "ValorInicial/VidaUtil" });
         }
 
-        public void SeedSalidaElementos()
+        public void SeedPlantillaSalidaElementos()
         {
             PlantillaSalidaElementosRequester.AddElement(new PlantillaSalidaElemento { Id = 1, IdFormula = 1, IdPlantillaElemento = 1, Secuencia = 1, Nombre = "Depreciación" });
         }
@@ -163,7 +163,7 @@ namespace TesisProj.Models.Storage
             PlantillaElementoProyectosRequester.AddElement(new PlantillaElementoProyecto { Id = 1, IdElemento = 3, IdProyecto = 1 });
         }
 
-        public void SeedSalidaProyectos()
+        public void SeedPlantillaSalidaProyectos()
         {
             PlantillaSalidaProyectosDbRequester.AddElement(new PlantillaSalidaProyecto { Id = 1, Nombre = "Gastos", Secuencia = 1, IdPlantillaProyecto = 1, Cadena = "DepreciacionLineal" });
         }

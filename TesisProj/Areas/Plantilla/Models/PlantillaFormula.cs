@@ -76,11 +76,6 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un parámetro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
                 }
 
-                if (context.PlantillaParametros.Any(f => f.Referencia == this.Referencia && f.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? f.Id != this.Id : true)))
-                {
-                    yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
-                }
-
                 if (context.PlantillaFormulas.Any(f => f.Secuencia == this.Secuencia && f.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });

@@ -206,6 +206,7 @@
     <Compile Include="Areas\Proyecto\Models\Proyecto.cs" />
     <Compile Include="Areas\Proyecto\Models\SalidaElemento.cs" />
     <Compile Include="Areas\Proyecto\Models\SalidaProyecto.cs" />
+    <Compile Include="Areas\Proyecto\Models\TProjContext.cs" />
     <Compile Include="Areas\Proyecto\ProyectoAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
