@@ -49,6 +49,9 @@ namespace TesisProj.Areas.Proyecto.Models
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Horizonte { get; set; }
 
+        [InverseProperty("Proyecto")]
+        public List<SalidaProyecto> Salidas { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

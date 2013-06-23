@@ -26,6 +26,9 @@ namespace TesisProj.Areas.Proyecto.Models
         [DisplayName("Proyecto")]
         public int IdProyecto { get; set; }
 
+        [ForeignKey("IdProyecto")]
+        public Proyecto Proyecto { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]

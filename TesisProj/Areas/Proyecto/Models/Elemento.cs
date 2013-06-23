@@ -38,6 +38,9 @@ namespace TesisProj.Areas.Proyecto.Models
         [InverseProperty("Elemento")]
         public List<Formula> Formulas { get; set; }
 
+        [InverseProperty("Elemento")]
+        public List<SalidaElemento> Salidas { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())
