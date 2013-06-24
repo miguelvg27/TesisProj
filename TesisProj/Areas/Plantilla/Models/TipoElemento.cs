@@ -17,6 +17,11 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Tipo")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [DisplayName("Plural")]
+        public string NombrePlural { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

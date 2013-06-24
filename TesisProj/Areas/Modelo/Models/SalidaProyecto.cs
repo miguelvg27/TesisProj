@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Proyecto.Models
+namespace TesisProj.Areas.Modelo.Models
 {
     [Table("SalidaProyecto")]
     public class SalidaProyecto : DbObject, IValidatableObject

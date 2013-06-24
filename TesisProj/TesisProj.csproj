@@ -180,6 +180,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Areas\Modelo\Controllers\ElementoController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\ParametroController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\ProyectoController.cs" />
+    <Compile Include="Areas\Modelo\Models\Celda.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
@@ -200,14 +204,14 @@
     <Compile Include="Areas\Plantilla\Models\TipoParametro.cs" />
     <Compile Include="Areas\Plantilla\Models\TProjContext.cs" />
     <Compile Include="Areas\Plantilla\PlantillaAreaRegistration.cs" />
-    <Compile Include="Areas\Proyecto\Models\Elemento.cs" />
-    <Compile Include="Areas\Proyecto\Models\Formula.cs" />
-    <Compile Include="Areas\Proyecto\Models\Parametro.cs" />
-    <Compile Include="Areas\Proyecto\Models\Proyecto.cs" />
-    <Compile Include="Areas\Proyecto\Models\SalidaElemento.cs" />
-    <Compile Include="Areas\Proyecto\Models\SalidaProyecto.cs" />
-    <Compile Include="Areas\Proyecto\Models\TProjContext.cs" />
-    <Compile Include="Areas\Proyecto\ProyectoAreaRegistration.cs" />
+    <Compile Include="Areas\Modelo\Models\Elemento.cs" />
+    <Compile Include="Areas\Modelo\Models\Formula.cs" />
+    <Compile Include="Areas\Modelo\Models\Parametro.cs" />
+    <Compile Include="Areas\Modelo\Models\Proyecto.cs" />
+    <Compile Include="Areas\Modelo\Models\SalidaElemento.cs" />
+    <Compile Include="Areas\Modelo\Models\SalidaProyecto.cs" />
+    <Compile Include="Areas\Modelo\Models\TProjContext.cs" />
+    <Compile Include="Areas\Modelo\ModeloAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -326,7 +330,18 @@
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Delete.cshtml" />
-    <Content Include="Areas\Proyecto\Views\Web.config" />
+    <Content Include="Areas\Modelo\Views\Web.config" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Index.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Details.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Create.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Edit.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Delete.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Console.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Journal.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\CreateElemento.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditElemento.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\DeleteElemento.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Catalog.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -389,9 +404,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Modelo\Views\Shared\" />
     <Folder Include="Areas\Plantilla\Views\Shared\" />
-    <Folder Include="Areas\Proyecto\Controllers\" />
-    <Folder Include="Areas\Proyecto\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

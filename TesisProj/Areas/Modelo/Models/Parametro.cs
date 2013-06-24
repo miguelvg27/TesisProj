@@ -8,7 +8,7 @@ using System.Web;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Proyecto.Models
+namespace TesisProj.Areas.Modelo.Models
 {
     [Table("Parametro")]
     public class Parametro : DbObject, IValidatableObject
@@ -39,6 +39,18 @@ namespace TesisProj.Areas.Proyecto.Models
         public TipoParametro TipoParametro { get; set; }
         
         public List<object> Valores { get; set; }
+
+        public Parametro()
+        {
+        }
+
+        public Parametro(PlantillaParametro plantilla, int IdElemento)
+        {
+            this.IdElemento = IdElemento;
+            this.IdTipoParametro = plantilla.IdTipoParametro;
+            this.Nombre = plantilla.Nombre;
+            this.Referencia = plantilla.Referencia;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

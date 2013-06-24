@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
+
+@{
+    ViewBag.Title = "Catalog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Parámetros </h2>
+
+<p>
+    @Html.ActionLink("Crear", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Referencia)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdElemento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdTipoParametro)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Referencia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Elemento.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoParametro.Nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Editar valores", "SetParametro", new { id=item.Id }) |
+            @Html.ActionLink("Editar", "EditParametro", new { id=item.Id }) |
+            @Html.ActionLink("Eliminar", "DeleteParametro", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
+</div>

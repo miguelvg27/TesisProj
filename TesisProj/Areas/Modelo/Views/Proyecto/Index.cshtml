@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Proyecto>
+
+@{
+    ViewBag.Title = "Proyectos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Proyectos</h2>
+
+<p>
+    @Html.ActionLink("Crear", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Version)
+        </th>   
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>            
+        <th>
+            @Html.DisplayNameFor(model => model.IdCreador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Creacion)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.Nombre, "Console", new { id=item.Id })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Version)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Creador.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Creacion)
+        </td>
+    </tr>
+}
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Index", "Home", routeValues: new { Area = "" }, htmlAttributes: null)
+</div>

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Modelo.Models;
 
 namespace TesisProj.Models.Storage
 {
@@ -61,15 +62,17 @@ namespace TesisProj.Models.Storage
 
         public void SeedTipoElementos()
         {
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 1, Nombre = "Activo fijo" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 2, Nombre = "Activo intangible" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 3, Nombre = "Gasto" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 4, Nombre = "Operativo" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 5, Nombre = "Financiamiento" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 6, Nombre = "Impuesto" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 7, Nombre = "Participación" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 8, Nombre = "Inversión" });
-            TipoElementosRequester.AddElement(new TipoElemento { Id = 9, Nombre = "Otros" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 1, Nombre = "Activo fijo", NombrePlural = "Activos fijos" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 2, Nombre = "Activo intangible", NombrePlural = "Activos intangibles" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 10, Nombre = "Gasto operativo", NombrePlural = "Gastos operativos" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 11, Nombre = "Gasto administrativo", NombrePlural = "Gastos administrativos" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 12, Nombre = "Gasto financiero", NombrePlural = "Gastos financieros" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 4, Nombre = "Operativo", NombrePlural = "Operación" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 5, Nombre = "Financiamiento", NombrePlural = "Financiamientos" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 6, Nombre = "Impuesto", NombrePlural = "Impuestos" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 7, Nombre = "Participación", NombrePlural = "Participaciones" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 8, Nombre = "Inversión", NombrePlural = "Inversiones" });
+            TipoElementosRequester.AddElement(new TipoElemento { Id = 9, Nombre = "Otros", NombrePlural = "Otros" });
         }
         
         public void SeedTipoFormulas()

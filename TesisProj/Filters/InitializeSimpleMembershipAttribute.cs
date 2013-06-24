@@ -51,6 +51,11 @@ namespace TesisProj.Filters
                         WebSecurity.CreateUserAndAccount("miguelavg", "miguelavg");
                         Roles.AddUserToRole("miguelavg", "admin");
                     }
+
+                    if (!WebSecurity.UserExists("pedrocg"))
+                    {
+                        WebSecurity.CreateUserAndAccount("pedrocg", "pedrocg");
+                    }
                 }
                 catch (Exception ex)
                 {

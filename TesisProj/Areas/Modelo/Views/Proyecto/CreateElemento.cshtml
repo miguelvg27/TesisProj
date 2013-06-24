@@ -1,0 +1,61 @@
+﻿@model TesisProj.Areas.Modelo.Models.Elemento
+
+@{
+    ViewBag.Title = "Elementos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear elemento</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Elemento</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoElemento)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoElemento")
+            @Html.ValidationMessageFor(model => model.IdTipoElemento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdProyecto)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdProyecto")
+            @Html.ValidationMessageFor(model => model.IdProyecto)
+        </div>
+
+        <div class="editor-label">
+            Plantilla
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdPlantilla", String.Empty)
+            @Html.ValidationMessage("IdPlantilla")
+        </div>
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Journal", new { id = ViewBag.IdProyectoReturn })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

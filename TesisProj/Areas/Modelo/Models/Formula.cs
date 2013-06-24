@@ -8,7 +8,7 @@ using System.Web;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Proyecto.Models
+namespace TesisProj.Areas.Modelo.Models
 {
     [Table("Formula")]
     public class Formula : DbObject, IValidatableObject
@@ -57,6 +57,22 @@ namespace TesisProj.Areas.Proyecto.Models
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
+
+        public Formula()
+        {
+        }
+
+        public Formula(PlantillaFormula plantilla, int IdElemento)
+        {
+            this.IdElemento = IdElemento;
+            this.Referencia = plantilla.Referencia;
+            this.Secuencia = plantilla.Secuencia;
+            this.Nombre = plantilla.Nombre;
+            this.IdTipoFormula = plantilla.IdTipoFormula;
+            this.Cadena = plantilla.Cadena;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

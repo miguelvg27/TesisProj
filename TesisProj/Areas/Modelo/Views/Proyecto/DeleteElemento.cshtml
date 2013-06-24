@@ -1,7 +1,7 @@
-﻿@model TesisProj.Areas.Plantilla.Models.TipoElemento
+﻿@model TesisProj.Areas.Modelo.Models.Elemento
 
 @{
-    ViewBag.Title = "Tipos de elemento";
+    ViewBag.Title = "DeleteElemento";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,7 +9,7 @@
 
 <h3>¿Está seguro de eliminar este registro?</h3>
 <fieldset>
-    <legend>Tipo de elemento</legend>
+    <legend>Elemento</legend>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.Nombre)
@@ -19,17 +19,18 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.NombrePlural)
+         @Html.DisplayNameFor(model => model.IdTipoElemento)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.NombrePlural)
+        @Html.DisplayFor(model => model.TipoElemento.Nombre)
     </div>
+
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Eliminar" /> |
-        @Html.ActionLink("Regresar", "Index")
+        @Html.ActionLink("Regresar", "Journal", new { id = Model.IdProyecto })
     </p>
     @Html.ValidationMessageFor(model => model.Nombre)
 }

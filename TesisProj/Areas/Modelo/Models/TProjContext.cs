@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using TesisProj.Areas.Proyecto.Models;
+using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Plantilla.Models;
 
 namespace TesisProj.Models.Storage
 {
@@ -46,6 +47,7 @@ namespace TesisProj.Models.Storage
 
         public void SeedProyectos()
         {
+        //    ProyectosRequester.AddElement(new Proyecto { Id = 1, IdCreador = 1, IdModificador = 1, Nombre = "Proyecto prueba", Descripcion = "El gran proyecto de las pruebas", Creacion = DateTime.Now, Modificacion = DateTime.Now, Horizonte = 10, Version = 1 });
         }
 
         public void SeedElementos()
@@ -67,5 +69,7 @@ namespace TesisProj.Models.Storage
         public void SeedSalidaProyectos()
         {
         }
+
+        public DbSet<TipoParametro> TipoParametroes { get; set; }
     }
 }

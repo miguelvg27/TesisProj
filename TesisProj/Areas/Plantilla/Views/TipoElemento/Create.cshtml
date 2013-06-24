@@ -22,6 +22,14 @@
             @Html.ValidationMessageFor(model => model.Nombre)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NombrePlural)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NombrePlural)
+            @Html.ValidationMessageFor(model => model.NombrePlural)
+        </div>
+
         <p>
             <input type="submit" value="Guardar" />
         </p>

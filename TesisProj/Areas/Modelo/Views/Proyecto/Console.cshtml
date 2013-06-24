@@ -1,0 +1,47 @@
+﻿@model TesisProj.Areas.Modelo.Models.Proyecto
+
+@{
+    ViewBag.Title = "Proyecto: " + @Model.Nombre;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Proyecto: @Model.Nombre</h2>
+
+<ol class="round">
+    <li class="one">
+        <h5><a href="@Url.Action("Edit", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Información general</a></h5>
+        Revisa la información general del proyecto: Nombre, creador, horizonte, etc.
+    </li>
+    <li class="two">
+        <h5><a href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Elementos</a></h5>
+        Crea y administra los distintos elementos del proyecto: Activos fijos, activos intangibles, producción, etc.
+    </li>
+    <li class="three">
+        <h5><a href="@Url.Action("Index", "Proyecto", new { Area = "Modelo" })">Resultados</a></h5>
+        Visualiza los resultados y rentabilidad del proyecto.
+    </li>
+    <li class="four">
+        <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Colaboradores</a></h5>
+        Invita a otros usuarios a colaborar con el proyecto.
+    </li>
+    <li class="five">
+        <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Versiones</a></h5>
+        Guarda una nueva versión del proyecto o restaura una anterior.
+    </li>
+    <li class="six">
+        <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
+        Visualiza los cambios realizados en el proyecto.
+    </li>
+    <li class="seven">
+        <h5><a href="@Url.Action("Delete", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Eliminar</a></h5>
+        Elimina <b>definitivamente</b> el proyecto.
+    </li>
+</ol>
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

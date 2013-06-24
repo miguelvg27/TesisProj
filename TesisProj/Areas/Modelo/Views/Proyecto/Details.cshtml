@@ -1,0 +1,71 @@
+﻿@model TesisProj.Areas.Modelo.Models.Proyecto
+
+@{
+    ViewBag.Title = "Proyectos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle</h2>
+
+<fieldset>
+    <legend>Proyecto</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descripcion)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Horizonte)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Horizonte)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Version)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Version)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IdCreador)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Creador.UserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Creacion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Creacion)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IdModificador)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Modificador.UserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Modificacion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Modificacion)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Regresar", "Index")
+</p>

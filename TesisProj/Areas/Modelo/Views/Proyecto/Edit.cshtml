@@ -1,0 +1,95 @@
+﻿@model TesisProj.Areas.Modelo.Models.Proyecto
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editar</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Proyecto</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Descripcion)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Descripcion)
+            @Html.ValidationMessageFor(model => model.Descripcion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Horizonte)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Horizonte)
+            @Html.ValidationMessageFor(model => model.Horizonte)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Version)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Version, new { @Readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.Version)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdCreador)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdCreador")
+            @Html.ValidationMessageFor(model => model.IdCreador)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Creacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Creacion, new { @Readonly = "readonly", @Value = Model.Creacion.ToShortDateString() })
+            @Html.ValidationMessageFor(model => model.Creacion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdModificador)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdModificador")
+            @Html.ValidationMessageFor(model => model.IdModificador)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Modificacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Modificacion, new { @Readonly = "readonly", @Value = Model.Modificacion.ToShortDateString() })
+            @Html.ValidationMessageFor(model => model.Modificacion)
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = @Model.Id })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

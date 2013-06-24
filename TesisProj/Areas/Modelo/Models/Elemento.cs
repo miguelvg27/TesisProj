@@ -8,7 +8,7 @@ using System.Web;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Proyecto.Models
+namespace TesisProj.Areas.Modelo.Models
 {
     [Table("Elemento")]
     public class Elemento : DbObject, IValidatableObject

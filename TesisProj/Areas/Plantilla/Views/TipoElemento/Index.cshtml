@@ -15,6 +15,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NombrePlural)
+        </th>
         <th></th>
     </tr>
 
@@ -22,6 +25,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NombrePlural)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |

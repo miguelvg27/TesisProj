@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace TesisProj.Areas.Proyecto
+namespace TesisProj.Areas.Modelo
 {
-    public class ProyectoAreaRegistration : AreaRegistration
+    public class ModeloAreaRegistration : AreaRegistration
     {
         public override string AreaName
         {
             get
             {
-                return "Proyecto";
+                return "Modelo";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Proyecto_default",
-                "Proyecto/{controller}/{action}/{id}",
+                "Modelo_default",
+                "Modelo/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

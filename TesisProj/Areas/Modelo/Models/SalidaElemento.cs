@@ -5,9 +5,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Proyecto.Models
+namespace TesisProj.Areas.Modelo.Models
 {
     [Table("SalidaElemento")]
     public class SalidaElemento : DbObject, IValidatableObject
@@ -37,6 +38,18 @@ namespace TesisProj.Areas.Proyecto.Models
         public Formula Formula { get; set; }
 
         public List<object> Valores { get; set; }
+
+        public SalidaElemento()
+        {
+        }
+
+        public SalidaElemento(PlantillaSalidaElemento plantilla, int IdElemento, int IdFormula)
+        {
+            this.IdElemento = IdElemento;
+            this.IdFormula = IdFormula;
+            this.Nombre = plantilla.Nombre;
+            this.Secuencia = plantilla.Secuencia;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

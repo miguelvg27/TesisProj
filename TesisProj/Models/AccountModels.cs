@@ -29,7 +29,7 @@ namespace TesisProj.Models
 
     public class RegisterExternalLoginModel
     {
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [Display(Name = "Usuario")]
         public string UserName { get; set; }
 
@@ -38,12 +38,12 @@ namespace TesisProj.Models
 
     public class LocalPasswordModel
     {
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña actual")]
         public string OldPassword { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} carácteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Nueva contraseña")]
@@ -57,11 +57,11 @@ namespace TesisProj.Models
 
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [Display(Name = "Usuario")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]
         public string Password { get; set; }
@@ -72,11 +72,11 @@ namespace TesisProj.Models
 
     public class RegisterModel
     {
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [Display(Name = "Usuario")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} carácteres.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Contraseña")]

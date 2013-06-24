@@ -8,7 +8,7 @@ using System.Web;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Proyecto.Models
+namespace TesisProj.Areas.Modelo.Models
 {
     [Table("Proyecto")]
     public class Proyecto : DbObject, IValidatableObject
@@ -20,10 +20,12 @@ namespace TesisProj.Areas.Proyecto.Models
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Fecha de creación")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Creacion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Fecha de última modificación")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Modificacion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -53,9 +55,6 @@ namespace TesisProj.Areas.Proyecto.Models
         [DisplayName("Versión")]
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Version { get; set; }
-
-        [InverseProperty("Proyecto")]
-        public List<SalidaProyecto> Salidas { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
