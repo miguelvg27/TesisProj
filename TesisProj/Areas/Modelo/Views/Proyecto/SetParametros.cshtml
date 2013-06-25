@@ -1,0 +1,80 @@
+﻿@using TesisProj.Areas.Modelo.Models
+
+@model List<TesisProj.Areas.Modelo.Models.Celda>
+
+@{
+    ViewBag.Title = "Parámetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    IList<Parametro> parametros = ViewBag.Parametros;
+    int Horizonte = ViewBag.Horizonte;
+    int IdElemento = ViewBag.IdElemento;
+    int IdProyecto = ViewBag.IdProyecto;
+    int i = 0;
+}
+
+<h2>Editar parámetros</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Valores</legend>
+
+            <table>
+                <tr>
+                    <th>
+                        Parámetro
+                    </th>
+                    <th>
+                        Tipo
+                    </th>
+                    @for (int periodo = 1; periodo <= Horizonte; periodo++)
+                    {
+                        <th style="text-align:center;">
+                            @periodo
+                        </th>
+                    }
+                </tr>
+
+            @foreach (var parametro in parametros)
+            {
+                <tr>
+                    <td>
+                        @parametro.Nombre
+                    </td>
+                    <td>
+                        @parametro.TipoParametro.Nombre
+                    </td>
+    
+                @foreach (var celda in Model.Where(c => c.IdParametro == parametro.Id).OrderBy(c => c.Periodo))
+                {
+                    <td>
+                        @Html.TextBoxFor(model => model[Model.IndexOf(celda)].Valor, new { style="height:20px; width:55px; font-size:12px" })
+                        @Html.HiddenFor(model => model[Model.IndexOf(celda)].Id)
+                        @Html.HiddenFor(model => model[Model.IndexOf(celda)].IdParametro)
+                        @Html.HiddenFor(model => model[Model.IndexOf(celda)].Periodo)
+                    </td>
+                }
+                </tr>
+            }
+
+            </table>
+        </fieldset>
+
+        @Html.Hidden("IdElemento")
+        @Html.Hidden("IdProyecto")
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElemento })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

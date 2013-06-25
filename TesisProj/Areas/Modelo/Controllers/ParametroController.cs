@@ -32,6 +32,98 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
+        // GET: /Modelo/Proyecto/PutParametros/5
+
+        public ActionResult PutParametros(int id = 0)
+        {
+            Elemento elemento = db.Elementos.Find(id);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
+            if (elemento == null)
+            {
+                return HttpNotFound();
+            }
+
+            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
+            List<Celda> celdas = new List<Celda>();
+
+            foreach(Parametro parametro in parametros)
+            {
+                celdas.Add(new Celda { IdParametro = parametro.Id, Parametro = parametro, Periodo = 1, Valor = 0 });
+            }
+
+            ViewBag.IdProyecto = proyecto.Id;
+            ViewBag.IdElemento = elemento.Id;
+
+            return View(celdas);
+        }
+
+        //
+        // POST: /Modelo/Proyecto/PutParametros
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PutParametros(List<Celda> celdas, int IdElemento, int IdProyecto)
+        {
+            Proyecto proyecto = db.Proyectos.Find(IdProyecto);
+            int Horizonte = proyecto.Horizonte;
+
+            foreach (Celda celda in celdas)
+            {
+                for (int periodo = 1; periodo <= Horizonte; periodo++)
+                {
+                    db.Celdas.Add(new Celda { IdParametro = celda.IdParametro, Periodo = periodo, Valor = celda.Valor });
+                }
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("SetParametros", new { id = IdElemento });
+        }
+
+        //
+        // GET: /Modelo/Proyecto/SetParametros/5
+
+        public ActionResult SetParametros(int id = 0)
+        {
+            Elemento elemento = db.Elementos.Find(id);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
+            if (elemento == null)
+            {
+                return HttpNotFound();
+            }
+
+            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
+            var celdas = db.Celdas.Where(c => c.Parametro.IdElemento == id);
+
+            ViewBag.IdProyecto = proyecto.Id;
+            ViewBag.IdElemento = elemento.Id;
+            ViewBag.Parametros = parametros.ToList();
+            ViewBag.Horizonte = proyecto.Horizonte;
+
+            return View(celdas.ToList());
+        }
+
+        //
+        // GET: /Modelo/Proyecto/SetParametros
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetParametros(List<Celda> celdas, int IdElemento, int IdProyecto)
+        {
+            if (ModelState.IsValid)
+            {
+                foreach (Celda celda in celdas)
+                {
+                    db.Entry(celda).State = EntityState.Modified;
+                }
+
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("SetParametros", new { id = IdElemento });
+        }
+
+        //
         // GET: /Modelo/Proyecto/CreateParametro/5
 
         public ActionResult CreateParametro(int idElemento = 0)
@@ -144,7 +236,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
                 parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-                return View("DeleteElemento", parametro);
+                return View("DeleteParametro", parametro);
             }
 
             return RedirectToAction("Catalog", new { id = parametro.IdElemento });

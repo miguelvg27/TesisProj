@@ -1,0 +1,67 @@
+﻿@model List<TesisProj.Areas.Modelo.Models.Celda>
+
+@{
+    ViewBag.Title = "Parámetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int IdElemento = ViewBag.IdElemento;
+    int IdProyecto = ViewBag.IdProyecto;
+}
+
+<h2>Editar valores del elemento</h2>
+
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Valores</legend>
+            
+        <table>
+                <tr>
+                    <th>
+                        Período
+                    </th>
+                    <th>
+                        Tipo
+                    </th>
+                    <th>
+                        Valor
+                    </th>
+                </tr>
+
+@for (int i = 0; i < Model.Count(); i++)
+{
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model[i].Parametro.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model[i].Parametro.TipoParametro.Nombre)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model[i].Valor)
+                        @Html.ValidationMessageFor(model => model[i].Valor)
+                        @Html.HiddenFor(model => model[i].IdParametro)
+                    </td>
+                </tr>
+}
+
+        </table>
+
+        @Html.Hidden("IdElemento")
+        @Html.Hidden("IdProyecto")
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElemento })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
