@@ -1,19 +1,22 @@
-﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Formula>
 
 @{
-    ViewBag.Title = "Catalog";
+    ViewBag.Title = "Fórmulas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Parámetros</h2>
+<h2>Fórmulas</h2>
 
 <p>
-    @Html.ActionLink("Crear", "CreateParametro", new { idElemento = ViewBag.ElementoId })
+    @Html.ActionLink("Crear", "CreateFormula", new { idElemento = ViewBag.ElementoId })
 </p>
 <table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Secuencia)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Referencia)
@@ -22,7 +25,7 @@
             @Html.DisplayNameFor(model => model.IdElemento)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IdTipoParametro)
+            @Html.DisplayNameFor(model => model.IdTipoFormula)
         </th>
         <th></th>
     </tr>
@@ -33,18 +36,20 @@
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Secuencia)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Referencia)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Elemento.Nombre)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TipoParametro.Nombre)
+            @Html.DisplayFor(modelItem => item.TipoFormula.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Editar valores", "SetParametro", new { id=item.Id }) |
-            @Html.ActionLink("Editar", "EditParametro", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "DeleteParametro", new { id=item.Id })
+            @Html.ActionLink("Editar", "EditFormula", new { id=item.Id }) |
+            @Html.ActionLink("Eliminar", "DeleteFormula", new { id=item.Id })
         </td>
     </tr>
 }
@@ -52,5 +57,5 @@
 </table>
 
 <div>
-    @Html.ActionLink("Regresar", "Journal", new { id = ViewBag.ProyectoId })
+    @Html.ActionLink("Regresar", "Journal", new { id = ViewBag.IdProyecto })
 </div>

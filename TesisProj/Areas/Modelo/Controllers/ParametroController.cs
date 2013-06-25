@@ -23,7 +23,9 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
             var parametros = db.Parametros.Include("Elemento").Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
 
+            ViewBag.Elemento = elemento.Nombre;
             ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.ElementoId = elemento.Id;
             ViewBag.ProyectoId = proyecto.Id;
 
             return View(parametros.ToList());
@@ -59,7 +61,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 db.Parametros.Add(parametro);
                 db.SaveChanges();
 
-                return RedirectToAction("Journal", new { id = parametro.IdElemento });
+                return RedirectToAction("Catalog", new { id = parametro.IdElemento });
             }
 
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
@@ -84,7 +86,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 
-            return View();
+            return View(parametro);
         }
 
         //
@@ -99,7 +101,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 db.Entry(parametro).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return RedirectToAction("Journal", new { id = parametro.IdElemento });
+                return RedirectToAction("Catalog", new { id = parametro.IdElemento });
             }
 
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
@@ -120,7 +122,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            parametro.TipoParametro = db.TipoParametroes.Find(parametro.IdTipoParametro);
+            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
 
             return View(parametro);
         }
@@ -141,7 +143,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                parametro.TipoParametro = db.TipoParametroes.Find(parametro.IdTipoParametro);
+                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
                 return View("DeleteElemento", parametro);
             }
 

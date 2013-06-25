@@ -69,7 +69,5 @@ namespace TesisProj.Models.Storage
         public void SeedSalidaProyectos()
         {
         }
-
-        public DbSet<TipoParametro> TipoParametroes { get; set; }
     }
 }

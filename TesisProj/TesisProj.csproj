@@ -181,8 +181,10 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\Modelo\Controllers\ElementoController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\FormulaController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ProyectoController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\SalidaElementoController.cs" />
     <Compile Include="Areas\Modelo\Models\Celda.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaParametroController.cs" />
@@ -342,6 +344,11 @@
     <Content Include="Areas\Modelo\Views\Proyecto\EditElemento.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\DeleteElemento.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Catalog.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\CreateParametro.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditParametro.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\DeleteParametro.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Cuaderno.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\CreateFormula.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

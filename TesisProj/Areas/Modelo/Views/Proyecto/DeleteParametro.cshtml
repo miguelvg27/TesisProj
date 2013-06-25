@@ -1,0 +1,41 @@
+﻿@model TesisProj.Areas.Modelo.Models.Parametro
+
+@{
+    ViewBag.Title = "Parámetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar parámetro</h2>
+
+<h3>¿Está seguro de eliminar este registro?</h3>
+<fieldset>
+    <legend>Parametro</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Referencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Referencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IdTipoParametro)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipoParametro.Nombre)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElementoReturn })
+    </p>
+}
