@@ -12,7 +12,7 @@ namespace TesisProj.Areas.Modelo.Controllers
     public partial class ProyectoController : Controller
     {
         //
-        // GET: /Modelo/Protecto/Cuaderno/5
+        // GET: /Modelo/Proyecto/Cuaderno/5
 
         public ActionResult Cuaderno(int id = 0)
         {
@@ -36,7 +36,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
-        // GET: /Modelo/Formula/Create
+        // GET: /Modelo/Proyecto/CreateFormula/5
 
         public ActionResult CreateFormula(int idElemento = 0)
         {
@@ -58,7 +58,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
-        // POST: /Modelo/Formula/Create
+        // POST: /Modelo/Proyecto/CreateFormula
 
         [HttpPost]
         public ActionResult CreateFormula(Formula formula)
@@ -79,11 +79,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             int defSecuencia = formulas.Count() > 0 ? formulas.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
 
-            return View();
+            return View(formula);
         }
 
         //
-        // GET: /Modelo/Formula/Edit/5
+        // GET: /Modelo/Proyecto/EditFormula/5
 
         public ActionResult EditFormula(int id)
         {
@@ -98,11 +98,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(p => p.Id == elemento.Id), "Id", "Nombre", formula.IdElemento);
             ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == elemento.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
 
-            return View();
+            return View(formula);
         }
 
         //
-        // POST: /Modelo/Formula/Edit/5
+        // POST: /Modelo/Proyecto/EditFormula
 
         [HttpPost]
         public ActionResult EditFormula(Formula formula)
@@ -124,7 +124,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
-        // GET: /Modelo/Formula/Delete/5
+        // GET: /Modelo/Proyecto/DeleteFormula/5
 
         public ActionResult DeleteFormula(int id)
         {
@@ -140,7 +140,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
-        // POST: /Modelo/Formula/Delete/5
+        // POST: /Modelo/Proyecto/DeleteFormula/5
 
         [HttpPost, ActionName("DeleteFormula")]
         [ValidateAntiForgeryToken]

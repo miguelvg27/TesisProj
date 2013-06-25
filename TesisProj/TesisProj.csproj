@@ -349,6 +349,12 @@
     <Content Include="Areas\Modelo\Views\Proyecto\DeleteParametro.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Cuaderno.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\CreateFormula.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditFormula.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\DeleteFormula.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Pizarra.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\CreateSalidaElemento.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditSalidaElemento.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\DeleteSalidaElemento.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

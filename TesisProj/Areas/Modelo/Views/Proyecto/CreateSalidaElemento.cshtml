@@ -1,18 +1,18 @@
-﻿@model TesisProj.Areas.Modelo.Models.Parametro
+﻿@model TesisProj.Areas.Modelo.Models.SalidaElemento
 
 @{
-    ViewBag.Title = "Parámetros";
+    ViewBag.Title = "Salidas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar parámetro</h2>
+<h2>Crear salida</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Parametro</legend>
+        <legend>Salida</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Nombre)
@@ -23,11 +23,11 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Referencia)
+            @Html.LabelFor(model => model.Secuencia)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Referencia)
-            @Html.ValidationMessageFor(model => model.Referencia)
+            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
+            @Html.ValidationMessageFor(model => model.Secuencia)
         </div>
 
         <div class="editor-label">
@@ -39,14 +39,12 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.IdTipoParametro)
+            @Html.LabelFor(model => model.IdFormula)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("IdTipoParametro", String.Empty)
-            @Html.ValidationMessageFor(model => model.IdTipoParametro)
+            @Html.DropDownList("IdFormula", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdFormula)
         </div>
-
-        @Html.HiddenFor(model => model.Id)
 
         <p>
             <input type="submit" value="Guardar" />
@@ -55,7 +53,7 @@
 }
 
 <div>
-    @Html.ActionLink("Regresar", "Catalog", new { id = Model.IdElemento })
+    @Html.ActionLink("Regresar", "Pizarra", new { id = ViewBag.IdElementoReturn })
 </div>
 
 @section Scripts {

@@ -17,17 +17,20 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult Pizarra(int id = 0)
         {
             Elemento elemento = db.Elementos.Find(id);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
+
             if (elemento == null)
             {
                 return HttpNotFound();
             }
 
-            var salidaelementos = db.SalidaElementos.Include("Elemento").Include("Formula").OrderBy(s => s.Secuencia);
+            var salidaelementos = db.SalidaElementos.Include("Elemento").Include("Formula").Where(s => s.Elemento.Id == id).OrderBy(s => s.Secuencia);
 
             ViewBag.elemento = elemento.Nombre;
             TipoElemento tipo = db.TipoElementos.Find(elemento.IdTipoElemento);
             ViewBag.TipoPlantilla = tipo != null ? tipo.Nombre : "";
-            ViewBag.IdElementoReturn = id;
+            ViewBag.IdProyecto = proyecto.Id;
+            ViewBag.ElementoId = id;
 
             return View(salidaelementos.ToList());
         }
@@ -77,7 +80,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             int defSecuencia = salidaelementos.Count() > 0 ? salidaelementos.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
 
-            return View();            
+            return View(salidaelemento);            
         }
 
         //
@@ -129,6 +132,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 return HttpNotFound();
             }
+
+            salidaelemento.Formula = db.Formulas.Find(salidaelemento.IdFormula);
 
             return View(salidaelemento);
         }

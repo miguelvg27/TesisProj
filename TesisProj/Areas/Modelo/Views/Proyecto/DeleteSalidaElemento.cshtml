@@ -1,15 +1,15 @@
-﻿@model TesisProj.Areas.Modelo.Models.Parametro
+﻿@model TesisProj.Areas.Modelo.Models.SalidaElemento
 
 @{
-    ViewBag.Title = "Parámetros";
+    ViewBag.Title = "Salidas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Eliminar parámetro</h2>
+<h2>Eliminar salida</h2>
 
 <h3>¿Está seguro de eliminar este registro?</h3>
 <fieldset>
-    <legend>Parametro</legend>
+    <legend>SalidaElemento</legend>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.Nombre)
@@ -19,24 +19,24 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Referencia)
+         @Html.DisplayNameFor(model => model.Secuencia)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Referencia)
+        @Html.DisplayFor(model => model.Secuencia)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.IdTipoParametro)
+         @Html.DisplayNameFor(model => model.IdFormula)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.TipoParametro.Nombre)
+        @Html.DisplayFor(model => model.Formula.Nombre)
     </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Eliminar" /> |
-        @Html.ActionLink("Regresar", "Catalog", new { id = Model.IdElemento })
+        @Html.ActionLink("Regresar", "Pizarra", new { id = Model.IdElemento })
     </p>
     @Html.ValidationMessageFor(model => model.Nombre)
 }

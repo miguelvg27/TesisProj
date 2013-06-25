@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Crear fórmula</h2>
+<h2>Editar fórmulas</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -26,7 +26,7 @@
             @Html.LabelFor(model => model.Secuencia)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
+            @Html.EditorFor(model => model.Secuencia)
             @Html.ValidationMessageFor(model => model.Secuencia)
         </div>
 
@@ -50,7 +50,7 @@
             @Html.LabelFor(model => model.IdTipoFormula)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("IdTipoFormula")
+            @Html.DropDownList("IdTipoFormula", String.Empty)
             @Html.ValidationMessageFor(model => model.IdTipoFormula)
         </div>
 
@@ -77,6 +77,8 @@
             @Html.TextAreaFor(model => model.Cadena)
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
+
+        @Html.HiddenFor(model => model.Id)
 
         <p>
             <input type="submit" value="Guardar" />
