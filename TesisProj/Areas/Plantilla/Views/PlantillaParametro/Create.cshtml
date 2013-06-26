@@ -46,6 +46,14 @@
             @Html.ValidationMessageFor(model => model.IdTipoParametro)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Constante)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.Constante)
+            @Html.ValidationMessageFor(model => model.Constante)
+        </div>
+
         <p>
             <input type="submit" value="Guardar" />
         </p>

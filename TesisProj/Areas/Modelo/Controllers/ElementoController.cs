@@ -99,10 +99,10 @@ namespace TesisProj.Areas.Modelo.Controllers
                     }
 
                     db.SaveChanges();
+                    return RedirectToAction("PutParametros", new { id = elemento.Id });
                 }
 
-            //    return RedirectToAction("Journal", new { id = elemento.IdProyecto });
-                return RedirectToAction("PutParametros", new { id = elemento.Id });
+                return RedirectToAction("Catalog", new { id = elemento.Id });
             }
 
             ViewBag.IdPlantilla = new SelectList(db.PlantillaElementos.Where(p => p.IdTipoElemento == elemento.IdTipoElemento), "Id", "Nombre");

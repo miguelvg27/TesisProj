@@ -9,6 +9,7 @@
     int Horizonte = ViewBag.Horizonte;
     int IdElemento = ViewBag.IdElemento;
     int IdProyecto = ViewBag.IdProyecto;
+    int i = 0;
 }
 
 <h2>Editar parámetros</h2>
@@ -48,7 +49,7 @@
                 @foreach (var celda in Model.Where(c => c.IdParametro == parametro.Id).OrderBy(c => c.Periodo))
                 {
                     <td>
-                        @Html.TextBoxFor(model => model[Model.IndexOf(celda)].Valor, new { style="height:20px; width:55px; font-size:12px", @Value = String.Format("{0:0.##}", celda.Valor) })
+                        @Html.DisplayFor(model => model[Model.IndexOf(celda)].Valor, new { style="height:20px; width:55px; font-size:12px" })
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].Id)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].IdParametro)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].Periodo)
@@ -62,15 +63,11 @@
 
         @Html.Hidden("IdElemento")
         @Html.Hidden("IdProyecto")
-
-        <p>
-            <input type="submit" value="Guardar" />
-        </p>
-
 }
 
 <div>
-    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElemento })
+    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElemento }) |
+     @Html.ActionLink("Editar", "SetParametros", new { id = ViewBag.IdElemento })
 </div>
 
 @section Scripts {

@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int PreHorizonte = ViewBag.PreHorizonte;
 }
 
 <h2>Editar</h2>
@@ -79,6 +80,7 @@
         </div>
 
         @Html.HiddenFor(model => model.Id)
+        @Html.Hidden("PreHorizonte")
 
         <p>
             <input type="submit" value="Guardar" />

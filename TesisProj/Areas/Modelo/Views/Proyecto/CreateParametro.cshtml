@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Parámetros";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int IdProyecto = ViewBag.IdProyecto;
 }
 
 <h2>Crear parámetro</h2>
@@ -46,6 +47,24 @@
             @Html.ValidationMessageFor(model => model.IdTipoParametro)
         </div>
 
+         <div class="editor-label">
+            @Html.LabelFor(model => model.Constante)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.Constante)
+            @Html.ValidationMessageFor(model => model.Constante)
+        </div>
+
+        <div class="editor-label">
+            Valor inicial
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("ValorInicial", 0)
+            @Html.ValidationMessage("ValorInicial")
+        </div>
+
+        @Html.Hidden("IdProyecto")
+        
         <p>
             <input type="submit" value="Guardar" />
         </p>

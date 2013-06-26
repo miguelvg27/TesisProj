@@ -98,6 +98,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador), "UserId", "UserName", proyecto.IdCreador);
             ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdModificador), "UserId", "UserName", proyecto.IdModificador);
+            ViewBag.PreHorizonte = proyecto.Horizonte;
             return View(proyecto);
         }
 
@@ -106,11 +107,35 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Proyecto proyecto)
+        public ActionResult Edit(Proyecto proyecto, int PreHorizonte)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(proyecto).State = EntityState.Modified;
+
+                if (PreHorizonte < proyecto.Horizonte)
+                {
+                    var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id).ToList();
+
+                    foreach (Elemento elemento in elementos)
+                    {
+                        var parametros = db.Parametros.Where(p => p.IdElemento == elemento.Id).ToList();
+                        foreach (Parametro parametro in parametros)
+                        {
+                            Celda celda = db.Celdas.Where(c => c.IdParametro == parametro.Id).OrderByDescending(c => c.Periodo).FirstOrDefault();
+                            if(celda == null) continue;
+                            int deltaPeriodos =  proyecto.Horizonte - celda.Periodo;
+                            decimal valor = celda.Valor;
+                            for (int i = 1; i <= deltaPeriodos; i++)
+                            {
+                                db.Celdas.Add(new Celda { IdParametro = celda.IdParametro, Periodo = celda.Periodo + i, Valor = celda.Valor });
+                            }
+                        }
+                    }
+
+                    db.SaveChanges();
+                }
+                
                 db.SaveChanges();
                 return RedirectToAction("Console", new { id = proyecto.Id });
             }

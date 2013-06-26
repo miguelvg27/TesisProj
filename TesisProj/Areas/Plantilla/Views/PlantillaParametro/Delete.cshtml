@@ -38,6 +38,13 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.TipoParametro.Nombre)
     </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Constante)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Constante)
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

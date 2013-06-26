@@ -8,7 +8,9 @@
 <h2>Parámetros</h2>
 
 <p>
-    @Html.ActionLink("Crear", "CreateParametro", new { idElemento = ViewBag.ElementoId })
+    @Html.ActionLink("Crear", "CreateParametro", new { idElemento = ViewBag.ElementoId }) |
+    @Html.ActionLink("Ver valores", "VerParametros", new { id= ViewBag.ElementoId }) |
+    @Html.ActionLink("Editar valores", "SetParametros", new { id= ViewBag.ElementoId }) 
 </p>
 <table>
     <tr>
@@ -42,7 +44,6 @@
             @Html.DisplayFor(modelItem => item.TipoParametro.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Editar valores", "SetParametros", new { id=item.Id }) |
             @Html.ActionLink("Editar", "EditParametro", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "DeleteParametro", new { id=item.Id })
         </td>

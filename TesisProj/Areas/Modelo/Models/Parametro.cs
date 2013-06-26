@@ -37,9 +37,10 @@ namespace TesisProj.Areas.Modelo.Models
         
         [ForeignKey("IdTipoParametro")]
         public TipoParametro TipoParametro { get; set; }
-        
-        public List<object> Valores { get; set; }
 
+        [DisplayName("Constante")]
+        public bool Constante { get; set; }
+        
         public Parametro()
         {
         }
@@ -50,6 +51,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.IdTipoParametro = plantilla.IdTipoParametro;
             this.Nombre = plantilla.Nombre;
             this.Referencia = plantilla.Referencia;
+            this.Constante = plantilla.Constante;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

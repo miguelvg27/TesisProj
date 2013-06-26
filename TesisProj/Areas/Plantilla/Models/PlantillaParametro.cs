@@ -23,6 +23,9 @@ namespace TesisProj.Areas.Plantilla.Models
         [RegularExpression("[A-Za-z]+[A-Za-z1-9]*", ErrorMessage = "El campo solo puede contener alfanuméricos y debe comenzar con una letra.")]
         public string Referencia { get; set; }
 
+        [DisplayName("Constante")]
+        public bool Constante { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Plantilla")]
         public int IdPlantillaElemento { get; set; }
