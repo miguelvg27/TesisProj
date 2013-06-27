@@ -1,0 +1,48 @@
+﻿@using TesisProj.Areas.Modelo.Models
+@model List<TesisProj.Areas.Modelo.Models.SalidaElemento>
+
+@{
+    ViewBag.Title = "ResultadosElemento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int Horizonte = ViewBag.Horizonte;
+}
+
+<h2>Resultados de @ViewBag.Elemento (@ViewBag.TipoElemento)</h2>
+
+<table>
+    <tr>
+        <th>
+            Concepto
+        </th>
+        @for (int periodo = 1; periodo <= Horizonte; periodo++)
+        {
+            <th style="text-align:center;">
+                @periodo
+            </th>
+        }
+    </tr>
+
+@foreach (var salida in Model)
+{
+    <tr>
+        <td>
+            @salida.Nombre
+        </td>
+        @for (int periodo = 0; periodo < Horizonte; periodo++)
+        {
+            <td style="text-align:center; width: 50px">
+                @Html.DisplayFor(model => salida.Valores[periodo], new { @Value = String.Format("{0:0.##}", salida.Valores[periodo])})
+            </td>
+        }
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Journal", new { id = ViewBag.IdProyecto })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

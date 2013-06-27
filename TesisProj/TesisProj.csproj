@@ -359,6 +359,7 @@
     <Content Include="Areas\Modelo\Views\Proyecto\PutParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\SetParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\VerParametros.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\ResultadosElemento.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

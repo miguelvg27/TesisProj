@@ -33,6 +33,37 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
+        // GET: /Modelo/Proyecto/ResultadosElemento/5
+
+        public ActionResult ResultadosElemento(int id = 0)
+        {
+            Elemento elemento = db.Elementos.Find(id);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
+            if (elemento == null)
+            {
+                return HttpNotFound();
+            }
+
+            var salidas = db.SalidaElementos.Include("Formula").Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
+
+            foreach (SalidaElemento salida in salidas)
+            {
+                Formula formula = salida.Formula;
+                var formulas = db.Formulas.Where(f => f.Secuencia < formula.Secuencia).ToList();
+                var parametros = db.Parametros.Include("Celdas").Where(p => p.IdElemento == elemento.Id).ToList();
+                salida.Valores = formula.Evaluar(proyecto.Horizonte, formulas, parametros);
+            }
+
+            ViewBag.IdElemento = elemento.Id;
+            ViewBag.IdProyecto = elemento.IdProyecto;
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento).Nombre;
+            ViewBag.Horizonte = proyecto.Horizonte;
+
+            return View(salidas);
+        }
+
+        //
         // GET: /Modelo/Proyecto/CreateElemento?idProyecto=5&idTipoElemento=1
 
         public ActionResult CreateElemento(int idProyecto = 0, int idTipoElemento = 0)

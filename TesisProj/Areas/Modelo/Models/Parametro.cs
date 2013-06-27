@@ -40,6 +40,9 @@ namespace TesisProj.Areas.Modelo.Models
 
         [DisplayName("Constante")]
         public bool Constante { get; set; }
+
+        [InverseProperty("Parametro")]
+        public List<Celda> Celdas { get; set; }
         
         public Parametro()
         {

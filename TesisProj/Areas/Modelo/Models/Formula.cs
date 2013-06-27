@@ -74,6 +74,45 @@ namespace TesisProj.Areas.Modelo.Models
             this.PeriodoFinal = plantilla.PeriodoFinal;
         }
 
+        public List<double> Evaluar(int horizonte, List<Formula> formulas, List<Parametro> parametros)
+        {
+            List<double> resultado = new List<double>();
+            MathParserNet.Parser parser = new MathParserNet.Parser();
+            formulas.OrderBy(f => f.Secuencia);
+            double valor, pinicial, pfinal;
+
+            try
+            {
+                for (int i = 1; i <= horizonte; i++)
+                {
+                    parser.Reset();
+                    foreach (Parametro parametro in parametros)
+                    {
+                        parser.AddVariable(parametro.Referencia, (double) parametro.Celdas.First(c => c.Periodo == (parametro.Constante ? 1 : i)).Valor);
+                    }
+
+                    foreach (Formula formula in formulas)
+                    {
+                        valor = parser.SimplifyDouble(formula.Cadena);
+                        parser.AddVariable(formula.Referencia, valor);
+                    }
+
+                    pinicial = parser.SimplifyDouble(this.PeriodoInicial);
+                    pfinal = parser.SimplifyDouble(this.PeriodoFinal);
+
+                    valor = (i >= pinicial && i <= pfinal) ? valor = parser.SimplifyDouble(this.Cadena) : 0;
+                    
+                    resultado.Add(valor);
+                }
+            }
+
+            catch (Exception)
+            {
+            }
+
+            return resultado;
+        }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

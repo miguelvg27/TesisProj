@@ -37,7 +37,7 @@ namespace TesisProj.Areas.Modelo.Models
         [ForeignKey("IdFormula")]
         public Formula Formula { get; set; }
 
-        public List<object> Valores { get; set; }
+        public List<double> Valores { get; set; }
 
         public SalidaElemento()
         {
