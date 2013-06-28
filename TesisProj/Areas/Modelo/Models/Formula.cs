@@ -174,12 +174,12 @@ namespace TesisProj.Areas.Modelo.Models
 
                 foreach (Parametro parametro in parametros)
                 {
-                    parser.AddVariable(parametro.Referencia, Math.PI);
+                    parser.AddVariable(parametro.Referencia, 2);
                 }
 
                 foreach (Formula formula in formulas)
                 {
-                    parser.AddVariable(formula.Referencia, Math.PI);
+                    parser.AddVariable(formula.Referencia, 2);
                 }
 
                 parser.AddVariable("Periodo", 5);

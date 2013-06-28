@@ -48,7 +48,7 @@
                 @foreach (var celda in Model.Where(c => c.IdParametro == parametro.Id).OrderBy(c => c.Periodo))
                 {
                     <td>
-                        @Html.DisplayFor(model => model[Model.IndexOf(celda)].Valor, new { style="height:20px; width:55px; font-size:12px" })
+                        @String.Format("{0:#,##0.##}",celda.Valor)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].Id)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].IdParametro)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].Periodo)

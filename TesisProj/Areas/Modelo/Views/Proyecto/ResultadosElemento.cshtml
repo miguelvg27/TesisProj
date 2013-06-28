@@ -16,7 +16,7 @@
         </th>
         @for (int periodo = 1; periodo <= Horizonte; periodo++)
         {
-            <th style="text-align:center;">
+            <th style="text-align:center; width:50px;">
                 @periodo
             </th>
         }
@@ -30,8 +30,8 @@
         </td>
         @for (int periodo = 0; periodo < salida.Valores.Count; periodo++)
         {
-            <td style="text-align:right; width: 50px">
-                @Html.DisplayFor(model => salida.Valores[periodo], new { @Value = String.Format("{0:0.##}", salida.Valores[periodo])})
+            <td style="text-align:right;">
+                @String.Format("{0:#,##0.##}", salida.Valores[periodo])
             </td>
         }
     </tr>

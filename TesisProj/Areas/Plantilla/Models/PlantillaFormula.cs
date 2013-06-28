@@ -100,12 +100,12 @@ namespace TesisProj.Areas.Plantilla.Models
 
                 foreach (PlantillaParametro parametro in parametros)
                 {
-                    parser.AddVariable(parametro.Referencia, Math.PI);
+                    parser.AddVariable(parametro.Referencia, 2);
                 }
 
                 foreach (PlantillaFormula formula in formulas)
                 {
-                    parser.AddVariable(formula.Referencia, Math.PI);
+                    parser.AddVariable(formula.Referencia, 2);
                 }
 
                 parser.AddVariable("Periodo", 5);
