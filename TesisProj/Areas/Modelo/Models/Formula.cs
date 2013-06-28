@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Models
@@ -43,6 +44,9 @@ namespace TesisProj.Areas.Modelo.Models
         [ForeignKey("IdTipoFormula")]
         public TipoFormula TipoFormula { get; set; }
 
+        [DisplayName("Visible")]
+        public bool Visible { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Período inicial")]
@@ -58,6 +62,8 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        public List<double> Valores;
+
         public Formula()
         {
         }
@@ -72,6 +78,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.Cadena = plantilla.Cadena;
             this.PeriodoInicial = plantilla.PeriodoInicial;
             this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Visible = plantilla.Visible;
         }
 
         public List<double> Evaluar(int horizonte, List<Formula> formulas, List<Parametro> parametros)
@@ -81,11 +88,22 @@ namespace TesisProj.Areas.Modelo.Models
             formulas.OrderBy(f => f.Secuencia);
             double valor, pinicial, pfinal;
 
+            parser.RegisterCustomDoubleFunction("Amortizacion", Contabilidad.Ppmt);
+            parser.RegisterCustomDoubleFunction("Intereses", Contabilidad.IPmt);
+            parser.RegisterCustomDoubleFunction("Cuota", Contabilidad.Pmt);
+            parser.RegisterCustomDoubleFunction("DepreciacionLineal", Contabilidad.Sln);
+            parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Contabilidad.Syn);
+            parser.RegisterCustomDoubleFunction("ValorResidual", Contabilidad.ResSln);
+
             try
             {
                 for (int i = 1; i <= horizonte; i++)
                 {
-                    parser.Reset();
+                    parser.RemoveAllVariables();
+
+                    parser.AddVariable("Periodo", i);
+                    parser.AddVariable("Horizonte", horizonte);
+                    
                     foreach (Parametro parametro in parametros)
                     {
                         parser.AddVariable(parametro.Referencia, (double) parametro.Celdas.First(c => c.Periodo == (parametro.Constante ? 1 : i)).Valor);
@@ -93,14 +111,16 @@ namespace TesisProj.Areas.Modelo.Models
 
                     foreach (Formula formula in formulas)
                     {
-                        valor = parser.SimplifyDouble(formula.Cadena);
-                        parser.AddVariable(formula.Referencia, valor);
+                        pinicial = parser.SimplifyInt(formula.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
+                        pfinal = parser.SimplifyInt(formula.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
+
+                        parser.AddVariable(formula.Referencia, (i >= pinicial && i <= pfinal) ? formula.Cadena : "0");
                     }
 
-                    pinicial = parser.SimplifyDouble(this.PeriodoInicial);
-                    pfinal = parser.SimplifyDouble(this.PeriodoFinal);
+                    pinicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
+                    pfinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
 
-                    valor = (i >= pinicial && i <= pfinal) ? valor = parser.SimplifyDouble(this.Cadena) : 0;
+                    valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
                     
                     resultado.Add(valor);
                 }
@@ -137,6 +157,13 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en el mismo elemento.", new string[] { "Secuencia" });
                 }
 
+                if (Contabilidad.Reservadas.Contains(this.Referencia))
+                {
+                    yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
+                }
+
+                
+
                 //  Valida cadena de la fórmula
 
                 bool cadenavalida = true;
@@ -155,6 +182,15 @@ namespace TesisProj.Areas.Modelo.Models
                     parser.AddVariable(formula.Referencia, Math.PI);
                 }
 
+                parser.AddVariable("Periodo", 5);
+                parser.AddVariable("Horizonte", 10);
+                parser.RegisterCustomDoubleFunction("Amortizacion", Contabilidad.Ppmt);
+                parser.RegisterCustomDoubleFunction("Intereses", Contabilidad.IPmt);
+                parser.RegisterCustomDoubleFunction("Cuota", Contabilidad.Pmt);
+                parser.RegisterCustomDoubleFunction("DepreciacionLineal", Contabilidad.Sln);
+                parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Contabilidad.Syn);
+                parser.RegisterCustomDoubleFunction("ValorResidual", Contabilidad.ResSln);
+
                 try
                 {
                     testvalue = parser.SimplifyDouble(this.Cadena);
@@ -172,42 +208,35 @@ namespace TesisProj.Areas.Modelo.Models
                 //  Valida las fórmulas del período inicial y final
 
                 cadenavalida = true;
-                parser.Reset();
-                parametros = context.Parametros.Where(p => p.IdElemento == this.IdElemento && p.IdTipoParametro == 2);
-
-                foreach (Parametro parametro in parametros)
-                {
-                    parser.AddVariable(parametro.Referencia, 5);
-                }
 
                 try
                 {
-                    testvalue = parser.SimplifyInt(this.PeriodoInicial);
+                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
                 }
                 catch (Exception)
                 {
                     cadenavalida = false;
                 }
 
-                if (!cadenavalida || this.PeriodoInicial.Contains('/'))
+                if (!cadenavalida)
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros enteros del elemento y no puede contener divisiones.", new string[] { "PeriodoInicial" });
+                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoInicial" });
                 }
 
                 cadenavalida = true;
 
                 try
                 {
-                    testvalue = parser.SimplifyInt(this.PeriodoFinal);
+                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
                 }
                 catch (Exception)
                 {
                     cadenavalida = false;
                 }
 
-                if (!cadenavalida || this.PeriodoFinal.Contains('/'))
+                if (!cadenavalida)
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros enteros del elemento y no puede contener divisiones.", new string[] { "PeriodoFinal" });
+                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoFinal" });
                 }
             }
         }

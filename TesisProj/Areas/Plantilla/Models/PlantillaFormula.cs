@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Models
@@ -41,6 +42,9 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [ForeignKey("IdTipoFormula")]
         public TipoFormula TipoFormula { get; set; }
+
+        [DisplayName("Visible")]
+        public bool Visible { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
@@ -81,6 +85,11 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
                 }
 
+                if (Contabilidad.Reservadas.Contains(this.Referencia))
+                {
+                    yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
+                }
+
                 //  Valida cadena de la fórmula
 
                 bool cadenavalida = true;
@@ -99,6 +108,15 @@ namespace TesisProj.Areas.Plantilla.Models
                     parser.AddVariable(formula.Referencia, Math.PI);
                 }
 
+                parser.AddVariable("Periodo", 5);
+                parser.AddVariable("Horizonte", 10);
+                parser.RegisterCustomDoubleFunction("Amortizacion", Contabilidad.Ppmt);
+                parser.RegisterCustomDoubleFunction("Intereses", Contabilidad.IPmt);
+                parser.RegisterCustomDoubleFunction("Cuota", Contabilidad.Pmt);
+                parser.RegisterCustomDoubleFunction("DepreciacionLineal", Contabilidad.Sln);
+                parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Contabilidad.Syn);
+                parser.RegisterCustomDoubleFunction("ValorResidual", Contabilidad.ResSln);
+
                 try
                 {
                     testvalue = parser.SimplifyDouble(this.Cadena);
@@ -116,42 +134,35 @@ namespace TesisProj.Areas.Plantilla.Models
                 //  Valida las fórmulas del período inicial y final
 
                 cadenavalida = true;
-                parser.Reset();
-                parametros = context.PlantillaParametros.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento && p.IdTipoParametro == 2);
-
-                foreach (PlantillaParametro parametro in parametros)
-                {
-                    parser.AddVariable(parametro.Referencia, 5);
-                }
 
                 try
                 {
-                    testvalue = parser.SimplifyInt(this.PeriodoInicial);
+                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
                 }
                 catch (Exception)
                 {
                     cadenavalida = false;
                 }
 
-                if (!cadenavalida || this.PeriodoInicial.Contains('/'))
+                if (!cadenavalida)
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros enteros de la plantilla y no puede contener divisiones.", new string[] { "PeriodoInicial" });
+                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoInicial" });
                 }
 
                 cadenavalida = true;
 
                 try
                 {
-                    testvalue = parser.SimplifyInt(this.PeriodoFinal);
+                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
                 }
                 catch (Exception)
                 {
                     cadenavalida = false;
                 }
 
-                if (!cadenavalida || this.PeriodoFinal.Contains('/'))
+                if (!cadenavalida)
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros enteros de la plantilla y no puede contener divisiones.", new string[] { "PeriodoFinal" });
+                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoFinal" });
                 }
             }
         }

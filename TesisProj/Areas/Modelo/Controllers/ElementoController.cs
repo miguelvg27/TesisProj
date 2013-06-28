@@ -44,14 +44,24 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var salidas = db.SalidaElementos.Include("Formula").Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
+            //var salidas = db.SalidaElementos.Include("Formula").Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
 
-            foreach (SalidaElemento salida in salidas)
+            //foreach (SalidaElemento salida in salidas)
+            //{
+            //    Formula formula = salida.Formula;
+            //    var formulas = db.Formulas.Where(f => f.Secuencia < formula.Secuencia && f.IdElemento == elemento.Id).ToList();
+            //    var parametros = db.Parametros.Include("Celdas").Where(p => p.IdElemento == elemento.Id).ToList();
+            //    salida.Valores = formula.Evaluar(proyecto.Horizonte, formulas, parametros);
+            //}
+
+            var formulas = db.Formulas.Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
+            var salidas = formulas.Where(s => s.Visible).ToList();
+
+            foreach (Formula salida in salidas)
             {
-                Formula formula = salida.Formula;
-                var formulas = db.Formulas.Where(f => f.Secuencia < formula.Secuencia).ToList();
+                var refs = formulas.Where(f => f.Secuencia < salida.Secuencia && f.IdElemento == elemento.Id).ToList();
                 var parametros = db.Parametros.Include("Celdas").Where(p => p.IdElemento == elemento.Id).ToList();
-                salida.Valores = formula.Evaluar(proyecto.Horizonte, formulas, parametros);
+                salida.Valores = salida.Evaluar(proyecto.Horizonte, refs, parametros);
             }
 
             ViewBag.IdElemento = elemento.Id;
@@ -106,30 +116,29 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                     db.SaveChanges();
 
-                    var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == IdPlantilla);
-                    List<Formula> buffer = new List<Formula>();
+                    var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == IdPlantilla).OrderBy(f => f.Secuencia).ToList();
 
                     foreach (PlantillaFormula plantilla in formulas)
                     {
                         Formula item = new Formula(plantilla, elemento.Id);
                         db.Formulas.Add(item);
-                        buffer.Add(item);
+                        db.SaveChanges();
                     }
 
-                    db.SaveChanges();
+                    //db.SaveChanges();
 
-                    var salidas = db.PlantillaSalidaElementos.Include("Formula").Where(s => s.IdPlantillaElemento == IdPlantilla);
+                    //var salidas = db.PlantillaSalidaElementos.Include("Formula").Where(s => s.IdPlantillaElemento == IdPlantilla);
 
-                    foreach (PlantillaSalidaElemento plantilla in salidas)
-                    {
-                        Formula formula = buffer.Where(f => f.Referencia == plantilla.Formula.Referencia).FirstOrDefault();
-                        if (formula != null)
-                        {
-                            db.SalidaElementos.Add(new SalidaElemento(plantilla, elemento.Id, formula.Id));
-                        }
-                    }
+                    //foreach (PlantillaSalidaElemento plantilla in salidas)
+                    //{
+                    //    Formula formula = buffer.Where(f => f.Referencia == plantilla.Formula.Referencia).FirstOrDefault();
+                    //    if (formula != null)
+                    //    {
+                    //        db.SalidaElementos.Add(new SalidaElemento(plantilla, elemento.Id, formula.Id));
+                    //    }
+                    //}
 
-                    db.SaveChanges();
+                    
                     return RedirectToAction("PutParametros", new { id = elemento.Id });
                 }
 

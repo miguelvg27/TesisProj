@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Models
@@ -74,6 +75,16 @@ namespace TesisProj.Areas.Modelo.Models
                 if (context.Parametros.Any(p => p.Referencia == this.Referencia && p.IdElemento == this.IdElemento && (this.Id > 0 ? p.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un parámetro con el mismo nombre de referencia en el mismo elemento.", new string[] { "Referencia" });
+                }
+
+                if (context.Parametros.Any(p => p.Referencia == this.Referencia && p.IdElemento == this.IdElemento && (this.Id > 0 ? p.Id != this.Id : true)))
+                {
+                    yield return new ValidationResult("Ya existe un parámetro con el mismo nombre de referencia en el mismo elemento.", new string[] { "Referencia" });
+                }
+
+                if (Contabilidad.Reservadas.Contains(this.Referencia))
+                {
+                    yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
                 }
             }
         }

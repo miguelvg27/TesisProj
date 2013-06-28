@@ -1,5 +1,5 @@
 ﻿@using TesisProj.Areas.Modelo.Models
-@model List<TesisProj.Areas.Modelo.Models.SalidaElemento>
+@model List<TesisProj.Areas.Modelo.Models.Formula>
 
 @{
     ViewBag.Title = "ResultadosElemento";
@@ -28,9 +28,9 @@
         <td>
             @salida.Nombre
         </td>
-        @for (int periodo = 0; periodo < Horizonte; periodo++)
+        @for (int periodo = 0; periodo < salida.Valores.Count; periodo++)
         {
-            <td style="text-align:center; width: 50px">
+            <td style="text-align:right; width: 50px">
                 @Html.DisplayFor(model => salida.Valores[periodo], new { @Value = String.Format("{0:0.##}", salida.Valores[periodo])})
             </td>
         }

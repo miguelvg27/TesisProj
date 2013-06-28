@@ -8,7 +8,9 @@
 <h2>Fórmulas</h2>
 
 <p>
-    @Html.ActionLink("Crear", "CreateFormula", new { idElemento = ViewBag.ElementoId })
+    @Html.ActionLink("Crear", "CreateFormula", new { idElemento = ViewBag.ElementoId }) | 
+    @Html.ActionLink("Ver Resultados", "ResultadosElemento", new { id = ViewBag.ElementoId }) |
+    @Html.ActionLink("Ver valores", "VerParametros", new { id= ViewBag.ElementoId })
 </p>
 <table>
     <tr>
@@ -26,6 +28,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.IdTipoFormula)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Visible)
         </th>
         <th></th>
     </tr>
@@ -48,6 +53,9 @@
             @Html.DisplayFor(modelItem => item.TipoFormula.Nombre)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Visible)
+        </td>
+        <td>
             @Html.ActionLink("Editar", "EditFormula", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "DeleteFormula", new { id=item.Id })
         </td>
@@ -57,5 +65,5 @@
 </table>
 
 <div>
-    @Html.ActionLink("Regresar", "Journal", new { id = ViewBag.IdProyecto })
+    @Html.ActionLink("Ver elementos", "Journal", new { id = ViewBag.IdProyecto })
 </div>
