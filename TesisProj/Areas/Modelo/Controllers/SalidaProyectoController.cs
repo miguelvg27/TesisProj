@@ -34,6 +34,67 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
+        // GET: /Modelo/Proyecto/Pelicula/5
+
+        public ActionResult Pelicula(int id = 0)
+        {
+            SalidaProyecto salida = db.SalidaProyectos.Find(id);
+            Proyecto proyecto = db.Proyectos.Find(salida.IdProyecto);
+            int horizonte = proyecto.Horizonte;
+
+            if (salida == null)
+            {
+                return HttpNotFound();
+            }
+
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).OrderBy(s => s.Secuencia).ToList();
+            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == salida.IdProyecto).ToList();
+            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == salida.IdProyecto).ToList();
+            var tipoformulas = db.TipoFormulas.ToList();
+
+            //  Lleno los valores de las referencias a tipos de fórmula
+
+            foreach (TipoFormula tipoformula in tipoformulas)
+            {
+                tipoformula.Valores = new List<double>();
+
+                for (int i = 0; i < horizonte; i++)
+                {
+                    tipoformula.Valores.Add(0);
+                }
+
+                var formulitas = formulas.Where(f => f.IdTipoFormula == tipoformula.Id).ToList();
+
+                foreach (Formula formulita in formulitas)
+                {
+                    var refFormulitas = formulas.Where(f => f.Secuencia < formulita.Secuencia && f.IdElemento == formulita.IdElemento).ToList();
+                    var refParametros = parametros.Where(p => p.IdElemento == formulita.IdElemento).ToList();
+                    formulita.Valores = formulita.Evaluar(horizonte, refFormulitas, refParametros);
+
+                    for (int i = 0; i < horizonte; i++)
+                    {
+                        tipoformula.Valores[i] = tipoformula.Valores[i] + formulita.Valores[i];
+                    }
+                }
+            }
+
+            foreach (Operacion operacion in operaciones)
+            {
+                var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia && o.IdProyecto == salida.IdProyecto).ToList();
+                operacion.Valores = operacion.Evaluar(horizonte, refoperaciones, tipoformulas, formulas, parametros);
+            }
+
+            ViewBag.IdProyecto = salida.IdProyecto;
+            ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.Salida = salida.Nombre;
+            ViewBag.Horizonte = proyecto.Horizonte;
+
+            var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).Select(s => s.Operacion).ToList();
+
+            return View(operaciones.Intersect(exoperaciones).ToList());
+        }
+
+        //
         // POST: /Modelo/Proyecto/Assoc/5
 
         public ActionResult Assoc(int id = 0)

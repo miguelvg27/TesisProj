@@ -25,7 +25,7 @@
                         Parámetro
                     </th>
                     <th>
-                        Tipo
+                        Referencia
                     </th>
                     @for (int periodo = 1; periodo <= Horizonte; periodo++)
                     {
@@ -42,7 +42,7 @@
                         @parametro.Nombre
                     </td>
                     <td>
-                        @parametro.TipoParametro.Nombre
+                        @parametro.Referencia
                     </td>
     
                 @foreach (var celda in Model.Where(c => c.IdParametro == parametro.Id).OrderBy(c => c.Periodo))

@@ -350,11 +350,10 @@
     <Content Include="Areas\Modelo\Views\Proyecto\CreateFormula.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\EditFormula.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\DeleteFormula.cshtml" />
-    <Content Include="Areas\Modelo\Views\Proyecto\Pizarra.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\PutParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\SetParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\VerParametros.cshtml" />
-    <Content Include="Areas\Modelo\Views\Proyecto\ResultadosElemento.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Programa.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Create.cshtml" />
@@ -370,6 +369,7 @@
     <Content Include="Areas\Modelo\Views\Proyecto\EditOperacion.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\DeleteOperacion.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Assoc.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Pelicula.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

@@ -1,0 +1,48 @@
+﻿@using TesisProj.Areas.Modelo.Models
+@model List<TesisProj.Areas.Modelo.Models.Operacion>
+
+@{
+    ViewBag.Title = "Resultados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int Horizonte = ViewBag.Horizonte;
+}
+
+<h2>@ViewBag.Salida (@ViewBag.Proyecto)</h2>
+
+<table>
+    <tr>
+        <th>
+            Concepto
+        </th>
+        @for (int periodo = 1; periodo <= Horizonte; periodo++)
+        {
+            <th style="text-align:center; width:50px;">
+                @periodo
+            </th>
+        }
+    </tr>
+
+@foreach (var salida in Model)
+{
+    <tr>
+        <td>
+            @salida.Nombre
+        </td>
+        @for (int periodo = 0; periodo < salida.Valores.Count; periodo++)
+        {
+            <td style="text-align:right;">
+                @String.Format("{0:#,##0}", salida.Valores[periodo])
+            </td>
+        }
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Cine", new { id = ViewBag.IdProyecto })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

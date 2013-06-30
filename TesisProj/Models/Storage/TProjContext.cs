@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 
 namespace TesisProj.Models.Storage
@@ -21,6 +22,7 @@ namespace TesisProj.Models.Storage
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToOneConstraintIntroductionConvention>();
+            modelBuilder.Entity<Celda>().Property(c => c.Valor).HasPrecision(16, 5);
         }
 
         public void RegistrarTablas()
@@ -35,8 +37,8 @@ namespace TesisProj.Models.Storage
         }
     }
 
-//    public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
-    public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
+    public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
+//    public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
     {
         protected override void Seed(TProjContext context){
             context.Seed();

@@ -35,7 +35,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         //
         // GET: /Modelo/Proyecto/ResultadosElemento/5
 
-        public ActionResult ResultadosElemento(int id = 0)
+        public ActionResult Programa(int id = 0)
         {
             Elemento elemento = db.Elementos.Find(id);
             Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);

@@ -34,6 +34,8 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Único por proyecto")]
         public bool Unico { get; set; }
 
+        public List<double> Valores;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

@@ -29,11 +29,10 @@
                 @Html.DisplayFor(e => element.Nombre)
             </td>
             <td>
-                @Html.ActionLink("Ver", "ResultadosElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
+                @Html.ActionLink("Ver", "Programa", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Editar", "EditElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Parámetros", "Catalog", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Fórmulas", "Cuaderno", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
-             @*   @Html.ActionLink("Salidas", "Pizarra", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null)  | *@
                 @Html.ActionLink("Eliminar", "DeleteElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null)
             </td>
         </tr>

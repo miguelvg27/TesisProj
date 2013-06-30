@@ -101,7 +101,7 @@ namespace TesisProj.Models.Storage
 
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 19, Nombre = "Participación", IdTipoElemento = 7, Referencia = "Participaciones" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 20, Nombre = "Inversión", IdTipoElemento = 8, Unico = true, Referencia = "Inversiones" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 20, Nombre = "Inversión", IdTipoElemento = 8, Referencia = "Inversiones" });
 
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 21, Nombre = "Otros ingresos", IdTipoElemento = 9, Referencia = "OtrosIngresos" });
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 22, Nombre = "Otros egresos", IdTipoElemento = 9, Referencia = "OtrosEgresos" });
@@ -162,8 +162,7 @@ namespace TesisProj.Models.Storage
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 23, Nombre = "Tasa", Referencia = "tasa", IdTipoParametro = 1, IdPlantillaElemento = 9, Constante = true });
 
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 15, Nombre = "Período", Referencia = "periodoInicial", IdTipoParametro = 2, IdPlantillaElemento = 10, Constante = true });
-            PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 24, Nombre = "Aporte", Referencia = "aporte", IdTipoParametro = 3, IdPlantillaElemento = 10, Constante = true });
-            PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 25, Nombre = "Retorno esperado (K)", Referencia = "retorno", IdTipoParametro = 1, IdPlantillaElemento = 10, Constante = true });
+            PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 24, Nombre = "Monto", Referencia = "aporte", IdTipoParametro = 3, IdPlantillaElemento = 10, Constante = true });
 
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 26, Nombre = "Período inicial", Referencia = "periodoInicial", IdTipoParametro = 2, IdPlantillaElemento = 11, Constante = true });
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Id = 27, Nombre = "Período final", Referencia = "periodoFinal", IdTipoParametro = 2, IdPlantillaElemento = 11, Constante = true });
@@ -176,7 +175,7 @@ namespace TesisProj.Models.Storage
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 1, Nombre = "Período final", Referencia = "periodoFinal", Secuencia = 1, IdTipoFormula = 4, IdPlantillaElemento = 1, PeriodoInicial = "periodoInicial", PeriodoFinal = "Horizonte", Cadena = "periodoInicial + vidaUtil - 1", Visible = false });
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 2, Nombre = "Depreciación lineal", Referencia = "depreciacionLineal", Secuencia = 2, IdTipoFormula = 1, IdPlantillaElemento = 1, PeriodoInicial = "periodoInicial", PeriodoFinal = "periodoFinal", Cadena = "DepreciacionLineal(valorInicial, vidaUtil)", Visible = true });
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 3, Nombre = "Inversión inicial", Referencia = "inversionInicial", Secuencia = 3, IdTipoFormula = 2, IdPlantillaElemento = 1, PeriodoInicial = "periodoInicial - 1", PeriodoFinal = "periodoInicial - 1", Cadena = "valorInicial", Visible = true });
-            PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 4, Nombre = "Valor residual", Referencia = "valorResidual", Secuencia = 4, IdTipoFormula = 3, IdPlantillaElemento = 1, PeriodoInicial = "Horizonte", PeriodoFinal = "Horizonte", Cadena = "ValorResidual(valorInicial, vidaUtil, periodoInicial, periodoFinal - 1)", Visible = true });
+            PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 4, Nombre = "Valor residual", Referencia = "valorResidual", Secuencia = 4, IdTipoFormula = 3, IdPlantillaElemento = 1, PeriodoInicial = "Horizonte - 1", PeriodoFinal = "Horizonte - 1", Cadena = "ValorResidual(valorInicial, vidaUtil, periodoInicial, Horizonte - 1)", Visible = true });
 
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 5, Nombre = "Período final", Referencia = "periodoFinal", Secuencia = 1, IdTipoFormula = 7, IdPlantillaElemento = 2, PeriodoInicial = "periodoInicial", PeriodoFinal = "Horizonte", Cadena = "periodoInicial + vidaUtil - 1", Visible = false });
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Id = 6, Nombre = "Amortización", Referencia = "amortizacion", Secuencia = 2, IdTipoFormula = 5, IdPlantillaElemento = 2, PeriodoInicial = "periodoInicial", PeriodoFinal = "periodoFinal", Cadena = "DepreciacionLineal(valorInicial, vidaUtil)", Visible = true });

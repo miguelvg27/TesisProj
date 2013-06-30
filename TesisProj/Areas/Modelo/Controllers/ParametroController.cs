@@ -21,7 +21,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 return HttpNotFound();
             }
-            var parametros = db.Parametros.Include("Elemento").Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
+            var parametros = db.Parametros.Include("Elemento").Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre);
 
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.Proyecto = proyecto.Nombre;
@@ -43,7 +43,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
+            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             List<Celda> celdas = new List<Celda>();
 
             foreach(Parametro parametro in parametros)
@@ -93,7 +93,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
+            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
 
             ViewBag.IdProyecto = proyecto.Id;
@@ -116,7 +116,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id);
+            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
 
             ViewBag.IdProyecto = proyecto.Id;
