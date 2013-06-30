@@ -93,11 +93,6 @@ namespace TesisProj.Filters
                         idObj = context.Parametros.Find(idObj).IdElemento;
                     }
 
-                    if (idSalidaElemento)
-                    {
-                        idObj = context.SalidaElementos.Find(idObj).IdElemento;
-                    }
-
                     if (!idProyecto)
                     {
                         idObj = context.Elementos.Find(idObj).IdProyecto;

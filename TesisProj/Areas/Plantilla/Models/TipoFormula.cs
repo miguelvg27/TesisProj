@@ -25,6 +25,15 @@ namespace TesisProj.Areas.Plantilla.Models
         [ForeignKey("IdTipoElemento")]
         public TipoElemento TipoElemento { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [DisplayName("Referencia")]
+        [RegularExpression("[A-Za-z]+[A-Za-z1-9_]*", ErrorMessage = "El campo solo puede contener alfanuméricos y debe comenzar con una letra.")]
+        public string Referencia { get; set; }
+
+        [DisplayName("Único por proyecto")]
+        public bool Unico { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())
@@ -32,6 +41,11 @@ namespace TesisProj.Areas.Plantilla.Models
                 if (context.TipoFormulas.Any(t => t.Nombre == this.Nombre && t.IdTipoElemento == this.IdTipoElemento && (this.Id > 0 ? t.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre .", new string[] { "Nombre" });
+                }
+
+                if (context.TipoFormulas.Any(f => f.Referencia == this.Referencia && (this.Id > 0 ? f.Id != this.Id : true)))
+                {
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia.", new string[] { "Referencia" });
                 }
             }
         }

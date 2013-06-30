@@ -16,7 +16,6 @@ namespace TesisProj.Models.Storage
         public DbSet<PlantillaParametro> PlantillaParametros { get; set; }
         public DbSet<PlantillaElemento> PlantillaElementos { get; set; }
         public DbSet<PlantillaFormula> PlantillaFormulas { get; set; }
-        public DbSet<PlantillaSalidaElemento> PlantillaSalidaElementos { get; set; }
         public DbSet<PlantillaProyecto> PlantillaProyectos { get; set; }
         public DbSet<PlantillaElementoProyecto> PlantillaElementoProyectos { get; set; }
         public DbSet<PlantillaSalidaProyecto> PlantillaSalidaProyectos { get; set; }
@@ -27,7 +26,6 @@ namespace TesisProj.Models.Storage
         public DbRequester<PlantillaParametro> PlantillaParametrosRequester { get; set; }
         public DbRequester<PlantillaElemento> PlantillaElementosRequester { get; set; }
         public DbRequester<PlantillaFormula> PlantillaFormulasRequester { get; set; }
-        public DbRequester<PlantillaSalidaElemento> PlantillaSalidaElementosRequester { get; set; }
         public DbRequester<PlantillaProyecto> PlantillaProyectosRequester { get; set; }
         public DbRequester<PlantillaElementoProyecto> PlantillaElementoProyectosRequester { get; set; }
         public DbRequester<PlantillaSalidaProyecto> PlantillaSalidaProyectosDbRequester { get; set; }
@@ -40,7 +38,6 @@ namespace TesisProj.Models.Storage
             PlantillaParametrosRequester = new DbRequester<PlantillaParametro>(this, PlantillaParametros);
             PlantillaElementosRequester = new DbRequester<PlantillaElemento>(this, PlantillaElementos);
             PlantillaFormulasRequester = new DbRequester<PlantillaFormula>(this, PlantillaFormulas);
-            PlantillaSalidaElementosRequester = new DbRequester<PlantillaSalidaElemento>(this, PlantillaSalidaElementos);
             PlantillaProyectosRequester = new DbRequester<PlantillaProyecto>(this, PlantillaProyectos);
             PlantillaElementoProyectosRequester = new DbRequester<PlantillaElementoProyecto>(this, PlantillaElementoProyectos);
             PlantillaSalidaProyectosDbRequester = new DbRequester<PlantillaSalidaProyecto>(this, PlantillaSalidaProyectos);
@@ -74,36 +71,36 @@ namespace TesisProj.Models.Storage
         
         public void SeedTipoFormulas()
         {
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 1, Nombre = "Depreciación", IdTipoElemento = 1 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 2, Nombre = "Inversión inicial", IdTipoElemento = 1 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 3, Nombre = "Valor residual", IdTipoElemento = 1 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 4, Nombre = "Período final", IdTipoElemento = 1 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 1, Nombre = "Depreciación", IdTipoElemento = 1, Referencia = "ActivosFijos_Depreciacion" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 2, Nombre = "Inversión inicial", IdTipoElemento = 1, Referencia = "ActivosFijos_InversionInicial" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 3, Nombre = "Valor residual", IdTipoElemento = 1, Referencia = "ActivosFijos_ValorResidual" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 4, Nombre = "Período final", IdTipoElemento = 1, Referencia = "ActivosFijos_PeriodoFinal" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 5, Nombre = "Amortización", IdTipoElemento = 2 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 6, Nombre = "Inversión inicial", IdTipoElemento = 2 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 7, Nombre = "Período final", IdTipoElemento = 2 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 5, Nombre = "Amortización", IdTipoElemento = 2, Referencia = "ActivosIntangibles_Amortizacion" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 6, Nombre = "Inversión inicial", IdTipoElemento = 2, Referencia = "ActivosIntangibles_InversionInicial" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 7, Nombre = "Período final", IdTipoElemento = 2, Referencia = "ActivosIntangibles_PeriodoFinal" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id =  8, Nombre = "Ventas", IdTipoElemento = 3 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id =  9, Nombre = "Costos", IdTipoElemento = 3 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 10, Nombre = "Valor unitario", IdTipoElemento = 3 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 8, Nombre = "Ventas", IdTipoElemento = 3, Referencia = "Operativos_Ventas" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 9, Nombre = "Costos", IdTipoElemento = 3, Referencia = "Operativos_Costos" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 10, Nombre = "Valor unitario", IdTipoElemento = 3, Referencia = "Operativos_ValorUnitario" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 11, Nombre = "Gasto administrativo", IdTipoElemento = 4 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 12, Nombre = "Gasto de venta", IdTipoElemento = 4 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 11, Nombre = "Gasto administrativo", IdTipoElemento = 4, Referencia = "Operativos_GastoAdministrativo" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 12, Nombre = "Gasto de venta", IdTipoElemento = 4, Referencia = "Operativos_GastoVenta" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 13, Nombre = "Amortización", IdTipoElemento = 5 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 14, Nombre = "Cuota", IdTipoElemento = 5 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 15, Nombre = "Intereses", IdTipoElemento = 5 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 16, Nombre = "Préstamo", IdTipoElemento = 5 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 13, Nombre = "Amortización", IdTipoElemento = 5, Referencia = "Financiamientos_Amortizacion" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 14, Nombre = "Cuota", IdTipoElemento = 5, Referencia = "Financiamientos_Cuota" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 15, Nombre = "Intereses", IdTipoElemento = 5, Referencia = "Financiamientos_Intereses" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 16, Nombre = "Préstamo", IdTipoElemento = 5, Referencia = "Financiamientos_Prestamo" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 17, Nombre = "Renta", IdTipoElemento = 6 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 18, Nombre = "Operativo", IdTipoElemento = 6 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 17, Nombre = "Renta", IdTipoElemento = 6, Unico = true, Referencia = "Impuestos_Renta" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 18, Nombre = "Operativo", IdTipoElemento = 6, Referencia = "Impuestos_Operativo" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 19, Nombre = "Participación", IdTipoElemento = 7 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 19, Nombre = "Participación", IdTipoElemento = 7, Referencia = "Participaciones" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 20, Nombre = "Inversión", IdTipoElemento = 8 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 20, Nombre = "Inversión", IdTipoElemento = 8, Unico = true, Referencia = "Inversiones" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 21, Nombre = "Otros ingresos", IdTipoElemento = 9 });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 22, Nombre = "Otros egresos", IdTipoElemento = 9 });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 21, Nombre = "Otros ingresos", IdTipoElemento = 9, Referencia = "OtrosIngresos" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 22, Nombre = "Otros egresos", IdTipoElemento = 9, Referencia = "OtrosEgresos" });
         }
 
         public void SeedTipoParametros()

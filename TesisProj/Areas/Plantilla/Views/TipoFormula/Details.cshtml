@@ -23,6 +23,20 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.TipoElemento.Nombre)
     </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Referencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Referencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Unico)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Unico)
+    </div>
 </fieldset>
 <p>
     @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |

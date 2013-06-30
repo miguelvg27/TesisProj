@@ -90,6 +90,11 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
                 }
 
+                if (context.PlantillaFormulas.Include("TipoFormula").Any(f => f.IdTipoFormula == this.IdTipoFormula && f.TipoFormula.Unico && f.IdPlantillaElemento == this.IdPlantillaElemento && (this.Id > 0 ? f.Id != this.Id : true)))
+                {
+                    yield return new ValidationResult("Ya existe una fórmula de este tipo en el elemento. Dicho tipo de fórmula solo permite una por elemento.", new string[] { "IdTipoFormula" });
+                }
+
                 //  Valida cadena de la fórmula
 
                 bool cadenavalida = true;

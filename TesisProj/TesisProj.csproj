@@ -185,13 +185,11 @@
     <Compile Include="Areas\Modelo\Controllers\FormulaController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ProyectoController.cs" />
-    <Compile Include="Areas\Modelo\Controllers\SalidaElementoController.cs" />
     <Compile Include="Areas\Modelo\Models\Celda.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaProyectoController.cs" />
-    <Compile Include="Areas\Plantilla\Controllers\PlantillaSalidaElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaSalidaProyectoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
@@ -201,7 +199,6 @@
     <Compile Include="Areas\Plantilla\Models\PlantillaParametro.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaProyecto.cs" />
-    <Compile Include="Areas\Plantilla\Models\PlantillaSalidaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaSalidaProyecto.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoFormula.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoParametro.cs" />
@@ -211,7 +208,6 @@
     <Compile Include="Areas\Modelo\Models\Formula.cs" />
     <Compile Include="Areas\Modelo\Models\Parametro.cs" />
     <Compile Include="Areas\Modelo\Models\Proyecto.cs" />
-    <Compile Include="Areas\Modelo\Models\SalidaElemento.cs" />
     <Compile Include="Areas\Modelo\Models\SalidaProyecto.cs" />
     <Compile Include="Areas\Modelo\Models\TProjContext.cs" />
     <Compile Include="Areas\Modelo\ModeloAreaRegistration.cs" />
@@ -319,11 +315,6 @@
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaElemento\Index.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaElemento\Details.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaElemento\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaElemento\Edit.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaElemento\Delete.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Create.cshtml" />
@@ -355,9 +346,6 @@
     <Content Include="Areas\Modelo\Views\Proyecto\EditFormula.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\DeleteFormula.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Pizarra.cshtml" />
-    <Content Include="Areas\Modelo\Views\Proyecto\CreateSalidaElemento.cshtml" />
-    <Content Include="Areas\Modelo\Views\Proyecto\EditSalidaElemento.cshtml" />
-    <Content Include="Areas\Modelo\Views\Proyecto\DeleteSalidaElemento.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\PutParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\SetParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\VerParametros.cshtml" />

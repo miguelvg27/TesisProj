@@ -14,7 +14,6 @@ namespace TesisProj.Models.Storage
         public DbSet<Elemento> Elementos { get; set; }
         public DbSet<Parametro> Parametros { get; set; }
         public DbSet<Formula> Formulas { get; set; }
-        public DbSet<SalidaElemento> SalidaElementos { get; set; }
         public DbSet<SalidaProyecto> SalidaProyectos { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Celda> Celdas { get; set; }
@@ -23,7 +22,6 @@ namespace TesisProj.Models.Storage
         public DbRequester<Elemento> ElementosRequester { get; set; }
         public DbRequester<Parametro> ParametrosRequester { get; set; }
         public DbRequester<Formula> FormulasRequester { get; set; }
-        public DbRequester<SalidaElemento> SalidaElementosRequester { get; set; }
         public DbRequester<SalidaProyecto> SalidaProyectosRequester { get; set; }
         public DbRequester<Celda> CeldasRequester { get; set; }
 
@@ -33,7 +31,6 @@ namespace TesisProj.Models.Storage
             ElementosRequester = new DbRequester<Elemento>(this, Elementos);
             ParametrosRequester = new DbRequester<Parametro>(this, Parametros);
             FormulasRequester = new DbRequester<Formula>(this, Formulas);
-            SalidaElementosRequester = new DbRequester<SalidaElemento>(this, SalidaElementos);
             SalidaProyectosRequester = new DbRequester<SalidaProyecto>(this, SalidaProyectos);
             CeldasRequester = new DbRequester<Celda>(this, Celdas);
         }

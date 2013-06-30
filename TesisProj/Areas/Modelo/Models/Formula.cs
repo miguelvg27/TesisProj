@@ -162,7 +162,12 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
                 }
 
-                
+                Elemento elemento = context.Elementos.Find(this.IdElemento);
+
+                if (context.Formulas.Include("TipoFormula").Include("Elemento").Any(f => f.IdTipoFormula == this.IdTipoFormula && f.TipoFormula.Unico && f.Elemento.IdProyecto == elemento.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
+                {
+                    yield return new ValidationResult("Ya existe una fórmula de este tipo en el proyecto. Dicho tipo de fórmula solo permite una por proyecto.", new string[] { "IdTipoFormula" });
+                }
 
                 //  Valida cadena de la fórmula
 

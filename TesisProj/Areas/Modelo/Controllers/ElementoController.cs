@@ -44,16 +44,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            //var salidas = db.SalidaElementos.Include("Formula").Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
-
-            //foreach (SalidaElemento salida in salidas)
-            //{
-            //    Formula formula = salida.Formula;
-            //    var formulas = db.Formulas.Where(f => f.Secuencia < formula.Secuencia && f.IdElemento == elemento.Id).ToList();
-            //    var parametros = db.Parametros.Include("Celdas").Where(p => p.IdElemento == elemento.Id).ToList();
-            //    salida.Valores = formula.Evaluar(proyecto.Horizonte, formulas, parametros);
-            //}
-
             var formulas = db.Formulas.Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
             var salidas = formulas.Where(s => s.Visible).ToList();
 
@@ -100,6 +90,24 @@ namespace TesisProj.Areas.Modelo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateElemento(Elemento elemento, int IdPlantilla = 0)
         {
+
+        //  Valida que no ingrese una fórmula única que ya exista en el proyecto
+
+            if (IdPlantilla > 0)
+            {
+                var formulasUnicasProyecto = db.Formulas.Include("Elemento").Include("TipoFormula").Where(f => f.Elemento.IdTipoElemento == elemento.IdTipoElemento && f.Elemento.IdProyecto == elemento.IdProyecto && f.TipoFormula.Unico).ToList();
+                var formulasUnicasPlantilla = db.PlantillaFormulas.Include("TipoFormula").Where(p => p.IdPlantillaElemento == IdPlantilla && p.TipoFormula.Unico).ToList();
+
+                foreach (Formula formula in formulasUnicasProyecto)
+                {
+                    if (formulasUnicasPlantilla.Any(f => f.IdTipoFormula == formula.IdTipoFormula))
+                    {
+                        ModelState.AddModelError("IdPlantilla", "Esta plantilla contiene una fórmula cuyo tipo es único por proyecto y ya existe en el proyecto actual.");
+                        break;
+                    }
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 db.Elementos.Add(elemento);
@@ -124,20 +132,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                         db.Formulas.Add(item);
                         db.SaveChanges();
                     }
-
-                    //db.SaveChanges();
-
-                    //var salidas = db.PlantillaSalidaElementos.Include("Formula").Where(s => s.IdPlantillaElemento == IdPlantilla);
-
-                    //foreach (PlantillaSalidaElemento plantilla in salidas)
-                    //{
-                    //    Formula formula = buffer.Where(f => f.Referencia == plantilla.Formula.Referencia).FirstOrDefault();
-                    //    if (formula != null)
-                    //    {
-                    //        db.SalidaElementos.Add(new SalidaElemento(plantilla, elemento.Id, formula.Id));
-                    //    }
-                    //}
-
                     
                     return RedirectToAction("PutParametros", new { id = elemento.Id });
                 }
