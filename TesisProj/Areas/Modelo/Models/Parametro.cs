@@ -82,7 +82,7 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe un parámetro con el mismo nombre de referencia en el mismo elemento.", new string[] { "Referencia" });
                 }
 
-                if (Contabilidad.Reservadas.Contains(this.Referencia))
+                if (Generics.Reservadas.Contains(this.Referencia))
                 {
                     yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
                 }

@@ -40,6 +40,9 @@ namespace TesisProj.Areas.Plantilla.Models
         [ForeignKey("IdPlantillaProyecto")]
         public PlantillaProyecto PlantillaProyecto { get; set; }
 
+        [InverseProperty("Salida")]
+        public List<PlantillaSalidaOperacion> Operaciones { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

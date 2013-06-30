@@ -55,7 +55,7 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe una fórmula con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
                 }
 
-                if (Contabilidad.Reservadas.Contains(this.Referencia))
+                if (Generics.Reservadas.Contains(this.Referencia))
                 {
                     yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
                 }

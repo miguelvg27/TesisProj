@@ -1,0 +1,93 @@
+﻿@model TesisProj.Areas.Modelo.Models.Operacion
+
+@{
+    ViewBag.Title = "Operaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear operación</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Operación</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoInicial)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoInicial)
+            @Html.ValidationMessageFor(model => model.PeriodoInicial)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoFinal)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoFinal)
+            @Html.ValidationMessageFor(model => model.PeriodoFinal)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Secuencia)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
+            @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Referencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Referencia)
+            @Html.ValidationMessageFor(model => model.Referencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdProyecto)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdProyecto")
+            @Html.ValidationMessageFor(model => model.IdProyecto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Indicador)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Indicador)
+            @Html.ValidationMessageFor(model => model.Indicador)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cadena)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Cadena)
+            @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Corolario", new { id = ViewBag.IdProyectoReturn })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

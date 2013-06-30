@@ -17,6 +17,8 @@ namespace TesisProj.Models.Storage
         public DbSet<SalidaProyecto> SalidaProyectos { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<Celda> Celdas { get; set; }
+        public DbSet<Operacion> Operaciones { get; set; }
+        public DbSet<SalidaOperacion> SalidaOperaciones { get; set; }
 
         public DbRequester<Proyecto> ProyectosRequester { get; set; }
         public DbRequester<Elemento> ElementosRequester { get; set; }
@@ -24,6 +26,8 @@ namespace TesisProj.Models.Storage
         public DbRequester<Formula> FormulasRequester { get; set; }
         public DbRequester<SalidaProyecto> SalidaProyectosRequester { get; set; }
         public DbRequester<Celda> CeldasRequester { get; set; }
+        public DbRequester<Operacion> OperacionesRequester { get; set; }
+        public DbRequester<SalidaOperacion> SalidaOperacionesRequester { get; set; }
 
         public void RegistrarTablasProyecto()
         {
@@ -33,6 +37,8 @@ namespace TesisProj.Models.Storage
             FormulasRequester = new DbRequester<Formula>(this, Formulas);
             SalidaProyectosRequester = new DbRequester<SalidaProyecto>(this, SalidaProyectos);
             CeldasRequester = new DbRequester<Celda>(this, Celdas);
+            OperacionesRequester = new DbRequester<Operacion>(this, Operaciones);
+            SalidaOperacionesRequester = new DbRequester<SalidaOperacion>(this, SalidaOperaciones);
         }
 
         public void SeedProyecto()
@@ -43,6 +49,8 @@ namespace TesisProj.Models.Storage
             SeedFormulas();
             SeedSalidaElementos();
             SeedSalidaProyectos();
+            SeedOperaciones();
+            SeedSalidaOperaciones();
         }
 
         public void SeedProyectos()
@@ -67,6 +75,14 @@ namespace TesisProj.Models.Storage
         }
 
         public void SeedSalidaProyectos()
+        {
+        }
+
+        public void SeedOperaciones()
+        {
+        }
+
+        public void SeedSalidaOperaciones()
         {
         }
     }

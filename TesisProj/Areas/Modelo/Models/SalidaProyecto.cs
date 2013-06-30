@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Models
@@ -13,7 +14,7 @@ namespace TesisProj.Areas.Modelo.Models
     public class SalidaProyecto : DbObject, IValidatableObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
         [DisplayName("Salida")]
         public string Nombre { get; set; }
 
@@ -23,18 +24,37 @@ namespace TesisProj.Areas.Modelo.Models
         public int Secuencia { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
+        [DisplayName("Período inicial")]
+        public string PeriodoInicial { get; set; }
+        
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
+        [DisplayName("Período final")]
+        public string PeriodoFinal { get; set; }
+        
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Proyecto")]
         public int IdProyecto { get; set; }
 
         [ForeignKey("IdProyecto")]
         public Proyecto Proyecto { get; set; }
 
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
-        [DisplayName("Cadena")]
-        public string Cadena { get; set; }
+        [InverseProperty("Salida")]
+        public List<SalidaOperacion> Operaciones { get; set; }
 
-        public List<object> Valores { get; set; }
+        public SalidaProyecto()
+        {
+        }
+
+        public SalidaProyecto(PlantillaSalidaProyecto plantilla, int IdProyecto)
+        {
+            this.IdProyecto = IdProyecto;
+            this.Nombre = plantilla.Nombre;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Secuencia = plantilla.Secuencia;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -56,21 +76,11 @@ namespace TesisProj.Areas.Modelo.Models
                 double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
 
-                var elementos = context.Elementos.Where(e => e.IdProyecto == this.IdProyecto).ToList();
-                List<Formula> formulas = new List<Formula>();
-                foreach (Elemento elemento in elementos)
-                {
-                    formulas.AddRange(context.Formulas.Where(f => f.IdElemento == elemento.Id).ToList());
-                }
-
-                foreach (Formula formula in formulas)
-                {
-                    parser.AddVariable(formula.Referencia, Math.PI);
-                }
+                parser.AddVariable("Horizonte", 10);
 
                 try
                 {
-                    testvalue = parser.SimplifyDouble(this.Cadena);
+                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
                 }
                 catch (Exception)
                 {
@@ -79,7 +89,23 @@ namespace TesisProj.Areas.Modelo.Models
 
                 if (!cadenavalida)
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener las fórmulas de los elementos del proyecto.", new string[] { "Cadena" });
+                    yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
+                }
+
+                cadenavalida = true;
+
+                try
+                {
+                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
+                }
+                catch (Exception)
+                {
+                    cadenavalida = false;
+                }
+
+                if (!cadenavalida)
+                {
+                    yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }
             }
         }

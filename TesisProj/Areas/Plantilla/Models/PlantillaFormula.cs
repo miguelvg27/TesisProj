@@ -85,7 +85,7 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
                 }
 
-                if (Contabilidad.Reservadas.Contains(this.Referencia))
+                if (Generics.Reservadas.Contains(this.Referencia))
                 {
                     yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
                 }
@@ -115,12 +115,12 @@ namespace TesisProj.Areas.Plantilla.Models
 
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
-                parser.RegisterCustomDoubleFunction("Amortizacion", Contabilidad.Ppmt);
-                parser.RegisterCustomDoubleFunction("Intereses", Contabilidad.IPmt);
-                parser.RegisterCustomDoubleFunction("Cuota", Contabilidad.Pmt);
-                parser.RegisterCustomDoubleFunction("DepreciacionLineal", Contabilidad.Sln);
-                parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Contabilidad.Syn);
-                parser.RegisterCustomDoubleFunction("ValorResidual", Contabilidad.ResSln);
+                parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
+                parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
+                parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);
+                parser.RegisterCustomDoubleFunction("DepreciacionLineal", Generics.Sln);
+                parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Generics.Syn);
+                parser.RegisterCustomDoubleFunction("ValorResidual", Generics.ResSln);
 
                 try
                 {

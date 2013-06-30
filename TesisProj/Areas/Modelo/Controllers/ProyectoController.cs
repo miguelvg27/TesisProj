@@ -62,6 +62,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName");
             ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName");
+            ViewBag.IdPlantilla = new SelectList(db.PlantillaProyectos.OrderBy(p => p.Nombre), "Id", "Nombre");
             ViewBag.Now = DateTime.Today.ToShortDateString();
             ViewBag.Version = 1;
             return View();
@@ -72,15 +73,46 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Proyecto proyecto)
+        public ActionResult Create(Proyecto proyecto, int IdPlantilla = 0)
         {
             if (ModelState.IsValid)
             {
                 db.Proyectos.Add(proyecto);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                if (IdPlantilla > 0)
+                {
+                    var operaciones = db.PlantillaOperaciones.Where(p => p.IdPlantillaProyecto == IdPlantilla).ToList();
+
+                    foreach (PlantillaOperacion plantilla in operaciones)
+                    {
+                        db.Operaciones.Add(new Operacion(plantilla, proyecto.Id));
+                        db.SaveChanges();
+                    }
+
+                    db.SaveChanges();
+
+                    var salidas = db.PlantillaSalidaProyectos.Include("Operaciones").Where(p => p.IdPlantillaProyecto == IdPlantilla).ToList();
+
+                    foreach (PlantillaSalidaProyecto plantilla in salidas)
+                    {
+                        SalidaProyecto salida = new SalidaProyecto(plantilla, proyecto.Id);
+                        db.SalidaProyectos.Add(salida);
+                        db.SaveChanges();
+
+                        foreach (PlantillaSalidaOperacion cruce in plantilla.Operaciones)
+                        {
+                            int idOperacion = db.Operaciones.First(o => o.IdProyecto == proyecto.Id && o.Referencia == cruce.Operacion.Referencia).Id;
+                            db.SalidaOperaciones.Add(new SalidaOperacion { IdSalida = salida.Id, IdOperacion = idOperacion });
+                            db.SaveChanges();
+                        }
+                    }
+                }
+
+                return RedirectToAction("Console", new { id = proyecto.Id });
             }
 
+            ViewBag.IdPlantilla = new SelectList(db.PlantillaProyectos.OrderBy(p => p.Nombre), "Id", "Nombre", IdPlantilla);
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName", proyecto.IdCreador);
             ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName", proyecto.IdModificador);
             return View(proyecto);
@@ -179,12 +211,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

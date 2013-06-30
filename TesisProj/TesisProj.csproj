@@ -183,9 +183,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\Modelo\Controllers\ElementoController.cs" />
     <Compile Include="Areas\Modelo\Controllers\FormulaController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\OperacionController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ProyectoController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\SalidaProyectoController.cs" />
     <Compile Include="Areas\Modelo\Models\Celda.cs" />
+    <Compile Include="Areas\Modelo\Models\Operacion.cs" />
+    <Compile Include="Areas\Modelo\Models\SalidaOperacion.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
@@ -222,7 +226,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Contabilidad.cs" />
+    <Compile Include="Models\Generics.cs" />
     <Compile Include="Models\Storage\DbObject.cs" />
     <Compile Include="Models\Storage\DbRequester.cs" />
     <Compile Include="Models\Storage\TProjContext.cs" />
@@ -357,6 +361,15 @@
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Delete.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Assoc.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Cine.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\CreateSalidaProyecto.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditSalidaProyecto.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\DeleteSalidaProyecto.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Corolario.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\CreateOperacion.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditOperacion.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\DeleteOperacion.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Assoc.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

@@ -75,7 +75,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.IdPlantilla = new SelectList(db.PlantillaElementos.Where(p => p.IdTipoElemento == tipo.Id), "Id", "Nombre");
+            ViewBag.IdPlantilla = new SelectList(db.PlantillaElementos.Where(p => p.IdTipoElemento == tipo.Id).OrderBy(p => p.Nombre), "Id", "Nombre");
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == tipo.Id), "Id", "Nombre", tipo.Id);
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == proyecto.Id), "Id", "Nombre", proyecto.Id);
             ViewBag.IdProyectoReturn = proyecto.Id;
@@ -139,7 +139,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("Catalog", new { id = elemento.Id });
             }
 
-            ViewBag.IdPlantilla = new SelectList(db.PlantillaElementos.Where(p => p.IdTipoElemento == elemento.IdTipoElemento), "Id", "Nombre");
+            ViewBag.IdPlantilla = new SelectList(db.PlantillaElementos.Where(p => p.IdTipoElemento == elemento.IdTipoElemento).OrderBy(p => p.Nombre), "Id", "Nombre", IdPlantilla);
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == elemento.IdTipoElemento), "Id", "Nombre", elemento.IdTipoElemento);
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == elemento.IdProyecto), "Id", "Nombre", elemento.IdProyecto);
             ViewBag.IdProyectoReturn = elemento.IdProyecto;

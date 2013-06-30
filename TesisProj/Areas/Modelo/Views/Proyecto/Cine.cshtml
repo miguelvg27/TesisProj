@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.SalidaProyecto>
+
+@{
+    ViewBag.Title = "Proyecto: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Resultados de @ViewBag.Proyecto</h2>
+
+<p>
+    @Html.ActionLink("Crear", "CreateSalidaProyecto", "Proyecto", routeValues: new { Area = "Modelo", idProyecto = ViewBag.ProyectoId }, htmlAttributes: null) |
+    @Html.ActionLink("Operaciones", "Corolario", "Proyecto", routeValues: new { Area = "Modelo", id = ViewBag.ProyectoId }, htmlAttributes: null)
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Secuencia)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Secuencia)
+        </td>
+        <td>
+            @Html.ActionLink("Ver", "Pelicula", new { id=item.Id }) |
+            @Html.ActionLink("Asociar operaciones", "Assoc", new { id=item.Id }) |
+            @Html.ActionLink("Editar", "EditSalidaProyecto", new { id=item.Id }) |
+            @Html.ActionLink("Eliminar", "DeleteSalidaProyecto", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
+</div>

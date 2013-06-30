@@ -5,13 +5,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
-namespace TesisProj.Areas.Plantilla.Models
+namespace TesisProj.Areas.Modelo.Models
 {
-    [Table("PlantillaOperacion")]
-    public class PlantillaOperacion : DbObject, IValidatableObject
+    [Table("Operacion")]
+    public class Operacion : DbObject, IValidatableObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
@@ -40,11 +42,11 @@ namespace TesisProj.Areas.Plantilla.Models
         public string Referencia { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Plantilla")]
-        public int IdPlantillaProyecto { get; set; }
+        [DisplayName("Proyecto")]
+        public int IdProyecto { get; set; }
 
-        [ForeignKey("IdPlantillaProyecto")]
-        public PlantillaProyecto PlantillaProyecto { get; set; }
+        [ForeignKey("IdProyecto")]
+        public Proyecto Proyecto { get; set; }
 
         [DisplayName("Indicador")]
         public bool Indicador { get; set; }
@@ -54,31 +56,47 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        public List<double> Valores;
+
+        public Operacion()
+        {
+        }
+
+        public Operacion(PlantillaOperacion plantilla, int IdProyecto)
+        {
+            this.IdProyecto = IdProyecto;
+            this.Indicador = plantilla.Indicador;
+            this.Nombre = plantilla.Nombre;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Referencia = plantilla.Referencia;
+            this.Secuencia = plantilla.Secuencia;
+            this.Cadena = plantilla.Cadena;
+        }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.PlantillaOperaciones.Any(f => f.Nombre == this.Nombre && f.IdPlantillaProyecto == this.IdPlantillaProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
+                if (context.Operaciones.Any(f => f.Nombre == this.Nombre && f.IdProyecto == this.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
-                    yield return new ValidationResult("Ya existe un registro con el mismo nombre en la misma plantilla.", new string[] { "Nombre" });
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre en el mismo proyecto.", new string[] { "Nombre" });
                 }
 
-                if (context.PlantillaOperaciones.Any(f => f.Referencia == this.Referencia && f.IdPlantillaProyecto == this.IdPlantillaProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
+                if (context.Operaciones.Any(f => f.Referencia == this.Referencia && f.IdProyecto == this.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
-                    yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en el mismo proyecto.", new string[] { "Referencia" });
                 }
 
-                if (context.PlantillaOperaciones.Any(f => f.Secuencia == this.Secuencia && f.IdPlantillaProyecto == this.IdPlantillaProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
+                if (context.Operaciones.Any(f => f.Secuencia == this.Secuencia && f.IdProyecto == this.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
-                    yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
+                    yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en el mismo proyecto.", new string[] { "Secuencia" });
                 }
-            
 
-                bool cadenavalida = true;
-                double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
                 var tipoformulas = context.TipoFormulas;
-                var operaciones = context.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == this.IdPlantillaProyecto && o.Secuencia < this.Secuencia);
+                var operaciones = context.Operaciones.Where(o => o.IdProyecto == this.IdProyecto && o.Secuencia < this.Secuencia);
+
                 parser.AddVariable("Horizonte", 10);
 
                 foreach (TipoFormula tipoformula in tipoformulas)
@@ -86,70 +104,39 @@ namespace TesisProj.Areas.Plantilla.Models
                     parser.AddVariable(tipoformula.Referencia, 2);
                 }
 
-                foreach (PlantillaOperacion operacion in operaciones)
+                foreach (Operacion operacion in operaciones)
                 {
                     parser.AddVariable(operacion.Referencia, 2);
                 }
 
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.Cadena);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+            //
+            //  Valida si es Tir o Van
+                if (!Generics.Validar(this.Cadena, parser))
                 {
                     if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
                     {
                         string toTest = this.Cadena.Substring(4);
                         toTest = toTest.Substring(0, toTest.Length - 1);
-                        try
+
+                        if (!Generics.Validar(toTest, parser))
                         {
-                            testvalue = parser.SimplifyDouble(toTest);
+                            yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
                         }
-                        catch (Exception)
-                        {
-                            cadenavalida = false;
-                        }
+                    }
+                    else
+                    {
+                        yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
                     }
                 }
 
-                if (!cadenavalida)
-                {
-                    yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
-                }
-
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+            //
+            //  Valida períodos
+                if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
                 }
 
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                if (!Generics.Validar(this.PeriodoFinal, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }

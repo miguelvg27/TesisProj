@@ -15,7 +15,7 @@ namespace TesisProj.Areas.Modelo.Models
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
-        [DisplayName("Nombre")]
+        [DisplayName("Proyecto")]
         public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]

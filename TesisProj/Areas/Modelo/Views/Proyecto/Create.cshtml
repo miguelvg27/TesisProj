@@ -39,6 +39,14 @@
         </div>
 
         <div class="editor-label">
+            Plantilla
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdPlantilla", String.Empty)
+            @Html.ValidationMessage("IdPlantilla")
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Version)
         </div>
         <div class="editor-field">

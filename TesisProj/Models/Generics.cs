@@ -6,9 +6,9 @@ using System.Web;
 
 namespace TesisProj.Models
 {
-    public class Contabilidad
+    public class Generics
     {
-        public static string[] Reservadas = { "Horizonte", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo" };
+        public static string[] Reservadas = { "Horizonte", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
 
         public static double Ppmt(double i, double p, double N, double V)
         {
@@ -49,6 +49,21 @@ namespace TesisProj.Models
         public static double Irr(double[] saldo)
         {
             return Financial.IRR(ref saldo);
+        }
+
+        public static bool Validar(string cadena, MathParserNet.Parser parser)
+        {
+            bool valida = true;
+            try
+            {
+                double testvalue = parser.SimplifyDouble(cadena);
+            }
+            catch (Exception)
+            {
+                valida = false;
+            }
+
+            return valida;
         }
     }
 }
