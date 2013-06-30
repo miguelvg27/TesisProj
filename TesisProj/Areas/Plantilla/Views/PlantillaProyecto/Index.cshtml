@@ -24,8 +24,8 @@
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Asociar elementos", "Assoc", new { id=item.Id }) |
             @Html.ActionLink("Salidas", "Index", "PlantillaSalidaProyecto", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
+            @Html.ActionLink("Operaciones", "Index", "PlantillaOperacion", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })

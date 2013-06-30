@@ -31,13 +31,6 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.PlantillaProyecto.Nombre)
     </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cadena)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cadena)
-    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

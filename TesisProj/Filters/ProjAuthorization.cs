@@ -15,7 +15,6 @@ namespace TesisProj.Filters
             bool idElemento = false;
             bool idProyecto = false;
             bool idFormula = false;
-            bool idSalidaElemento = false;
             bool idParametro = false;
 
             var id = new object();
@@ -60,10 +59,6 @@ namespace TesisProj.Filters
                     case "EditFormula":
                     case "DeleteFormula":
                         idFormula = true;
-                        break;
-                    case "EditSalidaElemento":
-                    case "DeleteSalidaElemento":
-                        idSalidaElemento = true;
                         break;
                 }
 

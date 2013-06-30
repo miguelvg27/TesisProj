@@ -1,11 +1,11 @@
-﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.PlantillaSalidaProyecto>
+﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.PlantillaOperacion>
 
 @{
-    ViewBag.Title = "Salidas";
+    ViewBag.Title = "Operaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Salidas de @ViewBag.Plantilla</h2>
+<h2>Operaciones de @ViewBag.Plantilla</h2>
 
 <p>
     @Html.ActionLink("Crear", "Create", new { idPlantilla = ViewBag.IdPlantilla })
@@ -19,7 +19,16 @@
             @Html.DisplayNameFor(model => model.Secuencia)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Referencia)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.PlantillaProyecto.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Indicador)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cadena)
         </th>
         <th></th>
     </tr>
@@ -33,10 +42,18 @@
             @Html.DisplayFor(modelItem => item.Secuencia)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Referencia)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.PlantillaProyecto.Nombre)
         </td>
         <td>
-            @Html.ActionLink("Asociar operaciones", "Assoc", new { id=item.Id }) |
+            @Html.DisplayFor(modelItem => item.Indicador)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cadena)
+        </td>
+        <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })

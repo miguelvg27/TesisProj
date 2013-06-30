@@ -1,7 +1,7 @@
-﻿@model TesisProj.Areas.Plantilla.Models.PlantillaFormula
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaOperacion
 
 @{
-    ViewBag.Title = "Fórmulas";
+    ViewBag.Title = "Operaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,7 +9,7 @@
 
 <h3>¿Está seguro de eliminar este registro?</h3>
 <fieldset>
-    <legend>Fórmula</legend>
+    <legend>Operación</legend>
 
     <div class="display-label">
          @Html.DisplayNameFor(model => model.Nombre)
@@ -18,6 +18,9 @@
         @Html.DisplayFor(model => model.Nombre)
     </div>
 
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodoInicial)
+    </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.PeriodoInicial)
     </div>
@@ -30,13 +33,6 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Referencia)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Referencia)
-    </div>
-
-    <div class="display-label">
          @Html.DisplayNameFor(model => model.Secuencia)
     </div>
     <div class="display-field">
@@ -44,24 +40,24 @@
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
+         @Html.DisplayNameFor(model => model.Referencia)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.PlantillaElemento.Nombre)
+        @Html.DisplayFor(model => model.Referencia)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.TipoFormula.Nombre)
+         @Html.DisplayNameFor(model => model.PlantillaProyecto.Nombre)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.TipoFormula.Nombre)
+        @Html.DisplayFor(model => model.PlantillaProyecto.Nombre)
     </div>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.Visible)
+         @Html.DisplayNameFor(model => model.Indicador)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Visible)
+        @Html.DisplayFor(model => model.Indicador)
     </div>
 
     <div class="display-label">
@@ -75,7 +71,7 @@
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Eliminar" /> |
-        @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
+        @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaProyecto }, htmlAttributes: null)
     </p>
     @Html.ValidationMessageFor(model => model.Nombre)
 }

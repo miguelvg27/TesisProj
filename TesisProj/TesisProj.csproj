@@ -194,8 +194,9 @@
     <Compile Include="Areas\Plantilla\Controllers\TipoFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoParametroController.cs" />
-    <Compile Include="Areas\Plantilla\Models\PlantillaElementoProyecto.cs" />
+    <Compile Include="Areas\Plantilla\Models\PlantillaSalidaOperacion.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaFormula.cs" />
+    <Compile Include="Areas\Plantilla\Models\PlantillaOperacion.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaParametro.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaProyecto.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Areas\Modelo\Models\SalidaProyecto.cs" />
     <Compile Include="Areas\Modelo\Models\TProjContext.cs" />
     <Compile Include="Areas\Modelo\ModeloAreaRegistration.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\PlantillaOperacionController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -320,7 +322,6 @@
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Assoc.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Create.cshtml" />
@@ -350,6 +351,12 @@
     <Content Include="Areas\Modelo\Views\Proyecto\SetParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\VerParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\ResultadosElemento.cshtml" />
+    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Details.cshtml" />
+    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Delete.cshtml" />
+    <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Assoc.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

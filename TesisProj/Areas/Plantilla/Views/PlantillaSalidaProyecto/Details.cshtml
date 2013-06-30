@@ -17,6 +17,17 @@
         @Html.DisplayFor(model => model.Nombre)
     </div>
 
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodoInicial)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodoFinal)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodoFinal)
+    </div>
+
     <div class="display-label">
          @Html.DisplayNameFor(model => model.Secuencia)
     </div>
@@ -29,13 +40,6 @@
     </div>
     <div class="display-field">
         @Html.DisplayFor(model => model.PlantillaProyecto.Nombre)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Cadena)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Cadena)
     </div>
 </fieldset>
 <p>

@@ -26,12 +26,105 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return HttpNotFound();
             }
 
-            var salidaproyectos = db.PlantillaSalidaProyectos.Include(s => s.PlantillaProyecto).OrderBy(s => s.Secuencia);
+            var salidaproyectos = db.PlantillaSalidaProyectos.Include(s => s.PlantillaProyecto).Where(s => s.IdPlantillaProyecto == plantilla.Id).OrderBy(s => s.Secuencia);
 
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;
 
             return View(salidaproyectos.ToList());
+        }
+
+        //
+        // GET: /Plantilla/PlantillaSalidaProyecto/Assoc/5
+
+        public ActionResult Assoc(int id = 0)
+        {
+            PlantillaSalidaProyecto salida = db.PlantillaSalidaProyectos.Find(id);
+            if (salida == null)
+            {
+                return HttpNotFound();
+            }
+
+            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).Select(p => p.Operacion);
+            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).Except(asociados);
+            ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
+            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
+
+            return View(salida);
+        }
+
+        //
+        // POST: /Plantilla/PlantillaSalidaProyecto/Assoc
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Assoc(PlantillaSalidaProyecto salida, FormCollection form, string add, string remove, string addall, string removeall)
+        {
+            string seleccionados;
+            int idOperacion;
+            int idSalida = salida.Id;
+
+            seleccionados = form["Opciones"];
+            if (!string.IsNullOrEmpty(add) && !string.IsNullOrEmpty(seleccionados))
+            {
+                foreach (string sIdOperacion in seleccionados.Split(','))
+                {
+                    idOperacion = int.Parse(sIdOperacion);
+                    if (!db.PlantillaSalidaOperaciones.Any(p => p.IdSalida == idSalida && p.IdOperacion == idOperacion))
+                    {
+                        db.PlantillaSalidaOperaciones.Add(new PlantillaSalidaOperacion { IdOperacion = idOperacion, IdSalida = idSalida });
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            seleccionados = form["Asociados"];
+            if (!string.IsNullOrEmpty(remove) && !string.IsNullOrEmpty(seleccionados))
+            {
+
+                PlantillaSalidaOperacion operacion;
+                foreach (string sIdOperacion in seleccionados.Split(','))
+                {
+                    idOperacion = int.Parse(sIdOperacion);
+                    operacion = db.PlantillaSalidaOperaciones.FirstOrDefault(p => p.IdOperacion == idOperacion && p.IdSalida == idSalida);
+                    if (operacion != null)
+                    {
+                        db.PlantillaSalidaOperaciones.Remove(operacion);
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(addall))
+            {
+                var plantillas = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).ToList();
+                foreach (PlantillaOperacion operacion in plantillas)
+                {
+                    idOperacion = operacion.Id;
+                    if (!db.PlantillaSalidaOperaciones.Any(p => p.IdSalida == idSalida && p.IdOperacion == idOperacion))
+                    {
+                        db.PlantillaSalidaOperaciones.Add(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
+                        db.SaveChanges();
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(removeall))
+            {
+                var plantillas = db.PlantillaSalidaOperaciones.Where(p => p.IdSalida == idSalida).ToList();
+                foreach (PlantillaSalidaOperacion operacion in plantillas)
+                {
+                    db.PlantillaSalidaOperaciones.Remove(operacion);
+                    db.SaveChanges();
+                }
+            }
+
+            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).Select(p => p.Operacion);
+            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).Except(asociados);
+            ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
+            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
+
+            return View(salida);
         }
 
         //

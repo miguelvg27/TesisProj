@@ -1,18 +1,18 @@
-﻿@model TesisProj.Areas.Plantilla.Models.PlantillaSalidaProyecto
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaOperacion
 
 @{
-    ViewBag.Title = "Salidas";
+    ViewBag.Title = "Operaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Crear</h2>
+<h2>Editar</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Salida</legend>
+        <legend>Operación</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Nombre)
@@ -42,8 +42,16 @@
             @Html.LabelFor(model => model.Secuencia)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
+            @Html.EditorFor(model => model.Secuencia)
             @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Referencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Referencia)
+            @Html.ValidationMessageFor(model => model.Referencia)
         </div>
 
         <div class="editor-label">
@@ -54,6 +62,24 @@
             @Html.ValidationMessageFor(model => model.IdPlantillaProyecto)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Indicador)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Indicador)
+            @Html.ValidationMessageFor(model => model.Indicador)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cadena)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Cadena)
+            @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+
         <p>
             <input type="submit" value="Guardar" />
         </p>
@@ -61,7 +87,7 @@
 }
 
 <div>
-    @Html.ActionLink("Regresar", "Index", routeValues: new { id = ViewBag.IdPlantilla }, htmlAttributes: null)
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaProyecto }, htmlAttributes: null)
 </div>
 
 @section Scripts {
