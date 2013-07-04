@@ -35,10 +35,10 @@ namespace TesisProj.Models
             return Financial.SYD(V, 0, l, p);
         }
 
-        public static double ResSln(double V, double vida, double pinicial, double horizonte)
+        public static double ResSln(double V, double vida, double pinicial, double periodoactual)
         {
             double pfinal = pinicial + vida - 1;
-            return pfinal > horizonte ? (pfinal - horizonte) * Sln(V, vida) : 0;
+            return pfinal > periodoactual ? (pfinal - periodoactual) * Sln(V, vida) : 0;
         }
 
         public static double Npv(double i, double[] saldo)
