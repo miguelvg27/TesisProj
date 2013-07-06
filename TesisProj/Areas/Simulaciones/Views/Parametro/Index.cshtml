@@ -1,0 +1,116 @@
+﻿@model TesisProj.Areas.Simulaciones.Models.Asignacion
+@using TesisProj.Areas.Distribuciones.Models
+@using TesisProj.Areas.Modelos.Models
+@using Telerik.Web.Mvc.UI
+
+@{
+    ViewBag.Title = "Parametros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ModeloSimlacion mL = (ModeloSimlacion)Session["Modelo"];
+}
+
+<h2>Asignacion de Distribucion a parametro</h2>
+
+@using (Html.BeginForm())
+{
+    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Asignación</legend>
+        <div class="conteiner">
+            <div class="span4 label label-inverse">@Html.LabelFor(model => model.Celdas.Nombre)@Html.EditorFor(model => model.Celdas.Nombre)</div>
+            <div class="span4 label label-inverse">@Html.LabelFor(model => model.Celdas.valor)@Html.EditorFor(model => model.Celdas.valor)</div>
+            <div class="span4 label label-inverse">@Html.LabelFor(model => model.Celdas.interes)@Html.EditorFor(model => model.Celdas.interes)</div>
+        </div>
+        <br /><br /><br /><br />
+        <div class="conteiner">
+            <div class="span6 label label-inverse">
+                <label>Distribucion:</label>
+                    @( Html.Telerik().DropDownList()
+                            .Name("Distribuciones")
+                            .BindTo(new SelectList((System.Collections.IEnumerable)ViewData["Distribuciones"], "Id", "NombreCorto"))
+                            .Placeholder("Seleccione una distribucion...")
+                            .HtmlAttributes(new { @style = "width:100%" })
+                            .CascadeTo("Modelos")
+                    )
+            </div>
+        </div>
+       
+        <div class="conteiner">
+            <div class="span6 label label-inverse">
+                <label>Modelo:</label>
+                    @( Html.Telerik().DropDownList()
+                            .Name("Modelos")
+                            .DataBinding(binding => binding.Ajax().Select("_GetModelos", "Parametro"))
+                            .HtmlAttributes(new { @style = "width:100%" })
+                            .Placeholder("Selecione un modelo...")
+                            .ClientEvents(events => events.OnChange("OnChange"))
+                    )
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Modelo</legend>
+        @if (mL != null)
+        {
+            if (mL.Binomial != null)
+            {
+                <div class="span12">
+                    @(Html.LabelForModel(mL.Binomial.N))@(Html.EditorForModel(mL.Binomial.N))
+                    @(Html.LabelForModel(mL.Binomial.K))@(Html.EditorForModel(mL.Binomial.K))
+                </div>
+                <div class="span12">
+                    <div class="span3">@(Html.LabelForModel(mL.Binomial.P))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.P))</div>    
+                    <div class="span3">@(Html.LabelForModel(mL.Binomial.Q))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.Q))</div>    
+                </div>
+                <div class="span12">
+                    <div class="span3">@(Html.LabelForModel(mL.Binomial.E))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.E))</div>    
+                    <div class="span3">@(Html.LabelForModel(mL.Binomial.V))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.V))</div>    
+                </div>
+            }
+
+            if (mL.Geometrica != null)
+            {
+
+            }
+
+            if (mL.Pascal != null)
+            {
+
+            }
+
+            if (mL.Hipergeometrica != null)
+            {
+
+            }
+
+            if (mL.Poisson != null)
+            {
+
+            }
+
+            if (mL.Uniforme != null)
+            {
+
+            }
+
+            if (mL.Normal != null)
+            {
+
+            }
+
+        }
+   
+    </fieldset>
+    
+}
+
+<script>
+    function OnChange(e) {
+        var modelo = $("#Modelos").val();
+        $.getJSON('@Url.Action("_GetModelo", "Parametro", new {Area ="Simulaciones"})',
+            { modelo: modelo })
+        location.reload()
+    }
+</script>
