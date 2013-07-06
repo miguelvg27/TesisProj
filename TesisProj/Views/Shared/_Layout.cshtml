@@ -3,11 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
+
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-</head>
+   
+    <link href="@Url.Content("~/Content/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
+@(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))</head>
+@RenderSection("HeadContent", required:false)   
 <body>
     <header>
         <div class="content-wrapper">
@@ -44,5 +53,5 @@
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
-</body>
+@(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))</body>
 </html>

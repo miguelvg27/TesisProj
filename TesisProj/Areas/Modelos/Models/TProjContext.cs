@@ -1,0 +1,185 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using TesisProj.Areas.Modelos.Models;
+
+namespace TesisProj.Models.Storage
+{
+    public partial class TProjContext : DbContext
+    {
+        public DbSet<ModeloSimlacion> InternalModelo { get; set; }
+        public DbRequester<ModeloSimlacion> TablaModelo { get; set; }
+
+        public void RegistrarTablasModelo()
+        {
+            TablaModelo = new DbRequester<ModeloSimlacion>(this, InternalModelo);
+        }
+
+        public void seedModelo()
+        {
+            List<ModeloSimlacion> modelos = new List<ModeloSimlacion>
+            {
+                new ModeloSimlacion {
+                    Id=1, 
+                    IsEliminado=false,
+                    Abreviatura="B(n,p)",
+                    Nombre="Binomial",
+                    Definicion="Combinatoria(n,k)*Potencia(p,k)*Potencia(q,n-k)",
+                    Descripcion="La distribución binomial es una distribución de probabilidad discreta "+
+                                "que mide el número de éxitos en una secuencia de n ensayos de Bernoulli "+
+                                "independientes entre sí, con una probabilidad fija p de ocurrencia del "+
+                                "éxito entre los ensayos. Un experimento de Bernoulli se caracteriza por "+
+                                "ser dicotómico, esto es, sólo son posibles dos resultados. "+
+                                "A uno de estos se denomina éxito y tiene una probabilidad de ocurrencia p y "+
+                                "al otro, fracaso, con una probabilidad q = 1 - p. "+
+                                "En la distribución binomial el anterior experimento se repite n veces, "+
+                                "de forma independiente, y se trata de calcular la probabilidad de un "+
+                                "determinado número de éxitos. Para n = 1, la binomial se convierte, de hecho, "+
+                                "en una distribución de Bernoulli.",
+                    //Binomial= new Binomial(),
+                },
+                                        
+                new ModeloSimlacion {
+                    Id=2, 
+                    IsEliminado=false,
+                    Abreviatura="G(p)",
+                    Nombre="Geometrica",
+                    Definicion="Potencia(p,1)*Potencia(q,k-1)",
+                    Descripcion="La Distribución Geométrica es una distribución de probabilidad discreta la cual "+
+                                "mide hasta que ocurra el primer éxitos en una secuencia de n ensayos de Bernoulli "+
+                                "sucesivas w independientes ",
+                    //Geometrica=new Geometrica(),
+                },
+
+                new ModeloSimlacion {
+                    Id=3, 
+                    IsEliminado=false,
+                    Abreviatura="H(N,n,r)",
+                    Nombre="Hipergeométrica",
+                    Definicion="Combinatoria(n,k)*Combinatoria(N-r,n-k)",
+                    Descripcion="Un experimento hipergeométrico consiste en escoger al azar una muestra de tamaño n, uno a uno sin restitución "+
+                                ", de N elementos o resultados posibles, donde r de los cuales pueden clasificarse como éxitos, y "+
+                                "los N-r restantes como fracasos. En cada extracción, la probabilidad de que el elemento sea un éxito es diferente"+
+                                "ya que la extracción es sin reposición. \n\n"+
+                                "Nota: El Numerador de la funcion de la probabilidad hipergeometrica, se requiere que "+
+                                "N-r>=n-k, donde resulta que k>=n+r-N, luego el menor valor que toma la variable "+
+                                "aleatoria X es el numero : \n\n"+
+                                "a=max(0,n+r-N).\n\n"+
+                                "Por Otro lado, el mayor valor que debe vereficar k<=n y k<r, luego, el mayor valor "+
+                                "que toma Xpuede denotarse por:\n\n"+
+                                "b=min(n,r).",
+                    //Hipergeometrica=new Hipergeometrica(),
+                },
+
+                new ModeloSimlacion
+                {
+                    Id=4,
+                    IsEliminado=false,
+                    Abreviatura="P(r,p)",
+                    Nombre="Pascal",
+                    Definicion="Combinatoria(k-1,r-1)*Potencia(p,1)*Potencia(q,k-r)",
+                    Descripcion = "Se denomina experimento binomial negativo o de pascal "+
+                                  "a las repeticiones independientes de un experimento de "+
+                                  "aleatorio de Bernulli hasta obtener el éxito número r. "+
+                                  "En cada enseayo de Bernulli ´puede ocurrir un éxito con "+
+                                  "probabilidad p o un fracaso con probabilidad q=p-1.\n\n"+
+                                  "A la variable aleatoria X que se define como el número de "+
+                                  "intentos hasta que ocurra el éxito número r se le denomina" +
+                                  "variable aleatoria binomial negativa o de Pascal. Su rango "+
+                                  "es el conjunto: Rx = {r,r+1,r+2,... }\n\n"+
+                                  "Si k pertenece a Rx, el evento [X = k] ocurre, si resulta éxito "+
+                                  "en la k-ésima prueba y en los restantes k-1 pruebas resultan r-1 éxitos "+
+                                  "y (k-1)-(r-1) =k-r fracasos.\n\n",
+                    //Pascal = new Pascal(),
+                },
+
+                new ModeloSimlacion
+                {
+                    Id=5,
+                    IsEliminado=false,
+                    Abreviatura="P(l)",
+                    Nombre="Poisson",
+                    Definicion=" ",
+                    Descripcion = "Se dice que la variabl ealeatoria discreta X cuyos valores  "+
+                                  "posibles son : 0,1,2,... tienen distribucion de Poisson con parametro l (l>0) "+
+                                  "si su funcion de Probabilidad es: \n\n",
+                    //Poisson = new Poisson(),
+                },
+
+                new ModeloSimlacion
+                {
+                    Id=6,
+                    IsEliminado=false,
+                    Abreviatura="U(a,b)",
+                    Nombre="Uniforme",
+                    Definicion=" ",
+                    Descripcion = "Se dice que la variable aleatoria continua X, tiene distribución "+
+                                  "uniforme (o rectangular) en el intervalo [a,b], a < b, y se describe por "+
+                                  "X - U[a,b], si su funcion de densidad de probabilidad es:\n\n",
+                    //Uniforme  = new Uniforme(),
+                },
+
+                new ModeloSimlacion
+                {
+                    Id=7,
+                    IsEliminado=false,
+                    Abreviatura="N(u,o)",
+                    Nombre="Normal",
+                    Definicion=" ",
+                    Descripcion = "Se dice que la variable aleatoria continua X, que toma los valores reales "+
+                                  ", - inf < x < inf, es normal coon parametros u y o y se describe por "+
+                                  "X - N[u,o], si su funcion de densidad de probabilidad es:\n\n",
+                    //Normal  = new Normal(),
+                },
+
+
+            };
+            foreach (ModeloSimlacion m in modelos)
+            {
+                TablaModelo.AddElement(m);
+            }
+        }
+
+        public void seedModelo2()
+        {
+            ModeloSimlacion mm = new ModeloSimlacion();
+            mm=TablaModelo.One(m => m.Id == 1);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            TablaModelo.ModifyElement(mm);
+
+            mm = new ModeloSimlacion();
+            mm = TablaModelo.One(m => m.Id == 2);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            TablaModelo.ModifyElement(mm);
+
+            mm = new ModeloSimlacion();
+            mm = TablaModelo.One(m => m.Id == 3);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            TablaModelo.ModifyElement(mm);
+
+            mm = new ModeloSimlacion();
+            mm = TablaModelo.One(m => m.Id == 4);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            TablaModelo.ModifyElement(mm);
+
+            mm = new ModeloSimlacion();
+            mm = TablaModelo.One(m => m.Id == 5);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            TablaModelo.ModifyElement(mm);
+
+            mm = new ModeloSimlacion();
+            mm = TablaModelo.One(m => m.Id == 6);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 2);
+            TablaModelo.ModifyElement(mm);
+
+            mm = new ModeloSimlacion();
+            mm = TablaModelo.One(m => m.Id == 7);
+            mm.Distribucion = TablaDistribucion.One(d => d.Id == 2);
+            TablaModelo.ModifyElement(mm);
+        }
+            
+    }
+}
+

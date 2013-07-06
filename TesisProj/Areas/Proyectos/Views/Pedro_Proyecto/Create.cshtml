@@ -1,0 +1,77 @@
+﻿@model TesisProj.Areas.Proyectos.Models.Pedro_Proyecto
+@using Telerik.Web.Mvc.UI
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Proyecto</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.fecha)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.fecha)
+            @Html.ValidationMessageFor(model => model.fecha)
+        </div>
+
+        <div class="editor-label">
+            Nombre del Parametro
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.parametro.Nombre)
+            @Html.ValidationMessageFor(model => model.parametro.Nombre)
+        </div>
+
+        <div class="editor-label">
+            Numero de Periodos
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().IntegerTextBoxFor(model => model.parametro.periodos)
+            @Html.ValidationMessageFor(model => model.parametro.periodos)
+        </div>
+
+        <div class="editor-label">
+            Valor del parametro
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().NumericTextBoxFor(model => model.parametro.valor)
+            @Html.ValidationMessageFor(model => model.parametro.valor)
+        </div>
+
+        <div class="editor-label">
+            Interes
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().PercentTextBoxFor(model => model.parametro.interes).DecimalDigits(2)
+            @Html.ValidationMessageFor(model => model.parametro.interes)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

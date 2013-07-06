@@ -29,11 +29,26 @@ namespace TesisProj.Models.Storage
         {
             RegistrarTablasPlantilla();
             RegistrarTablasProyecto();
+
+            //Pedro Curich
+            RegistrarTablasProyectoPedro();
+            RegistrarTablasDistribucion();
+            RegistrarTablasModelo();
+            RegistrarTablasAdministracion();
+
         }
 
         public void Seed(){
             SeedPlantilla();
             SeedProyecto();
+           
+            //Pedro Curich
+            SeedEstadoCivil();
+            SeedElementos();
+            seedModelo();
+            SeedDistribuciones();
+            seedModelo2();
+
         }
     }
 
