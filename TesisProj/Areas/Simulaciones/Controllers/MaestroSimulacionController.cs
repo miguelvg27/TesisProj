@@ -44,8 +44,6 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                         salida.Add(aux);
                     }
                 }
-
-
                 return View(salida);
         }
 

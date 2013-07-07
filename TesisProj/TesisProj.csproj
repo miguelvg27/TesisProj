@@ -188,6 +188,9 @@
     <Compile Include="Areas\Administracion\Models\EstadoCivil.cs" />
     <Compile Include="Areas\Administracion\Models\TProjContext.cs" />
     <Compile Include="Areas\Administracion\Models\Ubigeo.cs" />
+    <Compile Include="Areas\Comparacion\ComparacionAreaRegistration.cs" />
+    <Compile Include="Areas\Comparacion\Controllers\ComparacionController.cs" />
+    <Compile Include="Areas\Comparacion\Models\Comparar.cs" />
     <Compile Include="Areas\Distribuciones\DistribucionesAreaRegistration.cs" />
     <Compile Include="Areas\Distribuciones\Models\Distribucion.cs" />
     <Compile Include="Areas\Distribuciones\Models\TProjContext.cs" />
@@ -655,6 +658,9 @@
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanProyecto.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoTirProyecto.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoTirInversionista.cshtml" />
+    <Content Include="Areas\Comparacion\Views\Web.config" />
+    <Content Include="Areas\Comparacion\Views\Comparacion\Index.cshtml" />
+    <Content Include="Areas\Comparacion\Views\Comparacion\_Resultados.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -760,6 +766,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administracion\Controllers\" />
     <Folder Include="Areas\Administracion\Views\Shared\" />
+    <Folder Include="Areas\Comparacion\Views\Shared\" />
     <Folder Include="Areas\Distribuciones\Controllers\" />
     <Folder Include="Areas\Distribuciones\Views\Shared\" />
     <Folder Include="Areas\Modelos\Controllers\" />
