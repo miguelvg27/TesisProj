@@ -651,7 +651,6 @@
     <Content Include="Areas\Modelo\Views\Proyecto\Muro.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Fisco.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Origenes.cshtml" />
-    <Content Include="Areas\MonteCarlo\Views\Web.config" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Index.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Resultados.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanInversionista.cshtml" />
