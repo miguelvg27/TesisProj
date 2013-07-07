@@ -56,6 +56,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.Sensible)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.Sensible)
+            @Html.ValidationMessageFor(model => model.Sensible)
+        </div>
+
+        <div class="editor-label">
             Valor inicial
         </div>
         <div class="editor-field">

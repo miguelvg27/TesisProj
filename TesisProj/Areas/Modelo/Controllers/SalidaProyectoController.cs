@@ -33,23 +33,14 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(salidaproyectos.ToList());
         }
 
-        //
-        // GET: /Modelo/Proyecto/Pelicula/5
-
-        public ActionResult Pelicula(int id = 0)
+        public List<Operacion> CalcularProyecto(int idProyecto)
         {
-            SalidaProyecto salida = db.SalidaProyectos.Find(id);
-            Proyecto proyecto = db.Proyectos.Find(salida.IdProyecto);
+            Proyecto proyecto = db.Proyectos.Find(idProyecto);
             int horizonte = proyecto.Horizonte;
 
-            if (salida == null)
-            {
-                return HttpNotFound();
-            }
-
-            var operaciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).OrderBy(s => s.Secuencia).ToList();
-            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == salida.IdProyecto).ToList();
-            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == salida.IdProyecto).ToList();
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == idProyecto).OrderBy(s => s.Secuencia).ToList();
+            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == idProyecto).ToList();
+            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
             var tipoformulas = db.TipoFormulas.ToList();
 
             //  Lleno los valores de las referencias a tipos de fórmula
@@ -80,17 +71,28 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             foreach (Operacion operacion in operaciones)
             {
-                var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia && o.IdProyecto == salida.IdProyecto).ToList();
+                var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia && o.IdProyecto == idProyecto).ToList();
                 operacion.Valores = operacion.Evaluar(horizonte, refoperaciones, tipoformulas, formulas, parametros);
             }
 
-            ViewBag.IdProyecto = salida.IdProyecto;
-            ViewBag.Proyecto = proyecto.Nombre;
-            ViewBag.Salida = salida.Nombre;
-            ViewBag.Horizonte = proyecto.Horizonte;
+            return operaciones;
+        }
 
+        //
+        // GET: /Modelo/Proyecto/Pelicula/5
+
+        public ActionResult Pelicula(int id = 0)
+        {
+            SalidaProyecto salida = db.SalidaProyectos.Find(id);
+
+            if (salida == null)
+            {
+                return HttpNotFound();
+            }
+
+            var operaciones = CalcularProyecto(salida.IdProyecto);
             var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).Select(s => s.Operacion).ToList();
-
+            
             return View(operaciones.Intersect(exoperaciones).ToList());
         }
 
