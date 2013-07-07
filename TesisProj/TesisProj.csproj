@@ -715,7 +715,35 @@
     <Content Include="Scripts\MicrosoftAjax.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\telerik.all.js" />
+    <Content Include="Scripts\telerik.autocomplete.js" />
+    <Content Include="Scripts\telerik.calendar.js" />
+    <Content Include="Scripts\telerik.chart.js" />
+    <Content Include="Scripts\telerik.combobox.js" />
     <Content Include="Scripts\telerik.common.js" />
+    <Content Include="Scripts\telerik.datepicker.js" />
+    <Content Include="Scripts\telerik.datetimepicker.js" />
+    <Content Include="Scripts\telerik.draganddrop.js" />
+    <Content Include="Scripts\telerik.editor.js" />
+    <Content Include="Scripts\telerik.examples.min.js" />
+    <Content Include="Scripts\telerik.grid.editing.js" />
+    <Content Include="Scripts\telerik.grid.filtering.js" />
+    <Content Include="Scripts\telerik.grid.grouping.js" />
+    <Content Include="Scripts\telerik.grid.js" />
+    <Content Include="Scripts\telerik.grid.reordering.js" />
+    <Content Include="Scripts\telerik.grid.resizing.js" />
+    <Content Include="Scripts\telerik.imagebrowser.js" />
+    <Content Include="Scripts\telerik.list.js" />
+    <Content Include="Scripts\telerik.menu.js" />
+    <Content Include="Scripts\telerik.panelbar.js" />
+    <Content Include="Scripts\telerik.slider.js" />
+    <Content Include="Scripts\telerik.splitter.js" />
+    <Content Include="Scripts\telerik.tabstrip.js" />
+    <Content Include="Scripts\telerik.textbox.js" />
+    <Content Include="Scripts\telerik.timepicker.js" />
+    <Content Include="Scripts\telerik.treeview.js" />
+    <Content Include="Scripts\telerik.upload.js" />
+    <Content Include="Scripts\telerik.window.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

@@ -75,4 +75,13 @@ namespace TesisProj.Areas.Modelo.Models
             }
         }
     }
+
+    public class SimAns
+    {
+        public double TirE { get; set; }
+        public double TirF { get; set; }
+        public double VanE { get; set; }
+        public double VanF { get; set; }
+    }
+
 }

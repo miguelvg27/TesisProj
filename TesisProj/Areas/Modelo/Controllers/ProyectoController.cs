@@ -17,6 +17,31 @@ namespace TesisProj.Areas.Modelo.Controllers
         private TProjContext db = new TProjContext();
         private int userId = 0;
 
+        public static SimAns simular(int horizonte, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas)
+        {
+            SimAns resultado = new SimAns { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
+
+            CalcularProyecto(horizonte, operaciones, parametros, formulas, tipoformulas, true);
+
+            Operacion tire = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
+            Operacion tirf = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
+            Operacion vane = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
+            Operacion vanf = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
+
+            try
+            {
+                resultado.TirE = tire == null ? 0 : tire.Valores[0];
+                resultado.TirF = tirf == null ? 0 : tirf.Valores[0];
+                resultado.VanE = vane == null ? 0 : vane.Valores[0];
+                resultado.VanF = vanf == null ? 0 : vanf.Valores[0];
+            }
+            catch (Exception)
+            {
+            }
+        
+            return resultado;
+        }
+
         //
         // GET: /Modelo/Proyecto/
 

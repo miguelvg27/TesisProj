@@ -71,6 +71,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.Label("Marcar como:")
+            <a href="#" onclick="Mark('TIRE');">TIR del proyecto</a> |
+            <a href="#" onclick="Mark('TIRF');">TIR del inversionista</a> |
+            <a href="#" onclick="Mark('VANE');">VAN del proyecto</a> |
+            <a href="#" onclick="Mark('VANF');">VAN del inversionista</a>
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
@@ -91,3 +99,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script type="text/javascript">
+    function Mark(story) {
+        document.getElementById('Indicador').checked = true;
+        document.getElementById('Referencia').value = story;
+    }
+</script>
