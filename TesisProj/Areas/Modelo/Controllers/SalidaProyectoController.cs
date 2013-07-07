@@ -33,25 +33,17 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(salidaproyectos.ToList());
         }
 
-        public List<Operacion> CalcularProyecto(int idProyecto)
+        public List<Operacion> CalcularProyecto(int horizonte, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas)
         {
-            Proyecto proyecto = db.Proyectos.Find(idProyecto);
-            int horizonte = proyecto.Horizonte;
-
-            var operaciones = db.Operaciones.Where(o => o.IdProyecto == idProyecto).OrderBy(s => s.Secuencia).ToList();
-            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == idProyecto).ToList();
-            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
-            var tipoformulas = db.TipoFormulas.ToList();
-
             //  Lleno los valores de las referencias a tipos de fórmula
 
             foreach (TipoFormula tipoformula in tipoformulas)
             {
-                tipoformula.Valores = new List<double>();
+                tipoformula.Valores = new double[horizonte];
 
                 for (int i = 0; i < horizonte; i++)
                 {
-                    tipoformula.Valores.Add(0);
+                    tipoformula.Valores[i] = 0;
                 }
 
                 var formulitas = formulas.Where(f => f.IdTipoFormula == tipoformula.Id).ToList();
@@ -71,7 +63,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             foreach (Operacion operacion in operaciones)
             {
-                var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia && o.IdProyecto == idProyecto).ToList();
+                var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia).ToList();
                 operacion.Valores = operacion.Evaluar(horizonte, refoperaciones, tipoformulas, formulas, parametros);
             }
 
@@ -90,7 +82,14 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var operaciones = CalcularProyecto(salida.IdProyecto);
+            int horizonte = db.Proyectos.Find(salida.IdProyecto).Horizonte;
+
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).OrderBy(s => s.Secuencia).ToList();
+            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == salida.IdProyecto).ToList();
+            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == salida.IdProyecto).ToList();
+            var tipoformulas = db.TipoFormulas.ToList();
+
+            CalcularProyecto(horizonte, operaciones, parametros, formulas, tipoformulas);
             var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).Select(s => s.Operacion).ToList();
             
             return View(operaciones.Intersect(exoperaciones).ToList());
