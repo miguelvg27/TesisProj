@@ -14,6 +14,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         //
         // GET: /Simulaciones/Normal/
 
+        [HttpGet]
         public ActionResult Index( )
         {
             Pedro_Parametro EmpezarSimulacion = (Pedro_Parametro)Session["Celdas_a_simular"];
@@ -55,6 +56,12 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         public ActionResult _Grafico()
         {
             return PartialView((List<Grafico>)Session["Grafico"]);
+        }
+
+        [HttpPost]
+        public ActionResult Index(Normal n)
+        {
+            return View();
         }
 
     }
