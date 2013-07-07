@@ -8,6 +8,12 @@
 
 <h2>Distribucion Normal</h2>
 
+@using (Html.BeginForm())
+{
+    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
 <fieldset>
     <legend>Normal</legend>
 
@@ -30,9 +36,10 @@
             </td>
         </tr>
     </table>
-
-    
 </fieldset>
+    
+    <button class="btn btn-inverse" type="submit">Establecer</button>
+}
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
