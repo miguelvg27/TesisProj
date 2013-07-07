@@ -6,11 +6,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using TesisProj.Models;
+using TesisProj.Models.Storage;
 
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Poisson : Grafico
+    public class Poisson : DbObject
     {
         #region Parametros
 

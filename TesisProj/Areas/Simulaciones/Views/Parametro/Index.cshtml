@@ -1,6 +1,7 @@
 ﻿@model TesisProj.Areas.Simulaciones.Models.Asignacion
 @using TesisProj.Areas.Distribuciones.Models
 @using TesisProj.Areas.Modelos.Models
+@using TesisProj.Areas.Proyectos.Models
 @using Telerik.Web.Mvc.UI
 
 @{
@@ -19,13 +20,13 @@
     <fieldset>
         <legend>Asignación</legend>
         <div class="conteiner">
-            <div class="span4 label label-inverse">@Html.LabelFor(model => model.Celdas.Nombre)@Html.EditorFor(model => model.Celdas.Nombre)</div>
-            <div class="span4 label label-inverse">@Html.LabelFor(model => model.Celdas.valor)@Html.EditorFor(model => model.Celdas.valor)</div>
-            <div class="span4 label label-inverse">@Html.LabelFor(model => model.Celdas.interes)@Html.EditorFor(model => model.Celdas.interes)</div>
+            <div class="span3 label label-inverse">@Html.LabelFor(model => model.Celdas.Nombre) @Html.Telerik().AutoCompleteFor(model => model.Celdas.Nombre).HtmlAttributes(new { style = "width: 200px" })</div>
+            <div class="span3 label label-inverse">@Html.LabelFor(model => model.Celdas.valor)  @Html.Telerik().AutoCompleteFor(model => model.Celdas.valor).HtmlAttributes(new { style = "width: 100px" })</div>
+            <div class="span3 label label-inverse">@Html.LabelFor(model => model.Celdas.interes)@Html.Telerik().AutoCompleteFor(model => model.Celdas.interes).HtmlAttributes(new { style = "width: 100px" })</div>
         </div>
         <br /><br /><br /><br />
-        <div class="conteiner">
-            <div class="span6 label label-inverse">
+@*        <div class="conteiner">
+            <div class="span3 label label-inverse">
                 <label>Distribucion:</label>
                     @( Html.Telerik().DropDownList()
                             .Name("Distribuciones")
@@ -35,10 +36,7 @@
                             .CascadeTo("Modelos")
                     )
             </div>
-        </div>
-       
-        <div class="conteiner">
-            <div class="span6 label label-inverse">
+            <div class="span3 label label-inverse">
                 <label>Modelo:</label>
                     @( Html.Telerik().DropDownList()
                             .Name("Modelos")
@@ -48,62 +46,25 @@
                             .ClientEvents(events => events.OnChange("OnChange"))
                     )
             </div>
-        </div>
+        </div>*@
+        <br /><br /><br />
+            <h1>Calendario a Simular</h1>
+     <table>
+        <tr>
+            @foreach (Pedro_Elemento e in Model.Celdas.Elementos)
+            {
+                <th>@e.Nombre.Replace("Periodo","")</th>
+            }
+        </tr>
+        <tr>
+            @foreach (Pedro_Elemento e in Model.Celdas.Elementos)
+            {
+                <td>@(e.valor)</td>
+            }
+        </tr>
+    </table>
     </fieldset>
-    <fieldset>
-        <legend>Modelo</legend>
-        @if (mL != null)
-        {
-            if (mL.Binomial != null)
-            {
-                <div class="span12">
-                    @(Html.LabelForModel(mL.Binomial.N))@(Html.EditorForModel(mL.Binomial.N))
-                    @(Html.LabelForModel(mL.Binomial.K))@(Html.EditorForModel(mL.Binomial.K))
-                </div>
-                <div class="span12">
-                    <div class="span3">@(Html.LabelForModel(mL.Binomial.P))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.P))</div>    
-                    <div class="span3">@(Html.LabelForModel(mL.Binomial.Q))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.Q))</div>    
-                </div>
-                <div class="span12">
-                    <div class="span3">@(Html.LabelForModel(mL.Binomial.E))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.E))</div>    
-                    <div class="span3">@(Html.LabelForModel(mL.Binomial.V))</div><div class="span3">@(Html.EditorForModel(mL.Binomial.V))</div>    
-                </div>
-            }
 
-            if (mL.Geometrica != null)
-            {
-
-            }
-
-            if (mL.Pascal != null)
-            {
-
-            }
-
-            if (mL.Hipergeometrica != null)
-            {
-
-            }
-
-            if (mL.Poisson != null)
-            {
-
-            }
-
-            if (mL.Uniforme != null)
-            {
-
-            }
-
-            if (mL.Normal != null)
-            {
-
-            }
-
-        }
-   
-    </fieldset>
-    
 }
 
 <script>
@@ -111,6 +72,23 @@
         var modelo = $("#Modelos").val();
         $.getJSON('@Url.Action("_GetModelo", "Parametro", new {Area ="Simulaciones"})',
             { modelo: modelo })
-        location.reload()
     }
 </script>
+
+
+<table>
+    <tr>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Binomial","Index","Binomial",null,new {@style="color:white;"}) </div></td>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Geometrica","Index","Geometrica",null,new {@style="color:white;"}) </div></td>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Hipergeometrica","Index","Hipergeometrica",null,new {@style="color:white;"}) </div></td>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Pascal","Index","Pascal",null,new {@style="color:white;"}) </div></td>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Poisson","Index","Poisson",null,new {@style="color:white;"}) </div></td>
+    </tr>
+    <tr>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Normal","Index","Normal",null,new {@style="color:white;"}) </div></td>
+        <td><div class="btn btn-inverse">@Html.ActionLink("Uniforme","Index","Uniforme",null,new {@style="color:white;"}) </div></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+</table>

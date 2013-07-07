@@ -16,7 +16,7 @@ namespace TesisProj.Areas.Proyectos.Models
                 if (y == 0)
                 {
                     Pedro_Elemento aux = new Pedro_Elemento(y, valorParametro);
-                    _parametro.Elementos.Add(aux);
+                    //_parametro.Elementos.Add(aux); no considera el valor inicial
                 }
                 else
                 {

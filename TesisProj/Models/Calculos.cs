@@ -26,5 +26,24 @@ namespace TesisProj.Models
             if (j < 0) return -d;
             else return d;
         }
+
+        public static double DesviacionStandard(List<double> listaDatos)
+        {
+            double desvStd = 0;
+            double N = 0, prom = 0, suma = 0, NrestadoUno = 0, sumapotencias = 0;
+            N = listaDatos.Count;
+            NrestadoUno = N - 1;
+            foreach (double dato in listaDatos)
+            {
+                suma += dato;
+            }
+            prom = suma / N;
+            foreach (double dato in listaDatos)
+            {
+                sumapotencias += Math.Pow((dato - prom), 2);
+            }
+            desvStd = Math.Sqrt((1 * sumapotencias) / NrestadoUno);
+            return desvStd;
+        }
     }
 }

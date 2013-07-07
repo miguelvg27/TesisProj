@@ -1,0 +1,18 @@
+﻿@using Telerik.Web.Mvc.UI
+@using TesisProj.Areas.Proyectos.Models
+@model ICollection<TesisProj.Areas.Proyectos.Models.Pedro_Elemento>
+
+<table>
+    <tr>
+        @foreach (Pedro_Elemento e in Model)
+        {
+            <th>@e.Nombre</th>
+        }
+    </tr>
+    <tr>
+        @foreach (Pedro_Elemento e in Model)
+        {
+            <td>@(Math.Round(e.valor,2))</td>
+        }
+    </tr>
+</table>

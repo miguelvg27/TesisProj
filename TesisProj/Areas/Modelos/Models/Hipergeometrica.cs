@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.ComponentModel;
 using TesisProj.Models;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Hipergeometrica : Grafico
+    public class Hipergeometrica : DbObject
     {
         #region Parametros
 

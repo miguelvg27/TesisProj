@@ -6,11 +6,12 @@ using TesisProj.Models;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using TesisProj.Models.Storage;
 
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Pascal : Grafico
+    public class Pascal : DbObject
     {
         #region Parametros
 

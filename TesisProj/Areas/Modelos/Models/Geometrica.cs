@@ -5,10 +5,11 @@ using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Geometrica : Grafico
+    public class Geometrica : DbObject
     {
         
         #region Parametros

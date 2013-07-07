@@ -6,10 +6,11 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using TesisProj.Models;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Binomial : Grafico
+    public class Binomial : DbObject
     {
 
         #region Parametros
