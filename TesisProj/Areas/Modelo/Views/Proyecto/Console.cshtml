@@ -21,18 +21,22 @@
         Visualiza los resultados y rentabilidad del proyecto.
     </li>
     <li class="four">
+        <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", id = @Model.Id })">Análisis de sensibilidad</a></h5>
+        Realiza el análisis de sensibilidad del proyecto con la simulación de Monte Carlo.
+    </li>
+    <li class="five">
         <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Colaboradores</a></h5>
         Invita a otros usuarios a colaborar con el proyecto.
     </li>
-    <li class="five">
+    <li class="six">
         <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Versiones</a></h5>
         Guarda una nueva versión del proyecto o restaura una anterior.
     </li>
-    <li class="six">
+    <li class="seven">
         <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
         Visualiza los cambios realizados en el proyecto.
     </li>
-    <li class="seven">
+    <li class="eight">
         <h5><a href="@Url.Action("Delete", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Eliminar</a></h5>
         Elimina <b>definitivamente</b> el proyecto.
     </li>
