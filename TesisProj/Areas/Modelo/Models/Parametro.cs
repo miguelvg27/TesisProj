@@ -47,6 +47,9 @@ namespace TesisProj.Areas.Modelo.Models
 
         [InverseProperty("Parametro")]
         public List<Celda> Celdas { get; set; }
+
+        [NotMapped]
+        public List<Celda> CeldasSensibles { get; set; }
         
         public Parametro()
         {
@@ -59,6 +62,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.Nombre = plantilla.Nombre;
             this.Referencia = plantilla.Referencia;
             this.Constante = plantilla.Constante;
+            this.Sensible = plantilla.Sensible;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

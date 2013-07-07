@@ -27,6 +27,9 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Constante")]
         public bool Constante { get; set; }
 
+        [DisplayName("Constante")]
+        public bool Sensible { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Plantilla")]
         public int IdPlantillaElemento { get; set; }

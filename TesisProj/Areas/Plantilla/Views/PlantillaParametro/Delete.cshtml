@@ -45,6 +45,13 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Constante)
     </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Sensible)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Sensible)
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
