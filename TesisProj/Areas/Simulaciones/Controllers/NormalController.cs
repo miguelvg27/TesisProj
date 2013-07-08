@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Modelos.Models;
 using TesisProj.Areas.Proyectos.Models;
+using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Simulaciones.Controllers
 {
@@ -13,44 +16,41 @@ namespace TesisProj.Areas.Simulaciones.Controllers
     {
         //
         // GET: /Simulaciones/Normal/
+        TProjContext context = new TProjContext();
 
         [HttpGet]
-        public ActionResult Index( )
+        public ActionResult Index(int idParametro)
         {
-            Pedro_Parametro EmpezarSimulacion = (Pedro_Parametro)Session["Celdas_a_simular"];
-            Normal n= new Normal();
-            n.mean = EmpezarSimulacion.Elementos.Average(e => e.valor);
-            if(Calculos.DesviacionStandard(EmpezarSimulacion.Elementos.Select(e => e.valor).ToList())==0)
-            {
-                n.std =1;
-            }else
-            {
-                n.std=Calculos.DesviacionStandard(EmpezarSimulacion.Elementos.Select(e => e.valor).ToList());
-            }
 
-            RandomGenerator rg = new RandomGenerator(new Random());
+            Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
+            ModeloSimlacion m = new ModeloSimlacion();
+            ViewBag.idParametro = idParametro;
+            double mean = p.Celdas.Average(e => Convert.ToDouble(e.Valor));
+            double std = Calculos.DesviacionStandard(p.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
+            m.Normal = new Normal(mean,std);
+            m.Nombre = "Normal";
+            MaestroSimulacion maestro = new MaestroSimulacion(p,m);
+            maestro.ActualizarCeldas("Normal");
+            p.CeldasSensibles = maestro.GetCeldasSimuladas();
 
-            Pedro_Parametro salida = new Pedro_Parametro() ;
-            salida.Elementos = new List<Pedro_Elemento>();
             List<double> grafico = new List<double>();
             
-            for (int i = 0; i < EmpezarSimulacion.Elementos.Count; i++)
+            foreach (Celda c in p.CeldasSensibles)
             {
-                double x=rg.NormalDeviate();
-                Pedro_Elemento aux = new Pedro_Elemento(i, x + n.mean);
-                grafico.Add(Math.Round(x + n.mean,1));
-                salida.Elementos.Add(aux);
+                double aux = Convert.ToDouble(c.Valor);
+                grafico.Add(aux);
             }
 
-            Session["Celdas_simulada"] = salida.Elementos;
-            n.GetFuncionSimpleArreglo(grafico);
-            Session["Grafico"] = n.graficar;
-            return View(n);
+            m.Normal.GetFuncionSimpleArreglo(grafico);
+            Session["Grafico"] = m.Normal.graficar;
+            Session["Celdas_simulada"] = p.CeldasSensibles;
+
+            return View(m.Normal);
         }
 
         public ActionResult _CeldasSimuladas()
         {
-            return PartialView((List<Pedro_Elemento>)Session["Celdas_simulada"]);
+            return PartialView((List<Celda>)Session["Celdas_simulada"]);
         }
 
         public ActionResult _Grafico()

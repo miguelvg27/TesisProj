@@ -19,12 +19,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public ActionResult Index(int idProyecto)
         {
-            var elementos = context.Elementos.Include("Parametros").Where(e => e.IdProyecto == idProyecto).ToList();
+            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
+            ViewBag.ProyectoId = idProyecto;
             List<MaestroSimulacion> salida = new List<MaestroSimulacion>();
-
-            foreach (Elemento elemento in elementos)
-            {
-                var parametros = elemento.Parametros;
 
                 foreach (Parametro parametro in parametros)
                 {
@@ -38,7 +35,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                         salida.Add(aux);
                     }
                 }
-            }
+            
 
             return View(salida);
         }

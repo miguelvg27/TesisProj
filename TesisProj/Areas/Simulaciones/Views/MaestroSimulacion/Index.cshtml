@@ -5,24 +5,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Asignar Modelo</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
-    <tr>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
+    <table>
+@foreach (var item in Model)
+{
+        <tr>
+            <th>@item.parametro.Nombre</th>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-info" href="@Url.Action("Index", "Binomial", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Binomial</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Geometrica", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Geometrica</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Hipergeometrica", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Hipergeometrica</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Pascal", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Pascal</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Poisson</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Normal</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Uniforme</a>               
+                </div>
+            </td>     
+        </tr>
 }
+            </table>
 
-</table>
+
+<div>
+@Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
+</div>

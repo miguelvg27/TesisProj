@@ -16,23 +16,27 @@ namespace TesisProj.Areas.Simulaciones.Models
         {
             this.parametro = p;
             this.modelobase = m;
+            this.parametro.CeldasSensibles = new List<Celda>();
         }
 
         public void ActualizarCeldas(string modelo)
         {
             if (modelobase.Nombre.Equals("Normal"))
             {
+                List<Celda> celdas = new List<Celda>();
                 foreach (Celda c in parametro.Celdas)
                 {
                     RandomGenerator rg = new RandomGenerator(new Random());
-                    c.Valor = Convert.ToDecimal(rg.NormalDeviate()+modelobase.Normal.mean);
+                    decimal valor = Convert.ToDecimal(rg.NormalDeviate() + modelobase.Normal.mean);
+                    celdas.Add(new Celda { IdParametro = c.IdParametro, Valor = valor, Periodo = c.Periodo });
                 }
+                parametro.CeldasSensibles = celdas;
             }
         }
 
-        public List<Celda> GeteldasSimuladas()
+        public List<Celda> GetCeldasSimuladas()
         {
-            return parametro.Celdas;
+            return parametro.CeldasSensibles;
         }
     }
 }
