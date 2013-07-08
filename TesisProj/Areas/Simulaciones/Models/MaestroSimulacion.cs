@@ -24,9 +24,10 @@ namespace TesisProj.Areas.Simulaciones.Models
             if (modelobase.Nombre.Equals("Normal"))
             {
                 List<Celda> celdas = new List<Celda>();
+                RandomGenerator rg = new RandomGenerator();
                 foreach (Celda c in parametro.Celdas)
                 {
-                    RandomGenerator rg = new RandomGenerator(new Random());
+                    
                     decimal valor = Convert.ToDecimal(rg.NormalDeviate() + modelobase.Normal.mean);
                     celdas.Add(new Celda { IdParametro = c.IdParametro, Valor = valor, Periodo = c.Periodo });
                 }

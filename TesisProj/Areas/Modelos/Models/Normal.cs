@@ -67,7 +67,7 @@ namespace TesisProj.Areas.Modelos.Models
 
         #region Formulas
 
-        public double Aleatorio(double fx)
+        private double Aleatorio(double fx)
         {
             double inicio = inf;
             double fin = inf + avance;
