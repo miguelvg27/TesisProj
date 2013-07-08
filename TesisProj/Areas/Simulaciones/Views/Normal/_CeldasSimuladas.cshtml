@@ -1,16 +1,17 @@
 ﻿@using Telerik.Web.Mvc.UI
 @using TesisProj.Areas.Proyectos.Models
+@using TesisProj.Areas.Modelo.Models 
 @model ICollection<TesisProj.Areas.Modelo.Models.Celda>
 
 <table>
     <tr>
-        @foreach (TesisProj.Areas.Modelo.Models.Celda e in Model)
+        @foreach (Celda e in Model)
         {
-            <th>@e.Parametro.Nombre</th>
+            <th>@e.Periodo</th>
         }
     </tr>
     <tr>
-        @foreach (TesisProj.Areas.Modelo.Models.Celda e in Model)
+        @foreach (Celda e in Model)
         {
             <td>@(Math.Round(e.Valor,2))</td>
         }

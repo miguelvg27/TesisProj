@@ -48,11 +48,13 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             return View(m.Normal);
         }
 
+        [ChildActionOnly]
         public ActionResult _CeldasSimuladas()
         {
             return PartialView((List<Celda>)Session["Celdas_simulada"]);
         }
 
+        [ChildActionOnly]
         public ActionResult _Grafico()
         {
             return PartialView((List<Grafico>)Session["Grafico"]);
