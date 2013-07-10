@@ -11,8 +11,9 @@ namespace TesisProj.Models.Storage
 {
     public partial class TProjContext : DbContext
     {
-        
-        public TProjContext() : base("TProjDb") 
+
+        public TProjContext()
+            : base("TProjDb")
         {
             RegistrarTablas();
         }
@@ -38,10 +39,11 @@ namespace TesisProj.Models.Storage
 
         }
 
-        public void Seed(){
+        public void Seed()
+        {
             SeedPlantilla();
             SeedProyecto();
-           
+
             //Pedro Curich
             SeedEstadoCivil();
             SeedElementos();
@@ -52,10 +54,11 @@ namespace TesisProj.Models.Storage
         }
     }
 
-//    public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
+    //    public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
     public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
     {
-        protected override void Seed(TProjContext context){
+        protected override void Seed(TProjContext context)
+        {
             context.Seed();
         }
     }
