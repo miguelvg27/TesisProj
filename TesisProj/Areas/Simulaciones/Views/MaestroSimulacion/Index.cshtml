@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TesisProj.Areas.Simulaciones.Models.MaestroSimulacion>
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
 
 @{
     ViewBag.Title = "Index";
@@ -15,16 +15,16 @@
 @foreach (var item in Model)
 {
         <tr>
-            <th>@item.parametro.Nombre</th>
+            <th>@item.Nombre</th>
             <td>
                 <div class="btn-group">
-                    <a class="btn btn-info" href="@Url.Action("Index", "Binomial", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Binomial</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Geometrica", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Geometrica</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Hipergeometrica", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Hipergeometrica</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Pascal", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Pascal</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Poisson</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Normal</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.parametro.Id })">Uniforme</a>               
+                    <a class="btn btn-info" href="@Url.Action("Index", "Binomial", new { Area = "Simulaciones", idParametro = item.Id })">Binomial</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Geometrica", new { Area = "Simulaciones", idParametro = item.Id })">Geometrica</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Hipergeometrica", new { Area = "Simulaciones", idParametro = item.Id })">Hipergeometrica</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Pascal", new { Area = "Simulaciones", idParametro = item.Id })">Pascal</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.Id })">Poisson</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id })">Normal</a> 
+                    <a class="btn btn-info" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.Id })">Uniforme</a>               
                 </div>
             </td>     
         </tr>

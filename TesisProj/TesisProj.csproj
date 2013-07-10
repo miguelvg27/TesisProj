@@ -119,7 +119,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Web.Mvc">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Telerik\Extensions for ASP.NET MVC Q2 2013\Examples\Telerik.Web.Mvc.Examples\Bin\Telerik.Web.Mvc.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Telerik\Extensions for ASP.NET MVC Q1 2013\Binaries\Mvc3\Telerik.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -479,6 +479,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
+    <Content Include="Content\telerik.black.css" />
+    <Content Include="Content\telerik.common.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -666,6 +668,7 @@
     <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -680,6 +683,7 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\telerik.common.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

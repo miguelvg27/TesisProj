@@ -21,23 +21,30 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         {
             var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
             ViewBag.ProyectoId = idProyecto;
-            List<MaestroSimulacion> salida = new List<MaestroSimulacion>();
+            List<Parametro> salida = new List<Parametro>();
 
                 foreach (Parametro parametro in parametros)
                 {
                     if (parametro.Sensible)
                     {
                         ModeloSimlacion m = new ModeloSimlacion();
-                        double mean =parametro.Celdas.Average(e =>Convert.ToDouble(e.Valor));
-                        double std =Calculos.DesviacionStandard(parametro.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
-                        m.Normal= new Normal(mean,std);
-                        MaestroSimulacion aux = new MaestroSimulacion(parametro, m);
+
+                        m.Binomial = new Binomial { Id=1};
+                        m.Geometrica = new Geometrica { Id = 2 };
+                        m.Hipergeometrica = new Hipergeometrica { Id = 3 };
+                        m.Pascal = new Pascal { Id = 4 };
+                        m.Poisson = new Poisson { Id = 5 };
+                        m.Uniforme = new Uniforme { Id = 6 };
+                        m.Normal = new Normal { Id = 7 };
+                        parametro.maestrosimulacion = new MaestroSimulacion(m);
+                        Parametro aux =new Parametro();
+                        aux = parametro;
                         salida.Add(aux);
                     }
                 }
-            
 
-            return View(salida);
+
+                return View(salida);
         }
 
     }

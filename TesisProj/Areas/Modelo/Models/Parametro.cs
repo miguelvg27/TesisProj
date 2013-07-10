@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
@@ -47,6 +48,9 @@ namespace TesisProj.Areas.Modelo.Models
 
         [InverseProperty("Parametro")]
         public List<Celda> Celdas { get; set; }
+
+        [NotMapped]
+        public MaestroSimulacion maestrosimulacion { get; set; }
 
         [NotMapped]
         public List<Celda> CeldasSensibles { get; set; }

@@ -29,8 +29,8 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             double std = Calculos.DesviacionStandard(p.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
             m.Normal = new Normal(mean,std);
             m.Nombre = "Normal";
-            MaestroSimulacion maestro = new MaestroSimulacion(p,m);
-            maestro.ActualizarCeldas("Normal");
+            MaestroSimulacion maestro = new MaestroSimulacion(m);
+            maestro.ActualizarCeldas("Normal",p);
             p.CeldasSensibles = maestro.GetCeldasSimuladas();
 
             List<double> grafico = new List<double>();

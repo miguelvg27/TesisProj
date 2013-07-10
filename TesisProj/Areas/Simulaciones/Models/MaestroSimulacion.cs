@@ -9,17 +9,15 @@ namespace TesisProj.Areas.Simulaciones.Models
 {
     public class MaestroSimulacion
     {
-        public virtual Parametro parametro { get; set; }
         public virtual ModeloSimlacion modelobase { get; set; }
+        public virtual List<Celda> CeldasSensibles { get; set; }
 
-        public MaestroSimulacion(Parametro p, ModeloSimlacion m)
+        public MaestroSimulacion(ModeloSimlacion m)
         {
-            this.parametro = p;
             this.modelobase = m;
-            this.parametro.CeldasSensibles = new List<Celda>();
         }
 
-        public void ActualizarCeldas(string modelo)
+        public void ActualizarCeldas(string modelo,Parametro parametro)
         {
             if (modelobase.Nombre.Equals("Normal"))
             {
@@ -27,7 +25,6 @@ namespace TesisProj.Areas.Simulaciones.Models
                 RandomGenerator rg = new RandomGenerator();
                 foreach (Celda c in parametro.Celdas)
                 {
-                    
                     decimal valor = Convert.ToDecimal(rg.NormalDeviate() + modelobase.Normal.mean);
                     celdas.Add(new Celda { IdParametro = c.IdParametro, Valor = valor, Periodo = c.Periodo });
                 }
@@ -37,7 +34,7 @@ namespace TesisProj.Areas.Simulaciones.Models
 
         public List<Celda> GetCeldasSimuladas()
         {
-            return parametro.CeldasSensibles;
+            return CeldasSensibles;
         }
     }
 }
