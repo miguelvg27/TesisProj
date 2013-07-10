@@ -81,7 +81,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.Visible = plantilla.Visible;
         }
 
-        public List<double> Evaluar(int horizonte, List<Formula> formulas, List<Parametro> parametros)
+        public List<double> Evaluar(int horizonte, List<Formula> formulas, List<Parametro> parametros, bool simular = false)
         {
             List<double> resultado = new List<double>();
             MathParserNet.Parser parser = new MathParserNet.Parser();
@@ -106,7 +106,8 @@ namespace TesisProj.Areas.Modelo.Models
                     
                     foreach (Parametro parametro in parametros)
                     {
-                        parser.AddVariable(parametro.Referencia, (double) parametro.Celdas.First(c => c.Periodo == (parametro.Constante ? 1 : i)).Valor);
+                        var celdas = simular ? parametro.CeldasSensibles : parametro.Celdas;
+                        parser.AddVariable(parametro.Referencia, (double) celdas.First(c => c.Periodo == (parametro.Constante ? 1 : i)).Valor);
                     }
 
                     foreach (Formula formula in formulas)
