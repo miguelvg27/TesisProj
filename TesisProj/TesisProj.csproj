@@ -249,6 +249,7 @@
     <Compile Include="Areas\Simulaciones\Controllers\NormalController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\SimulacionController.cs" />
+    <Compile Include="Areas\Simulaciones\Controllers\UniformeController.cs" />
     <Compile Include="Areas\Simulaciones\Models\Asignacion.cs" />
     <Compile Include="Areas\Simulaciones\Models\AuxModelo.cs" />
     <Compile Include="Areas\Simulaciones\Models\MaestroSimulacion.cs" />
