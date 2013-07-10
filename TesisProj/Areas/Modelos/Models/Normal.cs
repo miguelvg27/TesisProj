@@ -146,6 +146,24 @@ namespace TesisProj.Areas.Modelos.Models
         //}
         #endregion
 
+        public List<Grafico> GenerarNumerosAleatorios(int Veces)
+        {
+            RandomGenerator rg = new RandomGenerator();
+            List<Grafico> s = new List<Grafico>();
+            double aux=0;
+            for (int i = 1; i <= Veces; i++)
+            {
+                Grafico t = new Grafico();
+                aux = rg.NormalDeviate() + mean;
+                t.fx = aux;
+                t.x = i;
+                t.sx = Convert.ToString(i);
+                t.sfx = Convert.ToString(Math.Round(aux));
+                s.Add(t);
+            }
+            return s;
+        }
+
     }
 
     public class RandomGenerator
