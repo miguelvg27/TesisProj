@@ -58,11 +58,11 @@ namespace TesisProj.Areas.Modelos.Models
             this.V = 0;
         }
 
-        public Uniforme(double k, double a, double b)
+        public Uniforme(double a, double b)
         {
             this.a = a;
             this.b = b;
-            this.K = k;
+            this.K = 0;
             this.E = (a+b)/2;
             this.V = Math.Pow(b-a,2)/12;
         }
@@ -87,6 +87,22 @@ namespace TesisProj.Areas.Modelos.Models
         private double GetFuncionAcumulada(double K)
         {
             return ((K-a) / (b - a));
+        }
+
+        public List<Grafico> GenerarNumerosAleatorios(int Veces)
+        {
+            Random r = new Random();
+            List<Grafico> s = new List<Grafico>();
+            for(int i =1;i<=Veces;i++)
+            {
+                Grafico t = new Grafico();
+                t.fx = (b - a) * r.NextDouble() + a;
+                t.x = i;
+                t.sx = Convert.ToString(i);
+                t.sfx = Convert.ToString(Math.Round((b - a) * r.NextDouble() + a));
+                s.Add(t);
+            }
+            return s;
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()
