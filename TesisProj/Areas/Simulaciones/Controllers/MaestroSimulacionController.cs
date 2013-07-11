@@ -36,7 +36,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                         m.Poisson = new Poisson { Id = 5 };
                         m.Uniforme = new Uniforme { Id = 6 };
                         m.Normal = new Normal { Id = 7 };
-                        parametro.maestrosimulacion = new MaestroSimulacion(m);
+                        parametro.modelo = m;
                         Parametro aux =new Parametro();
                         aux = parametro;
                         salida.Add(aux);

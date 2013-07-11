@@ -37,7 +37,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         {
             ModeloSimlacion mm = new ModeloSimlacion();
             Session["Modelo"] = mm;
-            return Json(new SelectList(context.TablaModelo.Where(m => m.Id == modelo), "Id", "Nombre"), JsonRequestBehavior.AllowGet);
+            return Json(new SelectList(context.TablaModeloSimulacion.Where(m => m.Id == modelo), "Id", "Nombre"), JsonRequestBehavior.AllowGet);
         }
     }
 }

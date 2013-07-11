@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelos.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models;
@@ -49,8 +50,8 @@ namespace TesisProj.Areas.Modelo.Models
         [InverseProperty("Parametro")]
         public List<Celda> Celdas { get; set; }
 
-        [NotMapped]
-        public MaestroSimulacion maestrosimulacion { get; set; }
+
+        public virtual ModeloSimlacion modelo { get; set; }
 
         [NotMapped]
         public List<Celda> CeldasSensibles { get; set; }

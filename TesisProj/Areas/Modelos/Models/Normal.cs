@@ -20,6 +20,8 @@ namespace TesisProj.Areas.Modelos.Models
         [DisplayName("Desviación Estandar (o)")]
         public double std { get; set; }
 
+        public int K { get; set; }
+
         [DisplayName("Valor Esperado")]
         public double E { get; set; }
 
@@ -57,38 +59,17 @@ namespace TesisProj.Areas.Modelos.Models
             std = 1;
         }
 
-        public Normal(double m, double s)
+        public Normal(double m, double s, int k)
         {
             this.mean = m;
             this.std = s;
+            this.K = k;
             this.E = m;
             this.V = s;
         }
 
         #region Formulas
 
-        private double Aleatorio(double fx)
-        {
-            double inicio = inf;
-            double fin = inf + avance;
-            Contador = 0;
-
-            while (AreaAcum < fx)
-            {
-                Contador += 1;
-                inicio = fin;
-                fin = inicio + avance;
-                AreaAcum += Area(inicio, avance);
-            }
-
-            return inicio;
-
-        }
-
-        private double Area(double z, double dx)
-        {
-            return Math.Exp(-Math.Pow(z, 2) / 2.0) / (std * Math.Sqrt(2 * Math.PI));
-        }
 
         public double GetEsperado()
         {
@@ -100,50 +81,36 @@ namespace TesisProj.Areas.Modelos.Models
             return Math.Round(V, 2);
         }
 
-        public void  GetFuncionSimpleArreglo(List<double> lista)
+        private double GetFuncion(double K)
+        {
+            double z = Math.Pow(((K - mean) / std), 2);
+            return (1 / (Math.Sqrt(std)* Math.Sqrt(2 * Math.PI))) * Math.Exp(-z / 2);
+        }
+
+        public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            int i=0;
-            foreach (double d in lista)
+            for (double i = 0; i <= K; i++)
             {
                 Grafico t = new Grafico();
-                t.fx = d;
+                t.fx = GetFuncion(i);
                 t.x = i;
                 t.sx = Convert.ToString(i);
                 t.sfx = Convert.ToString(Math.Round(t.fx * 100, 2));
                 s.Add(t);
-                i++;
             }
-            graficar = s;
+            //using (StreamWriter sw = new StreamWriter(@"C:\Modelo\Normal.txt", true))
+            //{
+            //    sw.WriteLine("Normal fx" + " - " + DateTime.Now.ToString());
+            //    sw.WriteLine("|x" + "  -  " + "fx|");
+            //    foreach (Grafico g in s)
+            //    {
+            //        sw.WriteLine("|" + g.sx + "  -  " + g.sfx + "|");
+            //    }
+            //    sw.WriteLine();
+            //}
+            return s;
         }
-
-        //public List<Grafico> GetFuncionAcumuladaArreglo()
-        //{
-        //    List<Grafico> s = new List<Grafico>();
-        //    Double aux = new Double();
-        //    aux = 0;
-        //    for (double i = -100; i <= 100; i = i + K)
-        //    {
-        //        Grafico t = new Grafico();
-        //        aux += GetFuncion(i);
-        //        t.fx = aux;
-        //        t.sfx = Convert.ToString(Math.Round(t.fx * 100, 2));
-        //        t.x = i;
-        //        t.sx = Convert.ToString(i);
-        //        s.Add(t);
-        //    }
-        //    using (StreamWriter sw = new StreamWriter(@"C:\Modelo\Normal.txt", true))
-        //    {
-        //        sw.WriteLine("Normal Fx" + " - " + DateTime.Now.ToString());
-        //        sw.WriteLine("|x" + "  -  " + "Fx|");
-        //        foreach (Grafico g in s)
-        //        {
-        //            sw.WriteLine("|" + g.sx + "  -  " + g.sfx + "|");
-        //        }
-        //        sw.WriteLine();
-        //    }
-        //    return s;
-        //}
         #endregion
 
         public List<Grafico> GenerarNumerosAleatorios(int Veces)
@@ -161,7 +128,8 @@ namespace TesisProj.Areas.Modelos.Models
                 t.sfx = Convert.ToString(Math.Round(aux));
                 s.Add(t);
             }
-            return s;
+            graficar = s;
+            return graficar;
         }
 
     }

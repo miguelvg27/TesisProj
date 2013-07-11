@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using TesisProj.Models.Storage;
 using TesisProj.Areas.Distribuciones.Models;
+using TesisProj.Areas.Modelo.Models;
 
 namespace TesisProj.Areas.Modelos.Models
 {
@@ -29,6 +30,8 @@ namespace TesisProj.Areas.Modelos.Models
         public string Definicion { get; set; }
 
         #endregion
+
+        public virtual Proyecto proyecto { get; set; }
 
         public virtual Distribucion Distribucion {get;set;}
 
