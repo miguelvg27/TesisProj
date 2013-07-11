@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Modelos.Models;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Simulaciones.Models
 {
-    public class MaestroSimulacion
+    public class MaestroSimulacion 
     {
         public virtual ModeloSimlacion modelobase { get; set; }
         public virtual List<Celda> CeldasSensibles { get; set; }
@@ -27,13 +28,15 @@ namespace TesisProj.Areas.Simulaciones.Models
             if (modelobase.Nombre.Equals("Normal"))
             {
                 List<Celda> celdas = new List<Celda>();
-                RandomGenerator rg = new RandomGenerator();
-                foreach (Celda c in parametro.Celdas)
+                Graficos= modelobase.Normal.GenerarNumerosAleatorios(parametro.Celdas.Count);
+                int i = 0;
+                foreach (Grafico g in Graficos)
                 {
-                    decimal valor = Convert.ToDecimal(rg.NormalDeviate() + modelobase.Normal.mean);
-                    celdas.Add(new Celda { IdParametro = c.IdParametro, Valor = valor, Periodo = c.Periodo });
+                    decimal valor = Convert.ToDecimal(g.fx);
+                    celdas.Add(new Celda { IdParametro = parametro.Celdas[i].IdParametro, Valor = valor, Periodo = parametro.Celdas[i].Periodo });
+                    i++;
                 }
-                parametro.CeldasSensibles = celdas;
+                CeldasSensibles = celdas;                
             }
 
             if(modelobase.Nombre.Equals("Uniforme"))
@@ -47,7 +50,7 @@ namespace TesisProj.Areas.Simulaciones.Models
                     celdas.Add(new Celda { IdParametro = parametro.Celdas[i].IdParametro, Valor = valor, Periodo = parametro.Celdas[i].Periodo });
                     i++;
                 }
-                parametro.CeldasSensibles = celdas;
+                CeldasSensibles = celdas;
             }
         }
     }

@@ -73,9 +73,6 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
                 }
             
-
-                bool cadenavalida = true;
-                double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
                 var tipoformulas = context.TipoFormulas;
                 var operaciones = context.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == this.IdPlantillaProyecto && o.Secuencia < this.Secuencia);
@@ -91,65 +88,24 @@ namespace TesisProj.Areas.Plantilla.Models
                     parser.AddVariable(operacion.Referencia, 2);
                 }
 
-                try
+                //
+                //  Valida si es Tir o Van
+                if (!Generics.Validar(this.Cadena, parser))
                 {
-                    testvalue = parser.SimplifyDouble(this.Cadena);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
-                {
-                    if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
+                    if (!Generics.TestComplexParse(this.Cadena, operaciones.ToList()))
                     {
-                        string toTest = this.Cadena.Substring(4);
-                        toTest = toTest.Substring(0, toTest.Length - 1);
-                        try
-                        {
-                            testvalue = parser.SimplifyDouble(toTest);
-                        }
-                        catch (Exception)
-                        {
-                            cadenavalida = false;
-                        }
+                        yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
                     }
                 }
 
-                if (!cadenavalida)
-                {
-                    yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
-                }
-
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                //
+                //  Valida períodos
+                if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
                 }
 
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                if (!Generics.Validar(this.PeriodoFinal, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }

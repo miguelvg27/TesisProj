@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Plantilla.Models;
 
 namespace TesisProj.Models
 {
@@ -64,6 +66,123 @@ namespace TesisProj.Models
             }
 
             return valida;
+        }
+
+        public static double SimpleParse(string cadena, int horizonte, int periodo)
+        {
+            MathParserNet.Parser parser = new MathParserNet.Parser();
+            parser.AddVariable("Horizonte", horizonte);
+            parser.AddVariable("Periodo", periodo);
+            double value = 0;
+
+            try
+            {
+                value = parser.SimplifyDouble(cadena);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fallo en el parse de la cadena: " + cadena);
+            }
+
+            return value;
+        }
+
+        public static double ComplexParse(string cadena, List<Operacion> operaciones)
+        {
+            double ret = 0;
+            try
+            {
+                string f = cadena.Substring(0, 3);
+                string toTest = cadena.Substring(4);
+                toTest = toTest.Substring(0, toTest.Length - 1);
+
+                if (f.Equals("Van"))
+                {
+                    string[] parametros = toTest.Split(',');
+                    List<double> saldo = operaciones.FirstOrDefault(o => o.Referencia == parametros[1]).Valores;
+                    double k = operaciones.FirstOrDefault(o => o.Referencia == parametros[0]).Valores[0];
+
+                    ret = saldo[0] + Npv(k, saldo.Skip(1).ToArray());
+                }
+
+                if (f.Equals("Tir"))
+                {
+                    List<double> saldo = operaciones.FirstOrDefault(o => o.Referencia == toTest).Valores;
+                    ret = Irr(saldo.ToArray());
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Fallo en el parse de la cadena: " + cadena);
+            }
+
+            return ret;
+        }
+
+        public static bool TestComplexParse(string cadena, List<Operacion> operaciones)
+        {
+            bool test = false;
+            try
+            {
+                string f = cadena.Substring(0, 3);
+                string toTest = cadena.Substring(4);
+                toTest = toTest.Substring(0, toTest.Length - 1);
+
+                if (f.Equals("Van"))
+                {
+                    string[] parametros = toTest.Split(',');
+                    bool saldo = operaciones.Any(o => o.Referencia == parametros[1]);
+                    bool k = operaciones.Any(o => o.Referencia == parametros[0]);
+                    bool num = parametros.Count() == 2;
+                    test = (saldo && k && num);
+                }
+
+                if (f.Equals("Tir"))
+                {
+                    bool saldo = operaciones.Any(o => o.Referencia == toTest);
+                    test = saldo;
+                }
+            }
+            catch (Exception)
+            {
+                test = false;
+                Console.WriteLine("Fallo en el parse de la cadena: " + cadena);
+            }
+
+            return test;
+        }
+
+        public static bool TestComplexParse(string cadena, List<PlantillaOperacion> operaciones)
+        {
+            bool test = false;
+            try
+            {
+                string f = cadena.Substring(0, 3);
+                string toTest = cadena.Substring(4);
+                toTest = toTest.Substring(0, toTest.Length - 1);
+
+                if (f.Equals("Van"))
+                {
+                    string[] parametros = toTest.Split(',');
+                    bool saldo = operaciones.Any(o => o.Referencia == parametros[1]);
+                    bool k = operaciones.Any(o => o.Referencia == parametros[0]);
+                    bool num = parametros.Count() == 2;
+                    test = (saldo && k && num);
+                }
+
+                if (f.Equals("Tir"))
+                {
+                    bool saldo = operaciones.Any(o => o.Referencia == toTest);
+                    test = saldo;
+                }
+            }
+            catch (Exception)
+            {
+                test = false;
+                Console.WriteLine("Fallo en el parse de la cadena: " + cadena);
+            }
+
+            return test;
         }
     }
 }

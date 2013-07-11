@@ -67,6 +67,8 @@ namespace TesisProj.Areas.Modelos.Models
             this.V = Math.Pow(b-a,2)/12;
         }
 
+        public List<Grafico> graficar { get; set; }
+
         #region Formulas
 
         public double GetEsperado()
@@ -102,7 +104,8 @@ namespace TesisProj.Areas.Modelos.Models
                 t.sfx = Convert.ToString(Math.Round((b - a) * r.NextDouble() + a));
                 s.Add(t);
             }
-            return s;
+            graficar = s;
+            return graficar;
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()

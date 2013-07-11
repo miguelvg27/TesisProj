@@ -12,13 +12,9 @@
     </sectionGroup>
   </configSections>
   <connectionStrings>
-    <!--<add name="TProjDb" connectionString="Data Source=NOVA7-01\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
-    <!--<add name="TProjDb" connectionString="Data Source=IDEA-PC\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
-<<<<<<< HEAD
-    <add name="TProjDb" connectionString="Data Source=PCURICH\SQLSERVER;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />
-=======
+    <add name="TProjDb" connectionString="Data Source=NOVA7-01\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />
+    <add name="TProjDb" connectionString="Data Source=IDEA-PC\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />
     <!--<add name="TProjDb" connectionString="Data Source=PCURICH\SQLSERVER;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
->>>>>>> d91aba4955f4479b3ebf768b92401b7cedbe0ef1
     <!--<add name="TProjDb" connectionString="Data Source=LAP-PEDRO-PC\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
   </connectionStrings>
   <appSettings>

@@ -31,11 +31,11 @@ namespace TesisProj.Models.Storage
                            "f(x) = P[X=x] en todo x número real y que satisface las siguientes condiciones";
             d1.Imagen = "~/Graficos/Discreta.png";
             d1.Modelos = new List<ModeloSimlacion>();
-            d1.Modelos.Add(TablaModelo.One(t => t.Id == 1));
-            d1.Modelos.Add(TablaModelo.One(t => t.Id == 2));
-            d1.Modelos.Add(TablaModelo.One(t => t.Id == 3));
-            d1.Modelos.Add(TablaModelo.One(t => t.Id == 4));
-            d1.Modelos.Add(TablaModelo.One(t => t.Id == 5));
+            d1.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 1));
+            d1.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 2));
+            d1.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 3));
+            d1.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 4));
+            d1.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 5));
 
             TablaDistribucion.AddElement(d1);
 
@@ -49,8 +49,8 @@ namespace TesisProj.Models.Storage
                            "a la variable aleatoria continua X, si satisfacelas siguientes condiciones ";
             d2.Imagen = "~/Graficos/Continua.png";
             d2.Modelos = new List<ModeloSimlacion>();
-            d2.Modelos.Add(TablaModelo.One(t => t.Id == 6));
-            d2.Modelos.Add(TablaModelo.One(t => t.Id == 7));
+            d2.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 6));
+            d2.Modelos.Add(TablaModeloSimulacion.One(t => t.Id == 7));
             TablaDistribucion.AddElement(d2);
         }
 

@@ -9,12 +9,20 @@ namespace TesisProj.Models.Storage
 {
     public partial class TProjContext : DbContext
     {
-        public DbSet<ModeloSimlacion> InternalModelo { get; set; }
-        public DbRequester<ModeloSimlacion> TablaModelo { get; set; }
+        public DbSet<ModeloSimlacion> InternalModeloSimulacion { get; set; }
+        public DbRequester<ModeloSimlacion> TablaModeloSimulacion { get; set; }
+
+        public DbSet<Normal> InternalNormal { get; set; }
+        public DbRequester<Normal> TablaNormal { get; set; }
+
+        public DbSet<Uniforme> InternalUniforme { get; set; }
+        public DbRequester<Uniforme> TablaUniforme { get; set; }
 
         public void RegistrarTablasModelo()
         {
-            TablaModelo = new DbRequester<ModeloSimlacion>(this, InternalModelo);
+            TablaModeloSimulacion = new DbRequester<ModeloSimlacion>(this, InternalModeloSimulacion);
+            TablaNormal = new DbRequester<Normal>(this, InternalNormal);
+            TablaUniforme = new DbRequester<Uniforme>(this, InternalUniforme);
         }
 
         public void seedModelo()
@@ -118,7 +126,7 @@ namespace TesisProj.Models.Storage
                     Descripcion = "Se dice que la variable aleatoria continua X, tiene distribución "+
                                   "uniforme (o rectangular) en el intervalo [a,b], a < b, y se describe por "+
                                   "X - U[a,b], si su funcion de densidad de probabilidad es:\n\n",
-                    //Uniforme  = new Uniforme(),
+                    Uniforme  = new Uniforme(),
                 },
 
                 new ModeloSimlacion
@@ -131,53 +139,53 @@ namespace TesisProj.Models.Storage
                     Descripcion = "Se dice que la variable aleatoria continua X, que toma los valores reales "+
                                   ", - inf < x < inf, es normal coon parametros u y o y se describe por "+
                                   "X - N[u,o], si su funcion de densidad de probabilidad es:\n\n",
-                    //Normal  = new Normal(),
+                    Normal  = new Normal(),
                 },
 
 
             };
             foreach (ModeloSimlacion m in modelos)
             {
-                TablaModelo.AddElement(m);
+                TablaModeloSimulacion.AddElement(m);
             }
         }
 
         public void seedModelo2()
         {
             ModeloSimlacion mm = new ModeloSimlacion();
-            mm=TablaModelo.One(m => m.Id == 1);
+            mm=TablaModeloSimulacion.One(m => m.Id == 1);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
-            mm = TablaModelo.One(m => m.Id == 2);
+            mm = TablaModeloSimulacion.One(m => m.Id == 2);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
-            mm = TablaModelo.One(m => m.Id == 3);
+            mm = TablaModeloSimulacion.One(m => m.Id == 3);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
-            mm = TablaModelo.One(m => m.Id == 4);
+            mm = TablaModeloSimulacion.One(m => m.Id == 4);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
-            mm = TablaModelo.One(m => m.Id == 5);
+            mm = TablaModeloSimulacion.One(m => m.Id == 5);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
-            mm = TablaModelo.One(m => m.Id == 6);
+            mm = TablaModeloSimulacion.One(m => m.Id == 6);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 2);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
-            mm = TablaModelo.One(m => m.Id == 7);
+            mm = TablaModeloSimulacion.One(m => m.Id == 7);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 2);
-            TablaModelo.ModifyElement(mm);
+            TablaModeloSimulacion.ModifyElement(mm);
         }
             
     }
