@@ -23,7 +23,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         public ActionResult Index(int idParametro)
         {
             Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
-            ModeloSimlacion m = new ModeloSimlacion();
+            ModeloSimlacion m = context.TablaModeloSimulacion.One(s=>s.Id==7);
             ViewBag.idParametro = idParametro;
             double mean = p.Celdas.Average(e => Convert.ToDouble(e.Valor));
             double std = Calculos.DesviacionStandard(p.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
@@ -35,6 +35,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             Session["GraficoSimulacion"] = m.Normal.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
+            context.TablaNormal.ModifyElement(m.Normal);
             p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();
@@ -59,7 +60,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         {
             Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
             ViewBag.idParametro = idParametro;
-            ModeloSimlacion m = new ModeloSimlacion();
+            ModeloSimlacion m = context.TablaModeloSimulacion.One(s => s.Id == 7);
             double mean = n.mean;
             double std = n.std;
             m.Normal = new Normal(mean, std,p.Celdas.Count);
@@ -70,6 +71,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             Session["GraficoSimulacion"] = m.Normal.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
+            context.TablaNormal.ModifyElement(m.Normal);
             p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();
