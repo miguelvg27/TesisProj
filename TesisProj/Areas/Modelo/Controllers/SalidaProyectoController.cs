@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Controllers
@@ -96,7 +97,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdProyecto = salida.IdProyecto;
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.Salida = salida.Nombre;
-            ViewBag.Horizonte = proyecto.Horizonte;
+            ViewBag.Inicio = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoInicial, proyecto.Horizonte, 1));
+            ViewBag.Horizonte = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoFinal, proyecto.Horizonte, proyecto.Horizonte));
 
             return View(operaciones.Intersect(exoperaciones).ToList());
         }

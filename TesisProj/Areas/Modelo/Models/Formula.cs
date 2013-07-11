@@ -122,7 +122,7 @@ namespace TesisProj.Areas.Modelo.Models
                     pfinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
 
                     valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
-                    
+                    valor = double.IsNaN(valor) ? 0 : valor;
                     resultado.Add(valor);
                 }
             }

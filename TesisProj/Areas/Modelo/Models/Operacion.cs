@@ -103,7 +103,24 @@ namespace TesisProj.Areas.Modelo.Models
                     pinicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
                     pfinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
 
-                    valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
+                    bool siCalcular = (i >= pinicial && i <= pfinal);
+
+                    if (siCalcular)
+                    {
+                        if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
+                        {
+                            valor = Generics.ComplexParse(this.Cadena, operaciones);
+                        }
+                        else
+                        {
+                            valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
+                            valor = double.IsNaN(valor) ? 0 : valor;
+                        }
+                    }
+                    else
+                    {
+                        valor = 0;
+                    }
 
                     resultado.Add(valor);
                 }
@@ -155,17 +172,7 @@ namespace TesisProj.Areas.Modelo.Models
             //  Valida si es Tir o Van
                 if (!Generics.Validar(this.Cadena, parser))
                 {
-                    if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
-                    {
-                        string toTest = this.Cadena.Substring(4);
-                        toTest = toTest.Substring(0, toTest.Length - 1);
-
-                        if (!Generics.Validar(toTest, parser))
-                        {
-                            yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
-                        }
-                    }
-                    else
+                    if (!Generics.TestComplexParse(this.Cadena, operaciones.ToList()))
                     {
                         yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
                     }
