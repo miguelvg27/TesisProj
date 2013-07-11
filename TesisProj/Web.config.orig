@@ -12,10 +12,16 @@
     </sectionGroup>
   </configSections>
   <connectionStrings>
-    <add name="TProjDb" connectionString="Data Source=NOVA7-01\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />
+<<<<<<< HEAD
+    <!--<add name="TProjDb" connectionString="Data Source=NOVA7-01\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
     <add name="TProjDb" connectionString="Data Source=IDEA-PC\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />
     <!--<add name="TProjDb" connectionString="Data Source=PCURICH\SQLSERVER;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
+=======
+    <add name="TProjDb" connectionString="Data Source=NOVA7-01\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />
+    <!--<add name="TProjDb" connectionString="Data Source=IDEA-PC\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
+    <!--<add name="TProjDb" connectionString="Data Source=PCURICH\SQLSERVER;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
     <!--<add name="TProjDb" connectionString="Data Source=LAP-PEDRO-PC\SQLEXPRESS;Initial Catalog=TProjDb;Integrated Security=True" providerName="System.Data.SqlClient" />-->
+>>>>>>> ebbea4037d3895c43024abf3f0abe3c56a1e24e6
   </connectionStrings>
   <appSettings>
     <add key="webpages:Version" value="2.0.0.0" />
