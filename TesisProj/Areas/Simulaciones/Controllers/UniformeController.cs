@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -17,23 +18,28 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         TProjContext context = new TProjContext();
 
         [HttpGet]
-        public ActionResult Index(int idParametro)
+        public ActionResult Index(int idParametro, int ProyectoId)
         {
             Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
-            ModeloSimlacion m = new ModeloSimlacion();
+            ModeloSimlacion m = context.TablaModeloSimulacion.One(s => s.Id == 6);
             ViewBag.idParametro = idParametro;
+            ViewBag.idProyecto = ProyectoId;
             double a = 0; 
             double b = p.Celdas.Max(e => Convert.ToDouble(e.Valor));
-            m.Uniforme = new Uniforme(a,b);
+            m.Uniforme = context.TablaUniforme.One(o=>o.Id==1);
+            m.Uniforme.a = a;
+            m.Uniforme.b = b;
             m.Nombre = "Uniforme";
             MaestroSimulacion maestro = new MaestroSimulacion(m);
             maestro.ActualizarCeldas("Uniforme", p);
             p.CeldasSensibles = maestro.CeldasSensibles;
 
-            Session["Parametro"] = p;
             Session["GraficoSimulacion"] = m.Uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-
+            context.TablaUniforme.ModifyElement(m.Uniforme);
+            p.modelo = maestro.modelobase;
+            context.Entry(p).State = EntityState.Modified;
+            context.SaveChanges();
             return View(m.Uniforme);
         }
 
@@ -50,23 +56,28 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Uniforme n, int idParametro)
+        public ActionResult Index(Uniforme n, int idParametro, int ProyectoId)
         {
             Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
             ViewBag.idParametro = idParametro;
-            ModeloSimlacion m = new ModeloSimlacion();
+            ViewBag.idProyecto = ProyectoId;
+            ModeloSimlacion m = context.TablaModeloSimulacion.One(s => s.Id == 6);
             double a = n.a;
             double b = n.b;
-            m.Uniforme = new Uniforme(a, b);
+            m.Uniforme = context.TablaUniforme.One(o => o.Id == 1);
+            m.Uniforme.a = a;
+            m.Uniforme.b = b;
             m.Nombre = "Uniforme";
             MaestroSimulacion maestro = new MaestroSimulacion(m);
             maestro.ActualizarCeldas("Uniforme", p);
             p.CeldasSensibles = maestro.CeldasSensibles;
 
-            Session["Parametro"] = p;
             Session["GraficoSimulacion"] = m.Uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-
+            context.TablaUniforme.ModifyElement(m.Uniforme);
+            p.modelo = maestro.modelobase;
+            context.Entry(p).State = EntityState.Modified;
+            context.SaveChanges();
             return View(m.Uniforme);
         }
 

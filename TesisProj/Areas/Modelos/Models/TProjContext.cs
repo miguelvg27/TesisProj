@@ -172,39 +172,71 @@ namespace TesisProj.Models.Storage
 
         public void seedModelo2()
         {
+            Normal N = new Normal();
+            N.Id = 1;
+            TablaNormal.AddElement(N);
+            Uniforme u = new Uniforme();
+            u.Id = 1;
+            TablaUniforme.AddElement(u);
+            Binomial b = new Binomial();
+            b.Id = 1;
+            TablaBinomial.AddElement(b);
+            Geometrica g = new Geometrica();
+            g.Id =1;
+            TablaGeometrica.AddElement(g);
+            Hipergeometrica hg = new Hipergeometrica();
+            hg.Id = 1;
+            TablaHipergeometrica.AddElement(hg);
+            Pascal p = new Pascal();
+            p.Id = 1;
+            TablaPascal.AddElement(p);
+            Poisson po = new Poisson();
+            po.Id = 1;
+            TablaPoisson.AddElement(po);
+        }
+
+        public void seedModelo3()
+        {
             ModeloSimlacion mm = new ModeloSimlacion();
             mm=TablaModeloSimulacion.One(m => m.Id == 1);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            mm.Binomial = TablaBinomial.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
             mm = TablaModeloSimulacion.One(m => m.Id == 2);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            mm.Geometrica = TablaGeometrica.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
             mm = TablaModeloSimulacion.One(m => m.Id == 3);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            mm.Hipergeometrica = TablaHipergeometrica.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
             mm = TablaModeloSimulacion.One(m => m.Id == 4);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            mm.Pascal = TablaPascal.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
             mm = TablaModeloSimulacion.One(m => m.Id == 5);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 1);
+            mm.Poisson = TablaPoisson.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
             mm = TablaModeloSimulacion.One(m => m.Id == 6);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 2);
+            mm.Uniforme = TablaUniforme.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
 
             mm = new ModeloSimlacion();
             mm = TablaModeloSimulacion.One(m => m.Id == 7);
             mm.Distribucion = TablaDistribucion.One(d => d.Id == 2);
+            mm.Normal = TablaNormal.One(i => i.Id == 1);
             TablaModeloSimulacion.ModifyElement(mm);
         }
             
