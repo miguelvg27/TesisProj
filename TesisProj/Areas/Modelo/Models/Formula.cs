@@ -88,6 +88,9 @@ namespace TesisProj.Areas.Modelo.Models
             formulas.OrderBy(f => f.Secuencia);
             double valor, pinicial, pfinal;
 
+            //
+            //  Agrego al parser las funciones
+
             parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
             parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
             parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);
@@ -104,6 +107,9 @@ namespace TesisProj.Areas.Modelo.Models
                     parser.AddVariable("Periodo", i);
                     parser.AddVariable("Horizonte", horizonte);
                     
+                    //
+                    //  Agrego al parser el Horizonte, Período, los parámetros y las fórmulas de referencia
+
                     foreach (Parametro parametro in parametros)
                     {
                         var celdas = simular ? parametro.CeldasSensibles : parametro.Celdas;
@@ -172,8 +178,6 @@ namespace TesisProj.Areas.Modelo.Models
 
                 //  Valida cadena de la fórmula
 
-                bool cadenavalida = true;
-                double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
                 var parametros = context.Parametros.Where(p => p.IdElemento == this.IdElemento);
                 var formulas = context.Formulas.Where(p => p.IdElemento == this.IdElemento && p.Secuencia < this.Secuencia);
@@ -197,52 +201,21 @@ namespace TesisProj.Areas.Modelo.Models
                 parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Generics.Syn);
                 parser.RegisterCustomDoubleFunction("ValorResidual", Generics.ResSln);
 
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.Cadena);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                if (!Generics.Validar(this.Cadena, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "Cadena" });
                 }
 
-                //  Valida las fórmulas del período inicial y final
-
-                cadenavalida = true;
-
-                try
+                //
+                //  Valida períodos
+                if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
-                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
+                    yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
                 }
 
-                if (!cadenavalida)
+                if (!Generics.Validar(this.PeriodoFinal, parser))
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoInicial" });
-                }
-
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
-                {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoFinal" });
+                    yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }
             }
         }

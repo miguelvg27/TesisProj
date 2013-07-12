@@ -128,8 +128,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                     foreach (PlantillaFormula plantilla in formulas)
                     {
-                        Formula item = new Formula(plantilla, elemento.Id);
-                        db.Formulas.Add(item);
+                        db.Formulas.Add(new Formula(plantilla, elemento.Id));
                         db.SaveChanges();
                     }
                     

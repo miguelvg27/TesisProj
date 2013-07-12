@@ -103,9 +103,9 @@ namespace TesisProj.Areas.Modelo.Models
                     pinicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
                     pfinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
 
-                    bool siCalcular = (i >= pinicial && i <= pfinal);
+                    valor = 0;
 
-                    if (siCalcular)
+                    if (i >= pinicial && i <= pfinal)
                     {
                         if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
                         {
@@ -116,10 +116,6 @@ namespace TesisProj.Areas.Modelo.Models
                             valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
                             valor = double.IsNaN(valor) ? 0 : valor;
                         }
-                    }
-                    else
-                    {
-                        valor = 0;
                     }
 
                     resultado.Add(valor);

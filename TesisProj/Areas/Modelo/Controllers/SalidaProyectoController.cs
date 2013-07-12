@@ -41,29 +41,27 @@ namespace TesisProj.Areas.Modelo.Controllers
             foreach (TipoFormula tipoformula in tipoformulas)
             {
                 tipoformula.Valores = new double[horizonte];
+                Array.Clear(tipoformula.Valores, 0, horizonte);
 
-                for (int i = 0; i < horizonte; i++)
-                {
-                    tipoformula.Valores[i] = 0;
-                }
-
+                //
+                //  Cojo las fórmulas del proyecto de ese tipo
                 var formulitas = formulas.Where(f => f.IdTipoFormula == tipoformula.Id).ToList();
 
                 foreach (Formula formulita in formulitas)
                 {
+                    //  Cojo las fórmulas y parámetros del elemento de referencia (secuencia menor)
                     var refFormulitas = formulas.Where(f => f.Secuencia < formulita.Secuencia && f.IdElemento == formulita.IdElemento).ToList();
                     var refParametros = parametros.Where(p => p.IdElemento == formulita.IdElemento).ToList();
                     formulita.Valores = formulita.Evaluar(horizonte, refFormulitas, refParametros, simular);
-
-                    for (int i = 0; i < horizonte; i++)
-                    {
-                        tipoformula.Valores[i] = tipoformula.Valores[i] + formulita.Valores[i];
-                    }
+                    
+                    //  Sumo los elementos
+                    tipoformula.Valores = tipoformula.Valores.Zip(formulita.Valores, (x, y) => x + y).ToArray();
                 }
             }
 
             foreach (Operacion operacion in operaciones)
             {
+                //  Cojo las operaciones de referencia (secuencia menor)
                 var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia).ToList();
                 operacion.Valores = operacion.Evaluar(horizonte, refoperaciones, tipoformulas, formulas, parametros);
             }

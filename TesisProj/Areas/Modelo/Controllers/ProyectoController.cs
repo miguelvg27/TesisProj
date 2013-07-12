@@ -77,34 +77,32 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Proyectos.Add(proyecto);
-                db.SaveChanges();
+                db.ProyectosRequester.AddElement(proyecto);
 
                 if (IdPlantilla > 0)
                 {
+
+                    //
+                    // Copiar operaciones
                     var operaciones = db.PlantillaOperaciones.Where(p => p.IdPlantillaProyecto == IdPlantilla).ToList();
 
                     foreach (PlantillaOperacion plantilla in operaciones)
                     {
-                        db.Operaciones.Add(new Operacion(plantilla, proyecto.Id));
-                        db.SaveChanges();
+                        db.OperacionesRequester.AddElement(new Operacion(plantilla, proyecto.Id));
                     }
 
-                    db.SaveChanges();
-
+                    //
+                    // Copiar salidas y su asociación con operaciones
                     var salidas = db.PlantillaSalidaProyectos.Include("Operaciones").Where(p => p.IdPlantillaProyecto == IdPlantilla).ToList();
 
                     foreach (PlantillaSalidaProyecto plantilla in salidas)
                     {
-                        SalidaProyecto salida = new SalidaProyecto(plantilla, proyecto.Id);
-                        db.SalidaProyectos.Add(salida);
-                        db.SaveChanges();
+                        int idSalida = db.SalidaProyectosRequester.AddElement(new SalidaProyecto(plantilla, proyecto.Id));
 
                         foreach (PlantillaSalidaOperacion cruce in plantilla.Operaciones)
                         {
                             int idOperacion = db.Operaciones.First(o => o.IdProyecto == proyecto.Id && o.Referencia == cruce.Operacion.Referencia).Id;
-                            db.SalidaOperaciones.Add(new SalidaOperacion { IdSalida = salida.Id, IdOperacion = idOperacion });
-                            db.SaveChanges();
+                            db.SalidaOperacionesRequester.AddElement(new SalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
                         }
                     }
                 }
@@ -143,32 +141,24 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(proyecto).State = EntityState.Modified;
+                db.ProyectosRequester.ModifyElement(proyecto);
 
                 if (PreHorizonte < proyecto.Horizonte)
                 {
-                    var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id).ToList();
-
-                    foreach (Elemento elemento in elementos)
+                    var parametros = db.Parametros.Include("Elemento").Where(p => p.Elemento.IdProyecto == proyecto.Id).ToList();
+                    foreach (Parametro parametro in parametros)
                     {
-                        var parametros = db.Parametros.Where(p => p.IdElemento == elemento.Id).ToList();
-                        foreach (Parametro parametro in parametros)
+                        Celda celda = db.Celdas.Where(c => c.IdParametro == parametro.Id).OrderByDescending(c => c.Periodo).FirstOrDefault();
+                        if(celda == null) continue;
+                        int deltaPeriodos =  proyecto.Horizonte - celda.Periodo;
+                        decimal valor = celda.Valor;
+                        for (int i = 1; i <= deltaPeriodos; i++)
                         {
-                            Celda celda = db.Celdas.Where(c => c.IdParametro == parametro.Id).OrderByDescending(c => c.Periodo).FirstOrDefault();
-                            if(celda == null) continue;
-                            int deltaPeriodos =  proyecto.Horizonte - celda.Periodo;
-                            decimal valor = celda.Valor;
-                            for (int i = 1; i <= deltaPeriodos; i++)
-                            {
-                                db.Celdas.Add(new Celda { IdParametro = celda.IdParametro, Periodo = celda.Periodo + i, Valor = celda.Valor });
-                            }
+                            db.CeldasRequester.AddElement(new Celda { IdParametro = celda.IdParametro, Periodo = celda.Periodo + i, Valor = celda.Valor });
                         }
-                    }
-
-                    db.SaveChanges();
+                    } 
                 }
                 
-                db.SaveChanges();
                 return RedirectToAction("Console", new { id = proyecto.Id });
             }
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador), "UserId", "UserName", proyecto.IdCreador);
