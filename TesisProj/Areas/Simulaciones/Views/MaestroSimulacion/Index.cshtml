@@ -7,11 +7,7 @@
 
 <h2>Asignar Modelo</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-    <table>
+<table>
 @foreach (var item in Model)
 {
         <tr>
@@ -31,7 +27,4 @@
 }
             </table>
 
-
-<div>
-@Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
-</div>
+<h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId})">Regresar</a></h5>

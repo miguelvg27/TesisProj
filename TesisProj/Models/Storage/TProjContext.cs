@@ -47,10 +47,9 @@ namespace TesisProj.Models.Storage
             //Pedro Curich
             SeedEstadoCivil();
             SeedElementos();
-            seedModelo();
+            //seedModelo();
             SeedDistribuciones();
-            seedModelo2();
-            seedModelo3();
+
 
         }
     }

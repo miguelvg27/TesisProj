@@ -7,34 +7,35 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.Distribuciones.Models;
 
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Pascal : DbObject
+    public class Pascal : ModeloSimlacion
     {
         #region Parametros
 
         [DisplayName("Numero de Exitos que se espera que ocurra (r)")]
         [Required]
-        public int R { get; set; }
+        public int pa_R { get; set; }
 
         [DisplayName("Numero de pruebas a realizarse (k)")]
         [Required]
-        public int K { get; set; }
+        public int pa_K { get; set; }
 
         [DisplayName("Probabilidad de Exito (p)")]
         [Required]
-        public double P { get; set; }
+        public double pa_P { get; set; }
 
         [DisplayName("Probabilidad de Fracaso (q)")]
-        public double Q { get; set; }
+        public double pa_Q { get; set; }
 
         [DisplayName("Valor Esperado")]
-        public double E { get; set; }
+        public double pa_E { get; set; }
 
         [DisplayName("Varianza")]
-        public double V { get; set; }
+        public double pa_V { get; set; }
 
         #endregion
 
@@ -56,45 +57,61 @@ namespace TesisProj.Areas.Modelos.Models
 
         public Pascal()
         {
-            this.R = 0;
-            this.P = 0;
-            this.Q = 0;
-            this.E = 0;
-            this.V = 0;
-            this.K = 0;
+            this.pa_R = 0;
+            this.pa_P = 0;
+            this.pa_Q = 0;
+            this.pa_E = 0;
+            this.pa_V = 0;
+            this.pa_K = 0;
+            this.IsEliminado = true;
+            Abreviatura="P(r,p)";
+                    Nombre="Pascal";
+                    Definicion = "Combinatoria(k-1,r-1)*Potencia(p,1)*Potencia(q,k-r)";
+                    Descripcion = "Se denomina experimento binomial negativo o de pascal "+
+                                  "a las repeticiones independientes de un experimento de "+
+                                  "aleatorio de Bernulli hasta obtener el éxito número r. "+
+                                  "En cada enseayo de Bernulli ´puede ocurrir un éxito con "+
+                                  "probabilidad p o un fracaso con probabilidad q=p-1.\n\n"+
+                                  "A la variable aleatoria X que se define como el número de "+
+                                  "intentos hasta que ocurra el éxito número r se le denomina" +
+                                  "variable aleatoria binomial negativa o de Pascal. Su rango "+
+                                  "es el conjunto: Rx = {r,r+1,r+2,... }\n\n"+
+                                  "Si k pertenece a Rx, el evento [X = k] ocurre, si resulta éxito "+
+                                  "en la k-ésima prueba y en los restantes k-1 pruebas resultan r-1 éxitos "+
+                                  "y (k-1)-(r-1) =k-r fracasos.\n\n";
         }
 
         public Pascal(int R,double P, int K)
         {
-            this.R = R;
-            this.P = P;
-            this.K = K;
-            this.Q = 1 - P;
-            this.E = R *(1.0/P) ;
-            this.V = R * (1.0 * Q) / Math.Pow(P, 2);
+            this.pa_R = R;
+            this.pa_P = P;
+            this.pa_K = K;
+            this.pa_Q = 1 - P;
+            this.pa_E = R * (1.0 / P);
+            this.pa_V = R * (1.0 * pa_Q) / Math.Pow(P, 2);
         }
 
         #region Formulas
 
         public double GetEsperado()
         {
-            return Math.Round(E, 2);
+            return Math.Round(pa_E, 2);
         }
 
         public double GetVarianza()
         {
-            return Math.Round(V, 2);
+            return Math.Round(pa_V, 2);
         }
 
         private double GetFuncion(int K)
         {
-            return Calculos.Combinatoria(K-1, R-1) * Math.Pow(P, R) * Math.Pow(Q, K-R);
+            return Calculos.Combinatoria(K - 1, pa_R - 1) * Math.Pow(pa_P, pa_R) * Math.Pow(pa_Q, K - pa_R);
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (int i = R; i <= K; i++)
+            for (int i = pa_R; i <= pa_K; i++)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncion(i);
@@ -121,7 +138,7 @@ namespace TesisProj.Areas.Modelos.Models
             List<Grafico> s = new List<Grafico>();
             Double aux = new Double();
             aux = 0;
-            for (int i = R; i <= K; i++)
+            for (int i = pa_R; i <= pa_K; i++)
             {
                 Grafico t = new Grafico();
                 aux += GetFuncion(i);

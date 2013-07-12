@@ -22,28 +22,29 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpGet]
         public ActionResult Index(int idParametro, int ProyectoId)
         {
-            Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
-            ModeloSimlacion m = context.TablaModeloSimulacion.One(s=>s.Id==7);
-            ViewBag.idProyecto = ProyectoId;
-            ViewBag.idParametro = idParametro;
-            double mean = p.Celdas.Average(e => Convert.ToDouble(e.Valor));
-            double std = Calculos.DesviacionStandard(p.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
-            m.Normal = new Normal();
-            m.Normal.mean= mean;
-            m.Normal.std= std;
-            m.Normal.K=p.Celdas.Count;
-            m.Nombre = "Normal";
-            MaestroSimulacion maestro = new MaestroSimulacion(m);
-            maestro.ActualizarCeldas("Normal",p);
-            p.CeldasSensibles = maestro.CeldasSensibles;
+            using (TProjContext context = new TProjContext())
+            {
+                Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Where(e => e.Id == idParametro).FirstOrDefault();
 
-            Session["GraficoSimulacion"] = m.Normal.graficar;
-            Session["Celdas_simulada"] = p.CeldasSensibles;
-            p.modelo = maestro.modelobase;
-            context.Entry(p).State = EntityState.Modified;
-            context.SaveChanges();
+                ViewBag.idProyecto = ProyectoId;
+                ViewBag.idParametro = idParametro;
+                double mean = p.Celdas.Average(e => Convert.ToDouble(e.Valor));
+                double std = Calculos.DesviacionStandard(p.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
+                p.normal.n_mean = mean;
+                p.normal.n_std = std;
+                p.normal.n_K = p.Celdas.Count;
+                p.normal.Nombre = "Normal";
+                MaestroSimulacion maestro = new MaestroSimulacion();
+                maestro.normal = p.normal;
+                maestro.ActualizarCeldas( "Normal",p);
+                p.CeldasSensibles = maestro.CeldasSensibles;
+                Session["GraficoSimulacion"] = p.normal.graficar;
+                Session["Celdas_simulada"] = p.CeldasSensibles;
+                context.Entry(p).State = EntityState.Modified;
+                context.SaveChanges();
 
-            return View(m.Normal);
+                return View(p.normal);
+            }
         }
 
         [ChildActionOnly]
@@ -61,27 +62,26 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpPost]
         public ActionResult Index(Normal n, int idParametro, int ProyectoId)
         {
-            Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
-            ViewBag.idParametro = idParametro;
-            ViewBag.idProyecto = ProyectoId;
-            ModeloSimlacion m = context.TablaModeloSimulacion.One(s => s.Id == 7);
-            double mean = n.mean;
-            double std = n.std;
-            m.Normal = new Normal();
-            m.Normal.mean = mean;
-            m.Normal.std = std;
-            m.Normal.K = p.Celdas.Count;
-            m.Nombre = "Normal";
-            MaestroSimulacion maestro = new MaestroSimulacion(m);
-            maestro.ActualizarCeldas("Normal", p);
-            p.CeldasSensibles = maestro.CeldasSensibles;
 
-            Session["GraficoSimulacion"] = m.Normal.graficar;
+            Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Where(e => e.Id == idParametro).FirstOrDefault();
+
+            ViewBag.idProyecto = ProyectoId;
+            ViewBag.idParametro = idParametro;
+            double mean = n.n_mean;
+            double std = n.n_std;
+            p.normal.n_mean = mean;
+            p.normal.n_std = std;
+            p.normal.n_K = p.Celdas.Count;
+            p.normal.Nombre = "Normal";
+            MaestroSimulacion maestro = new MaestroSimulacion();
+            maestro.normal = p.normal;
+            maestro.ActualizarCeldas("Normal",p);
+            p.CeldasSensibles = maestro.CeldasSensibles;
+            Session["GraficoSimulacion"] = p.normal.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-            p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();
-            return View(m.Normal);
+            return View(p.normal);
         }
 
     }

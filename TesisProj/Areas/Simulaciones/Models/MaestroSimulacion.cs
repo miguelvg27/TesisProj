@@ -10,25 +10,37 @@ namespace TesisProj.Areas.Simulaciones.Models
 {
     public class MaestroSimulacion 
     {
-        public virtual ModeloSimlacion modelobase { get; set; }
+        public virtual Normal normal { get; set; }
+        public virtual Uniforme uniforme { get; set; }
+        public virtual Binomial binomial { get; set; }
+        public virtual Geometrica geometrica { get; set; }
+        public virtual Hipergeometrica hipergeometrica { get; set; }
+        public virtual Poisson poisson { get; set; }
+        public virtual Pascal pascal { get; set; }
+
         public virtual List<Celda> CeldasSensibles { get; set; }
         public virtual List<Grafico> Graficos { get; set; }
 
-        public MaestroSimulacion(ModeloSimlacion m)
+        public MaestroSimulacion()
         {
-            // aca le di los parametros iniciales al modelo
             this.Graficos = new List<Grafico>();
             this.CeldasSensibles = new List<Celda>();
-            this.modelobase = m;
+            this.normal=null;
+            this.uniforme=null;
+            this.binomial=null;
+            this.geometrica=null;
+            this.hipergeometrica=null;
+            this.poisson =null;
+            this.pascal = null;
         }
 
         public void ActualizarCeldas(string modelo,Parametro parametro)
         {
             //aca genero los numeros aleatorios
-            if (modelobase.Nombre.Equals("Normal"))
+            if (modelo=="Normal")
             {
                 List<Celda> celdas = new List<Celda>();
-                Graficos= modelobase.Normal.GenerarNumerosAleatorios(parametro.Celdas.Count);
+                Graficos= normal.GenerarNumerosAleatorios(parametro.Celdas.Count);
                 int i = 0;
                 foreach (Grafico g in Graficos)
                 {
@@ -39,10 +51,10 @@ namespace TesisProj.Areas.Simulaciones.Models
                 CeldasSensibles = celdas;                
             }
 
-            if(modelobase.Nombre.Equals("Uniforme"))
+            if(uniforme!=null)
             {
                 List<Celda> celdas = new List<Celda>();
-                Graficos = modelobase.Uniforme.GenerarNumerosAleatorios(parametro.Celdas.Count);
+                Graficos = uniforme.GenerarNumerosAleatorios(parametro.Celdas.Count);
                 int i = 0;
                 foreach (Grafico g in Graficos)
                 {

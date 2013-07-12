@@ -6,27 +6,28 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.Distribuciones.Models;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Normal : DbObject
+    public class Normal : ModeloSimlacion
     {
 
         #region Parametros
 
         [DisplayName("Media (u)")]
-        public double mean { get; set; }
+        public double n_mean { get; set; }
 
         [DisplayName("Desviación Estandar (o)")]
-        public double std { get; set; }
+        public double n_std { get; set; }
 
-        public int K { get; set; }
+        public int n_K { get; set; }
 
         [DisplayName("Valor Esperado")]
-        public double E { get; set; }
+        public double n_E { get; set; }
 
         [DisplayName("Varianza")]
-        public double V { get; set; }
+        public double n_V { get; set; }
 
         public List<Grafico> graficar { get; set; }
 
@@ -55,17 +56,24 @@ namespace TesisProj.Areas.Modelos.Models
 
         public Normal()
         {
-            mean = 0;
-            std = 1;
+            n_mean = 0;
+            n_std = 1;
+     Abreviatura="N(u,o)";
+                    Nombre="Normal";
+                    Definicion=" ";
+                    Descripcion = "Se dice que la variable aleatoria continua X, que toma los valores reales " +
+                                  ", - inf < x < inf, es normal coon parametros u y o y se describe por " +
+                                  "X - N[u,o], si su funcion de densidad de probabilidad es:\n\n";
         }
 
         public Normal(double m, double s, int k)
         {
-            this.mean = m;
-            this.std = s;
-            this.K = k;
-            this.E = m;
-            this.V = s;
+            this.n_mean = m;
+            this.n_std = s;
+            this.n_K = k;
+            this.n_E = m;
+            this.n_V = s;
+
         }
 
         #region Formulas
@@ -73,24 +81,24 @@ namespace TesisProj.Areas.Modelos.Models
 
         public double GetEsperado()
         {
-            return Math.Round(E, 2);
+            return Math.Round(n_E, 2);
         }
 
         public double GetVarianza()
         {
-            return Math.Round(V, 2);
+            return Math.Round(n_V, 2);
         }
 
         private double GetFuncion(double K)
         {
-            double z = Math.Pow(((K - mean) / std), 2);
-            return (1 / (Math.Sqrt(std)* Math.Sqrt(2 * Math.PI))) * Math.Exp(-z / 2);
+            double z = Math.Pow(((K - n_mean) / n_std), 2);
+            return (1 / (Math.Sqrt(n_std) * Math.Sqrt(2 * Math.PI))) * Math.Exp(-z / 2);
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (double i = 0; i <= K; i++)
+            for (double i = 0; i <= n_K; i++)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncion(i);
@@ -121,7 +129,7 @@ namespace TesisProj.Areas.Modelos.Models
             for (int i = 1; i <= Veces; i++)
             {
                 Grafico t = new Grafico();
-                aux = rg.NormalDeviate() + mean;
+                aux = rg.NormalDeviate() + n_mean;
                 t.fx = aux;
                 t.x = i;
                 t.sx = Convert.ToString(i);

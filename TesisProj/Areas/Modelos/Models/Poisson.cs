@@ -7,27 +7,29 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.Distribuciones.Models;
 
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Poisson : DbObject
+    public class Poisson : ModeloSimlacion
     {
+       
         #region Parametros
 
         [DisplayName("Valor de Landa")]
         [Required]
-        public double L { get; set; }
+        public double po_L { get; set; }
 
         [DisplayName("Numero de muestra")]
         [Required]
-        public double K { get; set; }
+        public double po_K { get; set; }
 
         [DisplayName("Valor Esperado")]
-        public double E { get; set; }
+        public double po_E { get; set; }
 
         [DisplayName("Varianza")]
-        public double V { get; set; }
+        public double po_V { get; set; }
 
         #endregion
 
@@ -49,41 +51,48 @@ namespace TesisProj.Areas.Modelos.Models
 
         public Poisson()
         {
-            this.E = 0;
-            this.V = 0;
-            this.L = 0;
-            this.K = 0;
+            this.po_E = 0;
+            this.po_V = 0;
+            this.po_L = 0;
+            this.po_K = 0;
+            this.IsEliminado = true;
+            Abreviatura="P(l)";
+                    Nombre="Poisson";
+                    Definicion=" ";
+                    Descripcion = "Se dice que la variabl ealeatoria discreta X cuyos valores  " +
+                                  "posibles son : 0,1,2,... tienen distribucion de Poisson con parametro l (l>0) " +
+                                  "si su funcion de Probabilidad es: \n\n";
         }
 
         public Poisson(int K,double L)
         {
-            this.E = L;
-            this.V = L;
-            this.L = L;
-            this.K = K;
+            this.po_E = L;
+            this.po_V = L;
+            this.po_L = L;
+            this.po_K = K;
         }
 
         #region Formulas
 
         public double GetEsperado()
         {
-            return Math.Round(E, 2);
+            return Math.Round(po_E, 2);
         }
 
         public double GetVarianza()
         {
-            return Math.Round(V, 2);
+            return Math.Round(po_V, 2);
         }
 
         private double GetFuncion(int K)
         {
-            return (Math.Exp(-L) * Math.Pow(L, K)) / (Calculos.Factorial(K));
+            return (Math.Exp(-po_L) * Math.Pow(po_L, K)) / (Calculos.Factorial(K));
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (int i = 0; i <= K; i++)
+            for (int i = 0; i <= po_K; i++)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncion(i);
@@ -110,7 +119,7 @@ namespace TesisProj.Areas.Modelos.Models
             List<Grafico> s = new List<Grafico>();
             Double aux = new Double();
             aux = 0;
-            for (int i = 0; i <=K; i++)
+            for (int i = 0; i <= po_K; i++)
             {
                 Grafico t = new Grafico();
                 aux += GetFuncion(i);

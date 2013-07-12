@@ -29,7 +29,8 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpPost]
         public JsonResult _GetModelos(int? Distribuciones)
         {
-            var t=context.TablaDistribucion.One(m => m.Id == Distribuciones).Modelos;
+           // ya no se usa
+            var t=context.TablaDistribucion.Where(m => m.Id == Distribuciones);
             return Json(new SelectList(t, "Id", "Nombre"), JsonRequestBehavior.AllowGet);
         }
 

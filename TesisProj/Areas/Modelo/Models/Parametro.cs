@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Distribuciones.Models;
 using TesisProj.Areas.Modelos.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Areas.Simulaciones.Models;
@@ -50,8 +51,13 @@ namespace TesisProj.Areas.Modelo.Models
         [InverseProperty("Parametro")]
         public virtual List<Celda> Celdas { get; set; }
 
-
-        public virtual ModeloSimlacion modelo { get; set; }
+        public virtual Normal normal { get; set; }
+        public virtual Uniforme uniforme { get; set; }
+        public virtual Binomial  binomial { get; set; }
+        public virtual Geometrica geometrica { get; set; }
+        public virtual Hipergeometrica hipergeometrica { get; set; }
+        public virtual Pascal pascal { get; set; }
+        public virtual Poisson poison { get; set; }
 
         [NotMapped]
         public List<Celda> CeldasSensibles { get; set; }

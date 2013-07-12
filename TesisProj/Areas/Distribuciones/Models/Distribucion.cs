@@ -24,11 +24,9 @@ namespace TesisProj.Areas.Distribuciones.Models
         [DisplayName("Imagen")]
         public string Imagen { get; set; }
 
-        public virtual List<ModeloSimlacion> Modelos { get; set; }
-
         public Distribucion()
         {
-            Modelos = new List<ModeloSimlacion>();
+
         }
     }
 }

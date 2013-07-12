@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,7 +20,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public ActionResult Index(int idProyecto)
         {
-            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
+            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
             ViewBag.ProyectoId = idProyecto;
             List<Parametro> salida = new List<Parametro>();
 
@@ -29,14 +30,15 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                     {
                         ModeloSimlacion m = new ModeloSimlacion();
 
-                        m.Binomial = new Binomial { Id=1};
-                        m.Geometrica = new Geometrica { Id = 2 };
-                        m.Hipergeometrica = new Hipergeometrica { Id = 3 };
-                        m.Pascal = new Pascal { Id = 4 };
-                        m.Poisson = new Poisson { Id = 5 };
-                        m.Uniforme = new Uniforme { Id = 6 };
-                        m.Normal = new Normal { Id = 7 };
-                        parametro.modelo = m;
+                        if (parametro.binomial==null) parametro.binomial = new Binomial(); 
+                        if (parametro.geometrica==null) parametro.geometrica = new Geometrica();
+                        if (parametro.hipergeometrica == null) parametro.hipergeometrica = new Hipergeometrica();
+                        if (parametro.pascal==null) parametro.pascal = new Pascal();
+                        if (parametro.poison == null) parametro.poison = new Poisson();
+                        if (parametro.uniforme == null) parametro.uniforme = new Uniforme();
+                        if (parametro.normal ==null) parametro.normal = new Normal();
+                        context.Entry(parametro).State = EntityState.Modified;
+                        context.SaveChanges();
                         Parametro aux =new Parametro();
                         aux = parametro;
                         salida.Add(aux);

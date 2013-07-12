@@ -31,21 +31,7 @@ namespace TesisProj.Areas.Modelos.Models
 
         #endregion
 
-        public virtual Distribucion Distribucion {get;set;}
-
-        public virtual Binomial Binomial { get; set; }
-
-        public virtual Geometrica Geometrica { get; set; }
-
-        public virtual Pascal Pascal { get; set; }
-
-        public virtual Hipergeometrica Hipergeometrica { get; set; }
-
-        public virtual Poisson Poisson { get; set; }
-
-        public virtual Uniforme Uniforme { get; set; }
-
-        public virtual Normal Normal { get; set; }
+        public virtual Distribucion distribucion { get; set; }
 
         public ModeloSimlacion()
         {

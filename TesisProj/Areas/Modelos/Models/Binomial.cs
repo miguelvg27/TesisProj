@@ -5,35 +5,36 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Distribuciones.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Binomial : DbObject
+    public class Binomial : ModeloSimlacion
     {
 
         #region Parametros
 
         [DisplayName("Numero de Pruebas Realizadas (N)")]
         [Required]
-        public int N { get; set; }
+        public int b_N { get; set; }
 
         [DisplayName("Punto a Evaluar")]
-        public int K { get; set; }
+        public int b_K { get; set; }
 
         [DisplayName("Probabilidad de Exito (p)")]
         [Required]
-        public double P { get; set; }
+        public double b_P { get; set; }
 
         [DisplayName("Probabilidad de Fracaso (q)")]
-        public double Q { get; set; }
+        public double b_Q { get; set; }
 
         [DisplayName("Valor Esperado")]
-        public double E { get; set; }
+        public double b_E { get; set; }
 
         [DisplayName("Varianza")]
-        public double V { get; set; }
+        public double b_V { get; set; }
 
         #endregion
 
@@ -55,45 +56,60 @@ namespace TesisProj.Areas.Modelos.Models
 
         public Binomial()
         {
-            this.N = 0;
-            this.P = 0;
-            this.Q = 0;
-            this.E = 0;
-            this.V = 0;
-            this.K = 0;
+            this.b_N = 0;
+            this.b_P = 0;
+            this.b_Q = 0;
+            this.b_E = 0;
+            this.b_V = 0;
+            this.b_K = 0;
+            this.IsEliminado = true;
+            Abreviatura="B(n,p)";
+                    Nombre="Binomial";
+                    Definicion="Combinatoria(n,k)*Potencia(p,k)*Potencia(q,n-k)";
+                    Descripcion = "La distribución binomial es una distribución de probabilidad discreta " +
+                                "que mide el número de éxitos en una secuencia de n ensayos de Bernoulli " +
+                                "independientes entre sí, con una probabilidad fija p de ocurrencia del " +
+                                "éxito entre los ensayos. Un experimento de Bernoulli se caracteriza por " +
+                                "ser dicotómico, esto es, sólo son posibles dos resultados. " +
+                                "A uno de estos se denomina éxito y tiene una probabilidad de ocurrencia p y " +
+                                "al otro, fracaso, con una probabilidad q = 1 - p. " +
+                                "En la distribución binomial el anterior experimento se repite n veces, " +
+                                "de forma independiente, y se trata de calcular la probabilidad de un " +
+                                "determinado número de éxitos. Para n = 1, la binomial se convierte, de hecho, " +
+                                "en una distribución de Bernoulli.";
         }
 
         public Binomial(int N, double P, int K)
         {
-            this.N = N;
-            this.K = K;
-            this.P = P;
-            this.Q = 1 - P;
-            this.E = N * P;
-            this.V = N * P * (1 - P);
+            this.b_N = N;
+            this.b_K = K;
+            this.b_P = P;
+            this.b_Q = 1 - P;
+            this.b_E = N * P;
+            this.b_V = N * P * (1 - P);
         }
 
         #region Formulas
 
         public double GetEsperado()
         {
-            return Math.Round(E, 2);
+            return Math.Round(b_E, 2);
         }
 
         public double GetVarianza()
         {
-            return Math.Round(V, 2);
+            return Math.Round(b_V, 2);
         }
 
         private double GetFuncion(int X)
         {
-            return Calculos.Combinatoria(N, X) * Math.Pow(P, X) * Math.Pow(Q, N - X);
+            return Calculos.Combinatoria(b_N, X) * Math.Pow(b_P, X) * Math.Pow(b_Q, b_N - X);
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (int i = 0; i <= N; i++)
+            for (int i = 0; i <= b_N; i++)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncion(i);
@@ -120,7 +136,7 @@ namespace TesisProj.Areas.Modelos.Models
             List<Grafico> s = new List<Grafico>();
             Double aux = new Double();
             aux = 0;
-            for (int i = 0; i <= N; i++)
+            for (int i = 0; i <= b_N; i++)
             {
                 Grafico t = new Grafico();
                 aux += GetFuncion(i);

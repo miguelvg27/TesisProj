@@ -6,30 +6,31 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.Distribuciones.Models;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Geometrica : DbObject
+    public class Geometrica : ModeloSimlacion
     {
         
         #region Parametros
 
         [DisplayName("Éxito en el intento Nro")]
         [Required]
-        public int k { get; set; }
+        public int g_k { get; set; }
 
         [DisplayName("Probabilidad de Exito (p)")]
         [Required]
-        public double P { get; set; }
+        public double g_P { get; set; }
 
         [DisplayName("Probabilidad de Fracaso (q)")]
-        public double Q { get; set; }
+        public double g_Q { get; set; }
 
         [DisplayName("Valor Esperado")]
-        public double E { get; set; }
+        public double g_E { get; set; }
 
         [DisplayName("Varianza")]
-        public double V { get; set; }
+        public double g_V { get; set; }
 
         #endregion
 
@@ -51,43 +52,50 @@ namespace TesisProj.Areas.Modelos.Models
 
         public Geometrica()
         {
-            this.k = 0;
-            this.P = 0;
-            this.Q = 0;
-            this.E = 0;
-            this.V = 0;
+            this.g_k = 0;
+            this.g_P = 0;
+            this.g_Q = 0;
+            this.g_E = 0;
+            this.g_V = 0;
+            this.IsEliminado = true;
+            Abreviatura="G(p)";
+                    Nombre="Geometrica";
+                    Definicion="Potencia(p,1)*Potencia(q,k-1)";
+                    Descripcion = "La Distribución Geométrica es una distribución de probabilidad discreta la cual " +
+                                "mide hasta que ocurra el primer éxitos en una secuencia de n ensayos de Bernoulli " +
+                                "sucesivas w independientes ";
         }
 
         public Geometrica(int k, double P)
         {
-            this.k = k;
-            this.P = P;
-            this.Q = (1-P);
-            this.E = 1.0/P;
-            this.V = (Q)/Math.Pow(P,2);
+            this.g_k = k;
+            this.g_P = P;
+            this.g_Q = (1 - P);
+            this.g_E = 1.0 / P;
+            this.g_V = (g_Q) / Math.Pow(P, 2);
         }
 
         #region Formulas
 
         public double GetEsperado()
         {
-            return Math.Round(E, 2);
+            return Math.Round(g_E, 2);
         }
 
         public double GetVarianza()
         {
-            return Math.Round(V, 2);
+            return Math.Round(g_V, 2);
         }
 
         public double GetFuncion(int X)
         {
-            return P * Math.Pow(Q, X-1);
+            return g_P * Math.Pow(g_Q, X - 1);
         }
 
         public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (int i = 1; i<= k; i++)
+            for (int i = 1; i <= g_k; i++)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncion(i);
@@ -114,7 +122,7 @@ namespace TesisProj.Areas.Modelos.Models
             List<Grafico> s = new List<Grafico>();
             Double aux = new Double();
             aux = 0;
-            for (int i = 1; i <= k; i++)
+            for (int i = 1; i <= g_k; i++)
             {
                 Grafico t = new Grafico();
                 aux += GetFuncion(i);

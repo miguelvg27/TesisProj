@@ -6,30 +6,31 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.Distribuciones.Models;
 
 namespace TesisProj.Areas.Modelos.Models
 {
-    public class Uniforme : DbObject
+    public class Uniforme : ModeloSimlacion
     {
         #region Parametros
 
         [DisplayName("Limite Inferior (a)")]
         [Required]
-        public double a { get; set; }
+        public double u_a { get; set; }
 
         [DisplayName("Limite Superior (b)")]
         [Required]
-        public double b { get; set; }
+        public double u_b { get; set; }
 
         [DisplayName("Amplitud del intervalo (k)")]
         [Required]
-        public double K { get; set; }
+        public double u_K { get; set; }
 
         [DisplayName("Valor Esperado")]
-        public double E { get; set; }
+        public double u_E { get; set; }
 
         [DisplayName("Varianza")]
-        public double V { get; set; }
+        public double u_V { get; set; }
 
         #endregion
 
@@ -51,20 +52,27 @@ namespace TesisProj.Areas.Modelos.Models
 
         public Uniforme()
         {
-            this.a = 0;
-            this.b = 0;
-            this.K = 0;
-            this.E = 0;
-            this.V = 0;
+            this.u_a = 0;
+            this.u_b = 0;
+            this.u_K = 0;
+            this.u_E = 0;
+            this.u_V = 0;
+            this.IsEliminado = true;
+                                Abreviatura="U(a,b)";
+                    Nombre="Uniforme";
+                    Definicion=" ";
+                    Descripcion = "Se dice que la variable aleatoria continua X, tiene distribución " +
+                                  "uniforme (o rectangular) en el intervalo [a,b], a < b, y se describe por " +
+                                  "X - U[a,b], si su funcion de densidad de probabilidad es:\n\n";
         }
 
         public Uniforme(double a, double b)
         {
-            this.a = a;
-            this.b = b;
-            this.K = 0;
-            this.E = (a+b)/2;
-            this.V = Math.Pow(b-a,2)/12;
+            this.u_a = a;
+            this.u_b = b;
+            this.u_K = 0;
+            this.u_E = (a + b) / 2;
+            this.u_V = Math.Pow(b - a, 2) / 12;
         }
 
         public List<Grafico> graficar { get; set; }
@@ -73,22 +81,22 @@ namespace TesisProj.Areas.Modelos.Models
 
         public double GetEsperado()
         {
-            return Math.Round(E, 2);
+            return Math.Round(u_E, 2);
         }
 
         public double GetVarianza()
         {
-            return Math.Round(V, 2);
+            return Math.Round(u_V, 2);
         }
 
         private double GetFuncionSinple()
         {
-            return (1/(b-a));
+            return (1 / (u_b - u_a));
         }
 
         private double GetFuncionAcumulada(double K)
         {
-            return ((K-a) / (b - a));
+            return ((K - u_a) / (u_b - u_a));
         }
 
         public List<Grafico> GenerarNumerosAleatorios(int Veces)
@@ -98,10 +106,10 @@ namespace TesisProj.Areas.Modelos.Models
             for(int i =1;i<=Veces;i++)
             {
                 Grafico t = new Grafico();
-                t.fx = (b - a) * r.NextDouble() + a;
+                t.fx = (u_b - u_a) * r.NextDouble() + u_a;
                 t.x = i;
                 t.sx = Convert.ToString(i);
-                t.sfx = Convert.ToString(Math.Round((b - a) * r.NextDouble() + a));
+                t.sfx = Convert.ToString(Math.Round((u_b - u_a) * r.NextDouble() + u_a));
                 s.Add(t);
             }
             graficar = s;
@@ -111,7 +119,7 @@ namespace TesisProj.Areas.Modelos.Models
         public List<Grafico> GetFuncionSimpleArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (double i = a; i <= b; i = i + K)
+            for (double i = u_a; i <= u_b; i = i + u_K)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncionSinple();
@@ -136,7 +144,7 @@ namespace TesisProj.Areas.Modelos.Models
         public List<Grafico> GetFuncionAcumuladaArreglo()
         {
             List<Grafico> s = new List<Grafico>();
-            for (double i = a; i <= b; i = i + K)
+            for (double i = u_a; i <= u_b; i = i + u_K)
             {
                 Grafico t = new Grafico();
                 t.fx = GetFuncionAcumulada(i);
