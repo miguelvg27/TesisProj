@@ -31,8 +31,6 @@ namespace TesisProj.Areas.Modelos.Models
 
         #endregion
 
-        public virtual Proyecto proyecto { get; set; }
-
         public virtual Distribucion Distribucion {get;set;}
 
         public virtual Binomial Binomial { get; set; }

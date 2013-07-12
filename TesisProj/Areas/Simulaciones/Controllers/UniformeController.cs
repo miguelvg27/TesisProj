@@ -26,7 +26,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             ViewBag.idProyecto = ProyectoId;
             double a = 0; 
             double b = p.Celdas.Max(e => Convert.ToDouble(e.Valor));
-            m.Uniforme = context.TablaUniforme.One(o=>o.Id==1);
+            m.Uniforme = new Uniforme();
             m.Uniforme.a = a;
             m.Uniforme.b = b;
             m.Nombre = "Uniforme";
@@ -36,7 +36,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             Session["GraficoSimulacion"] = m.Uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-            context.TablaUniforme.ModifyElement(m.Uniforme);
+
             p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();
@@ -64,7 +64,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             ModeloSimlacion m = context.TablaModeloSimulacion.One(s => s.Id == 6);
             double a = n.a;
             double b = n.b;
-            m.Uniforme = context.TablaUniforme.One(o => o.Id == 1);
+            m.Uniforme = new Uniforme();
             m.Uniforme.a = a;
             m.Uniforme.b = b;
             m.Nombre = "Uniforme";
@@ -74,7 +74,6 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             Session["GraficoSimulacion"] = m.Uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-            context.TablaUniforme.ModifyElement(m.Uniforme);
             p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();
