@@ -18,11 +18,31 @@ namespace TesisProj.Models.Storage
         public DbSet<Uniforme> InternalUniforme { get; set; }
         public DbRequester<Uniforme> TablaUniforme { get; set; }
 
+        public DbSet<Binomial> InternalBinomial { get; set; }
+        public DbRequester<Binomial> TablaBinomial { get; set; }
+
+        public DbSet<Geometrica> InternalGeometrica { get; set; }
+        public DbRequester<Geometrica> TablaGeometrica { get; set; }
+
+        public DbSet<Hipergeometrica> InternalHipergeometrica { get; set; }
+        public DbRequester<Hipergeometrica> TablaHipergeometrica { get; set; }
+
+        public DbSet<Pascal> InternalPascal { get; set; }
+        public DbRequester<Pascal> TablaPascal { get; set; }
+
+        public DbSet<Poisson> InternalPoisson { get; set; }
+        public DbRequester<Poisson> TablaPoisson { get; set; }
+
         public void RegistrarTablasModelo()
         {
             TablaModeloSimulacion = new DbRequester<ModeloSimlacion>(this, InternalModeloSimulacion);
             TablaNormal = new DbRequester<Normal>(this, InternalNormal);
             TablaUniforme = new DbRequester<Uniforme>(this, InternalUniforme);
+            TablaBinomial = new DbRequester<Binomial>(this, InternalBinomial);
+            TablaGeometrica = new DbRequester<Geometrica>(this, InternalGeometrica);
+            TablaHipergeometrica = new DbRequester<Hipergeometrica>(this, InternalHipergeometrica);
+            TablaPascal = new DbRequester<Pascal>(this, InternalPascal);
+            TablaPoisson = new DbRequester<Poisson>(this, InternalPoisson);
         }
 
         public void seedModelo()
