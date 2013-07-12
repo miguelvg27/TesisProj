@@ -33,6 +33,13 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             maestro.uniforme = p.uniforme;
             maestro.ActualizarCeldas("Uniforme", p);
             p.CeldasSensibles = maestro.CeldasSensibles;
+            p.normal.IsEliminado = true;
+            p.binomial.IsEliminado = true;
+            p.geometrica.IsEliminado = true;
+            p.hipergeometrica.IsEliminado = true;
+            p.pascal.IsEliminado = true;
+            p.poison.IsEliminado = true;
+            p.uniforme.IsEliminado = false;
             Session["GraficoSimulacion"] = p.uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
             context.Entry(p).State = EntityState.Modified;
@@ -69,6 +76,13 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             maestro.uniforme = p.uniforme;
             maestro.ActualizarCeldas("Uniforme", p);
             p.CeldasSensibles = maestro.CeldasSensibles;
+            p.normal.IsEliminado = true;
+            p.binomial.IsEliminado = true;
+            p.geometrica.IsEliminado = true;
+            p.hipergeometrica.IsEliminado = true;
+            p.pascal.IsEliminado = true;
+            p.poison.IsEliminado = true;
+            p.uniforme.IsEliminado = false;
             Session["GraficoSimulacion"] = p.uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
             context.Entry(p).State = EntityState.Modified;

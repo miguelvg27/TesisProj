@@ -1,0 +1,76 @@
+﻿@model TesisProj.Areas.MonteCarlo.Models.AlgoritmoMonteCarlo
+@using TesisProj.Areas.Modelo.Models
+@using Telerik.Web.Mvc.UI
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm())
+{
+    
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+<fieldset>
+    <legend>Metodo de Monte Carlo</legend>
+    
+        <div class="span6">
+                <table>
+        <tr>
+            <th>Parametro</th><th>Distribucion Asignada</th><th>Estado</th>
+        </tr>
+        
+            @foreach (Parametro p in Model.Parametros)
+            {
+                <tr>
+                    <td>@p.Nombre</td>
+                    @if(p.normal.IsEliminado==false) {<td>@p.normal.Nombre</td>}
+                    @if(p.uniforme.IsEliminado==false) {<td>@p.uniforme.Nombre</td>}
+                    @if(p.binomial.IsEliminado==false) {<td>@p.binomial.Nombre</td>}
+                    @if(p.geometrica.IsEliminado==false) {<td>@p.geometrica.Nombre</td>}
+                    @if(p.hipergeometrica.IsEliminado==false) {<td>@p.hipergeometrica.Nombre</td>}
+                    @if(p.poison.IsEliminado==false) {<td>@p.poison.Nombre</td>}
+                    @if(p.pascal.IsEliminado==false) {<td>@p.pascal.Nombre</td>}
+                    <td><img src="~/Images/check.jpg" width="20" height="20" /> </td>                                                         
+                </tr>
+            }
+        
+    </table>
+        </div>
+        <div class="span6">
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.NumeroSimulaciones)
+    </div>
+    <div class="display-field">
+        @Html.Telerik().IntegerTextBoxFor(model => model.NumeroSimulaciones)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.NumeroIntervalos)
+    </div>
+    <div class="display-field">
+        @Html.Telerik().IntegerTextBoxFor(model => model.NumeroIntervalos)
+    </div>
+
+    <div class="display-label">
+         Tipo de Grafico
+    </div>
+    <div class="display-field">
+        @(Html.Telerik().ComboBoxFor(model=>model.grafico)
+            .Name("DropDownList")
+            .BindTo(new SelectList(ViewBag.Tipos, "Id", "Text"))
+            .HtmlAttributes(new { style = string.Format("width:{0}px", 300) })
+    )
+    </div>
+</div>
+    <button class="btn btn-inverse" type="submit">Calcular</button>
+</fieldset>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+}
