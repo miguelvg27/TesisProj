@@ -50,6 +50,7 @@ namespace TesisProj.Models.Storage
             seedModelo();
             SeedDistribuciones();
             seedModelo2();
+            seedModelo3();
 
         }
     }

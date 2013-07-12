@@ -20,14 +20,18 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         TProjContext context = new TProjContext();
 
         [HttpGet]
-        public ActionResult Index(int idParametro)
+        public ActionResult Index(int idParametro, int ProyectoId)
         {
             Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
             ModeloSimlacion m = context.TablaModeloSimulacion.One(s=>s.Id==7);
+            ViewBag.idProyecto = ProyectoId;
             ViewBag.idParametro = idParametro;
             double mean = p.Celdas.Average(e => Convert.ToDouble(e.Valor));
             double std = Calculos.DesviacionStandard(p.Celdas.Select(e => Convert.ToDouble(e.Valor)).ToList());
-            m.Normal = new Normal(mean,std,p.Celdas.Count);
+            m.Normal = new Normal();
+            m.Normal.mean= mean;
+            m.Normal.std= std;
+            m.Normal.K=p.Celdas.Count;
             m.Nombre = "Normal";
             MaestroSimulacion maestro = new MaestroSimulacion(m);
             maestro.ActualizarCeldas("Normal",p);
@@ -35,7 +39,6 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             Session["GraficoSimulacion"] = m.Normal.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-            context.TablaNormal.ModifyElement(m.Normal);
             p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();
@@ -56,14 +59,18 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Normal n, int idParametro)
+        public ActionResult Index(Normal n, int idParametro, int ProyectoId)
         {
             Parametro p = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == idParametro).FirstOrDefault();
             ViewBag.idParametro = idParametro;
+            ViewBag.idProyecto = ProyectoId;
             ModeloSimlacion m = context.TablaModeloSimulacion.One(s => s.Id == 7);
             double mean = n.mean;
             double std = n.std;
-            m.Normal = new Normal(mean, std,p.Celdas.Count);
+            m.Normal = new Normal();
+            m.Normal.mean = mean;
+            m.Normal.std = std;
+            m.Normal.K = p.Celdas.Count;
             m.Nombre = "Normal";
             MaestroSimulacion maestro = new MaestroSimulacion(m);
             maestro.ActualizarCeldas("Normal", p);
@@ -71,7 +78,6 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             Session["GraficoSimulacion"] = m.Normal.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
-            context.TablaNormal.ModifyElement(m.Normal);
             p.modelo = maestro.modelobase;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();

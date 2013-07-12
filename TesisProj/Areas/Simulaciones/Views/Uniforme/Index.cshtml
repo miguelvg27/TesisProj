@@ -41,7 +41,5 @@
     
     <button class="btn btn-inverse" type="submit">Establecer</button>
 }
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = ViewBag.idProyecto})">Regresar</a></h5>
+
