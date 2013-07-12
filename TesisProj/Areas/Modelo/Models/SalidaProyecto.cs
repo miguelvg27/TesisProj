@@ -56,6 +56,14 @@ namespace TesisProj.Areas.Modelo.Models
             this.Secuencia = plantilla.Secuencia;
         }
 
+        public override string LogValues()
+        {
+            return "Nombre = " + this.Nombre + Environment.NewLine +
+                "Secuencia = " + this.Secuencia + Environment.NewLine +
+                "Período inicial = " + this.PeriodoInicial + Environment.NewLine +
+                "Periodo final = " + this.PeriodoFinal;
+        }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

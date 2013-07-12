@@ -23,20 +23,26 @@ namespace TesisProj.Areas.Modelo.Models
         public int IdTipoElemento { get; set; }
 
         [ForeignKey("IdTipoElemento")]
-        public TipoElemento TipoElemento { get; set; }
+        public virtual TipoElemento TipoElemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Proyecto")]
         public int IdProyecto { get; set; }
 
         [ForeignKey("IdProyecto")]
-        public Proyecto Proyecto { get; set; }
+        public virtual Proyecto Proyecto { get; set; }
 
         [InverseProperty("Elemento")]
-        public List<Parametro> Parametros { get; set; }
+        public virtual List<Parametro> Parametros { get; set; }
 
         [InverseProperty("Elemento")]
-        public List<Formula> Formulas { get; set; }
+        public virtual List<Formula> Formulas { get; set; }
+
+        public override string LogValues()
+        {
+            return "Nombre = " + this.Nombre + Environment.NewLine +
+                "Tipo elemento = " + this.TipoElemento.Nombre; 
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

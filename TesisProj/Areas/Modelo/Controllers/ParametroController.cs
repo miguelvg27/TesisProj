@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -72,11 +73,9 @@ namespace TesisProj.Areas.Modelo.Controllers
                 Parametro parametro = db.Parametros.Find(celda.IdParametro);
                 for (int periodo = 1; periodo <= Horizonte; periodo++)
                 {
-                    db.Celdas.Add(new Celda { IdParametro = celda.IdParametro, Periodo = periodo, Valor = celda.Valor });
+                    db.CeldasRequester.AddElement(new Celda { IdParametro = celda.IdParametro, Periodo = periodo, Valor = celda.Valor });
                 }
             }
-
-            db.SaveChanges();
 
             return RedirectToAction("SetParametros", new { id = IdElemento });
         }
@@ -138,10 +137,9 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 foreach (Celda celda in celdas)
                 {
-                    db.Entry(celda).State = EntityState.Modified;
+                    celda.Parametro = db.Parametros.Include(p => p.Elemento).FirstOrDefault(p => p.Id == celda.IdParametro);
+                    db.CeldasRequester.ModifyElement(celda, true, IdProyecto, getUserId());
                 }
-
-                db.SaveChanges();
             }
 
             return RedirectToAction("VerParametros", new { id = IdElemento });
@@ -185,17 +183,16 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Parametros.Add(parametro);
-                db.SaveChanges();
+                parametro.Elemento = db.Elementos.Find(parametro.IdElemento);
+                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
+                db.ParametrosRequester.AddElement(parametro, true, parametro.Elemento.IdProyecto, getUserId());
 
                 Proyecto proyecto = db.Proyectos.Find(IdProyecto);
 
                 for (int periodo = 1; periodo <= proyecto.Horizonte; periodo++)
                 {
-                    db.Celdas.Add(new Celda { IdParametro = parametro.Id, Periodo = periodo, Valor = valor });
+                    db.CeldasRequester.AddElement(new Celda { IdParametro = parametro.Id, Periodo = periodo, Valor = valor });
                 }
-
-                db.SaveChanges();
 
                 return RedirectToAction("SetParametros", new { id = parametro.IdElemento });
             }
@@ -234,8 +231,9 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(parametro).State = EntityState.Modified;
-                db.SaveChanges();
+                parametro.Elemento = db.Elementos.Find(parametro.IdElemento);
+                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
+                db.ParametrosRequester.ModifyElement(parametro, true, parametro.Elemento.IdProyecto, getUserId());
 
                 return RedirectToAction("SetParametros", new { id = parametro.IdElemento });
             }
@@ -273,15 +271,13 @@ namespace TesisProj.Areas.Modelo.Controllers
             Parametro parametro = db.Parametros.Find(id);
             try
             {
-                var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id);
+                var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id).ToList();
                 foreach (Celda celda in celdas)
                 {
-                    db.Celdas.Remove(celda);
+                    db.CeldasRequester.RemoveElementByID(celda.Id);
                 }
-                db.SaveChanges();
 
-                db.Parametros.Remove(parametro);
-                db.SaveChanges();
+                db.ParametrosRequester.RemoveElementByID(parametro.Id, true, true, parametro.Elemento.IdProyecto, getUserId());
             }
             catch (Exception)
             {

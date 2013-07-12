@@ -62,8 +62,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Operaciones.Add(operacion);
-                db.SaveChanges();
+                db.OperacionesRequester.AddElement(operacion, true, operacion.IdProyecto, getUserId());
                 return RedirectToAction("Corolario", new { id = operacion.IdProyecto });
             }
 
@@ -102,8 +101,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(operacion).State = EntityState.Modified;
-                db.SaveChanges();
+                db.OperacionesRequester.ModifyElement(operacion, true, operacion.IdProyecto, getUserId());
                 return RedirectToAction("Corolario", new { id = operacion.IdProyecto });
             }
 
@@ -136,8 +134,14 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             try
             {
-                db.Operaciones.Remove(operacion);
-                db.SaveChanges();
+                var salidas = db.SalidaOperaciones.Where(s => s.IdOperacion == operacion.Id).ToList();
+
+                foreach (SalidaOperacion salida in salidas)
+                {
+                    db.SalidaOperacionesRequester.RemoveElementByID(salida.Id);
+                }
+
+                db.OperacionesRequester.RemoveElementByID(operacion.Id, true, true, operacion.IdProyecto, getUserId());
             }
             catch (Exception)
             {

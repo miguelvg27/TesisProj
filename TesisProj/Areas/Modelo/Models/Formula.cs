@@ -35,14 +35,14 @@ namespace TesisProj.Areas.Modelo.Models
         public int IdElemento { get; set; }
 
         [ForeignKey("IdElemento")]
-        public Elemento Elemento { get; set; }
+        public virtual Elemento Elemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
         public int IdTipoFormula { get; set; }
 
         [ForeignKey("IdTipoFormula")]
-        public TipoFormula TipoFormula { get; set; }
+        public virtual TipoFormula TipoFormula { get; set; }
 
         [DisplayName("Visible")]
         public bool Visible { get; set; }
@@ -79,6 +79,19 @@ namespace TesisProj.Areas.Modelo.Models
             this.PeriodoInicial = plantilla.PeriodoInicial;
             this.PeriodoFinal = plantilla.PeriodoFinal;
             this.Visible = plantilla.Visible;
+        }
+
+        public override string LogValues()
+        {
+            return "Elemento = " + this.Elemento.Nombre + Environment.NewLine +
+                "Nombre = " + this.Nombre + Environment.NewLine +
+                "Referencia = " + this.Referencia + Environment.NewLine +
+                "Secuencia = " + this.Secuencia + Environment.NewLine +
+                "Tipo fórmula = " + this.TipoFormula.Nombre + Environment.NewLine +
+                "Visible = " + this.Visible + Environment.NewLine +
+                "Período inicial = " + this.PeriodoInicial + Environment.NewLine +
+                "Periodo final = " + this.PeriodoFinal + Environment.NewLine +
+                "Cadena = " + this.Cadena;
         }
 
         public List<double> Evaluar(int horizonte, List<Formula> formulas, List<Parametro> parametros, bool simular = false)

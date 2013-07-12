@@ -15,13 +15,29 @@ namespace TesisProj.Areas.Modelo.Controllers
     public partial class ProyectoController : Controller
     {
         private TProjContext db = new TProjContext();
+        private int userId = 0;
 
         //
         // GET: /Modelo/Proyecto/
 
+        private int getUserId()
+        {
+            if(userId < 1){
+                try
+                {
+                    userId = db.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+                }
+                catch (Exception)
+                {
+                }
+            }
+
+            return userId;
+        }
+
         public ActionResult Index()
         {
-            var proyectos = db.Proyectos.Include(p => p.Creador).Include(p => p.Modificador);
+            var proyectos = db.Proyectos.Include(p => p.Creador);
             return View(proyectos.ToList());
         }
 
@@ -36,7 +52,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
             proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
-            proyecto.Modificador = db.UserProfiles.Find(proyecto.IdModificador);
             return View(proyecto);
         }
 
@@ -51,7 +66,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
             proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
-            proyecto.Modificador = db.UserProfiles.Find(proyecto.IdModificador);
             return View(proyecto);
         }
 
@@ -107,12 +121,14 @@ namespace TesisProj.Areas.Modelo.Controllers
                     }
                 }
 
+                db.AuditsRequester.AddElement(new Audit { IdProyecto = proyecto.Id, Fecha = DateTime.Now, IdUsuario = getUserId(), Transaccion = "Crear", TipoObjeto = proyecto.GetType().ToString(), Original = proyecto.LogValues() });
+
                 return RedirectToAction("Console", new { id = proyecto.Id });
             }
 
             ViewBag.IdPlantilla = new SelectList(db.PlantillaProyectos.OrderBy(p => p.Nombre), "Id", "Nombre", IdPlantilla);
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName", proyecto.IdCreador);
-            ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName", proyecto.IdModificador);
+
             return View(proyecto);
         }
 
@@ -127,7 +143,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador), "UserId", "UserName", proyecto.IdCreador);
-            ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdModificador), "UserId", "UserName", proyecto.IdModificador);
             ViewBag.PreHorizonte = proyecto.Horizonte;
             return View(proyecto);
         }
@@ -141,7 +156,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ProyectosRequester.ModifyElement(proyecto);
+                db.ProyectosRequester.ModifyElement(proyecto, true, proyecto.Id, getUserId());
 
                 if (PreHorizonte < proyecto.Horizonte)
                 {
@@ -162,7 +177,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("Console", new { id = proyecto.Id });
             }
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador), "UserId", "UserName", proyecto.IdCreador);
-            ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdModificador), "UserId", "UserName", proyecto.IdModificador);
             return View(proyecto);
         }
 
@@ -177,7 +191,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
             proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
-            proyecto.Modificador = db.UserProfiles.Find(proyecto.IdModificador);
             return View(proyecto);
         }
 
@@ -191,8 +204,63 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             try
             {
-                db.Proyectos.Remove(proyecto);
-                db.SaveChanges();
+                var audits = db.Audits.Where(a => a.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Audit audit in audits)
+                {
+                    db.AuditsRequester.RemoveElementByID(audit.Id);
+                }
+
+                var salidaoperaciones = db.SalidaOperaciones.Where(sxp => sxp.Operacion.IdProyecto == proyecto.Id).ToList();
+
+                foreach (SalidaOperacion salidaoperacion in salidaoperaciones)
+                {
+                    db.SalidaOperacionesRequester.RemoveElementByID(salidaoperacion.Id);
+                }
+
+                var operaciones = db.Operaciones.Where(o => o.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Operacion operacion in operaciones)
+                {
+                    db.OperacionesRequester.RemoveElementByID(operacion.Id);
+                }
+
+                var salidas = db.SalidaProyectos.Where(s => s.IdProyecto == proyecto.Id).ToList();
+
+                foreach (SalidaProyecto salida in salidas)
+                {
+                    db.SalidaProyectosRequester.RemoveElementByID(salida.Id);
+                }
+
+                var formulas = db.Formulas.Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Formula formula in formulas)
+                {
+                    db.FormulasRequester.RemoveElementByID(formula.Id);
+                }
+
+                var celdas = db.Celdas.Where(c => c.Parametro.Elemento.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Celda celda in celdas)
+                {
+                    db.CeldasRequester.RemoveElementByID(celda.Id);
+                }
+
+                var parametros = db.Parametros.Where(p => p.Elemento.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Parametro parametro in parametros)
+                {
+                    db.ParametrosRequester.RemoveElementByID(parametro.Id);
+                }
+
+                var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Elemento elemento in elementos)
+                {
+                    db.ElementosRequester.RemoveElementByID(elemento.Id);
+                }
+
+                db.ProyectosRequester.RemoveElementByID(id);
             }
             catch (Exception)
             {

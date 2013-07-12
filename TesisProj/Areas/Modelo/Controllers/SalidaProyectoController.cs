@@ -139,8 +139,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                     idOperacion = int.Parse(sIdOperacion);
                     if (!db.SalidaOperaciones.Any(p => p.IdSalida == idSalida && p.IdOperacion == idOperacion))
                     {
-                        db.SalidaOperaciones.Add(new SalidaOperacion { IdOperacion = idOperacion, IdSalida = idSalida });
-                        db.SaveChanges();
+                        db.SalidaOperacionesRequester.AddElement(new SalidaOperacion { IdOperacion = idOperacion, IdSalida = idSalida });
                     }
                 }
             }
@@ -156,8 +155,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                     operacion = db.SalidaOperaciones.FirstOrDefault(p => p.IdOperacion == idOperacion && p.IdSalida == idSalida);
                     if (operacion != null)
                     {
-                        db.SalidaOperaciones.Remove(operacion);
-                        db.SaveChanges();
+                        db.SalidaOperacionesRequester.RemoveElementByID(operacion.Id);
                     }
                 }
             }
@@ -170,8 +168,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                     idOperacion = operacion.Id;
                     if (!db.SalidaOperaciones.Any(p => p.IdSalida == idSalida && p.IdOperacion == idOperacion))
                     {
-                        db.SalidaOperaciones.Add(new SalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
-                        db.SaveChanges();
+                        db.SalidaOperacionesRequester.AddElement(new SalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
                     }
                 }
             }
@@ -181,8 +178,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 var operaciones = db.SalidaOperaciones.Where(p => p.IdSalida == idSalida).ToList();
                 foreach (SalidaOperacion operacion in operaciones)
                 {
-                    db.SalidaOperaciones.Remove(operacion);
-                    db.SaveChanges();
+                    db.SalidaOperacionesRequester.RemoveElementByID(operacion.Id);
                 }
             }
 
@@ -224,8 +220,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.SalidaProyectos.Add(salidaproyecto);
-                db.SaveChanges();
+                db.SalidaProyectosRequester.AddElement(salidaproyecto, true, salidaproyecto.IdProyecto, getUserId());
                 return RedirectToAction("Cine", new { id = salidaproyecto.IdProyecto });
             }
 
@@ -264,8 +259,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(salidaproyecto).State = EntityState.Modified;
-                db.SaveChanges();
+                db.SalidaProyectosRequester.ModifyElement(salidaproyecto, true, salidaproyecto.IdProyecto, getUserId());
                 return RedirectToAction("Cine", new { id = salidaproyecto.IdProyecto });
             }
 
@@ -298,8 +292,14 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             try
             {
-                db.SalidaProyectos.Remove(salidaproyecto);
-                db.SaveChanges();
+                var operaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salidaproyecto.Id).ToList();
+
+                foreach (SalidaOperacion operacion in operaciones)
+                {
+                    db.SalidaOperacionesRequester.RemoveElementByID(operacion.Id);
+                }
+
+                db.SalidaProyectosRequester.RemoveElementByID(salidaproyecto.Id, true, true, salidaproyecto.IdProyecto, getUserId());
             }
             catch (Exception)
             {

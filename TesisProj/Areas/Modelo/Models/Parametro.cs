@@ -32,14 +32,14 @@ namespace TesisProj.Areas.Modelo.Models
         public int IdElemento { get; set; }
         
         [ForeignKey("IdElemento")]
-        public Elemento Elemento { get; set; }
+        public virtual Elemento Elemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
         public int IdTipoParametro { get; set; }
         
         [ForeignKey("IdTipoParametro")]
-        public TipoParametro TipoParametro { get; set; }
+        public virtual TipoParametro TipoParametro { get; set; }
 
         [DisplayName("Constante")]
         public bool Constante { get; set; }
@@ -48,7 +48,7 @@ namespace TesisProj.Areas.Modelo.Models
         public bool Sensible { get; set; }
 
         [InverseProperty("Parametro")]
-        public List<Celda> Celdas { get; set; }
+        public virtual List<Celda> Celdas { get; set; }
 
 
         public virtual ModeloSimlacion modelo { get; set; }
@@ -68,6 +68,16 @@ namespace TesisProj.Areas.Modelo.Models
             this.Referencia = plantilla.Referencia;
             this.Constante = plantilla.Constante;
             this.Sensible = plantilla.Sensible;
+        }
+
+        public override string LogValues()
+        {
+            return "Elemento = " + this.Elemento.Nombre + Environment.NewLine +
+                "Nombre = " + this.Nombre + Environment.NewLine +
+                "Referencia = " + this.Referencia + Environment.NewLine +
+                "Tipo parámetro = " + this.TipoParametro.Nombre + Environment.NewLine +
+                "Sensible = " + this.Sensible + Environment.NewLine +
+                "Constante = " + this.Constante;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

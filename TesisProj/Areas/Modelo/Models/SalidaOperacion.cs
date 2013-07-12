@@ -24,12 +24,19 @@ namespace TesisProj.Areas.Modelo.Models
         public int IdSalida { get; set; }
 
         [ForeignKey("IdOperacion")]
-        public Operacion Operacion { get; set; }
+        public virtual Operacion Operacion { get; set; }
 
         [ForeignKey("IdSalida")]
-        public SalidaProyecto Salida { get; set; }
+        public virtual SalidaProyecto Salida { get; set; }
 
         public String Nombre { get { return Operacion.Nombre; } }
+
+        public override string LogValues()
+        {
+            return "Nombre = " + this.Nombre + Environment.NewLine +
+                "Operación = " + this.Operacion.Nombre + Environment.NewLine +
+                "Salida = " + this.Salida.Nombre;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

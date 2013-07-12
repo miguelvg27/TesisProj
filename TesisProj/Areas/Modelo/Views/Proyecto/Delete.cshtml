@@ -52,25 +52,12 @@
         @Html.DisplayFor(model => model.Creacion)
     </div>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.IdModificador)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Modificador.UserName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Modificacion)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Modificacion)
-    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Eliminar" /> |
-        @Html.ActionLink("Regresar", "Journal", new { id = @Model.Id })
+        @Html.ActionLink("Regresar", "Console", new { id = @Model.Id })
     </p>
     @Html.ValidationMessageFor(model => model.Nombre)
 }

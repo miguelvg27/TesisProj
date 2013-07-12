@@ -65,8 +65,9 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Formulas.Add(formula);
-                db.SaveChanges();
+                formula.Elemento = db.Elementos.Find(formula.IdElemento);
+                formula.TipoFormula = db.TipoFormulas.Find(formula.IdTipoFormula);
+                db.FormulasRequester.AddElement(formula, true, formula.Elemento.IdProyecto, getUserId());
                 return RedirectToAction("Cuaderno", new { id = formula.IdElemento });
             }
 
@@ -109,8 +110,9 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(formula).State = EntityState.Modified;
-                db.SaveChanges();
+                formula.Elemento = db.Elementos.Find(formula.IdElemento);
+                formula.TipoFormula = db.TipoFormulas.Find(formula.IdTipoFormula);
+                db.FormulasRequester.ModifyElement(formula, true, formula.Elemento.IdProyecto, getUserId());
 
                 return RedirectToAction("Cuaderno", new { id = formula.IdElemento });
             }
@@ -149,8 +151,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Formula formula = db.Formulas.Find(id);
             try
             {
-                db.Formulas.Remove(formula);
-                db.SaveChanges();
+                db.FormulasRequester.RemoveElementByID(formula.Id, true, true, formula.Elemento.IdProyecto, getUserId());
             }
             catch (Exception)
             {

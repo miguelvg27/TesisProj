@@ -22,6 +22,14 @@ namespace TesisProj.Areas.Modelo.Models
         public int IdParametro { get; set; }
         
         [ForeignKey("IdParametro")]
-        public Parametro Parametro { get; set; }
+        public virtual Parametro Parametro { get; set; }
+
+        public override string LogValues()
+        {
+            return "Elemento = " + this.Parametro.Elemento.Nombre + Environment.NewLine +
+                "Parámetro = " + this.Parametro.Nombre + Environment.NewLine +
+                "Período = " + this.Periodo + Environment.NewLine +
+                "Valor = " + String.Format("{0:#,##0.00000}", this.Valor);
+        }
     }
 }

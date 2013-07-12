@@ -1,0 +1,69 @@
+﻿@model TesisProj.Areas.Modelo.Models.Audit
+
+@{
+    ViewBag.Title = "Proyecto: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Auditoría</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdUsuario)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Usuario.UserName, new { @Readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Fecha)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Fecha, new { @Readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Transaccion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Transaccion, new { @Readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Tipo)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Tipo, new { @Readonly = "readonly" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Original)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Original, new { @Readonly = "readonly", @rows = 8 })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Modificado)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Modificado, new { @Readonly = "readonly", @rows = 8 })
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Regresar", "Muro", new { id = Model.IdProyecto })
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

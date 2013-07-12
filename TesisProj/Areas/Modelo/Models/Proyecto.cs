@@ -24,23 +24,11 @@ namespace TesisProj.Areas.Modelo.Models
         public DateTime Creacion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Fecha de última modificación")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Modificacion { get; set; }
-
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Creador")]
         public int IdCreador { get; set; }
 
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Última modificación")]
-        public int IdModificador { get; set; }
-
         [ForeignKey("IdCreador")]
-        public UserProfile Creador { get; set; }
-
-        [ForeignKey("IdModificador")]
-        public UserProfile Modificador { get; set; }
+        public virtual UserProfile Creador { get; set; }
 
         [DisplayName("Descripción")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
@@ -57,10 +45,16 @@ namespace TesisProj.Areas.Modelo.Models
         public int Version { get; set; }
 
         [InverseProperty("Proyecto")]
-        public List<Elemento> Elementos { get; set; }
+        public virtual List<Elemento> Elementos { get; set; }
 
         [InverseProperty("Proyecto")]
-        public List<Operacion> Operaciones { get; set; }
+        public virtual List<Operacion> Operaciones { get; set; }
+
+        public override string LogValues()
+        {
+            return "Nombre = " + this.Nombre + Environment.NewLine +
+                "Horizonte = " + this.Horizonte;
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

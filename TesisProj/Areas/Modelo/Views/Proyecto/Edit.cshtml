@@ -63,22 +63,6 @@
             @Html.ValidationMessageFor(model => model.Creacion)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IdModificador)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("IdModificador")
-            @Html.ValidationMessageFor(model => model.IdModificador)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Modificacion)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Modificacion, new { @Readonly = "readonly", @Value = Model.Modificacion.ToShortDateString() })
-            @Html.ValidationMessageFor(model => model.Modificacion)
-        </div>
-
         @Html.HiddenFor(model => model.Id)
         @Html.Hidden("PreHorizonte")
 

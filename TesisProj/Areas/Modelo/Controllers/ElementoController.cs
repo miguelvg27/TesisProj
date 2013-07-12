@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -50,7 +51,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             foreach (Formula salida in salidas)
             {
                 var refs = formulas.Where(f => f.Secuencia < salida.Secuencia && f.IdElemento == elemento.Id).ToList();
-                var parametros = db.Parametros.Include("Celdas").Where(p => p.IdElemento == elemento.Id).ToList();
+                var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
                 salida.Valores = salida.Evaluar(proyecto.Horizonte, refs, parametros);
             }
 
@@ -95,8 +96,8 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             if (IdPlantilla > 0)
             {
-                var formulasUnicasProyecto = db.Formulas.Include("Elemento").Include("TipoFormula").Where(f => f.Elemento.IdTipoElemento == elemento.IdTipoElemento && f.Elemento.IdProyecto == elemento.IdProyecto && f.TipoFormula.Unico).ToList();
-                var formulasUnicasPlantilla = db.PlantillaFormulas.Include("TipoFormula").Where(p => p.IdPlantillaElemento == IdPlantilla && p.TipoFormula.Unico).ToList();
+                var formulasUnicasProyecto = db.Formulas.Include(f => f.Elemento).Include(f => f.TipoFormula).Where(f => f.Elemento.IdTipoElemento == elemento.IdTipoElemento && f.Elemento.IdProyecto == elemento.IdProyecto && f.TipoFormula.Unico).ToList();
+                var formulasUnicasPlantilla = db.PlantillaFormulas.Include(p => p.TipoFormula).Where(p => p.IdPlantillaElemento == IdPlantilla && p.TipoFormula.Unico).ToList();
 
                 foreach (Formula formula in formulasUnicasProyecto)
                 {
@@ -110,26 +111,23 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Elementos.Add(elemento);
-                db.SaveChanges();
+                elemento.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento);
+                db.ElementosRequester.AddElement(elemento, true, elemento.IdProyecto, getUserId());
 
                 if (IdPlantilla > 0)
                 {
-                    var parametros = db.PlantillaParametros.Where(p => p.IdPlantillaElemento == IdPlantilla);
+                    var parametros = db.PlantillaParametros.Where(p => p.IdPlantillaElemento == IdPlantilla).ToList();
 
                     foreach (PlantillaParametro plantilla in parametros)
                     {
-                        db.Parametros.Add(new Parametro(plantilla, elemento.Id));
+                        db.ParametrosRequester.AddElement(new Parametro(plantilla, elemento.Id));
                     }
-
-                    db.SaveChanges();
 
                     var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == IdPlantilla).OrderBy(f => f.Secuencia).ToList();
 
                     foreach (PlantillaFormula plantilla in formulas)
                     {
-                        db.Formulas.Add(new Formula(plantilla, elemento.Id));
-                        db.SaveChanges();
+                        db.FormulasRequester.AddElement(new Formula(plantilla, elemento.Id));
                     }
                     
                     return RedirectToAction("PutParametros", new { id = elemento.Id });
@@ -172,8 +170,8 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(elemento).State = EntityState.Modified;
-                db.SaveChanges();
+                elemento.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento);
+                db.ElementosRequester.ModifyElement(elemento, true, elemento.IdProyecto, getUserId());
                 return RedirectToAction("Journal", new { id = elemento.IdProyecto });
             }
 
@@ -205,11 +203,29 @@ namespace TesisProj.Areas.Modelo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteElementoConfirmed(int id)
         {
-            Elemento elemento = db.Elementos.Find(id);
+            Elemento elemento = db.Elementos.Include(e => e.TipoElemento).FirstOrDefault(e => e.Id == id);
             try
             {
-                db.Elementos.Remove(elemento);
-                db.SaveChanges();
+                var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id).ToList();
+                var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
+
+                foreach (Formula formula in formulas)
+                {
+                    db.FormulasRequester.RemoveElementByID(formula.Id);
+                }
+                
+                foreach (Parametro parametro in parametros)
+                {
+                    var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id).ToList();
+                    foreach (Celda celda in celdas)
+                    {
+                        db.CeldasRequester.RemoveElementByID(celda.Id);  
+                    }
+
+                    db.ParametrosRequester.RemoveElementByID(parametro.Id);
+                }
+
+                db.ElementosRequester.RemoveElementByID(elemento.Id, true, true, elemento.IdProyecto, getUserId());
             }
             catch (Exception)
             {

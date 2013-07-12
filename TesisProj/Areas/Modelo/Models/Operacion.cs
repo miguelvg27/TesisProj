@@ -46,7 +46,7 @@ namespace TesisProj.Areas.Modelo.Models
         public int IdProyecto { get; set; }
 
         [ForeignKey("IdProyecto")]
-        public Proyecto Proyecto { get; set; }
+        public virtual Proyecto Proyecto { get; set; }
 
         [DisplayName("Indicador")]
         public bool Indicador { get; set; }
@@ -72,6 +72,17 @@ namespace TesisProj.Areas.Modelo.Models
             this.Referencia = plantilla.Referencia;
             this.Secuencia = plantilla.Secuencia;
             this.Cadena = plantilla.Cadena;
+        }
+
+        public override string LogValues()
+        {
+            return "Nombre = " + this.Nombre + Environment.NewLine +
+                "Referencia = " + this.Referencia + Environment.NewLine +
+                "Secuencia = " + this.Secuencia + Environment.NewLine +
+                "Indicador = " + this.Indicador + Environment.NewLine +
+                "Período inicial = " + this.PeriodoInicial + Environment.NewLine +
+                "Periodo final = " + this.PeriodoFinal + Environment.NewLine +
+                "Cadena = " + this.Cadena;
         }
 
         public List<double> Evaluar(int horizonte, List<Operacion> operaciones, List<TipoFormula> tipoformulas, List<Formula> formulas, List<Parametro> parametros)

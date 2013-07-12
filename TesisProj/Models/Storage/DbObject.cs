@@ -15,5 +15,10 @@ namespace TesisProj.Models.Storage
 
         [ScaffoldColumn(false)]
         public bool IsEliminado { get; set; }
+
+        public virtual string LogValues()
+        {
+            return ("Id = " + Id + ", " + "IsEliminado " + IsEliminado);
+        }
     }
 }

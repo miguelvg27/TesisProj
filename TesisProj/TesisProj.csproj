@@ -202,12 +202,14 @@
     <Compile Include="Areas\Modelos\Models\Poisson.cs" />
     <Compile Include="Areas\Modelos\Models\TProjContext.cs" />
     <Compile Include="Areas\Modelos\Models\Uniforme.cs" />
+    <Compile Include="Areas\Modelo\Controllers\AuditController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ElementoController.cs" />
     <Compile Include="Areas\Modelo\Controllers\FormulaController.cs" />
     <Compile Include="Areas\Modelo\Controllers\OperacionController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ProyectoController.cs" />
     <Compile Include="Areas\Modelo\Controllers\SalidaProyectoController.cs" />
+    <Compile Include="Areas\Modelo\Models\Audit.cs" />
     <Compile Include="Areas\Modelo\Models\Celda.cs" />
     <Compile Include="Areas\Modelo\Models\Operacion.cs" />
     <Compile Include="Areas\Modelo\Models\SalidaOperacion.cs" />
@@ -637,6 +639,8 @@
     <Content Include="Areas\Simulaciones\Views\Uniforme\Index.cshtml" />
     <Content Include="Areas\Simulaciones\Views\Uniforme\_CeldasSimuladas.cshtml" />
     <Content Include="Areas\Simulaciones\Views\Uniforme\_GraficoSimulacion.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Muro.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Fisco.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -752,6 +756,9 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

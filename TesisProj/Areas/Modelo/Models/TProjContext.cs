@@ -19,6 +19,7 @@ namespace TesisProj.Models.Storage
         public DbSet<Celda> Celdas { get; set; }
         public DbSet<Operacion> Operaciones { get; set; }
         public DbSet<SalidaOperacion> SalidaOperaciones { get; set; }
+        public DbSet<Audit> Audits { get; set; }
 
         public DbRequester<Proyecto> ProyectosRequester { get; set; }
         public DbRequester<Elemento> ElementosRequester { get; set; }
@@ -28,17 +29,19 @@ namespace TesisProj.Models.Storage
         public DbRequester<Celda> CeldasRequester { get; set; }
         public DbRequester<Operacion> OperacionesRequester { get; set; }
         public DbRequester<SalidaOperacion> SalidaOperacionesRequester { get; set; }
+        public DbRequester<Audit> AuditsRequester { get; set; }
 
         public void RegistrarTablasProyecto()
         {
-            ProyectosRequester = new DbRequester<Proyecto>(this, Proyectos);
-            ElementosRequester = new DbRequester<Elemento>(this, Elementos);
-            ParametrosRequester = new DbRequester<Parametro>(this, Parametros);
-            FormulasRequester = new DbRequester<Formula>(this, Formulas);
-            SalidaProyectosRequester = new DbRequester<SalidaProyecto>(this, SalidaProyectos);
-            CeldasRequester = new DbRequester<Celda>(this, Celdas);
-            OperacionesRequester = new DbRequester<Operacion>(this, Operaciones);
-            SalidaOperacionesRequester = new DbRequester<SalidaOperacion>(this, SalidaOperaciones);
+            ProyectosRequester = new DbRequester<Proyecto>(this, Proyectos, Audits);
+            ElementosRequester = new DbRequester<Elemento>(this, Elementos, Audits);
+            ParametrosRequester = new DbRequester<Parametro>(this, Parametros, Audits);
+            FormulasRequester = new DbRequester<Formula>(this, Formulas, Audits);
+            SalidaProyectosRequester = new DbRequester<SalidaProyecto>(this, SalidaProyectos, Audits);
+            CeldasRequester = new DbRequester<Celda>(this, Celdas, Audits);
+            OperacionesRequester = new DbRequester<Operacion>(this, Operaciones, Audits);
+            SalidaOperacionesRequester = new DbRequester<SalidaOperacion>(this, SalidaOperaciones, Audits);
+            AuditsRequester = new DbRequester<Audit>(this, Audits);
         }
 
         public void SeedProyecto()
