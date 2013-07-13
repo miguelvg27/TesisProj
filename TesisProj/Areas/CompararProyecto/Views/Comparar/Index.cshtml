@@ -47,9 +47,14 @@
 @if (checkedRecords.Any())
 {
     
-<div class="span12">
-    <div class="span5">@{Html.RenderAction("_GraficoVan", "Comparar");}</div>
-    <div class="span5">@{Html.RenderAction("_GraficoTir", "Comparar");}</div>
-</div>
-     
+<table style="width:100%">
+    <tr>
+        <td>@{Html.RenderAction("_GraficoVanE", "Comparar");}</td>
+        <td>@{Html.RenderAction("_GraficoVanF", "Comparar");}</td>
+    </tr>
+        <tr>
+        <td>@{Html.RenderAction("_GraficoTirE", "Comparar");}</td>
+        <td>@{Html.RenderAction("_GraficoTirF", "Comparar");}</td>
+    </tr>
+</table>     
 }

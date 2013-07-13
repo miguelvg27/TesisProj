@@ -49,47 +49,81 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 lista.Add(context.Proyectos.Find(i));
             }
 
-            List<Grafico> graficos = new List<Grafico>();
+            List<Grafico> graficosVanE = new List<Grafico>();
+            List<Grafico> graficosVanF = new List<Grafico>();
+            List<Grafico> graficosTirE = new List<Grafico>();
+            List<Grafico> graficosTirF = new List<Grafico>();
 
             foreach (Proyecto proyecto in lista)
             {
-                context.Configuration.ProxyCreationEnabled = false;
-
                 int horizonte = proyecto.Horizonte;
+                int preoperativos = proyecto.PeriodosPreOp;
+                int cierre = proyecto.PeriodosCierre;
 
                 var operaciones = context.Operaciones.Where(o => o.IdProyecto == proyecto.Id).OrderBy(s => s.Secuencia).ToList();
                 var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
                 var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == proyecto.Id).ToList();
                 var tipoformulas = context.TipoFormulas.ToList();
-
-                //SimAns resultado = ProyectoController.CalcularProyecto(horizonte, operaciones, parametros, formulas, tipoformulas);
+                
+                SimAns resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
+		        
+                graficosVanE.Add(Asignar(proyecto.Id, resultado.VanE));
+                graficosVanF.Add(Asignar(proyecto.Id, resultado.VanF));
+                graficosTirF.Add(Asignar(proyecto.Id, resultado.TirF));
+                graficosTirE.Add(Asignar(proyecto.Id, resultado.TirE));
 
             }
+            Session["_GraficoVanE"] = graficosVanE;
+            Session["_GraficoVanF"] = graficosVanF;
+            Session["_GraficoTirE"] = graficosTirE;
+            Session["_GraficoTirF"] = graficosTirF;
 
 
             checkedRecords = checkedRecords ?? new int[] { 3, 4, 5 };
             ViewData["checkedRecords"] = checkedRecords;
-            return View();
+
+            List<Comparar> c = new List<Comparar>();
+            List<Proyecto> lproyecto = context.Proyectos.ToList();
+
+            foreach (Proyecto p in lproyecto)
+            {
+                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
+            }
+
+            return View(c);
         }
 
-        public ActionResult _GraficoVan()
+        [ChildActionOnly]
+        public ActionResult _GraficoVanE()
         {
-            return View();
+            return PartialView((List<Grafico>)Session["_GraficoVanE"]);
         }
 
-        public ActionResult _GraficoTir()
+        [ChildActionOnly]
+        public ActionResult _GraficoVanF()
         {
-            return View();
+            return PartialView((List<Grafico>)Session["_GraficoVanF"]);
         }
 
-        private Grafico Simular(int u, int ajuste)
+        [ChildActionOnly]
+        public ActionResult _GraficoTirE()
         {
-            Random r1 = new Random();
+            return PartialView((List<Grafico>)Session["_GraficoTirE"]);
+        }
+
+        [ChildActionOnly]
+        public ActionResult _GraficoTirF()
+        {
+            return PartialView((List<Grafico>)Session["_GraficoTirF"]);
+        }
+
+        private Grafico Asignar(int x, double fx)
+        {
             Grafico gr = new Grafico();
-            gr.fx = r1.NextDouble() * ajuste;
-            gr.x = u;
-            gr.sx = Convert.ToString(u);
-            gr.sfx = Convert.ToString(Math.Round(gr.fx * 100, 2));
+            gr.fx = fx;
+            gr.x = x;
+            gr.sx = Convert.ToString(x);
+            gr.sfx = Convert.ToString(Math.Round(gr.fx, 2));
             return gr;
         }
 
