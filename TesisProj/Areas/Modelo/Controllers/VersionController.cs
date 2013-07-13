@@ -45,15 +45,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             db.Configuration.ProxyCreationEnabled = false;
 
-            Proyecto proyecto = db.Proyectos
-                .Include(p => p.Elementos)
-                .Include(p => p.Elementos.Select(e => e.Formulas))
-                .Include(p => p.Elementos.Select(e => e.Parametros))
-                .Include("Elementos.Parametros.Celdas")
-                .Include(p => p.Salidas)
-                .Include(p => p.Operaciones)
-                .Include(p => p.Operaciones.Select(o => o.Salidas))
-                .FirstOrDefault(p => p.Id == id);
+            Proyecto proyecto = db.Proyectos.AsNoTracking().FirstOrDefault(p => p.Id == id);
 
             if (proyecto == null)
             {
@@ -63,6 +55,16 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             proyecto.Version = proyecto.Version + 1;
             db.ProyectosRequester.ModifyElement(proyecto, true, proyecto.Id, getUserId());
+
+            proyecto = db.Proyectos
+                .Include(p => p.Elementos)
+                .Include(p => p.Elementos.Select(e => e.Formulas))
+                .Include(p => p.Elementos.Select(e => e.Parametros))
+                .Include("Elementos.Parametros.Celdas")
+                .Include(p => p.Salidas)
+                .Include(p => p.Operaciones)
+                .Include(p => p.Operaciones.Select(o => o.Salidas))
+                .FirstOrDefault(p => p.Id == id);
 
             XmlSerializer s = new XmlSerializer(typeof(Proyecto));
             MemoryStream memStream = new MemoryStream();
@@ -199,6 +201,43 @@ namespace TesisProj.Areas.Modelo.Controllers
             // Finaliza zona crítica de serialización
 
             return RedirectToAction("Origenes", new { id = version.IdProyecto });
+        }
+
+        public ActionResult LoadXml()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LoadXml(HttpPostedFileBase file)
+        {
+            //
+            // Inicia zona crítica de serialización
+
+            try
+            {
+
+                XmlSerializer s = new XmlSerializer(typeof(Proyecto));
+                MemoryStream memStream = new MemoryStream();
+
+                file.InputStream.CopyTo(memStream);
+                memStream.Position = 0;
+
+                Proyecto proyecto_dirty = (Proyecto)s.Deserialize(memStream);
+
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.ProyectosRequester.AddElement(proyecto_dirty);
+                db.Configuration.ValidateOnSaveEnabled = true;
+                return RedirectToAction("Console", new { id = proyecto_dirty.Id });
+
+            }
+            catch (Exception)
+            {
+                db.Configuration.ValidateOnSaveEnabled = true;
+            }
+
+            return RedirectToAction("LoadXml");
         }
     }
 }

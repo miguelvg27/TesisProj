@@ -34,7 +34,7 @@ namespace TesisProj.Areas.Plantilla.Models
         public int Secuencia { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
         [DisplayName("Referencia")]
         [RegularExpression("[A-Za-z]+[A-Za-z1-9]*", ErrorMessage = "El campo solo puede contener alfanuméricos y debe comenzar con una letra.")]
         public string Referencia { get; set; }
@@ -58,11 +58,6 @@ namespace TesisProj.Areas.Plantilla.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.PlantillaOperaciones.Any(f => f.Nombre == this.Nombre && f.IdPlantillaProyecto == this.IdPlantillaProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
-                {
-                    yield return new ValidationResult("Ya existe un registro con el mismo nombre en la misma plantilla.", new string[] { "Nombre" });
-                }
-
                 if (context.PlantillaOperaciones.Any(f => f.Referencia == this.Referencia && f.IdPlantillaProyecto == this.IdPlantillaProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
