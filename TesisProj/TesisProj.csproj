@@ -214,6 +214,10 @@
     <Compile Include="Areas\Modelo\Models\Celda.cs" />
     <Compile Include="Areas\Modelo\Models\Operacion.cs" />
     <Compile Include="Areas\Modelo\Models\SalidaOperacion.cs" />
+    <Compile Include="Areas\MonteCarlo\Controllers\MonteCarloController.cs" />
+    <Compile Include="Areas\MonteCarlo\Models\AlgoritmoMonteCarlo.cs" />
+    <Compile Include="Areas\MonteCarlo\Models\TempGrafico.cs" />
+    <Compile Include="Areas\MonteCarlo\MonteCarloAreaRegistration.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
@@ -644,6 +648,13 @@
     <Content Include="Areas\Modelo\Views\Proyecto\Muro.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Fisco.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Origenes.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\Web.config" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Index.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Resultados.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanInversionista.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanProyecto.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoTirProyecto.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoTirInversionista.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -677,6 +688,8 @@
     <Content Include="Scripts\2013.2.611\telerik.treeview.min.js" />
     <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
     <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
+    <Content Include="Scripts\bootstrap-dropdown.js" />
+    <Content Include="Scripts\bootstrap-tab.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -685,6 +698,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -693,6 +707,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\telerik.common.js" />
     <Content Include="Web.config">

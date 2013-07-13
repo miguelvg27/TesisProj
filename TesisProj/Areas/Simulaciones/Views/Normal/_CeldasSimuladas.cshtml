@@ -3,17 +3,16 @@
 @using TesisProj.Areas.Modelo.Models 
 @model ICollection<TesisProj.Areas.Modelo.Models.Celda>
 
-<table>
-    <tr>
+<ul class="thumbnails row-fluid">
+    
         @foreach (Celda e in Model)
         {
-            <th>@e.Periodo</th>
+            <li style="text-align:center">
+                <div class="thumbnail">
+                    <h4>@e.Periodo</h4>
+                    <p>@(Math.Round(e.Valor,2))</p>
+                </div>
+            </li>
         }
-    </tr>
-    <tr>
-        @foreach (Celda e in Model)
-        {
-            <td>@(Math.Round(e.Valor,2))</td>
-        }
-    </tr>
-</table>
+</ul>       
+ 

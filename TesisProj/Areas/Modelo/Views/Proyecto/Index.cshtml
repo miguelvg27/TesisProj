@@ -7,8 +7,14 @@
 
 <h2>Proyectos</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Crear", "Create")
+</p>*@
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" href="@Url.Action("Create", "Proyecto", new { Area = "Modelo" })"">
+  			<i class="icon-plus icon-white"></i>Nuevo
+    </a>
 </p>
 <table>
     <tr>
@@ -50,6 +56,10 @@
 }
 </table>
 
-<div>
-    @Html.ActionLink("Regresar", "Index", "Home", routeValues: new { Area = "" }, htmlAttributes: null)
-</div>
+
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" href="@Url.Action("Index", "Home", new { Area = "" })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>

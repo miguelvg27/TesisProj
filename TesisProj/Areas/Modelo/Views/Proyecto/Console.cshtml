@@ -21,30 +21,37 @@
         Visualiza los resultados y rentabilidad del proyecto.
     </li>
     <li class="four">
-        <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = @Model.Id })">Análisis de sensibilidad</a></h5>
-        Realiza el análisis de sensibilidad del proyecto con la simulación de Monte Carlo.
+        <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = @Model.Id })">Asignación de distribuciones</a></h5>
+        Realiza la asignacion de modelos a los parametros previo al análisis de Monte Carlo.
     </li>
     <li class="five">
+        <h5><a href="@Url.Action("Index", "MonteCarlo", new { Area = "MonteCarlo", idProyecto = @Model.Id })">Análisis de sensibilidad</a></h5>
+        Simulacion de Montecarlo
+    </li>
+    <li class="six">
         <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Colaboradores</a></h5>
         Invita a otros usuarios a colaborar con el proyecto.
     </li>
-    <li class="six">
+    <li class="seven">
         <h5><a href="@Url.Action("Origenes", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Versiones</a></h5>
         Guarda una nueva versión del proyecto o restaura una anterior.
     </li>
-    <li class="seven">
+    <li class="eight">
         <h5><a href="@Url.Action("Muro", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
         Visualiza los cambios realizados en el proyecto.
     </li>
-    <li class="eight">
+    <li class="nine">
         <h5><a href="@Url.Action("Delete", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Eliminar</a></h5>
         Elimina <b>definitivamente</b> el proyecto.
     </li>
 </ol>
 
-<div>
-    @Html.ActionLink("Regresar", "Index")
-</div>
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" href="@Url.Action("Index", "Proyecto", new { Area = "Modelo" })">
+  			<i class=" icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
