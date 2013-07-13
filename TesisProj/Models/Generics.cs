@@ -10,7 +10,7 @@ namespace TesisProj.Models
 {
     public class Generics
     {
-        public static string[] Reservadas = { "Horizonte", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
+        public static string[] Reservadas = { "Horizonte", "PeriodosPreOperativos", "PeriodosCierre", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
 
         public static double Ppmt(double i, double p, double N, double V)
         {
@@ -27,9 +27,10 @@ namespace TesisProj.Models
             return -Financial.Pmt(i, N, V);
         }
 
-        public static double Sln(double V, double l)
+        public static double Sln(double V, double l, double pinicial,double pactual)
         {
-            return Financial.SLN(V, 0, l);
+            double pfinal = pinicial + l - 1;
+            return pactual > pfinal ? 0 : Financial.SLN(V, 0, l);
         }
 
         public static double Syn(double V, double l, double p)
@@ -37,10 +38,10 @@ namespace TesisProj.Models
             return Financial.SYD(V, 0, l, p);
         }
 
-        public static double ResSln(double V, double vida, double pinicial, double periodoactual)
+        public static double ResSln(double V, double vida, double pinicial, double pactual)
         {
             double pfinal = pinicial + vida - 1;
-            return pfinal > periodoactual ? (pfinal - periodoactual) * Sln(V, vida) : 0;
+            return (pfinal - pactual) * Sln(V, vida, pinicial, pactual);
         }
 
         public static double Npv(double i, double[] saldo)
@@ -68,11 +69,14 @@ namespace TesisProj.Models
             return valida;
         }
 
-        public static double SimpleParse(string cadena, int horizonte, int periodo)
+        public static double SimpleParse(string cadena, int horizonte, int periodo, int preop = 0, int cierre = 0)
         {
             MathParserNet.Parser parser = new MathParserNet.Parser();
             parser.AddVariable("Horizonte", horizonte);
             parser.AddVariable("Periodo", periodo);
+            parser.AddVariable("PeriodosPreOperativos", preop);
+            parser.AddVariable("PeriodosCierre", cierre);
+
             double value = 0;
 
             try

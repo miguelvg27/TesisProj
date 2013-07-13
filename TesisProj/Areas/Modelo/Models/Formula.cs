@@ -98,7 +98,7 @@ namespace TesisProj.Areas.Modelo.Models
                 "Cadena = " + this.Cadena;
         }
 
-        public List<double> Evaluar(int horizonte, List<Formula> formulas, List<Parametro> parametros, bool simular = false)
+        public List<double> Evaluar(int horizonte, int preoperativos, int cierre, List<Formula> formulas, List<Parametro> parametros, bool simular = false)
         {
             List<double> resultado = new List<double>();
             MathParserNet.Parser parser = new MathParserNet.Parser();
@@ -123,6 +123,8 @@ namespace TesisProj.Areas.Modelo.Models
 
                     parser.AddVariable("Periodo", i);
                     parser.AddVariable("Horizonte", horizonte);
+                    parser.AddVariable("PeriodosCierre", cierre);
+                    parser.AddVariable("PeriodosPreOperativos", preoperativos);
                     
                     //
                     //  Agrego al parser el Horizonte, Período, los parámetros y las fórmulas de referencia
@@ -211,6 +213,8 @@ namespace TesisProj.Areas.Modelo.Models
 
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
+                parser.AddVariable("PeriodosCierre", 1);
+                parser.AddVariable("PeriodosPreOperativos", 1);
                 parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
                 parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
                 parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);

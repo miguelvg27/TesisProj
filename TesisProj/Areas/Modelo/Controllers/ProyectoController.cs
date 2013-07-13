@@ -17,11 +17,11 @@ namespace TesisProj.Areas.Modelo.Controllers
         private TProjContext db = new TProjContext();
         private int userId = 0;
 
-        public static SimAns simular(int horizonte, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas)
+        public static SimAns simular(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas, bool siSimular = true)
         {
             SimAns resultado = new SimAns { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
 
-            CalcularProyecto(horizonte, operaciones, parametros, formulas, tipoformulas, true);
+            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, siSimular);
 
             Operacion tire = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
             Operacion tirf = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));

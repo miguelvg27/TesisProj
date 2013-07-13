@@ -22,8 +22,8 @@ namespace TesisProj.Areas.Modelo.Models
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Fecha de creación")]
-        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? Creacion { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Creacion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Creador")]
@@ -41,6 +41,16 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Horizonte")]
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Horizonte { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Períodos preoperativos")]
+        [Range(0, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
+        public int PeriodosPreOp { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Períodos de cierre")]
+        [Range(0, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
+        public int PeriodosCierre { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Última versión")]
@@ -61,7 +71,9 @@ namespace TesisProj.Areas.Modelo.Models
             return "Nombre = " + this.Nombre + Environment.NewLine +
                 "Version = " + this.Version + Environment.NewLine +
                 "Horizonte = " + this.Horizonte + Environment.NewLine +
-                "Descripcion = " + this.Descripcion;
+                "Descripcion = " + this.Descripcion + Environment.NewLine +
+                "Períodos preoperativos = " + this.PeriodosPreOp + Environment.NewLine +
+                "Períodos de cierre = " + this.PeriodosCierre;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -71,6 +83,11 @@ namespace TesisProj.Areas.Modelo.Models
                 if (context.Proyectos.Any(p => p.Nombre == this.Nombre && (this.Id > 0 ? p.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un proyecto con el mismo nombre.", new string[] { "Nombre" });
+                }
+
+                if (this.Horizonte < (this.PeriodosPreOp + this.PeriodosCierre))
+                {
+                    yield return new ValidationResult("El horizonte es mayor a la suma de los períodos preoperativos y de cierre.", new string[] { "Horizonte" });
                 }
             }
         }

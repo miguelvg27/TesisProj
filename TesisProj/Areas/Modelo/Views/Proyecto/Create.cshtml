@@ -39,7 +39,23 @@
         </div>
 
         <div class="editor-label">
-            Plantilla
+            @Html.LabelFor(model => model.PeriodosPreOp)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodosPreOp)
+            @Html.ValidationMessageFor(model => model.PeriodosPreOp)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodosCierre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodosCierre)
+            @Html.ValidationMessageFor(model => model.PeriodosCierre)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Plantilla")
         </div>
         <div class="editor-field">
             @Html.DropDownList("IdPlantilla", String.Empty)
