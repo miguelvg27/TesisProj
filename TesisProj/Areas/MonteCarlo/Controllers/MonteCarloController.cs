@@ -73,19 +73,19 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             p.CeldasSensibles = maestro.CeldasSensibles;
                         }
 
-                        using (StreamWriter sw = new StreamWriter(@"C:\Reportes\MonteCarlo.txt", true))
-                        {
-                            sw.WriteLine("Normal fx" + " - " + DateTime.Now.ToString());
-                            sw.WriteLine("|x" + "  -  " + "fx|");
-                            int i = 0;
-                            if (p.uniforme.IsEliminado == false) sw.WriteLine("Uniforme");
-                            if (p.normal.IsEliminado == false) sw.WriteLine("Normal");
-                            foreach (Celda g in p.CeldasSensibles)
-                            {
-                                sw.WriteLine("|" + ++i + "  -  " + g.Valor + "|");
-                            }
-                            sw.WriteLine();
-                        }
+                        //using (StreamWriter sw = new StreamWriter(@"C:\Reportes\MonteCarlo.txt", true))
+                        //{
+                        //    sw.WriteLine("Normal fx" + " - " + DateTime.Now.ToString());
+                        //    sw.WriteLine("|x" + "  -  " + "fx|");
+                        //    int i = 0;
+                        //    if (p.uniforme.IsEliminado == false) sw.WriteLine("Uniforme");
+                        //    if (p.normal.IsEliminado == false) sw.WriteLine("Normal");
+                        //    foreach (Celda g in p.CeldasSensibles)
+                        //    {
+                        //        sw.WriteLine("|" + ++i + "  -  " + g.Valor + "|");
+                        //    }
+                        //    sw.WriteLine();
+                        //}
                     }
                 }
                 grafico1.Add(SimularVanInversionista(u, 100));
