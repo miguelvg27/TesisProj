@@ -78,7 +78,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName");
             ViewBag.IdPlantilla = new SelectList(db.PlantillaProyectos.OrderBy(p => p.Nombre), "Id", "Nombre");
             ViewBag.Now = DateTime.Today.ToShortDateString();
-            ViewBag.Version = 1;
+            ViewBag.Version = 0;
             return View();
         }
 
@@ -204,6 +204,13 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             try
             {
+                var versions = db.DbVersions.Where(v => v.IdProyecto == proyecto.Id).ToList();
+
+                foreach (DbVersion version in versions)
+                {
+                    db.DbVersionsRequester.RemoveElementByID(version.Id);
+                }
+
                 var audits = db.Audits.Where(a => a.IdProyecto == proyecto.Id).ToList();
 
                 foreach (Audit audit in audits)

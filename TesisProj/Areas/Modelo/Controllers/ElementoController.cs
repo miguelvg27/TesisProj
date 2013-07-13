@@ -207,21 +207,23 @@ namespace TesisProj.Areas.Modelo.Controllers
             try
             {
                 var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id).ToList();
-                var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
 
                 foreach (Formula formula in formulas)
                 {
                     db.FormulasRequester.RemoveElementByID(formula.Id);
                 }
-                
+
+                var celdas = db.Celdas.Where(c => c.Parametro.Elemento.Id == elemento.Id).ToList();
+
+                foreach (Celda celda in celdas)
+                {
+                    db.CeldasRequester.RemoveElementByID(celda.Id);
+                }
+
+                var parametros = db.Parametros.Where(p => p.Elemento.Id == elemento.Id).ToList();
+
                 foreach (Parametro parametro in parametros)
                 {
-                    var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id).ToList();
-                    foreach (Celda celda in celdas)
-                    {
-                        db.CeldasRequester.RemoveElementByID(celda.Id);  
-                    }
-
                     db.ParametrosRequester.RemoveElementByID(parametro.Id);
                 }
 

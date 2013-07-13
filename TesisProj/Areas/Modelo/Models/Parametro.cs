@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using TesisProj.Areas.Distribuciones.Models;
 using TesisProj.Areas.Modelos.Models;
 using TesisProj.Areas.Plantilla.Models;
@@ -31,14 +32,16 @@ namespace TesisProj.Areas.Modelo.Models
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Elemento")]
         public int IdElemento { get; set; }
-        
+
+        [XmlIgnore]
         [ForeignKey("IdElemento")]
         public virtual Elemento Elemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
         public int IdTipoParametro { get; set; }
-        
+
+        [XmlIgnore]
         [ForeignKey("IdTipoParametro")]
         public virtual TipoParametro TipoParametro { get; set; }
 

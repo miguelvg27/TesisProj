@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Models
@@ -20,7 +21,8 @@ namespace TesisProj.Areas.Modelo.Models
 
         [DisplayName("Parámetro")]
         public int IdParametro { get; set; }
-        
+
+        [XmlIgnore]
         [ForeignKey("IdParametro")]
         public virtual Parametro Parametro { get; set; }
 

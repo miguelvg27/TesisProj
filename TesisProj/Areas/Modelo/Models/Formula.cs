@@ -8,6 +8,8 @@ using System.Web;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
+using System.Data.Entity;
+using System.Xml.Serialization;
 
 namespace TesisProj.Areas.Modelo.Models
 {
@@ -34,6 +36,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Elemento")]
         public int IdElemento { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdElemento")]
         public virtual Elemento Elemento { get; set; }
 
@@ -41,6 +44,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Tipo")]
         public int IdTipoFormula { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdTipoFormula")]
         public virtual TipoFormula TipoFormula { get; set; }
 

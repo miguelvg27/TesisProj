@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models;
@@ -45,6 +46,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Proyecto")]
         public int IdProyecto { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdProyecto")]
         public virtual Proyecto Proyecto { get; set; }
 
@@ -55,6 +57,9 @@ namespace TesisProj.Areas.Modelo.Models
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
+
+        [InverseProperty("Operacion")]
+        public List<SalidaOperacion> Salidas { get; set; }
 
         public List<double> Valores;
 

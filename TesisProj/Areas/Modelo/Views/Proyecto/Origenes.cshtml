@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.DbVersion>
+
+@{
+    ViewBag.Title = "Proyecto: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Versiones de @ViewBag.Proyecto</h2>
+
+<p>
+    @Html.ActionLink("Guardar versión actual", "GuardarVersion", "Proyecto", routeValues: new { Area = "Modelo", id = ViewBag.ProyectoId }, htmlAttributes: new { onclick = " return CreateConfirm()" })
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Version)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdUsuario)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Version)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Creador.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Restaurar", "RestaurarVersion", new { id=item.Id }, new { onclick = " return RestoreConfirm()" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
+</div>
+
+<script>
+    function CreateConfirm(){
+        if (confirm("¿Está seguro que desea guardar el estado actual del proyecto como una versión?"))
+            return true;
+        else
+            return false;     
+    }
+
+    function RestoreConfirm() {
+        if (confirm("¿Está seguro que desea restaurar la versión? Se guardará el estado actual como una versión."))
+            return true;
+        else
+            return false;
+    }
+</script>

@@ -209,14 +209,11 @@
     <Compile Include="Areas\Modelo\Controllers\ParametroController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ProyectoController.cs" />
     <Compile Include="Areas\Modelo\Controllers\SalidaProyectoController.cs" />
+    <Compile Include="Areas\Modelo\Controllers\VersionController.cs" />
     <Compile Include="Areas\Modelo\Models\Audit.cs" />
     <Compile Include="Areas\Modelo\Models\Celda.cs" />
     <Compile Include="Areas\Modelo\Models\Operacion.cs" />
     <Compile Include="Areas\Modelo\Models\SalidaOperacion.cs" />
-    <Compile Include="Areas\MonteCarlo\Controllers\MonteCarloController.cs" />
-    <Compile Include="Areas\MonteCarlo\Models\AlgoritmoMonteCarlo.cs" />
-    <Compile Include="Areas\MonteCarlo\Models\TipoGrafico.cs" />
-    <Compile Include="Areas\MonteCarlo\MonteCarloAreaRegistration.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaParametroController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
@@ -272,6 +269,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Calculos.cs" />
+    <Compile Include="Areas\Modelo\Models\DbVersion.cs" />
     <Compile Include="Models\Generics.cs" />
     <Compile Include="Models\Storage\DbObject.cs" />
     <Compile Include="Models\Storage\DbRequester.cs" />
@@ -645,10 +643,8 @@
     <Content Include="Areas\Simulaciones\Views\Uniforme\_GraficoSimulacion.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Muro.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Fisco.cshtml" />
-    <Content Include="Areas\MonteCarlo\Views\Web.config" />
-    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Index.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\Origenes.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Images\check.jpg" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
     <Content Include="Scripts\2013.2.611\jquery-1.7.1.min.js" />
@@ -753,7 +749,6 @@
     <Folder Include="Areas\Modelos\Controllers\" />
     <Folder Include="Areas\Modelos\Views\Shared\" />
     <Folder Include="Areas\Modelo\Views\Shared\" />
-    <Folder Include="Areas\MonteCarlo\Views\Shared\" />
     <Folder Include="Areas\Plantilla\Views\Shared\" />
     <Folder Include="Areas\Proyectos\Views\Shared\" />
     <Folder Include="Areas\Simulaciones\Views\Shared\" />

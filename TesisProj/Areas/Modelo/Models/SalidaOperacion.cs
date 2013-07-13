@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models;
@@ -23,9 +24,11 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Salida")]
         public int IdSalida { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdOperacion")]
         public virtual Operacion Operacion { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdSalida")]
         public virtual SalidaProyecto Salida { get; set; }
 

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
@@ -27,6 +29,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Creador")]
         public int IdCreador { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdCreador")]
         public virtual UserProfile Creador { get; set; }
 
@@ -40,12 +43,15 @@ namespace TesisProj.Areas.Modelo.Models
         public int Horizonte { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Versión")]
-        [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
+        [DisplayName("Última versión")]
+        [Range(0, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor o igual que 0")]
         public int Version { get; set; }
 
         [InverseProperty("Proyecto")]
         public virtual List<Elemento> Elementos { get; set; }
+
+        [InverseProperty("Proyecto")]
+        public virtual List<SalidaProyecto> Salidas { get; set; }
 
         [InverseProperty("Proyecto")]
         public virtual List<Operacion> Operaciones { get; set; }
@@ -53,7 +59,9 @@ namespace TesisProj.Areas.Modelo.Models
         public override string LogValues()
         {
             return "Nombre = " + this.Nombre + Environment.NewLine +
-                "Horizonte = " + this.Horizonte;
+                "Version = " + this.Version + Environment.NewLine +
+                "Horizonte = " + this.Horizonte + Environment.NewLine +
+                "Descripcion = " + this.Descripcion;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

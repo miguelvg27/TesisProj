@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
@@ -22,6 +23,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Tipo")]
         public int IdTipoElemento { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdTipoElemento")]
         public virtual TipoElemento TipoElemento { get; set; }
 
@@ -29,6 +31,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Proyecto")]
         public int IdProyecto { get; set; }
 
+        [XmlIgnore]
         [ForeignKey("IdProyecto")]
         public virtual Proyecto Proyecto { get; set; }
 

@@ -74,11 +74,18 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         public ActionResult Pelicula(int id = 0)
         {
+
+            //
+            //  Comienza zona crítica 
+
+            db.Configuration.ProxyCreationEnabled = false;
+
             SalidaProyecto salida = db.SalidaProyectos.Find(id);
             Proyecto proyecto = db.Proyectos.Find(salida.IdProyecto);
 
             if (salida == null)
             {
+                db.Configuration.ProxyCreationEnabled = true;
                 return HttpNotFound();
             }
 
@@ -97,6 +104,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.Salida = salida.Nombre;
             ViewBag.Inicio = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoInicial, proyecto.Horizonte, 1));
             ViewBag.Horizonte = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoFinal, proyecto.Horizonte, proyecto.Horizonte));
+
+            db.Configuration.ProxyCreationEnabled = true;
+
+            //
+            //  Finaliza zona crítica
 
             return View(operaciones.Intersect(exoperaciones).ToList());
         }

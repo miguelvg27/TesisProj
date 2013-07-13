@@ -20,6 +20,7 @@ namespace TesisProj.Models.Storage
         public DbSet<Operacion> Operaciones { get; set; }
         public DbSet<SalidaOperacion> SalidaOperaciones { get; set; }
         public DbSet<Audit> Audits { get; set; }
+        public DbSet<DbVersion> DbVersions { get; set; }
 
         public DbRequester<Proyecto> ProyectosRequester { get; set; }
         public DbRequester<Elemento> ElementosRequester { get; set; }
@@ -30,6 +31,7 @@ namespace TesisProj.Models.Storage
         public DbRequester<Operacion> OperacionesRequester { get; set; }
         public DbRequester<SalidaOperacion> SalidaOperacionesRequester { get; set; }
         public DbRequester<Audit> AuditsRequester { get; set; }
+        public DbRequester<DbVersion> DbVersionsRequester { get; set; }
 
         public void RegistrarTablasProyecto()
         {
@@ -42,6 +44,7 @@ namespace TesisProj.Models.Storage
             OperacionesRequester = new DbRequester<Operacion>(this, Operaciones, Audits);
             SalidaOperacionesRequester = new DbRequester<SalidaOperacion>(this, SalidaOperaciones, Audits);
             AuditsRequester = new DbRequester<Audit>(this, Audits);
+            DbVersionsRequester = new DbRequester<DbVersion>(this, DbVersions, Audits);
         }
 
         public void SeedProyecto()
