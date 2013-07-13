@@ -1,22 +1,22 @@
 ﻿using System.Web.Mvc;
 
-namespace TesisProj.Areas.Comparacion
+namespace TesisProj.Areas.CompararProyecto
 {
-    public class ComparacionAreaRegistration : AreaRegistration
+    public class CompararProyectoAreaRegistration : AreaRegistration
     {
         public override string AreaName
         {
             get
             {
-                return "Comparacion";
+                return "CompararProyecto";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Comparacion_default",
-                "Comparacion/{controller}/{action}/{id}",
+                "CompararProyecto_default",
+                "CompararProyecto/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }
