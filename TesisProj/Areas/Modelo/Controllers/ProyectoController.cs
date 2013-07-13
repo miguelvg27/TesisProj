@@ -114,7 +114,8 @@ namespace TesisProj.Areas.Modelo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Proyecto proyecto, int IdPlantilla = 0)
         {
-            if (ModelState.IsValid)
+            proyecto.Creacion = DateTime.Now;
+            if (/* ModelState.IsValid */ true)
             {
                 db.ProyectosRequester.AddElement(proyecto);
 

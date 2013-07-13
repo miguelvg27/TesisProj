@@ -1,16 +1,16 @@
 ﻿@model TesisProj.Areas.Modelo.Models.Proyecto
-
+@using Telerik.Web.Mvc.UI
 @{
     ViewBag.Title = "Proyectos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@Html.Telerik().ScriptRegistrar().Globalization(true)
 <h2>Crear</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-
+    
     <fieldset>
         <legend>Proyecto</legend>
 
@@ -66,7 +66,7 @@
             @Html.LabelFor(model => model.Creacion)
         </div>
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Creacion, new { @Readonly = "readonly", @Value = ViewBag.Now })
+            @Html.Telerik().DateTimePickerFor(model => model.Creacion).Value(@DateTime.Now).Enable(false)
             @Html.ValidationMessageFor(model => model.Creacion)
         </div>
         
