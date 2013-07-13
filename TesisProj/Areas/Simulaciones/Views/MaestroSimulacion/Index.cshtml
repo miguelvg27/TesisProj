@@ -1,30 +1,36 @@
 ﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Asignar Modelo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Asignar Modelo</h2>
 
-<table>
+<table class="table table-hover table-striped">
+<thead><tr><th>Parametro</th><th>Modelo Disponible</th></tr></thead>
 @foreach (var item in Model)
 {
         <tr>
-            <th>@item.Nombre</th>
+            <td>@item.Nombre</td>
             <td>
                 <div class="btn-group">
-                    <a class="btn btn-info" href="@Url.Action("Index", "Binomial", new { Area = "Simulaciones", idParametro = item.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
+@*                    <a class="btn btn-info" href="@Url.Action("Index", "Binomial", new { Area = "Simulaciones", idParametro = item.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
                     <a class="btn btn-info" href="@Url.Action("Index", "Geometrica", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Geometrica</a> 
                     <a class="btn btn-info" href="@Url.Action("Index", "Hipergeometrica", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Hipergeometrica</a> 
                     <a class="btn btn-info" href="@Url.Action("Index", "Pascal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Pascal</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
-                    <a class="btn btn-info" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>               
+                    <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> *@
+                    <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
+                    <a class="btn" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>               
                 </div>
             </td>     
         </tr>
 }
             </table>
 
-<h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId})">Regresar</a></h5>
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId })"">
+  			<i class=" icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>

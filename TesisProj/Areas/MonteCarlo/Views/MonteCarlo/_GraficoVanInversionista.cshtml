@@ -3,8 +3,10 @@
 @using Telerik.Web.Mvc.UI	
 @model ICollection<TesisProj.Areas.Modelos.Models.Grafico>
 
+<h1>Van Inversionista</h1>
+
 		@(Html.Telerik().Chart(Model)
-			.Name("chartnormalSimulacion")
+			.Name("chartvanInversionista")
 			.Legend(legend => legend
 				.Position(ChartLegendPosition.Bottom)
 				.Visible(true)
@@ -28,5 +30,5 @@
 				.Visible(true)
 				.Format("{0:N}")
 			)
-			.HtmlAttributes(new { style = "width: 600px; height: 200px; margin: auto;" })
+			.HtmlAttributes(new { style = "width: 400px; height: 200px; margin: auto;" })
 		)

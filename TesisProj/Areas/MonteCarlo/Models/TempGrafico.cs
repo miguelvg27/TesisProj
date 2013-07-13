@@ -5,11 +5,9 @@ using System.Web;
 
 namespace TesisProj.Areas.MonteCarlo.Models
 {
-    public class TipoGrafico
+    public class TempGrafico
     {
-        public int Id { get; set; }
-        public string Text { get; set; }
-
-        public TipoGrafico() { }
+        public int Indice { get; set; }
+        public int Cantidad { get; set; }
     }
 }

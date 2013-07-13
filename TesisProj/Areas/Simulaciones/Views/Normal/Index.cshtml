@@ -2,11 +2,12 @@
 @using Telerik.Web.Mvc.UI
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Normal";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Distribucion Normal</h2>
+<br />
 
 @using (Html.BeginForm())
 {
@@ -17,14 +18,12 @@
 <fieldset>
     <legend>Normal</legend>
 
-    <div class="conteiner span12">
+    <div class="conteiner">
         <div class="span2 label label-inverse">@Html.LabelFor(model => model.n_mean) @Html.Telerik().AutoCompleteFor(model => model.n_mean).HtmlAttributes(new { style = "width: 100px" })</div>
         <div class="span3 label label-inverse">@Html.LabelFor(model => model.n_std) @Html.Telerik().AutoCompleteFor(model => model.n_std).HtmlAttributes(new { style = "width: 100px" })</div>
-        <div class="span2 label label-inverse">@Html.LabelFor(model => model.n_E) @Html.Telerik().AutoCompleteFor(model => model.n_E).HtmlAttributes(new { style = "width: 100px" }).Enable(false)</div>
-        <div class="span2 label label-inverse">@Html.LabelFor(model => model.n_V) @Html.Telerik().AutoCompleteFor(model => model.n_V).HtmlAttributes(new { style = "width: 100px" }).Enable(false)</div>
-    </div>
-
-    <table>
+        <div class="span3" ><button class="btn" type="submit">Previo</button> </div>
+    <br />    <br />    <br />    <br />    
+        <table>
         <tr>
             <td>
                 <div class="span12">@{Html.RenderAction("_CeldasSimuladas", "Normal");}</div>
@@ -36,10 +35,14 @@
             </td>
         </tr>
     </table>
-
+    </div>
 </fieldset>
-    
-    <button class="btn btn-inverse" type="submit">Establecer</button>
+   
 }
-    <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = ViewBag.idProyecto})">Regresar</a></h5>
 
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = ViewBag.idProyecto})"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
