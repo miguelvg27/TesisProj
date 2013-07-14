@@ -22,8 +22,8 @@ namespace TesisProj.Areas.Modelo.Models
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Fecha de creación")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime Creacion { get; set; }
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? Creacion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Creador")]

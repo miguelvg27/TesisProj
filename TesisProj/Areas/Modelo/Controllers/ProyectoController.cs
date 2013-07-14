@@ -102,7 +102,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName");
             ViewBag.IdModificador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName");
             ViewBag.IdPlantilla = new SelectList(db.PlantillaProyectos.OrderBy(p => p.Nombre), "Id", "Nombre");
-            ViewBag.Now = DateTime.Today.ToShortDateString();
+            ViewBag.Now = DateTime.Now.ToShortDateString();
             ViewBag.Version = 0;
             return View();
         }
