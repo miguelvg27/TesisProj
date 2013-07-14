@@ -75,7 +75,9 @@
             <a href="#" onclick="Mark('TIRE');">TIR del proyecto</a> |
             <a href="#" onclick="Mark('TIRF');">TIR del inversionista</a> |
             <a href="#" onclick="Mark('VANE');">VAN del proyecto</a> |
-            <a href="#" onclick="Mark('VANF');">VAN del inversionista</a>
+            <a href="#" onclick="Mark('VANF');">VAN del inversionista</a> |
+            <a href="#" onclick="Mark('KE');">Costo capital del proyecto</a> |
+            <a href="#" onclick="Mark('KF');">Costo capital del inversionista</a>
         </div>
 
         <div class="editor-label">
@@ -104,5 +106,6 @@
     function Mark(story) {
         document.getElementById('Indicador').checked = true;
         document.getElementById('Referencia').value = story;
+        return false;
     }
 </script>
