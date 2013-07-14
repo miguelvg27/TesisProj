@@ -27,9 +27,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Indicador)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cadena)
-        </th>
         <th></th>
     </tr>
 
@@ -49,9 +46,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Indicador)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cadena)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |

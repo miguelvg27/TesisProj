@@ -34,7 +34,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(salidaproyectos.ToList());
         }
 
-        public List<Operacion> CalcularProyecto(int horizonte, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas, bool simular = false)
+        public static List<Operacion> CalcularProyecto(int horizonte, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas, bool simular = false)
         {
             //  Lleno los valores de las referencias a tipos de fórmula
 
