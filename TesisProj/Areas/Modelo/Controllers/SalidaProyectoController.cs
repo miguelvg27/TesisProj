@@ -34,7 +34,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(salidaproyectos.ToList());
         }
 
-        public static List<Operacion> CalcularProyecto(int horizonte, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas, bool simular = false)
+        public static List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Parametro> parametros, List<Formula> formulas, List<TipoFormula> tipoformulas, bool simular = false)
         {
             //  Lleno los valores de las referencias a tipos de fórmula
 
@@ -52,7 +52,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                     //  Cojo las fórmulas y parámetros del elemento de referencia (secuencia menor)
                     var refFormulitas = formulas.Where(f => f.Secuencia < formulita.Secuencia && f.IdElemento == formulita.IdElemento).ToList();
                     var refParametros = parametros.Where(p => p.IdElemento == formulita.IdElemento).ToList();
-                    formulita.Valores = formulita.Evaluar(horizonte, refFormulitas, refParametros, simular);
+                    formulita.Valores = formulita.Evaluar(horizonte, preoperativos, cierre, refFormulitas, refParametros, simular);
                     
                     //  Sumo los elementos
                     tipoformula.Valores = tipoformula.Valores.Zip(formulita.Valores, (x, y) => x + y).ToArray();
@@ -63,7 +63,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 //  Cojo las operaciones de referencia (secuencia menor)
                 var refoperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia).ToList();
-                operacion.Valores = operacion.Evaluar(horizonte, refoperaciones, tipoformulas, formulas, parametros);
+                operacion.Valores = operacion.Evaluar(horizonte, preoperativos, cierre, refoperaciones, tipoformulas, formulas, parametros);
             }
 
             return operaciones;
@@ -90,13 +90,15 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             int horizonte = proyecto.Horizonte;
+            int preoperativos = proyecto.PeriodosPreOp;
+            int cierre = proyecto.PeriodosCierre;
 
             var operaciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).OrderBy(s => s.Secuencia).ToList();
             var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == salida.IdProyecto).ToList();
             var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == salida.IdProyecto).ToList();
             var tipoformulas = db.TipoFormulas.ToList();
 
-            CalcularProyecto(horizonte, operaciones, parametros, formulas, tipoformulas);
+            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas);
             var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).Select(s => s.Operacion).ToList();
 
             ViewBag.IdProyecto = salida.IdProyecto;

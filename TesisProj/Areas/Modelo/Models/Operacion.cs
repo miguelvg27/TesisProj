@@ -90,7 +90,7 @@ namespace TesisProj.Areas.Modelo.Models
                 "Cadena = " + this.Cadena;
         }
 
-        public List<double> Evaluar(int horizonte, List<Operacion> operaciones, List<TipoFormula> tipoformulas, List<Formula> formulas, List<Parametro> parametros)
+        public List<double> Evaluar(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<TipoFormula> tipoformulas, List<Formula> formulas, List<Parametro> parametros)
         {
             List<double> resultado = new List<double>();
 
@@ -105,6 +105,8 @@ namespace TesisProj.Areas.Modelo.Models
 
                     parser.AddVariable("Periodo", i);
                     parser.AddVariable("Horizonte", horizonte);
+                    parser.AddVariable("PeriodosCierre", cierre);
+                    parser.AddVariable("PeriodosPreOperativos", preoperativos);
 
                     foreach (TipoFormula tipoformula in tipoformulas)
                     {
@@ -164,6 +166,8 @@ namespace TesisProj.Areas.Modelo.Models
                 var operaciones = context.Operaciones.Where(o => o.IdProyecto == this.IdProyecto && o.Secuencia < this.Secuencia);
 
                 parser.AddVariable("Horizonte", 10);
+                parser.AddVariable("PeriodosCierre", 1);
+                parser.AddVariable("PeriodosPreOperativos", 1);
 
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {

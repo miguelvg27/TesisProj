@@ -115,6 +115,8 @@ namespace TesisProj.Areas.Plantilla.Models
 
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
+                parser.AddVariable("PeriodosCierre", 1);
+                parser.AddVariable("PeriodosPreOperativos", 1);
                 parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
                 parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
                 parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);

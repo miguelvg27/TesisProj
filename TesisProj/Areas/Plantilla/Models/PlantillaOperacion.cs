@@ -72,6 +72,8 @@ namespace TesisProj.Areas.Plantilla.Models
                 var tipoformulas = context.TipoFormulas;
                 var operaciones = context.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == this.IdPlantillaProyecto && o.Secuencia < this.Secuencia);
                 parser.AddVariable("Horizonte", 10);
+                parser.AddVariable("PeriodosCierre", 1);
+                parser.AddVariable("PeriodosPreOperativos", 1);
 
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {

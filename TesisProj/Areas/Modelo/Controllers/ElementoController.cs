@@ -52,7 +52,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 var refs = formulas.Where(f => f.Secuencia < salida.Secuencia && f.IdElemento == elemento.Id).ToList();
                 var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
-                salida.Valores = salida.Evaluar(proyecto.Horizonte, refs, parametros);
+                salida.Valores = salida.Evaluar(proyecto.Horizonte, proyecto.PeriodosPreOp, proyecto.PeriodosCierre, refs, parametros);
             }
 
             ViewBag.IdElemento = elemento.Id;

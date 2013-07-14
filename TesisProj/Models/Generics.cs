@@ -10,7 +10,7 @@ namespace TesisProj.Models
 {
     public class Generics
     {
-        public static string[] Reservadas = { "Horizonte", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
+        public static string[] Reservadas = { "Horizonte", "PeriodosPreOperativos", "PeriodosCierre", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
 
         public static double Ppmt(double i, double p, double N, double V)
         {
@@ -68,11 +68,14 @@ namespace TesisProj.Models
             return valida;
         }
 
-        public static double SimpleParse(string cadena, int horizonte, int periodo)
+        public static double SimpleParse(string cadena, int horizonte, int periodo, int preop = 0, int cierre = 0)
         {
             MathParserNet.Parser parser = new MathParserNet.Parser();
             parser.AddVariable("Horizonte", horizonte);
             parser.AddVariable("Periodo", periodo);
+            parser.AddVariable("PeriodosPreOperativos", preop);
+            parser.AddVariable("PeriodosCierre", cierre);
+
             double value = 0;
 
             try
