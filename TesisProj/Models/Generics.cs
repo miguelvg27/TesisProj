@@ -27,9 +27,10 @@ namespace TesisProj.Models
             return -Financial.Pmt(i, N, V);
         }
 
-        public static double Sln(double V, double l)
+        public static double Sln(double V, double l, double pinicial,double pactual)
         {
-            return Financial.SLN(V, 0, l);
+            double pfinal = pinicial + l - 1;
+            return pactual > pfinal ? 0 : Financial.SLN(V, 0, l);
         }
 
         public static double Syn(double V, double l, double p)
@@ -37,10 +38,10 @@ namespace TesisProj.Models
             return Financial.SYD(V, 0, l, p);
         }
 
-        public static double ResSln(double V, double vida, double pinicial, double periodoactual)
+        public static double ResSln(double V, double vida, double pinicial, double pactual)
         {
             double pfinal = pinicial + vida - 1;
-            return pfinal > periodoactual ? (pfinal - periodoactual) * Sln(V, vida) : 0;
+            return (pfinal - pactual) * Sln(V, vida, pinicial, pactual);
         }
 
         public static double Npv(double i, double[] saldo)

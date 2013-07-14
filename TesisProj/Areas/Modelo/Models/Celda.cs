@@ -16,6 +16,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Período")]
         public int Periodo { get; set; }
 
+        [Required]
         [DisplayName("Valor")]
         public decimal Valor { get; set; }
 
