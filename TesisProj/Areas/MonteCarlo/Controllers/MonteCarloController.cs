@@ -49,6 +49,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
             for (int u = 1; u <= mc.NumeroSimulaciones; u++)
             {
+                List<Parametro> Parametrossensibles = new List<Parametro>();
+
                 foreach (Elemento e in proy.Elementos)
                 {
                     foreach (Parametro p in e.Parametros.Where(o=>o.Sensible==true))
@@ -68,15 +70,34 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             maestro.ActualizarCeldas("Uniforme", p);
                             p.CeldasSensibles = maestro.CeldasSensibles;
                         }
-
-                        Alacena(p);
+                        Parametrossensibles.Add(new Parametro
+                        {
+                            Nombre = p.Nombre,
+                            Referencia = p.Referencia,
+                            IdElemento = p.IdElemento,
+                            Elemento = p.Elemento,
+                            IdTipoParametro = p.IdTipoParametro,
+                            TipoParametro = p.TipoParametro,
+                            Constante = p.Constante,
+                            Sensible = p.Sensible,
+                            CeldasSensibles = p.CeldasSensibles,
+                            Celdas = p.Celdas,
+                            normal = p.normal,
+                            uniforme = p.uniforme,
+                            binomial = p.binomial,
+                            geometrica = p.geometrica,
+                            hipergeometrica = p.hipergeometrica,
+                            pascal = p.pascal,
+                            poison = p.poison
+                        });
+                       // Alacena(p);
 
                     }
                 }
 
                 //Aca las celdas para los elementos y sus parametros ya estan simuladoas con un modelo
                 //Debo Almacenar los resultados que me da Miguel en cada simulacion
-                SimAns r = MetodoMiguel(proy);
+                SimAns r = MetodoMiguel(proy,Parametrossensibles);
                 vanE.Add(new Hash {Valor=r.VanE});
                 vanF.Add(new Hash {Valor=r.VanF});
                 tirE.Add(new Hash {Valor=r.TirE});
@@ -172,7 +193,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return RedirectToAction("Resultados",mc);
         }
 
-        public SimAns MetodoMiguel(Proyecto proy)
+        public SimAns MetodoMiguel(Proyecto proy, List<Parametro> parametros)
         {
             context.Configuration.ProxyCreationEnabled = false;
 
@@ -182,10 +203,9 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
             var operaciones = context.Operaciones.Where(o => o.IdProyecto == proy.Id).OrderBy(s => s.Secuencia).ToList();
             var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proy.Id).ToList();
-            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == proy.Id).ToList();
             var tipoformulas = context.TipoFormulas.ToList();
 
-            return  ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
+            return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
         }
 
         public ActionResult Resultados(AlgoritmoMonteCarlo salida)
