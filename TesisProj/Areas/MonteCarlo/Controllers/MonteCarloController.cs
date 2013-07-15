@@ -93,6 +93,32 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                        // Alacena(p);
 
                     }
+                    foreach (Parametro p in e.Parametros.Where(o => o.Sensible == false))
+                    {
+                        Parametrossensibles.Add(new Parametro
+                        {
+                            Nombre = p.Nombre,
+                            Referencia = p.Referencia,
+                            IdElemento = p.IdElemento,
+                            Elemento = p.Elemento,
+                            IdTipoParametro = p.IdTipoParametro,
+                            TipoParametro = p.TipoParametro,
+                            Constante = p.Constante,
+                            Sensible = p.Sensible,
+                            CeldasSensibles = p.CeldasSensibles,
+                            Celdas = p.Celdas,
+                            normal = p.normal,
+                            uniforme = p.uniforme,
+                            binomial = p.binomial,
+                            geometrica = p.geometrica,
+                            hipergeometrica = p.hipergeometrica,
+                            pascal = p.pascal,
+                            poison = p.poison
+                        });
+                        // Alacena(p);
+
+                    }
+
                 }
 
                 //Aca las celdas para los elementos y sus parametros ya estan simuladoas con un modelo
@@ -250,7 +276,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
         private int PuntoIntervalo(double minimo, double maximo, int TotalIntrervalo, int n)
         {
             // n = mc.NumeroIntervalos 
-            return Convert.ToInt16( Math.Round(minimo + n * ((maximo - minimo) / TotalIntrervalo),1));
+            return Convert.ToInt32( Math.Round(minimo + n * ((maximo - minimo) / TotalIntrervalo),1));
         }
 
         /// <summary>
