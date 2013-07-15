@@ -81,6 +81,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.Subrayar)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Subrayar)
+            @Html.ValidationMessageFor(model => model.Subrayar)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">

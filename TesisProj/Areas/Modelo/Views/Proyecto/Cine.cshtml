@@ -11,12 +11,12 @@
     @Html.ActionLink("Crear", "CreateSalidaProyecto", "Proyecto", routeValues: new { Area = "Modelo", idProyecto = ViewBag.ProyectoId }, htmlAttributes: null) |
     @Html.ActionLink("Operaciones", "Corolario", "Proyecto", routeValues: new { Area = "Modelo", id = ViewBag.ProyectoId }, htmlAttributes: null)
 </p>
-<table>
+<table class="table table-hover table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
-        <th>
+        <th style="text-align:center;">
             @Html.DisplayNameFor(model => model.Secuencia)
         </th>
         <th></th>
@@ -27,7 +27,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
-        <td>
+        <td style="text-align:center;">
             @Html.DisplayFor(modelItem => item.Secuencia)
         </td>
         <td>

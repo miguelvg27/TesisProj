@@ -15,8 +15,9 @@
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Create", "Proyecto", new { Area = "Modelo" })"">
   			<i class="icon-plus icon-white"></i>Nuevo
     </a>
+    <br />    <br />
 </p>
-<table>
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -55,10 +56,8 @@
     </tr>
 }
 </table>
-
-
 <p>
-        <br />    <br />
+        <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Home", new { Area = "" })"">
   			<i class="icon-arrow-left icon-white"></i>Regresar
     </a>

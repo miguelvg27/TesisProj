@@ -53,6 +53,9 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Indicador")]
         public bool Indicador { get; set; }
 
+        [DisplayName("Subrayar")]
+        public bool Subrayar { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
@@ -77,6 +80,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.Referencia = plantilla.Referencia;
             this.Secuencia = plantilla.Secuencia;
             this.Cadena = plantilla.Cadena;
+            this.Subrayar = plantilla.Subrayar;
         }
 
         public override string LogValues()

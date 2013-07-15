@@ -49,6 +49,9 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Indicador")]
         public bool Indicador { get; set; }
 
+        [DisplayName("Subrayar")]
+        public bool Subrayar { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]

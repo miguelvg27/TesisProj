@@ -6,11 +6,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int Horizonte = ViewBag.Horizonte;
     int Inicio = (ViewBag.Inicio > 0 ? ViewBag.Inicio : 1) - 1;
+    string format;
 }
 
 <h2>@ViewBag.Salida (@ViewBag.Proyecto)</h2>
-
-<table>
+<div style="overflow: auto; height: 600px">
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             Concepto
@@ -25,7 +26,7 @@
 
 @foreach (var salida in Model)
 {
-    <tr>
+    <tr class = "@GetClassFromLevel(salida.Indicador, salida.Subrayar)">
         <td>
             @salida.Nombre
         </td>
@@ -34,7 +35,15 @@
             <td style="text-align:right;">
                 @if(salida.Indicador){
                     if (periodo == Inicio){
-                        @String.Format("{0:#,##0.00}", salida.Valores[periodo])
+                        if (salida.Referencia.Equals("TIRE") || salida.Referencia.Equals("TIRF") || salida.Referencia.Equals("KE") || salida.Referencia.Equals("KF"))
+                        {
+                            format = "{0:P2}";
+                        }
+                        else
+                        {
+                            format = "{0:#,##0}";
+                        }
+                        @String.Format(format, salida.Valores[0])
                     }
                 } 
                 else 
@@ -47,11 +56,18 @@
 }
 
 </table>
-
+</div>
 <div>
     @Html.ActionLink("Regresar", "Cine", new { id = ViewBag.IdProyecto })
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+}
+
+@functions{ 
+  public string GetClassFromLevel(bool indicador, bool subrayar) 
+    {
+        return subrayar ? "info" : (indicador ? "success" : "");
+  }
 }

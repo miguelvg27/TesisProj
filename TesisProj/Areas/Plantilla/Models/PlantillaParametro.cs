@@ -27,7 +27,7 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Constante")]
         public bool Constante { get; set; }
 
-        [DisplayName("Constante")]
+        [DisplayName("Sensible")]
         public bool Sensible { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]

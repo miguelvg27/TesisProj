@@ -131,7 +131,7 @@ namespace TesisProj.Areas.Modelo.Models
 
                     foreach (Parametro parametro in parametros)
                     {
-                        var celdas = simular ? parametro.CeldasSensibles : parametro.Celdas;
+                        var celdas = (simular && parametro.Sensible) ? parametro.CeldasSensibles : parametro.Celdas;
                         parser.AddVariable(parametro.Referencia, (double) celdas.First(c => c.Periodo == (parametro.Constante ? 1 : i)).Valor);
                     }
 
