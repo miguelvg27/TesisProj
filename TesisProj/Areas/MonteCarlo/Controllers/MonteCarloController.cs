@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Modelos.Models;
 using TesisProj.Areas.MonteCarlo.Models;
@@ -33,19 +34,13 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
         {
             mc.Parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Where(e => e.Elemento.IdProyecto == idProyecto).Where(oo => oo.Sensible == true).ToList();
             Proyecto proy = context.Proyectos.Find(idProyecto);
-
-
-            List<TempGrafico> salida1 = new List<TempGrafico>();
-            List<TempGrafico> salida2= new List<TempGrafico>();
-            List<TempGrafico> salida3 = new List<TempGrafico>();
-            List<TempGrafico> salida4 = new List<TempGrafico>();
-
+            List<Hash>  vanE = new List<Hash>();
+            List<Hash>  vanF = new List<Hash>();
+            List<Hash>  tirE = new List<Hash>();
+            List<Hash>  tirF = new List<Hash>();
 
             //Temporales prara simular resultados
-            List<Grafico> grafico1 = new List<Grafico>();
-            List<Grafico> grafico2 = new List<Grafico>();
-            List<Grafico> grafico3 = new List<Grafico>();
-            List<Grafico> grafico4 = new List<Grafico>();
+
 
             List<Grafico> graficoVanInversionista = new List<Grafico>();
             List<Grafico> graficoVanProyecto = new List<Grafico>();
@@ -58,6 +53,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 {
                     foreach (Parametro p in e.Parametros.Where(o=>o.Sensible==true))
                     {
+                        //Actualizo modelos de simulacion 
                         if (p.normal.IsEliminado == false)
                         {
                             MaestroSimulacion maestro = new MaestroSimulacion();
@@ -73,119 +69,123 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             p.CeldasSensibles = maestro.CeldasSensibles;
                         }
 
-                        //using (StreamWriter sw = new StreamWriter(@"C:\Reportes\MonteCarlo.txt", true))
-                        //{
-                        //    sw.WriteLine("Normal fx" + " - " + DateTime.Now.ToString());
-                        //    sw.WriteLine("|x" + "  -  " + "fx|");
-                        //    int i = 0;
-                        //    if (p.uniforme.IsEliminado == false) sw.WriteLine("Uniforme");
-                        //    if (p.normal.IsEliminado == false) sw.WriteLine("Normal");
-                        //    foreach (Celda g in p.CeldasSensibles)
-                        //    {
-                        //        sw.WriteLine("|" + ++i + "  -  " + g.Valor + "|");
-                        //    }
-                        //    sw.WriteLine();
-                        //}
+                        Alacena(p);
+
                     }
                 }
-                grafico1.Add(SimularVanInversionista(u, 100));
-                grafico2.Add(SimularVanProyecto(u, 100));
-                grafico3.Add(SimularTirInversionista(u, 1));
-                grafico4.Add(SimularTirProyecto(u, 1));
+
+                //Aca las celdas para los elementos y sus parametros ya estan simuladoas con un modelo
+                //Debo Almacenar los resultados que me da Miguel en cada simulacion
+                SimAns r = MetodoMiguel(proy);
+                vanE.Add(new Hash {Valor=r.VanE});
+                vanF.Add(new Hash {Valor=r.VanF});
+                tirE.Add(new Hash {Valor=r.TirE});
+                tirF.Add(new Hash {Valor=r.TirF});
             }
 
-            int amplitudVanInversionista = Amplitud(GraficoMinimo(grafico1, 1), GraficoMaximo(grafico1, 1));
-            int amplitudVanProyecto = Amplitud(GraficoMinimo(grafico2, 1), GraficoMaximo(grafico2, 1));
-            int amplitudTirInversionista = Amplitud(GraficoMinimo(grafico3, 100), GraficoMaximo(grafico3, 100));
-            int amplitudTirProyecto = Amplitud(GraficoMinimo(grafico4, 100), GraficoMaximo(grafico4, 100));
+             
 
-            for (int y = 0; y < mc.NumeroIntervalos; y++)
+            //ya tengo los valores obtenidos
+            //los agrupo en intervalos 
+
+            List<Grafico> GraficoVanE = new List<Grafico>();
+            List<Grafico> GraficoVanF = new List<Grafico>();
+            List<Grafico> GraficoTirE = new List<Grafico>();
+            List<Grafico> GraficoTirF = new List<Grafico>();
+            
+            int _x_,_x_puls_;
+            double _fx_;
+
+            for(int i=1 ;i<=mc.NumeroIntervalos;i++)
             {
-                TempGrafico TMPVanInversionista = new TempGrafico();
-                TMPVanInversionista.Indice = GraficoMinimo(grafico1, 1) + amplitudVanInversionista * y;
-                TMPVanInversionista.Cantidad = 0;
-                salida1.Add(TMPVanInversionista);
-
-                TempGrafico TMPVanProyecto = new TempGrafico();
-                TMPVanProyecto.Indice = GraficoMinimo(grafico2, 1) + amplitudVanProyecto * y;
-                TMPVanProyecto.Cantidad = 0;
-                salida2.Add(TMPVanProyecto);
-
-                TempGrafico TMPTirInversionista = new TempGrafico();
-                TMPTirInversionista.Indice = GraficoMinimo(grafico3, 1) + amplitudTirInversionista * y;
-                TMPTirInversionista.Cantidad = 0;
-                salida3.Add(TMPTirInversionista);
-
-                TempGrafico TMTirProyecto = new TempGrafico();
-                TMTirProyecto.Indice = GraficoMinimo(grafico4, 1) + amplitudTirProyecto * y;
-                TMTirProyecto.Cantidad = 0;
-                salida4.Add(TMPVanInversionista);
-            }
-
-            for (int u = 0; u < mc.NumeroSimulaciones; u++)
-            {
-                for (int q = 0; q < salida1.Count - 1; q++)
+                _x_=PuntoIntervalo(vanE.Min(n=>n.Valor), vanE.Max(n=>n.Valor), mc.NumeroIntervalos, i);
+                _x_puls_=PuntoIntervalo(vanE.Min(n=>n.Valor), vanE.Max(n=>n.Valor), mc.NumeroIntervalos, i+1);
+                _fx_=vanE.Where(n=>(n.Valor>=_x_ && n.Valor<_x_puls_)).Count();
+               
+                GraficoVanE.Add(new Grafico
                 {
-                    salida1[q].Cantidad = grafico1.Where(c => ((c.fx >= salida1[q].Indice) && (c.fx <= salida1[q].Indice))).Count();
-                }
+                    x = _x_,
+                    fx =_fx_,
+                    sx =_x_.ToString(),
+                    sfx=_fx_.ToString()
+                });
 
-                for (int q = 0; q < salida2.Count - 1; q++)
+                _x_ = PuntoIntervalo(vanF.Min(n => n.Valor), vanF.Max(n => n.Valor), mc.NumeroIntervalos, i);
+                _x_puls_ = PuntoIntervalo(vanF.Min(n => n.Valor), vanF.Max(n => n.Valor), mc.NumeroIntervalos, i + 1);
+                _fx_ = vanF.Where(n => (n.Valor >= _x_ && n.Valor < _x_puls_)).Count();
+
+                GraficoVanF.Add(new Grafico
                 {
-                    salida2[q].Cantidad = grafico2.Where(c => ((c.fx >= salida2[q].Indice) && (c.fx <= salida2[q].Indice))).Count();
-                }
+                    x = _x_,
+                    fx = _fx_,
+                    sx = _x_.ToString(),
+                    sfx = _fx_.ToString()
+                });
 
-                for (int q = 0; q < salida3.Count - 1; q++)
+                _x_ = PuntoIntervalo(tirE.Min(n => n.Valor), tirE.Max(n => n.Valor), mc.NumeroIntervalos, i);
+                _x_puls_ = PuntoIntervalo(tirE.Min(n => n.Valor), tirE.Max(n => n.Valor), mc.NumeroIntervalos, i + 1);
+                _fx_ = tirE.Where(n => (n.Valor >= _x_ && n.Valor < _x_puls_)).Count();
+
+                GraficoTirE.Add(new Grafico
                 {
-                    salida3[q].Cantidad = grafico3.Where(c => ((c.fx >= salida3[q].Indice) && (c.fx <= salida3[q].Indice))).Count();
-                }
+                    x = _x_,
+                    fx = _fx_,
+                    sx = _x_.ToString(),
+                    sfx = _fx_.ToString()
+                });
 
-                for (int q = 0; q < salida4.Count - 1; q++)
+                _x_ = PuntoIntervalo(tirF.Min(n => n.Valor), tirF.Max(n => n.Valor), mc.NumeroIntervalos, i);
+                _x_puls_ = PuntoIntervalo(tirF.Min(n => n.Valor), tirF.Max(n => n.Valor), mc.NumeroIntervalos, i + 1);
+                _fx_ = tirF.Where(n => (n.Valor >= _x_ && n.Valor < _x_puls_)).Count();
+
+                GraficoTirF.Add(new Grafico
                 {
-                    salida4[q].Cantidad = grafico4.Where(c => ((c.fx >= salida4[q].Indice) && (c.fx <= salida4[q].Indice))).Count();
-                }
-
+                    x = _x_,
+                    fx = _fx_,
+                    sx = _x_.ToString(),
+                    sfx = _fx_.ToString()
+                });
 
             }
 
-            foreach (TempGrafico t in salida1)
-            {
-                graficoVanInversionista.Add(new Grafico { fx = t.Cantidad, x = t.Indice, sfx = (t.Cantidad * 100).ToString(), sx = t.Indice.ToString() });
-            }
-            foreach (TempGrafico t in salida2)
-            {
-                graficoVanProyecto.Add(new Grafico { fx = t.Cantidad, x = t.Indice, sfx = (t.Cantidad * 100).ToString(), sx = t.Indice.ToString() });
-            }
-            foreach (TempGrafico t in salida3)
-            {
-                graficoTirInversionista.Add(new Grafico { fx = t.Cantidad, x = t.Indice, sfx = (t.Cantidad * 100).ToString(), sx = t.Indice.ToString() });
-            }
-            foreach (TempGrafico t in salida4)
-            {
-                graficoTirProyecto.Add(new Grafico { fx = t.Cantidad, x = t.Indice, sfx = (t.Cantidad * 100).ToString(), sx = t.Indice.ToString() });
-            }
 
+            mc.VanEconomico = GraficoVanE;
+            mc.VanFinanciero = GraficoVanF;
+            mc.TirEconomico = GraficoTirE;
+            mc.TirFinanciero = GraficoTirF;
 
-            mc.VanInversionista = graficoVanInversionista;
-            mc.VanProyecto = graficoVanProyecto;
-            mc.TirInversionista = graficoTirInversionista;
-            mc.TirProyecto = graficoTirProyecto;
+            mc.MaxVanEconomico = vanE.Max(n => n.Valor);
+            mc.MaxVanFinanciero = vanF.Max(n => n.Valor);
+            mc.MaxTirEconomico = tirE.Max(n => n.Valor);
+            mc.MaxTirFinanciero = tirF.Max(n => n.Valor);
 
-            mc.MaxVanInversionista = GraficoMaximo(grafico1, 1);
-            mc.MaxVanProyecto = GraficoMaximo(grafico2, 1);
-            mc.MaxTirProyecto = GraficoMaximo(grafico3, 1);
-            mc.MaxTirInversionista = GraficoMaximo(grafico4, 1);
+            mc.MinVanEconomico = vanE.Min(n => n.Valor);
+            mc.MinVanFinanciero = vanF.Min(n => n.Valor);
+            mc.MinTirEconomico = tirE.Min(n => n.Valor);
+            mc.MinTirFinanciero = tirF.Min(n => n.Valor);
 
-            mc.MinVanInversionista = GraficoMinimo(grafico1, 1);
-            mc.MinVanProyecto = GraficoMinimo(grafico2, 1);
-            mc.MinTirProyecto = GraficoMinimo(grafico3, 1);
-            mc.MinTirInversionista = GraficoMinimo(grafico4, 1);
-
-            Session["_GraficoVanInversionista"] = mc.VanInversionista;
-            Session["_GraficoVanProyecto"] = mc.VanProyecto;
-            Session["_GraficoTirProyecto"] = mc.TirProyecto;
-            Session["_GraficoTirInversionista"] = mc.TirInversionista;
+            Session["_GraficoVanInversionista"] = mc.VanEconomico;
+            Session["_GraficoVanProyecto"] = mc.VanFinanciero;
+            Session["_GraficoTirProyecto"] = mc.TirEconomico;
+            Session["_GraficoTirInversionista"] = mc.TirFinanciero;
 
             return RedirectToAction("Resultados",mc);
+        }
+
+        public SimAns MetodoMiguel(Proyecto proy)
+        {
+            context.Configuration.ProxyCreationEnabled = false;
+
+            int horizonte = proy.Horizonte;
+            int preoperativos = proy.PeriodosPreOp;
+            int cierre = proy.PeriodosCierre;
+
+            var operaciones = context.Operaciones.Where(o => o.IdProyecto == proy.Id).OrderBy(s => s.Secuencia).ToList();
+            var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proy.Id).ToList();
+            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == proy.Id).ToList();
+            var tipoformulas = context.TipoFormulas.ToList();
+
+            return  ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
         }
 
         public ActionResult Resultados(AlgoritmoMonteCarlo salida)
@@ -227,53 +227,32 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return Convert.ToInt32(Math.Truncate(l.Max(p => p.fx * porcentaje)));
         }
 
-        private int Amplitud(int minimo, int maximo)
+        private int PuntoIntervalo(double minimo, double maximo, int TotalIntrervalo, int n)
         {
-            return 1;
+            // n = mc.NumeroIntervalos 
+            return Convert.ToInt16( Math.Round(minimo + n * ((maximo - minimo) / TotalIntrervalo),1));
         }
 
-        private Grafico SimularVanProyecto(int u,int ajuste)
-        {
-            Random r1 = new Random();
-            Grafico gr = new Grafico();
-            gr.fx = r1.NextDouble() * ajuste;
-            gr.x = u;
-            gr.sx = Convert.ToString(u);
-            gr.sfx = Convert.ToString(Math.Round(gr.fx * 100, 2));
-            return gr;
-        }
+        /// <summary>
+        /// /
+        /// </summary>
+        /// <param name="p"></param>
 
-        private Grafico SimularVanInversionista(int u, int ajuste)
+        private void Alacena(Parametro p)
         {
-            Random r1 = new Random();
-            Grafico gr = new Grafico();
-            gr.fx = r1.NextDouble() * ajuste;
-            gr.x = u;
-            gr.sx = Convert.ToString(u);
-            gr.sfx = Convert.ToString(Math.Round(gr.fx * 100, 2));
-            return gr;
-        }
-
-        private Grafico SimularTirInversionista(int u, int ajuste)
-        {
-            Random r1 = new Random();
-            Grafico gr = new Grafico();
-            gr.fx = r1.NextDouble() * ajuste;
-            gr.x = u;
-            gr.sx = Convert.ToString(u);
-            gr.sfx = Convert.ToString(Math.Round(gr.fx * 100, 2));
-            return gr;
-        }
-
-        private Grafico SimularTirProyecto(int u, int ajuste)
-        {
-            Random r1 = new Random();
-            Grafico gr = new Grafico();
-            gr.fx = r1.NextDouble() * ajuste;
-            gr.x = u;
-            gr.sx = Convert.ToString(u);
-            gr.sfx = Convert.ToString(Math.Round(gr.fx * 100, 2));
-            return gr;
+            using (StreamWriter sw = new StreamWriter(@"C:\Reportes\MonteCarlo.txt", true))
+            {
+                sw.WriteLine("Normal fx" + " - " + DateTime.Now.ToString());
+                sw.WriteLine("|x" + "  -  " + "fx|");
+                int i = 0;
+                if (p.uniforme.IsEliminado == false) sw.WriteLine("Uniforme");
+                if (p.normal.IsEliminado == false) sw.WriteLine("Normal");
+                foreach (Celda g in p.CeldasSensibles)
+                {
+                    sw.WriteLine("|" + ++i + "  -  " + g.Valor + "|");
+                }
+                sw.WriteLine();
+            }
         }
     }
 }

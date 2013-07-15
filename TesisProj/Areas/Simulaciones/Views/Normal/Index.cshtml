@@ -23,18 +23,11 @@
         <div class="span3 label label-inverse">@Html.LabelFor(model => model.n_std) @Html.Telerik().AutoCompleteFor(model => model.n_std).HtmlAttributes(new { style = "width: 100px" })</div>
         <div class="span3" ><button class="btn" type="submit">Previo</button> </div>
     <br />    <br />    <br />    <br />    
-        <table>
-        <tr>
-            <td>
-                <div class="span12">@{Html.RenderAction("_CeldasSimuladas", "Normal");}</div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div class="span12">@{Html.RenderAction("_GraficoSimulacion", "Normal");}</div>
-            </td>
-        </tr>
-    </table>
+<div class="span12">
+    <div class="span5">@{Html.RenderAction("_CeldasSimuladas", "Normal");}</div>
+    <div class="span5">@{Html.RenderAction("_GraficoSimulacion", "Normal");}</div>
+</div>
+
     </div>
 </fieldset>
    

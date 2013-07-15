@@ -46,9 +46,13 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Journal", new { id = Model.IdProyecto })
-</div>
+
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = Model.IdProyecto  })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

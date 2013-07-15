@@ -24,20 +24,20 @@ namespace TesisProj.Areas.MonteCarlo.Models
         [Range(1, 10000, ErrorMessage = "Debe Ingresar un numero de Intervalos entre 1 y 10000 para poder agrupar el grafico")]
         public int NumeroIntervalos { set; get; }
 
-        public List<Grafico> VanInversionista { get; set; }
-        public List<Grafico> VanProyecto { get; set; }
-        public List<Grafico> TirInversionista { get; set; }
-        public List<Grafico> TirProyecto { get; set; }
+        public List<Grafico> VanEconomico { get; set; }
+        public List<Grafico> VanFinanciero { get; set; }
+        public List<Grafico> TirEconomico { get; set; }
+        public List<Grafico> TirFinanciero { get; set; }
 
-        public double MaxVanInversionista { get; set; }
-        public double MaxVanProyecto { get; set; }
-        public double MaxTirInversionista { get; set; }
-        public double MaxTirProyecto { get; set; }
+        public double MaxVanEconomico { get; set; }
+        public double MaxVanFinanciero { get; set; }
+        public double MaxTirEconomico { get; set; }
+        public double MaxTirFinanciero { get; set; }
 
-        public double MinVanInversionista { get; set; }
-        public double MinVanProyecto { get; set; }
-        public double MinTirInversionista { get; set; }
-        public double MinTirProyecto { get; set; }
+        public double MinVanEconomico { get; set; }
+        public double MinVanFinanciero { get; set; }
+        public double MinTirEconomico { get; set; }
+        public double MinTirFinanciero { get; set; }
         
         public AlgoritmoMonteCarlo()
         {
