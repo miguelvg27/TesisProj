@@ -66,7 +66,10 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
                 }
 
-                if (context.TipoFormulas.Any(f => f.Referencia == this.Referencia))
+                var tipos = context.TipoFormulas.ToList();
+
+
+                if (context.TipoFormulas.Any(f => this.Referencia.Equals(f.Referencia)))
                 {
                     yield return new ValidationResult("Ya existe un tipo de fórmula con el mismo nombre de referencia.", new string[] { "Referencia" });
                 }

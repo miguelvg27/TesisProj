@@ -1,11 +1,18 @@
 ﻿@model TesisProj.Areas.Plantilla.Models.PlantillaOperacion
 
 @{
-    ViewBag.Title = "Operaciones";
+    ViewBag.Title = "Operaciones: " + @ViewBag.Plantilla;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Crear</h2>
+<h2>Crear operación de @ViewBag.Plantilla</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = @ViewBag.IdPlantilla })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -45,7 +52,8 @@
             @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
             @Html.ValidationMessageFor(model => model.Secuencia)
         </div>
-
+    <div class="row-fluid">
+            <div class="span5">
         <div class="editor-label">
             @Html.LabelFor(model => model.Referencia)
         </div>
@@ -74,8 +82,12 @@
             @Html.Label("Marcar como:")
             <a href="#" onclick="return Mark('TIRE');">TIR del proyecto</a> |
             <a href="#" onclick="return Mark('TIRF');">TIR del inversionista</a> |
+        </div>
+        <div class="editor-label">
             <a href="#" onclick="return Mark('VANE');">VAN del proyecto</a> |
             <a href="#" onclick="return Mark('VANF');">VAN del inversionista</a> |
+        </div>
+        <div class="editor-label">
             <a href="#" onclick="return Mark('KE');">Costo capital del proyecto</a> |
             <a href="#" onclick="return Mark('KF');">Costo capital del inversionista</a>
         </div>
@@ -92,9 +104,42 @@
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Cadena)
-            @Html.ValidationMessageFor(model => model.Cadena)
+            @Html.TextAreaFor(model => model.Cadena, new { @rows = 5, style="width: 350px" })
         </div>
+        <div>
+             @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
+    </div>
+        <div class="span7">
+        <div class="editor-label">
+                @Html.Label("Parámetros disponibles")
+            </div>
+            <div>
+                @Html.ListBox("ListTipos", ViewBag.ListTipos as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Operaciones disponibles")
+            </div>
+            <div>
+                @Html.ListBox("ListOperaciones", ViewBag.ListOperaciones as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Variables globales")
+            </div>
+            <div>
+                @Html.ListBox("GlobalList", ViewBag.GlobalList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Funciones disponibles")
+            </div>
+            <div>
+                @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+        </div>
+    </div>
 
         <p>
             <input type="submit" value="Guardar" />
@@ -102,13 +147,16 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Index", routeValues: new { id = ViewBag.IdPlantilla }, htmlAttributes: null)
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = @ViewBag.IdPlantilla })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
 
 <script type="text/javascript">
     function Mark(story) {
@@ -116,4 +164,10 @@
         document.getElementById('Referencia').value = story;
         return false;
     }
+
+    $(".Chooser").click(function () {
+        var referencia = $(this).val();
+        $("#Cadena").val($("#Cadena").val() + " " + referencia);
+        $("#Cadena").focus();
+    })
 </script>

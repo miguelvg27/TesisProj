@@ -67,6 +67,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             ViewBag.IdPlantilla = idPlantilla;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre");
+            ViewBag.Plantilla = plantilla.Nombre;
 
             return View();
         }
@@ -88,7 +89,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
             ViewBag.IdPlantilla = parametro.IdPlantillaElemento;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
-            
+
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            ViewBag.Plantilla = plantilla.Nombre;
+
             return View(parametro);
         }
 
@@ -105,7 +109,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
-            
+
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            ViewBag.Plantilla = plantilla.Nombre;
+
             return View(parametro);
         }
 
@@ -125,46 +132,26 @@ namespace TesisProj.Areas.Plantilla.Controllers
             
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
-            
+
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            ViewBag.Plantilla = plantilla.Nombre;
+
             return View(parametro);
         }
 
         //
         // GET: /Plantilla/PlantillaParametro/Delete/5
 
-        public ActionResult Delete(int id = 0)
-        {
-            PlantillaParametro parametro = db.PlantillaParametros.Find(id);
-            if (parametro == null)
-            {
-                return HttpNotFound();
-            }
-
-            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-            parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
-            
-            return View(parametro);
-        }
-
-        //
-        // POST: /Plantilla/PlantillaParametro/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
             PlantillaParametro parametro = db.PlantillaParametros.Find(id);
             try
             {
-                db.PlantillaParametros.Remove(parametro);
-                db.SaveChanges();
+                db.PlantillaParametrosRequester.RemoveElementByID(parametro.Id);
             }
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-                parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
-                return View("Delete", parametro);
             }
             
             return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
