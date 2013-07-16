@@ -1,7 +1,9 @@
 ﻿@model TesisProj.Models.UserProfile
+@using Telerik.Web.Mvc.UI
 
 @{
     ViewBag.Title = "TemplateColaborador";
+    List<TesisProj.Models.UserProfile> users = (List<TesisProj.Models.UserProfile>)Session["Colaboradores"];
 }
 
 @using (Html.BeginForm())
@@ -11,6 +13,14 @@
         <legend></legend>   
         <div class="editor-label">
         @Html.LabelFor(model => model.UserId)
+        
+            @(Html.Telerik().DropDownListFor(model=>model.UserId)
+            .Name("DropDownList")
+            .BindTo(new SelectList(users , "UserId", "UserName"))
+            .HtmlAttributes(new { style = string.Format("width:{0}px", 100) })
+    )
         </div>
+
+
     </fieldset>
 }

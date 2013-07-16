@@ -29,6 +29,8 @@ namespace TesisProj.Areas.Seguridad.Controllers
             Session["ProyectoID"]=ProyectoID;
             Proyecto proyecto = context.Proyectos.Where(p => p.Id==ProyectoID).FirstOrDefault();
             ViewBag.proyecto = proyecto.Nombre;
+            List<UserProfile> lista= context.UserProfiles.Where(e=>e.UserName!=User.Identity.Name).ToList();
+            Session["Colaboradores"] = lista;
             return View(proyecto.Colaboradores);
         }
 
@@ -53,7 +55,6 @@ namespace TesisProj.Areas.Seguridad.Controllers
             //return View(new GridModel(SessionProductRepository.All()));
             return View("Colaboradores", (int)Session["ProyectoID"]);
         }
-
 
         [AcceptVerbs(HttpVerbs.Post)]
         [GridAction]
