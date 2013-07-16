@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Detalle</h2>
+<h2>Auditoría de @ViewBag.Proyecto</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Muro", new { id = @Model.IdProyecto })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -42,27 +49,33 @@
             @Html.TextBoxFor(model => model.Tipo, new { @Readonly = "readonly" })
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Original)
-        </div>
-        <div class="editor-field">
-            @Html.TextAreaFor(model => model.Original, new { @Readonly = "readonly", @rows = 8 })
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Modificado)
-        </div>
-        <div class="editor-field">
-            @Html.TextAreaFor(model => model.Modificado, new { @Readonly = "readonly", @rows = 8 })
-        </div>
+        <div class="row-fluid">
+            <div class="span6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Original)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Original, new { @Readonly = "readonly", @rows = 8 })
+                </div>
+            </div>
+            <div class="span6">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Modificado)
+                </div>
+                <div class="editor-field">
+                    @Html.TextAreaFor(model => model.Modificado, new { @Readonly = "readonly", @rows = 8 })
+                </div>
+            </div>
 
         @Html.HiddenFor(model => model.Id)
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Muro", new { id = Model.IdProyecto })
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Muro", new { id = @Model.IdProyecto })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

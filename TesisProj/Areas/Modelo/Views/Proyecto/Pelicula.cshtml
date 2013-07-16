@@ -2,7 +2,7 @@
 @model List<TesisProj.Areas.Modelo.Models.Operacion>
 
 @{
-    ViewBag.Title = "Resultados";
+    ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int Horizonte = ViewBag.Horizonte;
     int Inicio = (ViewBag.Inicio > 0 ? ViewBag.Inicio : 1) - 1;

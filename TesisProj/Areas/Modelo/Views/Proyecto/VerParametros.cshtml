@@ -3,7 +3,7 @@
 @model List<TesisProj.Areas.Modelo.Models.Celda>
 
 @{
-    ViewBag.Title = "Parámetros";
+    ViewBag.Title = "Parámetros: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     IList<Parametro> parametros = ViewBag.Parametros;
     int Horizonte = ViewBag.Horizonte;

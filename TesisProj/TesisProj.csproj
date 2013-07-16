@@ -592,7 +592,6 @@
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Delete.cshtml" />
     <Content Include="Areas\Modelo\Views\Web.config" />
     <Content Include="Areas\Modelo\Views\Proyecto\Index.cshtml" />
-    <Content Include="Areas\Modelo\Views\Proyecto\Details.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Create.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Edit.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Console.cshtml" />

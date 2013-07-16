@@ -81,20 +81,6 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
-        // GET: /Modelo/Proyecto/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Proyecto proyecto = db.Proyectos.Find(id);
-            if (proyecto == null)
-            {
-                return HttpNotFound();
-            }
-            proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
-            return View(proyecto);
-        }
-
-        //
         // GET: /Modelo/Proyecto/Create
 
         public ActionResult Create()
