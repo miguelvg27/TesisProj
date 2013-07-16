@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Controllers
@@ -47,6 +48,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdProyectoReturn = proyecto.Id;
             ViewBag.Proyecto = proyecto.Nombre;
 
+            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
+            ViewBag.FuncionesList = new SelectList(Generics.OperacionesGlobales, "Value", "Text");
+            ViewBag.ListTipos = new SelectList(db.TipoFormulas.OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListOperaciones = new SelectList(db.Operaciones.Where(f => f.IdProyecto == idProyecto).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
+
             var operaciones = db.Operaciones.Where(f => f.IdProyecto == proyecto.Id);
             int defSecuencia = operaciones.Count() > 0 ? operaciones.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
@@ -70,6 +76,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdProyecto = new SelectList(db.Proyectos, "Id", "Nombre", operacion.IdProyecto);
             ViewBag.IdProyectoReturn = operacion.IdProyecto;
 
+            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
+            ViewBag.FuncionesList = new SelectList(Generics.OperacionesGlobales, "Value", "Text");
+            ViewBag.ListTipos = new SelectList(db.TipoFormulas.OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListOperaciones = new SelectList(db.Operaciones.Where(f => f.IdProyecto == operacion.IdProyecto && f.Secuencia < operacion.Secuencia).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
+
             ViewBag.Proyecto = db.Proyectos.Find(operacion.IdProyecto).Nombre;
             var operaciones = db.Operaciones.Where(f => f.IdProyecto == operacion.IdProyecto);
             int defSecuencia = operaciones.Count() > 0 ? operaciones.Max(f => f.Secuencia) + 1 : 1;
@@ -91,6 +102,10 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == operacion.IdProyecto), "Id", "Nombre", operacion.IdProyecto);
             ViewBag.Proyecto = db.Proyectos.Find(operacion.IdProyecto).Nombre;
+            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
+            ViewBag.FuncionesList = new SelectList(Generics.OperacionesGlobales, "Value", "Text");
+            ViewBag.ListTipos = new SelectList(db.TipoFormulas.OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListOperaciones = new SelectList(db.Operaciones.Where(f => f.IdProyecto == operacion.IdProyecto && f.Secuencia < operacion.Secuencia).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
 
             return View(operacion);
         }
@@ -110,6 +125,10 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == operacion.IdProyecto), "Id", "Nombre", operacion.IdProyecto);
             ViewBag.Proyecto = db.Proyectos.Find(operacion.IdProyecto).Nombre;
+            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
+            ViewBag.FuncionesList = new SelectList(Generics.OperacionesGlobales, "Value", "Text");
+            ViewBag.ListTipos = new SelectList(db.TipoFormulas.OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListOperaciones = new SelectList(db.Operaciones.Where(f => f.IdProyecto == operacion.IdProyecto && f.Secuencia < operacion.Secuencia).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
 
             return View(operacion);
         }

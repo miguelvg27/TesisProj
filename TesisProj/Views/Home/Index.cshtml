@@ -14,14 +14,26 @@
         </div>
     </section>
 }
-<h3>Bienvenido</h3>
-<ol class="round">
-    <li class="one">
-        <h5><a href="@Url.Action("Index", "Proyecto", new { Area = "Modelo" })">Proyectos</a></h5>
-        ¡Crea tus proyectos!
-    </li>
-    <li class="two">
-        <h5><a href="@Url.Action("Index", "Comparar", new { Area = "CompararProyecto" })">Comparar</a></h5>
-        ¡Compara tus proyectos!
-    </li>
-</ol>
+<h3>¡Bienvenido!</h3>
+<table class="table table-hover table-striped table-bordered table-condensed">
+    <tr>
+        <td>
+            <ol class="round">
+                <li class="one">
+                    <h5><a href="@Url.Action("Index", "Proyecto", new { Area = "Modelo" })">Proyectos</a></h5>
+                    ¡Crea tus proyectos!
+                </li>
+            </ol>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <ol class="round">
+                <li class="two">
+                    <h5><a href="@Url.Action("Index", "Comparar", new { Area = "CompararProyecto" })">Comparar</a></h5>
+                    Compara la rentabilidad de tus proyectos
+                </li>
+            </ol>
+        </td>
+    </tr>
+</table>

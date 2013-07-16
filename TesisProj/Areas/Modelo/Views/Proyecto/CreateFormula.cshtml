@@ -43,6 +43,8 @@
             @Html.EditorFor(model => model.Referencia)
             @Html.ValidationMessageFor(model => model.Referencia)
         </div>
+    <div class="row-fluid">
+        <div class="span5">
 
         <div class="editor-label">
             @Html.LabelFor(model => model.IdElemento)
@@ -88,12 +90,42 @@
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Cadena)
+            @Html.TextAreaFor(model => model.Cadena, new { @rows = 5, style="width: 350px" })
         </div>
         <div>
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
+        </div>
+        <div class="span7">
+            <div class="editor-label">
+                @Html.Label("Parámetros disponibles")
+            </div>
+            <div>
+                @Html.ListBox("ListParametros", ViewBag.ListParametros as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
 
+            <div class="editor-label">
+                @Html.Label("Fórmulas disponibles")
+            </div>
+            <div>
+                @Html.ListBox("ListFormulas", ViewBag.ListFormulas as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Variables globales")
+            </div>
+            <div>
+                @Html.ListBox("GlobalList", ViewBag.GlobalList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Funciones disponibles")
+            </div>
+            <div>
+                @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+        </div>
+    </div>
         <p>
             <input type="submit" value="Guardar" />
         </p>
@@ -109,3 +141,11 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    $(".Chooser").click(function() {
+        var referencia = $(this).val();
+        $("#Cadena").val($("#Cadena").val() + " " + referencia);
+        $("#Cadena").focus();
+    })
+</script>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 
@@ -10,7 +11,27 @@ namespace TesisProj.Models
 {
     public class Generics
     {
-        public static string[] Reservadas = { "Horizonte", "PeriodosPreOperativos", "PeriodosCierre", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
+        public static string[] Reservadas = { "Horizonte", "PeriodosPreOperativos", "PeriodosCierre", "RiesgoPais", "RiesgoProyecto", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
+        
+        public static List<SelectListItem> VariablesGlobales = new List<SelectListItem>(){
+                new SelectListItem { Text = "Horizonte", Value = "Horizonte" },
+                new SelectListItem { Text = "Período actual", Value = "Periodo" },
+                new SelectListItem { Text = "Períodos preoperativos", Value = "PeriodosPreOperativos" }, 
+                new SelectListItem { Text = "Periodos de cierre", Value = "PeriodosCierre" }
+            };
+
+        public static List<SelectListItem> FormulasGlobales = new List<SelectListItem>(){
+                new SelectListItem { Text = "Amortización de préstamo", Value = "Amortizacion(tasa, Periodo, plazo, prestamo)" },
+                new SelectListItem { Text = "Intereses del período", Value = "Intereses(tasa, Periodo, plazo, prestamo)" },
+                new SelectListItem { Text = "Cuota", Value = "Cuota(tasa, plazo, prestamo)" }, 
+                new SelectListItem { Text = "Depreciación lineal", Value = "DepreciacionLineal(monto, vidaUtil, periodoInicial, Periodo)" },
+                new SelectListItem { Text = "Valor residual", Value = "ValorResidual(monto, vidaUtil, periodoInicial, Periodo)" }
+            };
+
+        public static List<SelectListItem> OperacionesGlobales = new List<SelectListItem>(){
+                new SelectListItem { Text = "Tasa interna de retorno", Value = "Tir(saldo))" },
+                new SelectListItem { Text = "Valor actual neto", Value = "Van(tasa, saldo)" }
+            };
 
         public static double Ppmt(double i, double p, double N, double V)
         {
@@ -69,7 +90,7 @@ namespace TesisProj.Models
             return valida;
         }
 
-        public static double SimpleParse(string cadena, int horizonte, int periodo, int preop = 0, int cierre = 0)
+        public static double SimpleParse(string cadena, int horizonte, int periodo, int preop = 0, int cierre = 0, int riesgopais = 0, int riesgoproyecto = 0)
         {
             MathParserNet.Parser parser = new MathParserNet.Parser();
             parser.AddVariable("Horizonte", horizonte);

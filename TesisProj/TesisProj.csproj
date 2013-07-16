@@ -278,6 +278,7 @@
     <Compile Include="Models\Calculos.cs" />
     <Compile Include="Areas\Modelo\Models\DbVersion.cs" />
     <Compile Include="Models\Generics.cs" />
+    <Compile Include="Models\SelectListItems.cs" />
     <Compile Include="Models\Storage\DbObject.cs" />
     <Compile Include="Models\Storage\DbRequester.cs" />
     <Compile Include="Models\Storage\TProjContext.cs" />
