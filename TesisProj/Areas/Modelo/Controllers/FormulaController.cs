@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
-using TesisProj.Models;
 
 namespace TesisProj.Areas.Modelo.Controllers
 {
@@ -20,15 +19,16 @@ namespace TesisProj.Areas.Modelo.Controllers
             Elemento elemento = db.Elementos.Find(id);
             Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
 
-            if (elemento == null || proyecto == null)
+            if (elemento == null)
             {
                 return HttpNotFound();
             }
 
             var formulas = db.Formulas.Include("Elemento").Include("TipoFormula").Where(f => f.Elemento.Id == id).OrderBy(f => f.Secuencia);
 
-            ViewBag.Elemento = elemento.Nombre;
-            ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.elemento = elemento.Nombre;
+            TipoElemento tipo = db.TipoElementos.Find(elemento.IdTipoElemento);
+            ViewBag.TipoElemento = tipo != null ? tipo.Nombre : "";
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.ElementoId = elemento.Id;
 
@@ -41,23 +41,14 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult CreateFormula(int idElemento = 0)
         {
             Elemento elemento = db.Elementos.Find(idElemento);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-
-            if (elemento == null || proyecto == null)
+            if (elemento == null)
             {
                 return HttpNotFound();
             }
 
-            ViewBag.Elemento = elemento.Nombre;
-            ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.IdElementoReturn = idElemento;
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(p => p.Id == elemento.Id), "Id", "Nombre");
             ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == elemento.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre");
-
-            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
-            ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
-            ViewBag.ListParametros = new SelectList(db.Parametros.Where(p => p.IdElemento == idElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
-            ViewBag.ListFormulas = new SelectList(db.Formulas.Where(f => f.IdElemento == idElemento).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
 
             var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id);
             int defSecuencia = formulas.Count() > 0 ? formulas.Max(f => f.Secuencia) + 1 : 1;
@@ -81,15 +72,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             Elemento elemento = db.Elementos.Find(formula.IdElemento);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-            ViewBag.Elemento = elemento.Nombre;
-            ViewBag.Proyecto = proyecto.Nombre;
-
-            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
-            ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
-            ViewBag.ListParametros = new SelectList(db.Parametros.Where(p => p.IdElemento == formula.IdElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
-            ViewBag.ListFormulas = new SelectList(db.Formulas.Where(f => f.IdElemento == formula.IdElemento && f.Secuencia < formula.Secuencia).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
-
             ViewBag.IdElementoReturn = elemento.Id;
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(p => p.Id == elemento.Id), "Id", "Nombre");
             ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == elemento.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
@@ -113,15 +95,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             Elemento elemento = db.Elementos.Find(formula.IdElemento);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-            ViewBag.Elemento = elemento.Nombre;
-            ViewBag.Proyecto = proyecto.Nombre;
-
-            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
-            ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
-            ViewBag.ListParametros = new SelectList(db.Parametros.Where(p => p.IdElemento == formula.IdElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
-            ViewBag.ListFormulas = new SelectList(db.Formulas.Where(f => f.IdElemento == formula.IdElemento && f.Secuencia < formula.Secuencia).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
-
             ViewBag.IdElementoReturn = elemento.Id;
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(p => p.Id == elemento.Id), "Id", "Nombre", formula.IdElemento);
             ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == elemento.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
@@ -145,17 +118,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             Elemento elemento = db.Elementos.Find(formula.IdElemento);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-            ViewBag.Elemento = elemento.Nombre;
-            ViewBag.Proyecto = proyecto.Nombre;
-
-
-            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
-            ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
-            ViewBag.ListParametros = new SelectList(db.Parametros.Where(p => p.IdElemento == formula.IdElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
-            ViewBag.ListFormulas = new SelectList(db.Formulas.Where(f => f.IdElemento == formula.IdElemento && f.Secuencia < formula.Secuencia).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
-
-
             ViewBag.IdElementoReturn = elemento.Id;
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(p => p.Id == elemento.Id), "Id", "Nombre", formula.IdElemento);
             ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == elemento.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
@@ -169,6 +131,24 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult DeleteFormula(int id)
         {
             Formula formula = db.Formulas.Find(id);
+            if (formula == null)
+            {
+                return HttpNotFound();
+            }
+
+            formula.TipoFormula = db.TipoFormulas.Find(formula.IdTipoFormula);
+
+            return View(formula);
+        }
+
+        //
+        // POST: /Modelo/Proyecto/DeleteFormula/5
+
+        [HttpPost, ActionName("DeleteFormula")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmedFormula(int id)
+        {
+            Formula formula = db.Formulas.Find(id);
             try
             {
                 db.FormulasRequester.RemoveElementByID(formula.Id, true, true, formula.Elemento.IdProyecto, getUserId());
@@ -176,6 +156,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                formula.TipoFormula = db.TipoFormulas.Find(formula.IdTipoFormula);
+                return View("DeleteFormula", formula);
             }
 
             return RedirectToAction("Cuaderno", new { id = formula.IdElemento });

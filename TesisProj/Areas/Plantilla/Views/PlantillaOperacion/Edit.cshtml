@@ -1,18 +1,11 @@
 ﻿@model TesisProj.Areas.Plantilla.Models.PlantillaOperacion
 
 @{
-    ViewBag.Title = "Operaciones: " + @ViewBag.Plantilla;
+    ViewBag.Title = "Operaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar @Model.Nombre (@ViewBag.Plantilla)</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = @Model.IdPlantillaProyecto })">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p>
+<h2>Editar</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -52,8 +45,7 @@
             @Html.EditorFor(model => model.Secuencia)
             @Html.ValidationMessageFor(model => model.Secuencia)
         </div>
-    <div class="row-fluid">
-            <div class="span5">
+
         <div class="editor-label">
             @Html.LabelFor(model => model.Referencia)
         </div>
@@ -80,16 +72,12 @@
 
         <div class="editor-label">
             @Html.Label("Marcar como:")
-            <a href="#" onclick="return Mark('TIRE');">TIR del proyecto</a> |
-            <a href="#" onclick="return Mark('TIRF');">TIR del inversionista</a> |
-        </div>
-        <div class="editor-label">
-            <a href="#" onclick="return Mark('VANE');">VAN del proyecto</a> |
-            <a href="#" onclick="return Mark('VANF');">VAN del inversionista</a> |
-        </div>
-        <div class="editor-label">
-            <a href="#" onclick="return Mark('KE');">Costo capital del proyecto</a> |
-            <a href="#" onclick="return Mark('KF');">Costo capital del inversionista</a>
+            <a href="#" onclick="Mark('TIRE');">TIR del proyecto</a> |
+            <a href="#" onclick="Mark('TIRF');">TIR del inversionista</a> |
+            <a href="#" onclick="Mark('VANE');">VAN del proyecto</a> |
+            <a href="#" onclick="Mark('VANF');">VAN del inversionista</a> |
+            <a href="#" onclick="Mark('KE');">Costo capital del proyecto</a> |
+            <a href="#" onclick="Mark('KF');">Costo capital del inversionista</a>
         </div>
 
         <div class="editor-label">
@@ -104,42 +92,10 @@
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Cadena, new { @rows = 5, style="width: 350px" })
+            @Html.TextAreaFor(model => model.Cadena)
+            @Html.ValidationMessageFor(model => model.Cadena)
         </div>
-        <div>
-             @Html.ValidationMessageFor(model => model.Cadena)
-        </div>
-    </div>
-        <div class="span7">
-            <div class="editor-label">
-                @Html.Label("Parámetros disponibles")
-            </div>
-            <div>
-                @Html.ListBox("ListTipos", ViewBag.ListTipos as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
 
-            <div class="editor-label">
-                @Html.Label("Operaciones disponibles")
-            </div>
-            <div>
-                @Html.ListBox("ListOperaciones", ViewBag.ListOperaciones as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Variables globales")
-            </div>
-            <div>
-                @Html.ListBox("GlobalList", ViewBag.GlobalList as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Funciones disponibles")
-            </div>
-            <div>
-                @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-        </div>
-    </div>
         @Html.HiddenFor(model => model.Id)
 
         <p>
@@ -148,11 +104,9 @@
     </fieldset>
 }
 
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = @Model.IdPlantillaProyecto })">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
+<div>
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaProyecto }, htmlAttributes: null)
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -164,11 +118,4 @@
         document.getElementById('Referencia').value = story;
         return false;
     }
-
-    $(".Chooser").click(function () {
-        var referencia = $(this).val();
-        $("#Cadena").val($("#Cadena").val() + " " + referencia);
-        $("#Cadena").focus();
-    })
 </script>
-

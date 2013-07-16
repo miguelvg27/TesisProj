@@ -1,0 +1,77 @@
+﻿@model TesisProj.Areas.Modelo.Models.Operacion
+
+@{
+    ViewBag.Title = "Operaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar operación</h2>
+
+<h3>¿Está seguro de eliminar este registro?</h3>
+<fieldset>
+    <legend>Operacion</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodoInicial)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodoInicial)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodoFinal)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodoFinal)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Secuencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Secuencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Referencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Referencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Indicador)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Indicador)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Subrayar)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Subrayar)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cadena)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cadena)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Eliminar" /> |
+        @Html.ActionLink("Regresar", "Corolario", new { id = Model.IdProyecto })
+    </p>
+    @Html.ValidationMessageFor(model => model.Nombre)
+}

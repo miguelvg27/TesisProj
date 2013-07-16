@@ -45,8 +45,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
-
             var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).Select(p => p.Operacion);
             var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).Except(asociados);
             ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
@@ -125,7 +123,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
             var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).Except(asociados);
             ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
             ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
-            ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
 
             return View(salida);
         }
@@ -159,7 +156,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             ViewBag.IdPlantilla = idPlantilla;
             ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
-            ViewBag.Plantilla = plantilla.Nombre;
 
             var salidas = db.PlantillaSalidaProyectos.Where(f => f.IdPlantillaProyecto == plantilla.Id);
             int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 1 : 1;
@@ -185,7 +181,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
             ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
-            ViewBag.Plantilla = plantilla.Nombre;
 
             var salidas = db.PlantillaSalidaProyectos.Where(f => f.IdPlantillaProyecto == plantilla.Id);
             int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 1 : 1;
@@ -206,7 +201,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
-            ViewBag.Plantilla = plantilla.Nombre;
             ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
 
             return View(salidaproyecto);
@@ -227,7 +221,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
             
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
-            ViewBag.Plantilla = plantilla.Nombre;
             ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
             
             return View(salidaproyecto);
@@ -236,23 +229,37 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaSalidaProyecto/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
+        {
+            PlantillaSalidaProyecto salidaproyecto = db.PlantillaSalidaProyectos.Find(id);
+            if (salidaproyecto == null)
+            {
+                return HttpNotFound();
+            }
+
+            salidaproyecto.PlantillaProyecto = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
+
+            return View(salidaproyecto);
+        }
+
+        //
+        // POST: /Plantilla/PlantillaSalidaProyecto/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
             PlantillaSalidaProyecto salidaproyecto = db.PlantillaSalidaProyectos.Find(id);
             try
             {
-                var operaciones = db.PlantillaSalidaOperaciones.Where(p => p.IdSalida == salidaproyecto.Id).ToList();
-
-                foreach (PlantillaSalidaOperacion operacion in operaciones)
-                {
-                    db.PlantillaSalidaOperacionesRequester.RemoveElementByID(operacion.Id);
-                }
-
-                db.PlantillaSalidaProyectosRequester.RemoveElementByID(salidaproyecto.Id);
+                db.PlantillaSalidaProyectos.Remove(salidaproyecto);
+                db.SaveChanges();
             }
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                salidaproyecto.PlantillaProyecto = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
+                return View("Delete", salidaproyecto);
             }
             
             return RedirectToAction("Index", new { id = salidaproyecto.IdPlantillaProyecto });

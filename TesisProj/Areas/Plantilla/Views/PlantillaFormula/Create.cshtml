@@ -1,18 +1,11 @@
 ﻿@model TesisProj.Areas.Plantilla.Models.PlantillaFormula
 
 @{
-    ViewBag.Title = "Fórmulas: " + @ViewBag.Plantilla;
+    ViewBag.Title = "Fórmulas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Crear fórmula a @ViewBag.Plantilla</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = ViewBag.IdPlantilla })">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p>
+<h2>Crear</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -44,9 +37,6 @@
             @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
             @Html.ValidationMessageFor(model => model.Secuencia)
         </div>
-
-    <div class="row-fluid">
-        <div class="span5">
 
         <div class="editor-label">
             @Html.LabelFor(model => model.IdPlantillaElemento)
@@ -92,42 +82,11 @@
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
-            @Html.TextAreaFor(model => model.Cadena, new { @rows = 5, style="width: 350px" })
+            @Html.TextAreaFor(model => model.Cadena)
         </div>
         <div>
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
-        </div>
-        <div class="span7">
-            <div class="editor-label">
-                @Html.Label("Parámetros disponibles")
-            </div>
-            <div>
-                @Html.ListBox("ListParametros", ViewBag.ListParametros as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Fórmulas disponibles")
-            </div>
-            <div>
-                @Html.ListBox("ListFormulas", ViewBag.ListFormulas as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Variables globales")
-            </div>
-            <div>
-                @Html.ListBox("GlobalList", ViewBag.GlobalList as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Funciones disponibles")
-            </div>
-            <div>
-                @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-        </div>
-    </div>
 
         <p>
             <input type="submit" value="Guardar" />
@@ -135,20 +94,10 @@
     </fieldset>
 }
 
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = ViewBag.IdPlantilla })">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-        </a>
-</p>
+<div>
+   @Html.ActionLink("Regresar", "Index", routeValues: new { id = ViewBag.IdPlantilla }, htmlAttributes: null)
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-<script>
-    $(".Chooser").click(function() {
-        var referencia = $(this).val();
-        $("#Cadena").val($("#Cadena").val() + " " + referencia);
-        $("#Cadena").focus();
-    })
-</script>

@@ -105,8 +105,8 @@ namespace TesisProj.Models.Storage
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 21, Nombre = "Aporte", IdTipoElemento = 8, Referencia = "Inversiones_Aporte" });
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 22, Nombre = "Costo capital", IdTipoElemento = 8, Referencia = "Inversiones_Costo" });
 
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 23, Nombre = "Otros ingresos", IdTipoElemento = 9, Referencia = "Otros_Ingresos" });
-            TipoFormulasRequester.AddElement(new TipoFormula { Id = 24, Nombre = "Otros egresos", IdTipoElemento = 9, Referencia = "Otros_Egresos" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 23, Nombre = "Otros ingresos", IdTipoElemento = 9, Referencia = "OtrosIngresos" });
+            TipoFormulasRequester.AddElement(new TipoFormula { Id = 24, Nombre = "Otros egresos", IdTipoElemento = 9, Referencia = "OtrosEgresos" });
 
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 25, Nombre = "Inversión", IdTipoElemento = 5, Referencia = "Financiamientos_Inversion" });
             TipoFormulasRequester.AddElement(new TipoFormula { Id = 26, Nombre = "Inversión", IdTipoElemento = 8, Referencia = "Inversiones_Inversion" });
@@ -236,9 +236,9 @@ namespace TesisProj.Models.Storage
 
         public void SeedPlantillaSalidaProyectos()
         {
-            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 1, Nombre = "EGP del proyecto", Secuencia = 1, IdPlantillaProyecto = 1, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre" });
+            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 1, Nombre = "EGP del proyecto", Secuencia = 1, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
             PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 2, Nombre = "Flujo de caja del proyecto", Secuencia = 2, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
-            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 3, Nombre = "EGP financiero del proyecto", Secuencia = 3, IdPlantillaProyecto = 1, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre" });
+            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 3, Nombre = "EGP financiero del proyecto", Secuencia = 3, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
             PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 4, Nombre = "Flujo de caja financiero del proyecto", Secuencia = 4, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
             PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 5, Nombre = "Indicadores del proyecto", Secuencia = 5, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "1" });
         }
@@ -247,7 +247,7 @@ namespace TesisProj.Models.Storage
         {
             PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id =  1, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte", Secuencia =  1, Nombre = "Préstamos", Referencia = "prestamos", Cadena = "Financiamientos_Prestamo" });
             PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id =  2, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte", Secuencia =  2, Nombre = "Ventas", Referencia = "ventas", Cadena = "Operativos_Ventas" });
-            PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id =  3, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte", Secuencia =  3, Nombre = "Otros ingresos", Referencia = "otrosIngresos", Cadena = "Otros_Ingresos" });
+            PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id =  3, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte", Secuencia =  3, Nombre = "Otros ingresos", Referencia = "otrosIngresos", Cadena = "OtrosIngresos" });
             PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id =  4, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte", Secuencia =  4, Nombre = "Valor residual", Referencia = "valorResidual", Cadena = "ActivosFijos_ValorResidual" });
             PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id = 5, IdPlantillaProyecto = 1, PeriodoInicial = "Horizonte - PeriodosCierre", PeriodoFinal = "Horizonte - PeriodosCierre", Secuencia = 5, Nombre = "Recuperacion de capital", Referencia = "capital", Cadena = "Financiamientos_Inversion + Inversiones_Inversion - ActivosFijos_Inversion - ActivosIntangibles_Inversion" });
             PlantillaOperacionesRequester.AddElement(new PlantillaOperacion { Id =  6, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte", Secuencia =  6, Nombre = "Total ingresos", Referencia = "ingresos", Cadena = "ventas + otrosIngresos + valorResidual + capital", Subrayar = true });

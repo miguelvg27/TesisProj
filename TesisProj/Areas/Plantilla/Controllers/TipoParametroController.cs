@@ -92,7 +92,23 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         //
         // GET: /Plantilla/TipoParametro/Delete/5
-         public ActionResult Delete(int id)
+
+        public ActionResult Delete(int id = 0)
+        {
+            TipoParametro tipoparametro = db.TipoParametros.Find(id);
+            if (tipoparametro == null)
+            {
+                return HttpNotFound();
+            }   
+            return View(tipoparametro);
+        }
+
+        //
+        // POST: /Plantilla/TipoParametro/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
             TipoParametro tipoparametro = db.TipoParametros.Find(id);
             try
@@ -103,6 +119,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                return View("Delete", tipoparametro);
             }
  
             return RedirectToAction("Index");

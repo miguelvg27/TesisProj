@@ -81,6 +81,20 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
+        // GET: /Modelo/Proyecto/Details/5
+
+        public ActionResult Details(int id = 0)
+        {
+            Proyecto proyecto = db.Proyectos.Find(id);
+            if (proyecto == null)
+            {
+                return HttpNotFound();
+            }
+            proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
+            return View(proyecto);
+        }
+
+        //
         // GET: /Modelo/Proyecto/Create
 
         public ActionResult Create()
@@ -101,9 +115,8 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult Create(Proyecto proyecto, int IdPlantilla = 0)
         {
             proyecto.Creacion = DateTime.Now;
-            if (ModelState.IsValid)
+            if (/* ModelState.IsValid */ true)
             {
-                proyecto.Creacion = DateTime.Now;
                 db.ProyectosRequester.AddElement(proyecto);
 
                 if (IdPlantilla > 0)
@@ -141,7 +154,6 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdPlantilla = new SelectList(db.PlantillaProyectos.OrderBy(p => p.Nombre), "Id", "Nombre", IdPlantilla);
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserName == User.Identity.Name), "UserId", "UserName", proyecto.IdCreador);
-            ViewBag.Version = 0;
 
             return View(proyecto);
         }
@@ -197,7 +209,23 @@ namespace TesisProj.Areas.Modelo.Controllers
         //
         // GET: /Modelo/Proyecto/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
+        {
+            Proyecto proyecto = db.Proyectos.Find(id);
+            if (proyecto == null)
+            {
+                return HttpNotFound();
+            }
+            proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
+            return View(proyecto);
+        }
+
+        //
+        // POST: /Modelo/Proyecto/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
             Proyecto proyecto = db.Proyectos.Find(id);
             try
@@ -270,7 +298,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                return RedirectToAction("Console", new { id = proyecto.Id });
+                return View("Delete", proyecto);
             }
 
             return RedirectToAction("Index");

@@ -1,0 +1,74 @@
+﻿@model TesisProj.Areas.Modelo.Models.Proyecto
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Está seguro de eliminar este registro?</h3>
+<fieldset>
+    <legend>Proyecto</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Descripcion)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Horizonte)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Horizonte)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodosPreOp)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodosPreOp)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodosCierre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodosCierre)
+    </div>
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Version)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Version)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IdCreador)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Creador.UserName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Creacion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Creacion)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Eliminar" /> |
+        @Html.ActionLink("Regresar", "Console", new { id = @Model.Id })
+    </p>
+    @Html.ValidationMessageFor(model => model.Nombre)
+}

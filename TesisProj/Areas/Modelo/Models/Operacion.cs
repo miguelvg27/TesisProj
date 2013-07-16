@@ -160,11 +160,6 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en el mismo proyecto.", new string[] { "Referencia" });
                 }
 
-                if (context.TipoFormulas.Any(f => f.Referencia == this.Referencia))
-                {
-                    yield return new ValidationResult("Ya existe un tipo de fórmula con el mismo nombre de referencia.", new string[] { "Referencia" });
-                }
-
                 if (context.Operaciones.Any(f => f.Secuencia == this.Secuencia && f.IdProyecto == this.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en el mismo proyecto.", new string[] { "Secuencia" });
@@ -174,12 +169,9 @@ namespace TesisProj.Areas.Modelo.Models
                 var tipoformulas = context.TipoFormulas;
                 var operaciones = context.Operaciones.Where(o => o.IdProyecto == this.IdProyecto && o.Secuencia < this.Secuencia);
 
-                parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
                 parser.AddVariable("PeriodosCierre", 1);
                 parser.AddVariable("PeriodosPreOperativos", 1);
-                parser.AddVariable("RiesgoPais", 1);
-                parser.AddVariable("RiesgoProyecto", 1);
 
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {

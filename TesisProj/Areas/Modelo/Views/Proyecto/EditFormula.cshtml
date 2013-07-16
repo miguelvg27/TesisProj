@@ -1,129 +1,90 @@
 ﻿@model TesisProj.Areas.Modelo.Models.Formula
 
 @{
-    ViewBag.Title = "Fórmulas: " + ViewBag.Proyecto;
+    ViewBag.Title = "Fórmulas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar @Model.Nombre (@ViewBag.Elemento - @ViewBag.Proyecto)</h2>
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cuaderno", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElementoReturn   })">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p> 
+<h2>Editar fórmulas</h2>
+
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Fórmula</legend>
-        
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Nombre)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Nombre)
-                @Html.ValidationMessageFor(model => model.Nombre)
-            </div>
 
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Secuencia)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Secuencia)
-                @Html.ValidationMessageFor(model => model.Secuencia)
-            </div>
-        
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Referencia)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Referencia)
-                @Html.ValidationMessageFor(model => model.Referencia)
-            </div>
-        <div class="row-fluid">
-            <div class="span5">
-            <div class="editor-label">
-                @Html.LabelFor(model => model.IdElemento)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("IdElemento")
-                @Html.ValidationMessageFor(model => model.IdElemento)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.IdTipoFormula)
-            </div>
-            <div class="editor-field">
-                @Html.DropDownList("IdTipoFormula", String.Empty)
-                @Html.ValidationMessageFor(model => model.IdTipoFormula)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Visible)
-            </div>
-            <div class="editor-field">
-                @Html.CheckBoxFor(model => model.Visible)
-                @Html.ValidationMessageFor(model => model.Visible)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.PeriodoInicial)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.PeriodoInicial)
-                @Html.ValidationMessageFor(model => model.PeriodoInicial)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.PeriodoFinal)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.PeriodoFinal)
-                @Html.ValidationMessageFor(model => model.PeriodoFinal)
-            </div>
-
-            <div class="editor-label">
-                @Html.LabelFor(model => model.Cadena)
-            </div>
-            <div class="editor-field">
-                @Html.TextAreaFor(model => model.Cadena, new { @rows = 5, style="width: 350px" })
-            </div>
-            <div>
-                @Html.ValidationMessageFor(model => model.Cadena)
-            </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
         </div>
-        <div class="span7">
-            <div class="editor-label">
-                @Html.Label("Parámetros disponibles")
-            </div>
-            <div>
-                @Html.ListBox("ListParametros", ViewBag.ListParametros as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Fórmulas disponibles")
-            </div>
-            <div>
-                @Html.ListBox("ListFormulas", ViewBag.ListFormulas as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Variables globales")
-            </div>
-            <div>
-                @Html.ListBox("GlobalList", ViewBag.GlobalList as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
-
-            <div class="editor-label">
-                @Html.Label("Funciones disponibles")
-            </div>
-            <div>
-                @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
-            </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
         </div>
-    </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Secuencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Secuencia)
+            @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Referencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Referencia)
+            @Html.ValidationMessageFor(model => model.Referencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdElemento)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdElemento")
+            @Html.ValidationMessageFor(model => model.IdElemento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoFormula)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoFormula", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdTipoFormula)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Visible)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.Visible)
+            @Html.ValidationMessageFor(model => model.Visible)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoInicial)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoInicial)
+            @Html.ValidationMessageFor(model => model.PeriodoInicial)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoFinal)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoFinal)
+            @Html.ValidationMessageFor(model => model.PeriodoFinal)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cadena)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Cadena)
+            @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
 
         @Html.HiddenFor(model => model.Id)
 
@@ -133,20 +94,10 @@
     </fieldset>
 }
 
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cuaderno", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElementoReturn   })">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p> 
+<div>
+    @Html.ActionLink("Regresar", "Cuaderno", new { id = ViewBag.IdElementoReturn })
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-<script>
-    $(".Chooser").click(function() {
-        var referencia = $(this).val();
-        $("#Cadena").val($("#Cadena").val() + " " + referencia);
-        $("#Cadena").focus();
-    })
-</script>

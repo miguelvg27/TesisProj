@@ -130,7 +130,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             var opciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).Except(asociados);
             ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
             ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
-            ViewBag.Proyecto = db.Proyectos.Find(salida.IdProyecto).Nombre;
 
             return View(salida);
         }
@@ -201,7 +200,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             var opciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).Except(asociados);
             ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
             ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
-            ViewBag.Proyecto = db.Proyectos.Find(salida.IdProyecto).Nombre;
 
             return View(salida);
         }
@@ -219,7 +217,6 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == proyecto.Id), "Id", "Nombre", proyecto.Id);
             ViewBag.IdProyectoReturn = proyecto.Id;
-            ViewBag.Proyecto = proyecto.Nombre;
 
             var salidas = db.SalidaProyectos.Where(f => f.IdProyecto == proyecto.Id);
             int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 1 : 1;
@@ -244,8 +241,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == salidaproyecto.IdProyecto), "Id", "Nombre", salidaproyecto.IdProyecto);
             ViewBag.IdProyectoReturn = salidaproyecto.IdProyecto;
 
-            ViewBag.Proyecto = db.Proyectos.Find(salidaproyecto.IdProyecto).Nombre;
-
             var salidas = db.SalidaProyectos.Where(f => f.IdProyecto == salidaproyecto.IdProyecto);
             int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
@@ -265,8 +260,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
             
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == salidaproyecto.IdProyecto), "Id", "Nombre", salidaproyecto.IdProyecto);
-            ViewBag.Proyecto = db.Proyectos.Find(salidaproyecto.IdProyecto).Nombre;
-
+            
             return View(salidaproyecto);
         }
 
@@ -284,15 +278,29 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == salidaproyecto.IdProyecto), "Id", "Nombre", salidaproyecto.IdProyecto);
-            ViewBag.Proyecto = db.Proyectos.Find(salidaproyecto.IdProyecto).Nombre;
-
+            
             return View(salidaproyecto);
         }
 
         //
         // GET: /Modelo/SalidaProyecto/Delete/5
 
-        public ActionResult DeleteSalidaProyecto(int id)
+        public ActionResult DeleteSalidaProyecto(int id = 0)
+        {
+            SalidaProyecto salidaproyecto = db.SalidaProyectos.Find(id);
+            if (salidaproyecto == null)
+            {
+                return HttpNotFound();
+            }
+            return View(salidaproyecto);
+        }
+
+        //
+        // POST: /Modelo/SalidaProyecto/Delete/5
+
+        [HttpPost, ActionName("DeleteSalidaProyecto")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteSalidaProyectoConfirmed(int id)
         {
             SalidaProyecto salidaproyecto = db.SalidaProyectos.Find(id);
 
@@ -310,6 +318,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                return View("DeleteSalidaProyecto", salidaproyecto);
             }
 
             return RedirectToAction("Cine", new { id = salidaproyecto.IdProyecto });

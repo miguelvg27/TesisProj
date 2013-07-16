@@ -5,14 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Html.Telerik().ScriptRegistrar().Globalization(true)
-<h2>Crear proyecto</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index")"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p>
+<h2>Crear</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -83,17 +76,25 @@
         <div class="editor-field">
             @Html.DropDownList("IdCreador")
             @Html.ValidationMessageFor(model => model.IdCreador)
-        </div>       
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Creacion)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DateTimePickerFor(model => model.Creacion).Value(@DateTime.Now).Enable(false)
+            @Html.ValidationMessageFor(model => model.Creacion)
+        </div>
+        
         <p>
             <input type="submit" value="Guardar" />
         </p>
     </fieldset>
 }
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index")"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
+
+<div>
+    @Html.ActionLink("Regresar", "Index")
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

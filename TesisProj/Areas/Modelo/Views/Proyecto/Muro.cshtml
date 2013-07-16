@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Audit>
 
 @{
-    ViewBag.Title = "Auditoría: " + ViewBag.Proyecto;
+    ViewBag.Title = "Proyecto: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Auditoría de @ViewBag.Proyecto</h2>
 
-<table class="table table-hover table-striped table-bordered">
+<table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.IdUsuario)
@@ -46,9 +46,6 @@
 
 </table>
 
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
+</div>

@@ -5,14 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar tipo de elemento</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index")">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p>
+<h2>Editar</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -44,13 +37,6 @@
         </p>
     </fieldset>
 }
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index")">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
 
 <div>
     @Html.ActionLink("Regresar", "Index")

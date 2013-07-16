@@ -66,14 +66,6 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
                 }
 
-                var tipos = context.TipoFormulas.ToList();
-
-
-                if (context.TipoFormulas.Any(f => this.Referencia.Equals(f.Referencia)))
-                {
-                    yield return new ValidationResult("Ya existe un tipo de fórmula con el mismo nombre de referencia.", new string[] { "Referencia" });
-                }
-
                 if (context.PlantillaOperaciones.Any(f => f.Secuencia == this.Secuencia && f.IdPlantillaProyecto == this.IdPlantillaProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
@@ -82,13 +74,9 @@ namespace TesisProj.Areas.Plantilla.Models
                 MathParserNet.Parser parser = new MathParserNet.Parser();
                 var tipoformulas = context.TipoFormulas;
                 var operaciones = context.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == this.IdPlantillaProyecto && o.Secuencia < this.Secuencia);
-
-                parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
                 parser.AddVariable("PeriodosCierre", 1);
                 parser.AddVariable("PeriodosPreOperativos", 1);
-                parser.AddVariable("RiesgoPais", 1);
-                parser.AddVariable("RiesgoProyecto", 1);
 
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {

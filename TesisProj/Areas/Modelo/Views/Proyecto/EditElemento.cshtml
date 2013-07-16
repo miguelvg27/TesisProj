@@ -1,18 +1,11 @@
 ﻿@model TesisProj.Areas.Modelo.Models.Elemento
 
 @{
-    ViewBag.Title = "Elementos: " + ViewBag.Proyecto;
+    ViewBag.Title = "Elementos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar @Model.Nombre (@ViewBag.Proyecto)</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = Model.IdProyecto  })"">
-  			<i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p> 
+<h2>Editar elemento</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -55,6 +48,7 @@
 
 
 <p>
+        <br />    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = Model.IdProyecto  })"">
   			<i class="icon-arrow-left icon-white"></i>Regresar
     </a>

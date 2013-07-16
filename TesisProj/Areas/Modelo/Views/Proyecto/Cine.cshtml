@@ -1,28 +1,17 @@
 ﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.SalidaProyecto>
 
 @{
-    ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
+    ViewBag.Title = "Proyecto: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Resultados de @ViewBag.Proyecto</h2>
 
 <p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("CreateSalidaProyecto", new { Area = "Modelo", idProyecto = ViewBag.ProyectoId })"">
-  	    <i class="icon-plus icon-white"></i>Nuevo
-    </a>
-    <a style="margin:5px"></a>
-    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("Corolario", new { Area = "Modelo", id = ViewBag.ProyectoId })"">
-  	    <i class="icon-list icon-white"></i>Operaciones
-    </a>
-    <a style="margin:5px"></a>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-    <br /><br />
+    @Html.ActionLink("Crear", "CreateSalidaProyecto", "Proyecto", routeValues: new { Area = "Modelo", idProyecto = ViewBag.ProyectoId }, htmlAttributes: null) |
+    @Html.ActionLink("Operaciones", "Corolario", "Proyecto", routeValues: new { Area = "Modelo", id = ViewBag.ProyectoId }, htmlAttributes: null)
 </p>
-<table class="table table-hover table-striped table-bordered">
+<table class="table table-hover table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -45,25 +34,13 @@
             @Html.ActionLink("Ver", "Pelicula", new { id=item.Id }) |
             @Html.ActionLink("Asociar operaciones", "Assoc", new { id=item.Id }) |
             @Html.ActionLink("Editar", "EditSalidaProyecto", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "DeleteSalidaProyecto", new { id = item.Id }, new { onclick = "return DeleteConfirm()" })
+            @Html.ActionLink("Eliminar", "DeleteSalidaProyecto", new { id=item.Id })
         </td>
     </tr>
 }
 
 </table>
 
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
-
-<script>
-    function DeleteConfirm(){
-        if (confirm("¿Está seguro que desea eliminar el registro?"))
-            return true;
-        else
-            return false;     
-    }
-</script>
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
+</div>

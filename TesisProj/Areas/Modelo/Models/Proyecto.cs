@@ -36,6 +36,7 @@ namespace TesisProj.Areas.Modelo.Models
         [XmlIgnore]
         public virtual List<UserProfile> Colaboradores { get; set; }
 
+
         [DisplayName("Descripción")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         public string Descripcion { get; set; }
@@ -90,7 +91,7 @@ namespace TesisProj.Areas.Modelo.Models
 
                 if (this.Horizonte < (this.PeriodosPreOp + this.PeriodosCierre))
                 {
-                    yield return new ValidationResult("El horizonte debe ser mayor a la suma de los períodos preoperativos y de cierre.", new string[] { "Horizonte" });
+                    yield return new ValidationResult("El horizonte es mayor a la suma de los períodos preoperativos y de cierre.", new string[] { "Horizonte" });
                 }
             }
         }

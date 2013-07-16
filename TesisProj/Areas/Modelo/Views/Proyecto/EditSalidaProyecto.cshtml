@@ -1,17 +1,12 @@
 ﻿@model TesisProj.Areas.Modelo.Models.SalidaProyecto
 
 @{
-    ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
+    ViewBag.Title = "Salidas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar @Model.Nombre (@ViewBag.Proyecto)</h2>
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.IdProyecto   })"">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p> 
+<h2>Editar salida</h2>
+
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -67,11 +62,9 @@
     </fieldset>
 }
 
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.IdProyecto   })"">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p> 
+<div>
+    @Html.ActionLink("Regresar", "Cine", new { id = Model.IdProyecto })
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -3,7 +3,7 @@
 @model List<TesisProj.Areas.Modelo.Models.Celda>
 
 @{
-    ViewBag.Title = "Parámetros: " + ViewBag.Proyecto;
+    ViewBag.Title = "Parámetros";
     Layout = "~/Views/Shared/_Layout.cshtml";
     IList<Parametro> parametros = ViewBag.Parametros;
     int Horizonte = ViewBag.Horizonte;
@@ -11,18 +11,7 @@
     int IdProyecto = ViewBag.IdProyecto;
 }
 
-<h2>Ver parámetros de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("SetParametros", new { id = ViewBag.IdElemento })"">
-  	    <i class="icon-pencil icon-white"></i>Editar
-    </a>
-    <a style="margin:5px"></a>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a> <br /><br />
-</p>
+<h2>Editar parámetros</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -30,8 +19,7 @@
     <fieldset>
         <legend>Valores</legend>
 
-        <div style="overflow: auto; max-height: 600px;  max-width: 1050px">
-        <table class="table table-hover table-striped table-bordered">
+            <table>
                 <tr>
                     <th>
                         Parámetro
@@ -70,18 +58,16 @@
             }
 
             </table>
-            </div>
         </fieldset>
 
         @Html.Hidden("IdElemento")
         @Html.Hidden("IdProyecto")
 }
 
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
-  			<i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p> 
+<div>
+    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElemento }) |
+     @Html.ActionLink("Editar", "SetParametros", new { id = ViewBag.IdElemento })
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

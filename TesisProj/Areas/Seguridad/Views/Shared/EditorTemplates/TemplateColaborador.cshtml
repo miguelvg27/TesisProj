@@ -1,0 +1,16 @@
+﻿@model TesisProj.Models.UserProfile
+
+@{
+    ViewBag.Title = "TemplateColaborador";
+}
+
+@using (Html.BeginForm())
+{ 
+    @Html.ValidationSummary(true)
+    <fieldset>    
+        <legend></legend>   
+        <div class="editor-label">
+        @Html.LabelFor(model => model.UserId)
+        </div>
+    </fieldset>
+}

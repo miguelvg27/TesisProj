@@ -1,19 +1,12 @@
 ﻿@model TesisProj.Areas.Modelo.Models.Proyecto
 
 @{
-    ViewBag.Title = "Proyectos: " + ViewBag.Proyecto;
+    ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int PreHorizonte = ViewBag.PreHorizonte;
 }
 
-<h2>Editar @Model.Nombre</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = @Model.Id })"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p>
+<h2>Editar</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -94,11 +87,11 @@
         </p>
     </fieldset>
 }
-<p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = @Model.Id })"">
-        <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
+
+<div>
+    @Html.ActionLink("Regresar", "Console", new { id = @Model.Id })
+</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

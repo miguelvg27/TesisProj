@@ -101,26 +101,29 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaElemento/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
+        {
+            PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
+            if (plantillaelemento == null)
+            {
+                return HttpNotFound();
+            }
+            plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
+            return View(plantillaelemento);
+        }
+
+        //
+        // POST: /Plantilla/PlantillaElemento/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
             try
             {
-                var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaelemento.Id).OrderByDescending(f => f.Secuencia).ToList();
-
-                foreach (PlantillaFormula formula in formulas)
-                {
-                    db.PlantillaFormulasRequester.RemoveElementByID(formula.Id);
-                }
-
-                var parametros = db.PlantillaParametrosRequester.Where(p => p.IdPlantillaElemento == plantillaelemento.Id).ToList();
-
-                foreach (PlantillaParametro parametro in parametros)
-                {
-                    db.PlantillaParametrosRequester.RemoveElementByID(parametro.Id);
-                }
-
-                db.PlantillaElementosRequester.RemoveElementByID(plantillaelemento.Id);
+                db.PlantillaElementos.Remove(plantillaelemento);
+                db.SaveChanges();
             }
             catch (Exception)
             {

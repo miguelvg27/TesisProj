@@ -1,24 +1,16 @@
 ﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.PlantillaParametro>
 
 @{
-    ViewBag.Title = "Parámetros: " + @ViewBag.Plantilla;
+    ViewBag.Title = "Parámetros";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Parámetros de @ViewBag.Plantilla (@ViewBag.TipoPlantilla)</h2>
 
 <p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Create", new { idPlantilla = ViewBag.IdPlantilla })">
-  	    <i class="icon-plus icon-white"></i>Nuevo
-    </a>
-    <a style="margin:5px"></a>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "PlantillaElemento")">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
+    @Html.ActionLink("Crear", "Create", new { idPlantilla = ViewBag.IdPlantilla })
 </p>
-
-<table class="table table-hover table-striped table-bordered">
+<table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -51,26 +43,14 @@
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick ="return DeleteConfirm()" })
+            @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })
         </td>
     </tr>
 }
 
 </table>
 
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "PlantillaElemento")">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
-</p>
-
-
-<script>
-    function DeleteConfirm(){
-        if (confirm("¿Está seguro que desea eliminar el registro?"))
-            return true;
-        else
-            return false;     
-    }
-</script>
+<div>
+    @Html.ActionLink("Regresar", "Index", "PlantillaElemento", routeValues: new { Area = "Plantilla" }, htmlAttributes: null)
+</div>

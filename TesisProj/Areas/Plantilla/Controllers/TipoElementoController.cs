@@ -98,7 +98,23 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/TipoElemento/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
+        {
+            TipoElemento tipoelemento = db.TipoElementos.Find(id);
+            if (tipoelemento == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(tipoelemento);
+        }
+
+        //
+        // POST: /Plantilla/TipoElemento/Delete/5
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
         {
             TipoElemento tipoelemento = db.TipoElementos.Find(id);
             try
@@ -109,6 +125,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                return View("Delete", tipoelemento);
             }
 
             return RedirectToAction("Index");

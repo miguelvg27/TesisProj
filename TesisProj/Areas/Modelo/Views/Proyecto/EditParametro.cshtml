@@ -1,18 +1,11 @@
 ﻿@model TesisProj.Areas.Modelo.Models.Parametro
 
 @{
-    ViewBag.Title = "Parámetros: " + ViewBag.Proyecto;
+    ViewBag.Title = "Parámetros";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar @Model.Nombre (@ViewBag.Elemento - @ViewBag.Proyecto)</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo", id = Model.IdElemento   })"">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a><br /><br />
-</p> 
+<h2>Editar parámetro</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -78,8 +71,9 @@
 }
 
 <p>
+        <br />    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id =Model.IdElemento   })"">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
+  			<i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p> 
 
