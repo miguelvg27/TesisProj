@@ -6,7 +6,14 @@
     int PreHorizonte = ViewBag.PreHorizonte;
 }
 
-<h2>Editar</h2>
+<h2>Editar @Model.Nombre</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = @Model.Id })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -87,11 +94,11 @@
         </p>
     </fieldset>
 }
-
-<div>
-    @Html.ActionLink("Regresar", "Console", new { id = @Model.Id })
-</div>
-
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = @Model.Id })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

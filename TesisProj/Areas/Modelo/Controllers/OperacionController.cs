@@ -45,6 +45,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == proyecto.Id), "Id", "Nombre", proyecto.Id);
             ViewBag.IdProyectoReturn = proyecto.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
 
             var operaciones = db.Operaciones.Where(f => f.IdProyecto == proyecto.Id);
             int defSecuencia = operaciones.Count() > 0 ? operaciones.Max(f => f.Secuencia) + 1 : 1;
@@ -69,6 +70,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdProyecto = new SelectList(db.Proyectos, "Id", "Nombre", operacion.IdProyecto);
             ViewBag.IdProyectoReturn = operacion.IdProyecto;
 
+            ViewBag.Proyecto = db.Proyectos.Find(operacion.IdProyecto).Nombre;
             var operaciones = db.Operaciones.Where(f => f.IdProyecto == operacion.IdProyecto);
             int defSecuencia = operaciones.Count() > 0 ? operaciones.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
@@ -88,7 +90,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == operacion.IdProyecto), "Id", "Nombre", operacion.IdProyecto);
-            
+            ViewBag.Proyecto = db.Proyectos.Find(operacion.IdProyecto).Nombre;
+
             return View(operacion);
         }
 
@@ -106,29 +109,15 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == operacion.IdProyecto), "Id", "Nombre", operacion.IdProyecto);
-            
+            ViewBag.Proyecto = db.Proyectos.Find(operacion.IdProyecto).Nombre;
+
             return View(operacion);
         }
 
         //
         // GET: /Modelo/Operacion/Delete/5
 
-        public ActionResult DeleteOperacion(int id = 0)
-        {
-            Operacion operacion = db.Operaciones.Find(id);
-            if (operacion == null)
-            {
-                return HttpNotFound();
-            }
-            return View(operacion);
-        }
-
-        //
-        // POST: /Modelo/Operacion/Delete/5
-
-        [HttpPost, ActionName("DeleteOperacion")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteOperacionConfirmed(int id)
+        public ActionResult DeleteOperacion(int id)
         {
             Operacion operacion = db.Operaciones.Find(id);
 

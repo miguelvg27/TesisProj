@@ -87,7 +87,7 @@ namespace TesisProj.Areas.Modelo.Models
 
                 if (this.Horizonte < (this.PeriodosPreOp + this.PeriodosCierre))
                 {
-                    yield return new ValidationResult("El horizonte es mayor a la suma de los períodos preoperativos y de cierre.", new string[] { "Horizonte" });
+                    yield return new ValidationResult("El horizonte debe ser mayor a la suma de los períodos preoperativos y de cierre.", new string[] { "Horizonte" });
                 }
             }
         }

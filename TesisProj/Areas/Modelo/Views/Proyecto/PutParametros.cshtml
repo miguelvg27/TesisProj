@@ -7,8 +7,14 @@
     int IdProyecto = ViewBag.IdProyecto;
 }
 
-<h2>Editar valores <b>iniciales</b> del elemento</h2>
+<h2>Editar valores <b>iniciales</b> del @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
 
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a> <br /><br />
+</p> 
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -16,7 +22,8 @@
     <fieldset>
         <legend>Valores</legend>
             
-        <table>
+            <div style="overflow: auto; max-height: 600px; max-width: 1050px">
+            <table class="table table-hover table-striped table-bordered">
                 <tr>
                     <th>
                         Período
@@ -39,7 +46,7 @@
                         @Html.DisplayFor(model => model[i].Parametro.TipoParametro.Nombre)
                     </td>
                     <td>
-                        @Html.TextBoxFor(model => model[i].Valor, new { @Value = String.Format("{0:0.##}", Model[i].Valor) })
+                        @Html.TextBoxFor(model => model[i].Valor, new { style="width = 50px", @Value = String.Format("{0:0.##}", Model[i].Valor) })
                         @Html.ValidationMessageFor(model => model[i].Valor)
                         @Html.HiddenFor(model => model[i].IdParametro)
                     </td>
@@ -47,7 +54,7 @@
 }
 
         </table>
-
+        </div>
         @Html.Hidden("IdElemento")
         @Html.Hidden("IdProyecto")
 
@@ -57,10 +64,11 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElemento })
-</div>
-
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

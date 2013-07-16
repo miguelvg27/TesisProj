@@ -5,7 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Asociar elementos</h2>
+<h2>Asociar operaciones a @Model.Nombre (@ViewBag.Proyecto)</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p> 
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -14,7 +21,7 @@
     <fieldset>
         <legend>Salida</legend>
 
-        <table>
+        <table class="table table-hover table-striped table-bordered" style="width: 500px">
             <tr>
                 <th>
                     Operaciones disponibles
@@ -28,7 +35,7 @@
                 <td>
                     @Html.ListBox("Opciones", ViewBag.Opciones as MultiSelectList, new { @Size = 20 })
                 </td>
-                <td>
+                <td style="text-align:center; vertical-align:middle">
                     <input type="submit" value=">" name="add" id="add"/>
                     <br />
                     <input type="submit" value="<" name="remove" id="remove"/>
@@ -50,9 +57,11 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Cine", new { id = Model.IdProyecto })
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

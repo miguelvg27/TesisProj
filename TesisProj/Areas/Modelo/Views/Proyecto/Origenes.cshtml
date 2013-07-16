@@ -8,9 +8,13 @@
 <h2>Versiones de @ViewBag.Proyecto</h2>
 
 <p>
-    @Html.ActionLink("Guardar versión actual", "GuardarVersion", "Proyecto", routeValues: new { Area = "Modelo", id = ViewBag.ProyectoId }, htmlAttributes: new { onclick = " return CreateConfirm()" })
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("GuardarVersion", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId } )"">
+  	    <i class="icon-plus icon-white"></i>Guardar versión actual
+    </a>
+    <br /><br />
 </p>
-<table>
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Version)
@@ -43,9 +47,12 @@
 
 </table>
 
-<div>
-    @Html.ActionLink("Regresar", "Console", new { id = ViewBag.ProyectoId })
-</div>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 
 <script>
     function CreateConfirm(){

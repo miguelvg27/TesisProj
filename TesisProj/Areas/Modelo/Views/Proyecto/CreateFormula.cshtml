@@ -5,7 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Crear fórmula</h2>
+<h2>Crear fórmula de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cuaderno", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElementoReturn   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p> 
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -83,6 +89,8 @@
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.Cadena)
+        </div>
+        <div>
             @Html.ValidationMessageFor(model => model.Cadena)
         </div>
 
@@ -92,9 +100,11 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Cuaderno", new { id = ViewBag.IdElementoReturn })
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cuaderno", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElementoReturn   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

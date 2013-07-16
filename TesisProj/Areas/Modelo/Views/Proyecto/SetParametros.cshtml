@@ -11,15 +11,22 @@
     int IdProyecto = ViewBag.IdProyecto;
 }
 
-<h2>Editar parámetros</h2>
+<h2>Editar parámetros de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a> <br /><br />
+</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>Valores</legend>
-
-            <table>
+            <div style="overflow: auto; max-height: 600px; max-width: 1050px">
+            <table class="table table-hover table-striped table-bordered">
                 <tr>
                     <th>
                         Parámetro
@@ -58,18 +65,19 @@
             }
 
             </table>
+            </div>
         </fieldset>
 
         @Html.Hidden("IdElemento")
         @Html.Hidden("IdProyecto")
 
         <p>
+            <br />
             <input type="submit" value="Guardar" />
         </p>
 
 }
 <p>
-        <br />    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
   			<i class="icon-arrow-left icon-white"></i>Regresar
     </a>

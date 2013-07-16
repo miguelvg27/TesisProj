@@ -5,7 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Crear operación</h2>
+<h2>Crear operación de @ViewBag.Proyecto</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Corolario", new { id = ViewBag.IdProyectoReturn })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br />
+</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -72,12 +80,12 @@
 
         <div class="editor-label">
             @Html.Label("Marcar como:")
-            <a href="#" onclick="Mark('TIRE');">TIR del proyecto</a> |
-            <a href="#" onclick="Mark('TIRF');">TIR del inversionista</a> |
-            <a href="#" onclick="Mark('VANE');">VAN del proyecto</a> |
-            <a href="#" onclick="Mark('VANF');">VAN del inversionista</a> |
-            <a href="#" onclick="Mark('KE');">Costo capital del proyecto</a> |
-            <a href="#" onclick="Mark('KF');">Costo capital del inversionista</a>
+            <a href="#" onclick="return Mark('TIRE');">TIR del proyecto</a> |
+            <a href="#" onclick="return Mark('TIRF');">TIR del inversionista</a> |
+            <a href="#" onclick="return Mark('VANE');">VAN del proyecto</a> |
+            <a href="#" onclick="return Mark('VANF');">VAN del inversionista</a> |
+            <a href="#" onclick="return Mark('KE');">Costo capital del proyecto</a> |
+            <a href="#" onclick="return Mark('KF');">Costo capital del inversionista</a>
         </div>
 
         <div class="editor-label">
@@ -102,9 +110,11 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Corolario", new { id = ViewBag.IdProyectoReturn })
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Corolario", new { id = ViewBag.IdProyectoReturn })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

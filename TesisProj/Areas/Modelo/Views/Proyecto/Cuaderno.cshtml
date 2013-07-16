@@ -5,19 +5,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Fórmulas</h2>
+<h2>Fórmulas de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
 
 <p>
-    @Html.ActionLink("Crear", "CreateFormula", new { idElemento = ViewBag.ElementoId }) | 
-    @Html.ActionLink("Ver Resultados", "Programa", new { id = ViewBag.ElementoId }) |
-    @Html.ActionLink("Ver parámetros", "VerParametros", new { id= ViewBag.ElementoId })
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("CreateFormula", new { idElemento = ViewBag.ElementoId })"">
+  	    <i class="icon-plus icon-white"></i>Nuevo
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("Programa", new {id = ViewBag.ElementoId })"">
+  	    <i class="icon-film icon-white"></i>Ver resultados
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("VerParametros", new { id = ViewBag.ElementoId })"">
+  	    <i class="icon-flag icon-white"></i>Parámetros
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br /> 
 </p>
-<table>
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
-        <th>
+        <th style="text-align: center">
             @Html.DisplayNameFor(model => model.Secuencia)
         </th>
         <th>
@@ -29,7 +43,7 @@
         <th>
             @Html.DisplayNameFor(model => model.IdTipoFormula)
         </th>
-        <th>
+        <th style="text-align: center">
             @Html.DisplayNameFor(model => model.Visible)
         </th>
         <th></th>
@@ -40,7 +54,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
-        <td>
+        <td style="text-align: center">
             @Html.DisplayFor(modelItem => item.Secuencia)
         </td>
         <td>
@@ -52,18 +66,30 @@
         <td>
             @Html.DisplayFor(modelItem => item.TipoFormula.Nombre)
         </td>
-        <td>
+        <td style="text-align: center">
             @Html.DisplayFor(modelItem => item.Visible)
         </td>
         <td>
             @Html.ActionLink("Editar", "EditFormula", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "DeleteFormula", new { id=item.Id })
+            @Html.ActionLink("Eliminar", "DeleteFormula", new { id=item.Id }, new { onclick="return DeleteConfirm()" })
         </td>
     </tr>
 }
 
 </table>
 
-<div>
-    @Html.ActionLink("Ver elementos", "Journal", new { id = ViewBag.IdProyecto })
-</div>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+</script>
