@@ -11,15 +11,7 @@
     int IdProyecto = ViewBag.IdProyecto;
 }
 
-
-<h2>Editar parámetros de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
-
-<p>
-    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
-  	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a> <br /><br />
-</p>
+<h2>Editar parámetros</h2>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

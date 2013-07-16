@@ -39,7 +39,7 @@
                         @Html.DisplayFor(model => model[i].Parametro.TipoParametro.Nombre)
                     </td>
                     <td>
-
+                        @Html.TextBoxFor(model => model[i].Valor, new { @Value = String.Format("{0:0.##}", Model[i].Valor) })
                         @Html.ValidationMessageFor(model => model[i].Valor)
                         @Html.HiddenFor(model => model[i].IdParametro)
                     </td>
