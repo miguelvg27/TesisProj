@@ -33,6 +33,9 @@ namespace TesisProj.Areas.Modelo.Models
         [ForeignKey("IdCreador")]
         public virtual UserProfile Creador { get; set; }
 
+        [XmlIgnore]
+        public virtual List<UserProfile> Colaboradores { get; set; }
+
         [DisplayName("Descripción")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         public string Descripcion { get; set; }
