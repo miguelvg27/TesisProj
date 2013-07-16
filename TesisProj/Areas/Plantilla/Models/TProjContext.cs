@@ -236,9 +236,9 @@ namespace TesisProj.Models.Storage
 
         public void SeedPlantillaSalidaProyectos()
         {
-            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 1, Nombre = "EGP del proyecto", Secuencia = 1, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
+            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 1, Nombre = "EGP del proyecto", Secuencia = 1, IdPlantillaProyecto = 1, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre" });
             PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 2, Nombre = "Flujo de caja del proyecto", Secuencia = 2, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
-            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 3, Nombre = "EGP financiero del proyecto", Secuencia = 3, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
+            PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 3, Nombre = "EGP financiero del proyecto", Secuencia = 3, IdPlantillaProyecto = 1, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre" });
             PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 4, Nombre = "Flujo de caja financiero del proyecto", Secuencia = 4, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "Horizonte" });
             PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Id = 5, Nombre = "Indicadores del proyecto", Secuencia = 5, IdPlantillaProyecto = 1, PeriodoInicial = "1", PeriodoFinal = "1" });
         }

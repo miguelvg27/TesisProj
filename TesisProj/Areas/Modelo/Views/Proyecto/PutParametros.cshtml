@@ -47,7 +47,6 @@
                     </td>
                     <td>
                         @Html.TextBoxFor(model => model[i].Valor, new { style="width = 50px", @Value = String.Format("{0:0.##}", Model[i].Valor) })
-                        @Html.ValidationMessageFor(model => model[i].Valor)
                         @Html.HiddenFor(model => model[i].IdParametro)
                     </td>
                 </tr>

@@ -56,6 +56,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             ViewBag.IdElemento = elemento.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.IdProyecto = elemento.IdProyecto;
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento).Nombre;
