@@ -1,54 +1,18 @@
 ﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Proyecto>
-@using Telerik.Web.Mvc.UI
 
 @{
     ViewBag.Title = "Proyectos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Proyectos</h2>
+<h2>Evaluación de Proyectos</h2>
 
-<br />    <br />
+<p>
+    <br /><br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Create", "Proyecto", new { Area = "Modelo" })"">
-  			<i class="icon-plus icon-white"></i>Nuevo
+  	    <i class="icon-plus icon-white"></i>Nuevo
     </a>
-    <br />    <br />
-@(Html.Telerik().Grid(Model)
-    .Name("GridProyecto")
-    .DataKeys(keys => 
-        {
-            keys.Add(p => p.Id);
-        })
-    .Columns(columns =>
-    {
-        columns.Bound(o => o.Nombre);
-        columns.Bound(o => o.Version);
-        columns.Bound(o => o.Creador.UserName);
-        columns.Bound(o => o.Descripcion);
-        columns.Bound(o => o.Creacion);
-        columns.Bound(o => o.Horizonte);
-        columns.Command(commands =>
-        {
-            commands.Custom("ver")
-                .Text("Seleccionar")
-                .Action("Console", "Proyecto")
-                .HtmlAttributes(new { style = "text-align: center" });
-        }).Title("Accion").Width(100);
-    })
-    .DataBinding(dataBinding => dataBinding.Ajax().Select("Index", "Proyecto"))
-    .Pageable()
-    .Sortable()
-    .Filterable()
-)
-
-
-
-@*<p>
-        <br />    <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Create", "Proyecto", new { Area = "Modelo" })"">
-  			<i class="icon-plus icon-white"></i>Nuevo
-    </a>
-    <br />    <br />
+    <br /><br />
 </p>
 <table class="table table-hover table-striped table-bordered">
     <tr>
@@ -90,8 +54,8 @@
 }
 </table>
 <p>
-        <br />
+    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Home", new { Area = "" })"">
   			<i class="icon-arrow-left icon-white"></i>Regresar
     </a>
-</p>*@
+</p>

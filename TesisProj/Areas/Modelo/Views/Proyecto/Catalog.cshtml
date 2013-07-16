@@ -1,20 +1,40 @@
 ﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
 
 @{
-    ViewBag.Title = "Parámetros";
+    ViewBag.Title = "Parámetros: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Parámetros</h2>
+<h2>Parámetros de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
 
 <p>
-    @Html.ActionLink("Crear", "CreateParametro", new { idElemento = ViewBag.ElementoId }) |
-    @Html.ActionLink("Ver Resultados", "Programa", new { id = ViewBag.ElementoId }) |
-    @Html.ActionLink("Fórmulas", "Cuaderno", new { id = ViewBag.ElementoId }) |
-    @Html.ActionLink("Ver valores", "VerParametros", new { id= ViewBag.ElementoId }) |
-    @Html.ActionLink("Editar valores", "SetParametros", new { id= ViewBag.ElementoId }) 
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("CreateParametro", new { idElemento = ViewBag.ElementoId })"">
+  	    <i class="icon-plus icon-white"></i>Nuevo
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("Programa", new {id = ViewBag.ElementoId })"">
+  	    <i class="icon-film icon-white"></i>Ver resultados
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("Cuaderno", new { id = ViewBag.ElementoId })"">
+  	    <i class="icon-list icon-white"></i>Fórmulas
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("VerParametros", new { id = ViewBag.ElementoId })"">
+  	    <i class="icon-flag icon-white"></i>Ver valores
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("SetParametros", new { id = ViewBag.ElementoId })"">
+  	    <i class="icon-pencil icon-white"></i>Editar
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.ProyectoId   })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br /> 
 </p>
-<table>
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -28,7 +48,7 @@
         <th>
             @Html.DisplayNameFor(model => model.IdTipoParametro)
         </th>
-        <th>
+        <th style="text-align: center">
             @Html.DisplayNameFor(model => model.Sensible)
         </th>
         <th></th>
@@ -48,12 +68,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.TipoParametro.Nombre)
         </td>
-        <td>
+        <td style="text-align: center">
             @Html.DisplayFor(modelItem => item.Sensible)
         </td>
         <td>
             @Html.ActionLink("Editar", "EditParametro", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "DeleteParametro", new { id=item.Id })
+            @Html.ActionLink("Eliminar", "DeleteParametro", new { id = item.Id }, new { onclick="return DeleteConfirm()" })
         </td>
     </tr>
 }
@@ -61,8 +81,17 @@
 </table>
 
 <p>
-        <br />    <br />
+    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.ProyectoId   })"">
   			<i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p> 
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+</script>

@@ -2,14 +2,22 @@
 @model List<TesisProj.Areas.Modelo.Models.Formula>
 
 @{
-    ViewBag.Title = "Resultados";
+    ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int Horizonte = ViewBag.Horizonte;
 }
 
 <h2>Resultados de @ViewBag.Elemento (@ViewBag.TipoElemento)</h2>
 
-<table class="table table-hover table-striped">
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a> <br /><br />
+</p> 
+
+<div style="overflow: auto; max-height: 600px">
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             Concepto
@@ -38,11 +46,11 @@
 }
 
 </table>
-
+</div>
 <p>
-        <br />    <br />
+    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })"">
-  			<i class="icon-arrow-left icon-white"></i>Regresar
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p> 
 

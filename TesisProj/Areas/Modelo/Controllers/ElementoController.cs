@@ -56,6 +56,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             ViewBag.IdElemento = elemento.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.IdProyecto = elemento.IdProyecto;
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento).Nombre;
@@ -80,6 +81,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == tipo.Id), "Id", "Nombre", tipo.Id);
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == proyecto.Id), "Id", "Nombre", proyecto.Id);
             ViewBag.IdProyectoReturn = proyecto.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
 
             return View();
         }
@@ -140,6 +142,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == elemento.IdTipoElemento), "Id", "Nombre", elemento.IdTipoElemento);
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == elemento.IdProyecto), "Id", "Nombre", elemento.IdProyecto);
             ViewBag.IdProyectoReturn = elemento.IdProyecto;
+            ViewBag.Proyecto = db.Proyectos.Find(elemento.IdProyecto).Nombre;
 
             return View(elemento);
         }
@@ -157,6 +160,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == elemento.IdTipoElemento), "Id", "Nombre", elemento.IdTipoElemento);
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == elemento.IdProyecto), "Id", "Nombre", elemento.IdProyecto);
+            ViewBag.Proyecto = db.Proyectos.Find(elemento.IdProyecto).Nombre;
 
             return View(elemento);
         }
@@ -177,6 +181,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == elemento.IdTipoElemento), "Id", "Nombre", elemento.IdTipoElemento);
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == elemento.IdProyecto), "Id", "Nombre", elemento.IdProyecto);
+            ViewBag.Proyecto = db.Proyectos.Find(elemento.IdProyecto).Nombre;
 
             return View(elemento);
         }
@@ -184,24 +189,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         //
         // GET: /Modelo/Proyecto/DeleteElemento/5
 
-        public ActionResult DeleteElemento(int id = 0)
-        {
-            Elemento elemento = db.Elementos.Find(id);
-            if (elemento == null)
-            {
-                return HttpNotFound();
-            }
-            elemento.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento);
-
-            return View(elemento);
-        }
-
-        //
-        // POST: /Modelo/Proyecto/DeleteElemento/5
-
-        [HttpPost, ActionName("DeleteElemento")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteElementoConfirmed(int id)
+        public ActionResult DeleteElemento(int id)
         {
             Elemento elemento = db.Elementos.Include(e => e.TipoElemento).FirstOrDefault(e => e.Id == id);
             try
@@ -232,8 +220,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                elemento.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento);
-                return View("DeleteElemento", elemento);
             }
 
             return RedirectToAction("Journal", new { id = elemento.IdProyecto });

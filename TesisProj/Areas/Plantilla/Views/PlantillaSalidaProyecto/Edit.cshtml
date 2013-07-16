@@ -1,11 +1,18 @@
 ﻿@model TesisProj.Areas.Plantilla.Models.PlantillaSalidaProyecto
 
 @{
-    ViewBag.Title = "Salidas";
+    ViewBag.Title = "Salidas: " + @ViewBag.Plantilla;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar</h2>
+<h2>Editar @Model.Nombre</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = @Model.IdPlantillaProyecto })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -62,9 +69,11 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaProyecto }, htmlAttributes: null)
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", new { id = @Model.IdPlantillaProyecto })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

@@ -62,6 +62,8 @@ namespace TesisProj.Areas.Plantilla.Models
                 MathParserNet.Parser parser = new MathParserNet.Parser();
 
                 parser.AddVariable("Horizonte", 10);
+                parser.AddVariable("PeriodosPreOperativos", 10);
+                parser.AddVariable("PeriodosCierre", 10);
 
                 try
                 {

@@ -54,6 +54,8 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.IdElemento = elemento.Id;
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.Proyecto = proyecto.Nombre;
 
             return View(celdas);
         }
@@ -87,7 +89,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             Elemento elemento = db.Elementos.Find(id);
             Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-            if (elemento == null)
+            if (elemento == null || proyecto == null)
             {
                 return HttpNotFound();
             }
@@ -99,6 +101,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdElemento = elemento.Id;
             ViewBag.Parametros = parametros.ToList();
             ViewBag.Horizonte = celdas.Any(c => c.Periodo > 1) ? proyecto.Horizonte : 1;
+            ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.Elemento = elemento.Nombre;
 
             return View(celdas.ToList());
         }
@@ -122,6 +126,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdElemento = elemento.Id;
             ViewBag.Parametros = parametros.ToList();
             ViewBag.Horizonte = celdas.Any(c => c.Periodo > 1) ? proyecto.Horizonte : 1;
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.Proyecto = proyecto.Nombre;
 
             return View(celdas.ToList());
         }
@@ -151,6 +157,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult CreateParametro(int idElemento = 0)
         {
             Elemento elemento = db.Elementos.Find(idElemento);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
             if (elemento == null)
             {
                 return HttpNotFound();
@@ -159,7 +166,9 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre");
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == elemento.Id), "Id", "Nombre", elemento.Id);
             ViewBag.IdElementoReturn = elemento.Id;
-            ViewBag.IdProyecto = db.Proyectos.Find(elemento.IdProyecto).Id;
+            ViewBag.IdProyecto = proyecto.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.Elemento = elemento.Nombre;
 
             return View();
         }
@@ -172,6 +181,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult CreateParametro(Parametro parametro, string ValorInicial, int IdProyecto)
         {
             decimal valor = 0;
+            Proyecto proyecto = db.Proyectos.Find(IdProyecto);
             try
             {
                 valor = decimal.Parse(ValorInicial);
@@ -185,9 +195,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 parametro.Elemento = db.Elementos.Find(parametro.IdElemento);
                 parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-                db.ParametrosRequester.AddElement(parametro, true, parametro.Elemento.IdProyecto, getUserId());
-
-                Proyecto proyecto = db.Proyectos.Find(IdProyecto);
+                db.ParametrosRequester.AddElement(parametro, true, parametro.Elemento.IdProyecto, getUserId());              
 
                 for (int periodo = 1; periodo <= proyecto.Horizonte; periodo++)
                 {
@@ -200,6 +208,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
+
+            Elemento elemento = db.Elementos.Find(parametro.IdElemento);
+            ViewBag.IdProyecto = proyecto.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.Elemento = elemento.Nombre;
 
             return View(parametro);
         }
@@ -218,6 +231,12 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
+
+            Elemento elemento = db.Elementos.Find(parametro.IdElemento);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
+
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.Proyecto = proyecto.Nombre;
 
             return View(parametro);
         }
@@ -242,31 +261,19 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 
+            Elemento elemento = db.Elementos.Find(parametro.IdElemento);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
+
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.Proyecto = proyecto.Nombre;
+
             return View(parametro);
         }
 
         //
         // GET: /Modelo/Proyecto/DeleteParametro/5
 
-        public ActionResult DeleteParametro(int id = 0)
-        {
-            Parametro parametro = db.Parametros.Find(id);
-            if (parametro == null)
-            {
-                return HttpNotFound();
-            }
-
-            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-
-            return View(parametro);
-        }
-
-        //
-        // POST: /Modelo/Proyecto/DeleteParametro/5
-
-        [HttpPost, ActionName("DeleteParametro")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteParametroConfirmed(int id)
+        public ActionResult DeleteParametro(int id)
         {
             Parametro parametro = db.Parametros.Find(id);
             try
@@ -282,8 +289,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-                return View("DeleteParametro", parametro);
             }
 
             return RedirectToAction("Catalog", new { id = parametro.IdElemento });

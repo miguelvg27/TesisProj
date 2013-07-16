@@ -4,25 +4,34 @@
 @model IEnumerable<TesisProj.Areas.Modelo.Models.Elemento>
 
 @{
-    ViewBag.Title = "Proyecto: " + ViewBag.Proyecto;
+    ViewBag.Title = "Elementos: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     IList<TipoElemento> tipos = ViewBag.TipoElementos;
 }
 
-<h2>Elementos</h2>
-<table>
+<h2>Elementos de @ViewBag.Title</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", "Proyecto", new { Area = "Modelo",id = ViewBag.ProyectoId  })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /> <br />
+</p> 
+
 @foreach (var tipo in tipos)
 {
-    <tr>
-        <td>
+    <table class="table table-hover table-striped table-bordered">
+    <tr class="success">
+        <td style="width: 300px">
             <u><b>@tipo.NombrePlural:</b></u>
         </td>
         <td>
-            @Html.ActionLink("Agregar", "CreateElemento", "Proyecto", routeValues: new { Area = "Modelo", idProyecto = ViewBag.ProyectoId, idTipoElemento = tipo.Id }, htmlAttributes: null)
+            <b>@Html.ActionLink("Agregar", "CreateElemento", "Proyecto", routeValues: new { Area = "Modelo", idProyecto = ViewBag.ProyectoId, idTipoElemento = tipo.Id }, htmlAttributes: null)</b>
         </td>
     </tr>
 
-    foreach (var element in Model.Where(e => e.IdTipoElemento == tipo.Id))
+    @foreach (var element in Model.Where(e => e.IdTipoElemento == tipo.Id))
     {
         <tr>
             <td>
@@ -33,17 +42,27 @@
                 @Html.ActionLink("Editar", "EditElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Parámetros", "Catalog", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Fórmulas", "Cuaderno", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
-                @Html.ActionLink("Eliminar", "DeleteElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null)
+                @Html.ActionLink("Eliminar", "DeleteElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: new { onclick="return DeleteConfirm()" })
             </td>
         </tr>
     }
-        
+    </table>    
 }
-</table>
+
 
 <p>
-        <br />    <br />
+    <br />
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", "Proyecto", new { Area = "Modelo",id = ViewBag.ProyectoId  })"">
-  			<i class="icon-arrow-left icon-white"></i>Regresar
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p> 
+
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+</script>

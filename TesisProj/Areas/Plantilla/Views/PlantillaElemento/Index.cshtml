@@ -8,9 +8,17 @@
 <h2>Plantillas de elementos</h2>
 
 <p>
-    @Html.ActionLink("Crear", "Create")
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Create")">
+  	    <i class="icon-plus icon-white"></i>Nuevo
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Admin", new { Area = "" })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
 </p>
-<table>
+
+<table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
@@ -32,16 +40,26 @@
         <td>
             @Html.ActionLink("Parámetros", "Index", "PlantillaParametro", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
             @Html.ActionLink("Fórmulas", "Index", "PlantillaFormula", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
-        @*    @Html.ActionLink("Salidas", "Index", "PlantillaSalidaElemento", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) | *@
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Detalle", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "Delete", new { id=item.Id })
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick = "return DeleteConfirm()" })
         </td>
     </tr>
 }
 
 </table>
 
-<div>
-    @Html.ActionLink("Regresar", "Index", "Admin", routeValues: new { Area = "" }, htmlAttributes: null)
-</div>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Admin", new { Area = "" })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+</script>

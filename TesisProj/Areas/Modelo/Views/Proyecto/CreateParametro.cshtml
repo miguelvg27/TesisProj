@@ -1,12 +1,18 @@
 ﻿@model TesisProj.Areas.Modelo.Models.Parametro
 
 @{
-    ViewBag.Title = "Parámetros";
+    ViewBag.Title = "Parámetros: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int IdProyecto = ViewBag.IdProyecto;
 }
 
-<h2>Crear parámetro</h2>
+<h2>Crear parámetro de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElementoReturn   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p> 
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -79,9 +85,11 @@
     </fieldset>
 }
 
-<div>
-    @Html.ActionLink("Regresar", "Catalog", new { id = ViewBag.IdElementoReturn })
-</div>
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElementoReturn   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

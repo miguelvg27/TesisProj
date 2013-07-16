@@ -98,34 +98,37 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaProyecto/Delete/5
 
-        public ActionResult Delete(int id = 0)
-        {
-            PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
-            if (plantillaproyecto == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(plantillaproyecto);
-        }
-
-        //
-        // POST: /Plantilla/PlantillaProyecto/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Delete(int id)
         {
             PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
             try
             {
-                db.PlantillaProyectos.Remove(plantillaproyecto);
-                db.SaveChanges();
+                var salidaoperaciones = db.PlantillaSalidaOperaciones.Include(s => s.Operacion).Where(p => p.Operacion.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
+
+                foreach (PlantillaSalidaOperacion salida in salidaoperaciones)
+                {
+                    db.PlantillaSalidaOperacionesRequester.RemoveElementByID(salida.Id);
+                }
+
+                var salidas = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
+
+                foreach (PlantillaSalidaProyecto salida in salidas)
+                {
+                    db.PlantillaSalidaProyectosRequester.RemoveElementByID(salida.Id);
+                }
+
+                var operaciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
+
+                foreach (PlantillaOperacion operacion in operaciones)
+                {
+                    db.PlantillaOperacionesRequester.RemoveElementByID(operacion.Id);
+                }
+
+                db.PlantillaProyectosRequester.RemoveElementByID(plantillaproyecto.Id);
             }
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                return View("Delete", plantillaproyecto);
             }
 
             return RedirectToAction("Index");

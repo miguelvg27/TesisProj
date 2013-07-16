@@ -665,8 +665,6 @@
     <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirF.cshtml" />
     <Content Include="Areas\Seguridad\Views\Web.config" />
     <Content Include="Areas\Seguridad\Views\Seguridad\Index.cshtml" />
-    <Content Include="Areas\Seguridad\Views\Seguridad\Colaboradores.cshtml" />
-    <Content Include="Areas\Seguridad\Views\Shared\EditorTemplates\TemplateColaborador.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -811,6 +809,7 @@
     <Folder Include="Areas\Plantilla\Views\Shared\" />
     <Folder Include="Areas\Proyectos\Views\Shared\" />
     <Folder Include="Areas\Seguridad\Models\" />
+    <Folder Include="Areas\Seguridad\Views\Shared\" />
     <Folder Include="Areas\Simulaciones\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
