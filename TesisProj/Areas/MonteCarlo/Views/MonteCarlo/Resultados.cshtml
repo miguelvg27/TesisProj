@@ -35,25 +35,25 @@
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>VAN Maximo</h4>
-                                        <p>@Model.MaxVanEconomico</p>
+                                        <p>@Math.Round(Model.MaxVanEconomico,2)</p>
                                     </div>
                                 </li>
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>VAN Minimo</h4>
-                                        <p>@Model.MinVanEconomico</p>
+                                        <p>@Math.Round(Model.MinVanEconomico,2)</p>
                                     </div>
                                 </li>
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>TIR Maximo</h4>
-                                        <p>@Model.MaxTirEconomico</p>
+                                        <p>@Math.Round(Model.MaxTirEconomico)</p>
                                     </div>
                                 </li>
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>TIR Minimo</h4>
-                                        <p>@Model.MinTirEconomico</p>
+                                        <p>@Math.Round(Model.MinTirEconomico)</p>
                                     </div>
                                 </li>
                             </ul>
@@ -61,8 +61,8 @@
                     </ul>
                 </div>
                 <div class="span12">
-                    <div class="span5">@{Html.RenderAction("_GraficoVanInversionista", "MonteCarlo");}</div>
-                    <div class="span5">@{Html.RenderAction("_GraficoTirInversionista", "MonteCarlo");}</div>
+                    <div class="span10">@{Html.RenderAction("_GraficoVanInversionista", "MonteCarlo");}</div>
+                    @*<div class="span5">@{Html.RenderAction("_GraficoTirInversionista", "MonteCarlo");}</div>*@
                </div>
             </div>
             <div class="tab-pane" id="2"> 
@@ -79,25 +79,25 @@
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>VAN Maximo</h4>
-                                        <p>@Model.MaxVanFinanciero</p>
+                                        <p>@Math.Round(Model.MaxVanFinanciero,2)</p>
                                     </div>
                                 </li>
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>VAN Minimo</h4>
-                                        <p>@Model.MinVanFinanciero</p>
+                                        <p>@Math.Round(Model.MinVanFinanciero,2)</p>
                                     </div>
                                 </li>
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>TIR Maximo</h4>
-                                        <p>@Model.MaxTirFinanciero</p>
+                                        <p>@Math.Round(Model.MaxTirFinanciero,2)</p>
                                     </div>
                                 </li>
                                 <li class="span3">
                                     <div class="thumbnail">
                                         <h4>TIR Minimo</h4>
-                                        <p>@Model.MinTirFinanciero</p>
+                                        <p>@Math.Round(Model.MinTirFinanciero,2)</p>
                                     </div>
                                 </li>
                             </ul>
@@ -105,8 +105,8 @@
                     </ul>
                 </div>
             <div class="span12">
-                <div class="span5">@{Html.RenderAction("_GraficoVanProyecto", "MonteCarlo");}</div>
-                <div class="span5">@{Html.RenderAction("_GraficoTirProyecto", "MonteCarlo");}</div>
+                <div class="span10">@{Html.RenderAction("_GraficoVanProyecto", "MonteCarlo");}</div>
+                @*<div class="span5">@{Html.RenderAction("_GraficoTirProyecto", "MonteCarlo");}</div>*@
            </div>
             </div>
         </div>

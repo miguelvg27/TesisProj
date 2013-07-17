@@ -30,6 +30,7 @@ namespace TesisProj.Models.Storage
         public DbRequester<Formula> FormulasRequester { get; set; }
         public DbRequester<SalidaProyecto> SalidaProyectosRequester { get; set; }
         public DbRequester<Celda> CeldasRequester { get; set; }
+        //public DbRequester<UserProfile> UserProfilesRequester { get; set; }
         public DbRequester<Operacion> OperacionesRequester { get; set; }
         public DbRequester<SalidaOperacion> SalidaOperacionesRequester { get; set; }
         public DbRequester<Audit> AuditsRequester { get; set; }
@@ -49,6 +50,8 @@ namespace TesisProj.Models.Storage
             AuditsRequester = new DbRequester<Audit>(this, Audits);
             DbVersionsRequester = new DbRequester<DbVersion>(this, DbVersions, Audits);
             ColaboradoresRequester = new DbRequester<Colaborador>(this, Colaboradores, Audits);
+            //UserProfilesRequester = new DbRequester<UserProfile>(this, UserProfiles, Audits);
+
         }
 
         public void SeedProyecto()
@@ -61,6 +64,12 @@ namespace TesisProj.Models.Storage
             SeedSalidaProyectos();
             SeedOperaciones();
             SeedSalidaOperaciones();
+        }
+
+        public void SeedUserProfiles()
+        {
+            //UserProfilesRequester.AddElement(new UserProfile { UserId = 1, UserName = "miguelavg" });
+            //UserProfilesRequester.AddElement(new UserProfile { UserId = 2, UserName = "pedrocg" });
         }
 
         public void SeedProyectos()

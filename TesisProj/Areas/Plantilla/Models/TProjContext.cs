@@ -32,6 +32,8 @@ namespace TesisProj.Models.Storage
         public DbRequester<PlantillaSalidaProyecto> PlantillaSalidaProyectosRequester { get; set; }
         public DbRequester<PlantillaOperacion> PlantillaOperacionesRequester { get; set; }
 
+        
+
         public void RegistrarTablasPlantilla()
         {
             TipoElementosRequester = new DbRequester<TipoElemento>(this, TipoElementos);
@@ -44,6 +46,7 @@ namespace TesisProj.Models.Storage
             PlantillaSalidaOperacionesRequester = new DbRequester<PlantillaSalidaOperacion>(this, PlantillaSalidaOperaciones);
             PlantillaSalidaProyectosRequester = new DbRequester<PlantillaSalidaProyecto>(this, PlantillaSalidaProyectos);
             PlantillaOperacionesRequester = new DbRequester<PlantillaOperacion>(this, PlantillaOperaciones);
+            
         }
 
         public void SeedPlantilla()

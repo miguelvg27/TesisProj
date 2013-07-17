@@ -23,6 +23,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
         [HttpGet]
         public ActionResult Index(int idProyecto)
         {
+            Session["idProyecto"] = idProyecto;
             ViewBag.idProyecto = idProyecto;
             AlgoritmoMonteCarlo mc = new AlgoritmoMonteCarlo();
             mc.Parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Where(e => e.Elemento.IdProyecto == idProyecto).Where(oo => oo.Sensible == true).ToList();
@@ -32,7 +33,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
         [HttpPost]
         public ActionResult Index(AlgoritmoMonteCarlo mc, int idProyecto)
         {
-            ViewBag.idProyecto = idProyecto;
+            ViewBag.idProyecto = (int)Session["idProyecto"];
             mc.Parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Where(e => e.Elemento.IdProyecto == idProyecto).Where(oo => oo.Sensible == true).ToList();
             Proyecto proy = context.Proyectos.Find(idProyecto);
             List<Hash>  vanE = new List<Hash>();
