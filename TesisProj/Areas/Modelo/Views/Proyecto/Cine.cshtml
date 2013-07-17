@@ -3,24 +3,31 @@
 @{
     ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool IsCreador = ViewBag.IsCreador;
+    bool IsEditor = ViewBag.IsEditor;
+    bool IsRevisor = ViewBag.IsRevisor;
+
 }
 
 <h2>Resultados de @ViewBag.Proyecto</h2>
 
 <p>
     <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("CreateSalidaProyecto", new { Area = "Modelo", idProyecto = ViewBag.ProyectoId })"">
-  	    <i class="icon-plus icon-white"></i>Nuevo
-    </a>
-    <a style="margin:5px"></a>
-    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("Corolario", new { Area = "Modelo", id = ViewBag.ProyectoId })"">
-  	    <i class="icon-list icon-white"></i>Operaciones
-    </a>
-    <a style="margin:5px"></a>
-    <a class="btn btn-inverse" onclick="return DuplicateConfirm()" style="color: #E6F0F2;"href="@Url.Action("VolverPlantilla", "PlantillaProyecto", new { Area = "Plantilla", id = ViewBag.ProyectoId })"">
-  	    <i class="icon-briefcase icon-white"></i>Volver plantilla
-    </a>
-    <a style="margin:5px"></a>
+    @if(!IsRevisor){
+        <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("CreateSalidaProyecto", new { Area = "Modelo", idProyecto = ViewBag.ProyectoId })">
+  	        <i class="icon-plus icon-white"></i>Nuevo
+        </a>
+        <a style="margin:5px"></a>
+        <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("Corolario", new { Area = "Modelo", id = ViewBag.ProyectoId })">
+  	        <i class="icon-list icon-white"></i>Operaciones
+        </a>
+        <a style="margin:5px"></a>
+        <a class="btn btn-inverse" onclick="return DuplicateConfirm()" style="color: #E6F0F2;"href="@Url.Action("VolverPlantilla", "PlantillaProyecto", new { Area = "Plantilla", id = ViewBag.ProyectoId })">
+  	        <i class="icon-briefcase icon-white"></i>Volver plantilla
+        </a>
+        <a style="margin:5px"></a>
+    }
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
         <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
@@ -37,7 +44,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
@@ -46,10 +54,13 @@
             @Html.DisplayFor(modelItem => item.Secuencia)
         </td>
         <td>
-            @Html.ActionLink("Ver", "Pelicula", new { id=item.Id }) |
-            @Html.ActionLink("Asociar operaciones", "Assoc", new { id=item.Id }) |
-            @Html.ActionLink("Editar", "EditSalidaProyecto", new { id=item.Id }) |
-            @Html.ActionLink("Eliminar", "DeleteSalidaProyecto", new { id = item.Id }, new { onclick = "return DeleteConfirm()" })
+            @Html.ActionLink("Ver", "Pelicula", new { id = item.Id }) 
+            
+            @if(!IsRevisor) {
+                @Html.Raw(" | ") @Html.ActionLink("Asociar operaciones", "Assoc", new { id = item.Id })
+                @Html.Raw(" | ") @Html.ActionLink("Editar", "EditSalidaProyecto", new { id = item.Id })
+                @Html.Raw(" | ") @Html.ActionLink("Eliminar", "DeleteSalidaProyecto", new { id = item.Id }, new { onclick = "return DeleteConfirm()" })
+            }
         </td>
     </tr>
 }

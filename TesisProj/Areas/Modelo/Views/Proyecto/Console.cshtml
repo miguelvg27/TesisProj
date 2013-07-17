@@ -3,102 +3,233 @@
 @{
     ViewBag.Title = "Proyecto: " + @Model.Nombre;
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    bool IsCreador = ViewBag.IsCreador;
+    bool IsEditor = ViewBag.IsEditor;
+    bool IsRevisor = ViewBag.IsRevisor;
+
 }
 
 <h2>Proyecto: @Model.Nombre</h2>
 
-<table class="table table-hover table-striped table-bordered table-condensed">
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="one">
-                    <h5><a href="@Url.Action("Edit", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Información general</a></h5>
-                    Revisa la información general del proyecto: Nombre, creador, horizonte, etc.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="two">
-                    <h5><a href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Elementos</a></h5>
-                    Crea y administra los distintos elementos del proyecto: Activos fijos, activos intangibles, producción, etc.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="three">
-                    <h5><a href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Resultados</a></h5>
-                    Visualiza los resultados y rentabilidad del proyecto.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="four">
-                    <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = @Model.Id })">Asignación de distribuciones</a></h5>
-                    Realiza la asignacion de modelos a los parametros previo al análisis de Monte Carlo.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="five">
-                    <h5><a href="@Url.Action("Index", "MonteCarlo", new { Area = "MonteCarlo", idProyecto = @Model.Id })">Análisis de sensibilidad</a></h5>
-                    Simulacion de Montecarlo
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="six">
-                    <h5><a href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Colaboradores</a></h5>
-                    Invita a otros usuarios a colaborar con el proyecto.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="seven">
-                    <h5><a href="@Url.Action("Origenes", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Versiones</a></h5>
-                    Guarda una nueva versión del proyecto o restaura una anterior.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="eight">
-                    <h5><a href="@Url.Action("Muro", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
-                    Visualiza los cambios realizados en el proyecto.
-                </li>
-            </ol>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <ol class="round">
-                <li class="nine">
-                    <h5><a onclick="return DeleteConfirm()" href="@Url.Action("Delete", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Eliminar</a></h5>
-                    Elimina <b>definitivamente</b> el proyecto.
-                </li>
-            </ol>
-        </td>
-    </tr>
-</table>
+@if (IsCreador)
+{
+    <table class="table table-hover table-striped table-bordered table-condensed">
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="one">
+                        <h5><a href="@Url.Action("Edit", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Información general</a></h5>
+                        Revisa la información general del proyecto: Nombre, creador, horizonte, etc.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="two">
+                        <h5><a href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Elementos</a></h5>
+                        Crea y administra los distintos elementos del proyecto: Activos fijos, activos intangibles, producción, etc.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="three">
+                        <h5><a href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Resultados</a></h5>
+                        Visualiza los resultados y rentabilidad del proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="four">
+                        <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = @Model.Id })">Asignación de distribuciones</a></h5>
+                        Realiza la asignacion de modelos a los parametros previo al análisis de Monte Carlo.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="five">
+                        <h5><a href="@Url.Action("Index", "MonteCarlo", new { Area = "MonteCarlo", idProyecto = @Model.Id })">Análisis de sensibilidad</a></h5>
+                        Simulacion de Montecarlo
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="six">
+                        <h5><a href="@Url.Action("Index", "Colaboradores", new { Area = "Seguridad", id = @Model.Id })">Colaboradores</a></h5>
+                        Invita a otros usuarios a colaborar con el proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="seven">
+                        <h5><a href="@Url.Action("Origenes", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Versiones</a></h5>
+                        Guarda una nueva versión del proyecto o restaura una anterior.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="eight">
+                        <h5><a href="@Url.Action("Muro", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
+                        Visualiza los cambios realizados en el proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="nine">
+                        <h5><a onclick="return DeleteConfirm()" href="@Url.Action("Delete", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Eliminar</a></h5>
+                        Elimina <b>definitivamente</b> el proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>
+}
+
+@if (IsEditor)
+{
+    <table class="table table-hover table-striped table-bordered table-condensed">
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="one">
+                        <h5><a href="@Url.Action("Edit", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Información general</a></h5>
+                        Revisa la información general del proyecto: Nombre, creador, horizonte, etc.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="two">
+                        <h5><a href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Elementos</a></h5>
+                        Crea y administra los distintos elementos del proyecto: Activos fijos, activos intangibles, producción, etc.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="three">
+                        <h5><a href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Resultados</a></h5>
+                        Visualiza los resultados y rentabilidad del proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="four">
+                        <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = @Model.Id })">Asignación de distribuciones</a></h5>
+                        Realiza la asignacion de modelos a los parametros previo al análisis de Monte Carlo.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="five">
+                        <h5><a href="@Url.Action("Index", "MonteCarlo", new { Area = "MonteCarlo", idProyecto = @Model.Id })">Análisis de sensibilidad</a></h5>
+                        Simulacion de Montecarlo
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="six">
+                        <h5><a href="@Url.Action("Origenes", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Versiones</a></h5>
+                        Guarda una nueva versión del proyecto o restaura una anterior.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="seven">
+                        <h5><a href="@Url.Action("Muro", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
+                        Visualiza los cambios realizados en el proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>    
+}
+
+@if (IsRevisor)
+{
+    <table class="table table-hover table-striped table-bordered table-condensed">
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="one">
+                        <h5><a href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Elementos</a></h5>
+                        Visualiza los distintos elementos del proyecto: Activos fijos, activos intangibles, producción, etc.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="two">
+                        <h5><a href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Resultados</a></h5>
+                        Visualiza los resultados y rentabilidad del proyecto.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="three">
+                        <h5><a href="@Url.Action("Index", "MaestroSimulacion", new { Area = "Simulaciones", idProyecto = @Model.Id })">Asignación de distribuciones</a></h5>
+                        Realiza la asignacion de modelos a los parametros previo al análisis de Monte Carlo.
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="four">
+                        <h5><a href="@Url.Action("Index", "MonteCarlo", new { Area = "MonteCarlo", idProyecto = @Model.Id })">Análisis de sensibilidad</a></h5>
+                        Simulacion de Montecarlo
+                    </li>
+                </ol>
+            </td>
+        </tr>
+    </table>     
+}
+
 @Html.ValidationMessageFor(model => model.Nombre)
 <p>
     <br />

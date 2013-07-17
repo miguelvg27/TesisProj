@@ -8,6 +8,7 @@ using System.Web;
 using TesisProj.Areas.Administracion.Models;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Seguridad.Models;
 
 namespace TesisProj.Models.Storage
 {
@@ -53,6 +54,5 @@ namespace TesisProj.Models.Storage
             TablaEstadoCivil.AddElement(new EstadoCivil(5, "Divorciado (a)"));
 
         }
-
     }
 }

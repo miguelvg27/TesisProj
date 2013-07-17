@@ -5,16 +5,22 @@
     ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int Horizonte = ViewBag.Horizonte;
+    bool IsCreador = ViewBag.IsCreador;
+    bool IsEditor = ViewBag.IsEditor;
+    bool IsRevisor = ViewBag.IsRevisor;
+
 }
 
 <h2>Resultados de @ViewBag.Elemento (@ViewBag.TipoElemento)</h2>
 
 <p>
     <br />
-    <a class="btn btn-inverse" onclick="return DuplicateConfirm()" style="color: #E6F0F2;"href="@Url.Action("VolverPlantilla", "PlantillaElemento", new { Area = "Plantilla", id = ViewBag.IdElemento })"">
-  	    <i class="icon-briefcase icon-white"></i>Volver plantilla
-    </a>
-    <a style="margin:5px"></a>
+    @if(!IsRevisor){
+        <a class="btn btn-inverse" onclick="return DuplicateConfirm()" style="color: #E6F0F2;"href="@Url.Action("VolverPlantilla", "PlantillaElemento", new { Area = "Plantilla", id = ViewBag.IdElemento })">
+  	        <i class="icon-briefcase icon-white"></i>Volver plantilla
+        </a>
+        <a style="margin:5px"></a>
+    }
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })"">
   	    <i class="icon-arrow-left icon-white"></i>Regresar
     </a> <br /><br />
@@ -53,7 +59,7 @@
 </div>
 <p>
     <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("VolverPlantilla", "PlantillaElemento", new { Area = "Plantilla", id = ViewBag.IdProyecto   })"">
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = ViewBag.IdProyecto   })"">
   	    <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p> 

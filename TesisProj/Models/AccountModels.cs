@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
+using System.Xml.Serialization;
+using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Seguridad.Models;
 
 namespace TesisProj.Models
 {
@@ -14,7 +17,7 @@ namespace TesisProj.Models
             : base("TProjDb")
         {
         }
-
+        
         public DbSet<UserProfile> UserProfiles { get; set; }
     }
 
@@ -25,6 +28,8 @@ namespace TesisProj.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        [InverseProperty("Usuario")]
+        public virtual List<Colaborador> Proyectos { get; set; }
     }
 
     public class RegisterExternalLoginModel

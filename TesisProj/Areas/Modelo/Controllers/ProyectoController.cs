@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Controllers
@@ -62,8 +63,11 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         public ActionResult Index()
         {
-            var proyectos = db.Proyectos.Include(p => p.Creador);
-            return View(proyectos.ToList());
+            int idUser = getUserId();
+            var proyectos = db.Proyectos.Include(p => p.Creador).Where(p => p.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = db.Colaboradores.Include(c => c.Proyecto).Where(c => c.IdUsuario == idUser).Select(c => c.Proyecto).ToList();
+
+            return View(proyectos.Union(colab).ToList());
         }
 
         //
@@ -77,6 +81,17 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
             proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
+            
+            int idUser = getUserId();
+
+            bool IsCreador = (idUser == proyecto.IdCreador);
+            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
+            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
+
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
+
             return View(proyecto);
         }
 
@@ -202,6 +217,13 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             try
             {
+                var colaboradores = db.Colaboradores.Where(c => c.IdProyecto == proyecto.Id).ToList();
+
+                foreach (Colaborador colaborador in colaboradores)
+                {
+                    db.ColaboradoresRequester.RemoveElementByID(colaborador.Id);
+                }
+
                 var versions = db.DbVersions.Where(v => v.IdProyecto == proyecto.Id).ToList();
 
                 foreach (DbVersion version in versions)

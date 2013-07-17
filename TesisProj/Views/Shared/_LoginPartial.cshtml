@@ -5,16 +5,8 @@
             @Html.AntiForgeryToken()
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
-    @try
-    {
-        if (User.IsInRole("admin"))
-        {
-            @Html.ActionLink("Plantillas", "Index", "Admin", routeValues: new { Area = "" }, htmlAttributes: new { id = "adminLink" })
-        }
-    }
-    catch
-    {
-    }
+        @Html.ActionLink("Plantillas", "Index", "Admin", routeValues: new { Area = "" }, htmlAttributes: new { id = "adminLink" })
+
     </text>
 } else {
     <ul>

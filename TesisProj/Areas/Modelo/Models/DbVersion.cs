@@ -10,6 +10,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Models
 {
+    [Table("DbVersion")]
     public class DbVersion : DbObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]

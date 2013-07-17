@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
@@ -49,7 +50,12 @@ namespace TesisProj.Areas.Modelo.Models
         public string Tipo
         {
             get 
-            { 
+            {
+                if (TipoObjeto.Equals(new Colaborador().GetType().ToString()))
+                {
+                    return "Colaborador";
+                }
+
                 if(TipoObjeto.Equals(new Proyecto().GetType().ToString()))
                 {
                     return "Proyecto";

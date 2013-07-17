@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Seguridad.Models;
 
 namespace TesisProj.Models.Storage
 {
@@ -21,6 +22,7 @@ namespace TesisProj.Models.Storage
         public DbSet<SalidaOperacion> SalidaOperaciones { get; set; }
         public DbSet<Audit> Audits { get; set; }
         public DbSet<DbVersion> DbVersions { get; set; }
+        public DbSet<Colaborador> Colaboradores { get; set; }
 
         public DbRequester<Proyecto> ProyectosRequester { get; set; }
         public DbRequester<Elemento> ElementosRequester { get; set; }
@@ -32,6 +34,7 @@ namespace TesisProj.Models.Storage
         public DbRequester<SalidaOperacion> SalidaOperacionesRequester { get; set; }
         public DbRequester<Audit> AuditsRequester { get; set; }
         public DbRequester<DbVersion> DbVersionsRequester { get; set; }
+        public DbRequester<Colaborador> ColaboradoresRequester { get; set; }
 
         public void RegistrarTablasProyecto()
         {
@@ -45,6 +48,7 @@ namespace TesisProj.Models.Storage
             SalidaOperacionesRequester = new DbRequester<SalidaOperacion>(this, SalidaOperaciones, Audits);
             AuditsRequester = new DbRequester<Audit>(this, Audits);
             DbVersionsRequester = new DbRequester<DbVersion>(this, DbVersions, Audits);
+            ColaboradoresRequester = new DbRequester<Colaborador>(this, Colaboradores, Audits);
         }
 
         public void SeedProyecto()

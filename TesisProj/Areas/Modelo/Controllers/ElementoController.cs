@@ -28,6 +28,16 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.ProyectoId = proyecto.Id;
             ViewBag.TipoElementos = db.TipoElementos.OrderBy(t => t.NombrePlural).ToList();
 
+            int idUser = getUserId();
+
+            bool IsCreador = (idUser == proyecto.IdCreador);
+            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
+            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
+
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
+
             var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id);
 
             return View(elementos.ToList());
@@ -54,6 +64,16 @@ namespace TesisProj.Areas.Modelo.Controllers
                 var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
                 salida.Valores = salida.Evaluar(proyecto.Horizonte, proyecto.PeriodosPreOp, proyecto.PeriodosCierre, refs, parametros);
             }
+
+            int idUser = getUserId();
+
+            bool IsCreador = (idUser == proyecto.IdCreador);
+            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
+            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
+
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
 
             ViewBag.IdElemento = elemento.Id;
             ViewBag.Proyecto = proyecto.Nombre;

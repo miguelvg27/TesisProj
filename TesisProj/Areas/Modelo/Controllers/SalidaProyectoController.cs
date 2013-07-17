@@ -30,6 +30,16 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.ProyectoId = proyecto.Id;
 
             var salidaproyectos = db.SalidaProyectos.Include(s => s.Proyecto).Where(s => s.IdProyecto == proyecto.Id);
+
+            int idUser = getUserId();
+
+            bool IsCreador = (idUser == proyecto.IdCreador);
+            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
+            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
+
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
             
             return View(salidaproyectos.ToList());
         }

@@ -152,6 +152,7 @@ namespace TesisProj.Models.Storage
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Nombre = "Precio metal (US$/oz)",         Referencia = "precioMetal",     IdTipoParametro = 3, IdPlantillaElemento = 3, Constante = false });
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Nombre = "Recuperación",                  Referencia = "recuperacion",    IdTipoParametro = 1, IdPlantillaElemento = 3, Constante = false });
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Nombre = "Costo de producción (US$/TM)",  Referencia = "costoProduccion", IdTipoParametro = 3, IdPlantillaElemento = 3, Constante = false });
+            PlantillaParametrosRequester.AddElement(new PlantillaParametro { Nombre = "Costos fijos (US$)", Referencia = "costoFijo", IdTipoParametro = 3, IdPlantillaElemento = 3, Constante = false });
 
             PlantillaParametrosRequester.AddElement(new PlantillaParametro { Nombre = "Monto (US$)", Referencia = "monto", IdTipoParametro = 3, IdPlantillaElemento = 4, Constante = false });
             
@@ -197,7 +198,7 @@ namespace TesisProj.Models.Storage
 
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Nombre = "Valor unitario mineral", Referencia = "valorUnitario", Secuencia = 1, IdTipoFormula = 10, IdPlantillaElemento = 3, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre", Visible = false, Cadena = "ley * precioMetal * recuperacion" });
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Nombre = "Ventas", Referencia = "ventas", Secuencia = 2, IdTipoFormula = 8, IdPlantillaElemento = 3, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre", Visible = true, Cadena = "valorUnitario * tamanoMina" });
-            PlantillaFormulasRequester.AddElement(new PlantillaFormula { Nombre = "Costos", Referencia = "costos", Secuencia = 3, IdTipoFormula = 9, IdPlantillaElemento = 3, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre", Visible = true, Cadena = "costoProduccion * tamanoMina" });
+            PlantillaFormulasRequester.AddElement(new PlantillaFormula { Nombre = "Costos", Referencia = "costos", Secuencia = 3, IdTipoFormula = 9, IdPlantillaElemento = 3, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre", Visible = true, Cadena = "costoProduccion * tamanoMina + costoFijo" });
 
             PlantillaFormulasRequester.AddElement(new PlantillaFormula { Nombre = "Gasto administrativo", Referencia = "administrativo", Secuencia = 1, IdTipoFormula = 11, IdPlantillaElemento = 4, PeriodoInicial = "PeriodosPreOperativos + 1", PeriodoFinal = "Horizonte - PeriodosCierre", Visible = true, Cadena = "monto" });
 

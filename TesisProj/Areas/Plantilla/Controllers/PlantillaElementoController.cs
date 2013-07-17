@@ -11,7 +11,6 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
-    [Authorize(Roles = "admin")]
     public class PlantillaElementoController : Controller
     {
         private TProjContext db = new TProjContext();

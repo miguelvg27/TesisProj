@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
@@ -31,17 +32,14 @@ namespace TesisProj.Areas.Modelo.Models
 
         [XmlIgnore]
         [ForeignKey("IdCreador")]
-        public virtual UserProfile Creador { get; set; }
-
-        [XmlIgnore]
-        public virtual List<UserProfile> Colaboradores { get; set; }
+        public UserProfile Creador { get; set; }
 
         [DisplayName("Descripción")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Horizonte")]
+        [DisplayName("Horizonte (años)")]
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Horizonte { get; set; }
 
@@ -68,6 +66,9 @@ namespace TesisProj.Areas.Modelo.Models
 
         [InverseProperty("Proyecto")]
         public virtual List<Operacion> Operaciones { get; set; }
+
+        [InverseProperty("Proyecto")]
+        public virtual List<Colaborador> Colaboradores { get; set; }
 
         public override string LogValues()
         {

@@ -255,7 +255,8 @@
     <Compile Include="Areas\Proyectos\Models\Pedro_Proyecto.cs" />
     <Compile Include="Areas\Proyectos\Models\TProjContext.cs" />
     <Compile Include="Areas\Proyectos\ProyectosAreaRegistration.cs" />
-    <Compile Include="Areas\Seguridad\Controllers\SeguridadController.cs" />
+    <Compile Include="Areas\Seguridad\Controllers\ColaboradoresController.cs" />
+    <Compile Include="Areas\Seguridad\Models\Colaborador.cs" />
     <Compile Include="Areas\Seguridad\SeguridadAreaRegistration.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\MaestroSimulacionController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\NormalController.cs" />
@@ -280,7 +281,6 @@
     <Compile Include="Models\Calculos.cs" />
     <Compile Include="Areas\Modelo\Models\DbVersion.cs" />
     <Compile Include="Models\Generics.cs" />
-    <Compile Include="Models\SelectListItems.cs" />
     <Compile Include="Models\Storage\DbObject.cs" />
     <Compile Include="Models\Storage\DbRequester.cs" />
     <Compile Include="Models\Storage\TProjContext.cs" />
@@ -664,9 +664,8 @@
     <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirE.cshtml" />
     <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirF.cshtml" />
     <Content Include="Areas\Seguridad\Views\Web.config" />
-    <Content Include="Areas\Seguridad\Views\Seguridad\Index.cshtml" />
-    <Content Include="Areas\Seguridad\Views\Seguridad\Colaboradores.cshtml" />
-    <Content Include="Areas\Seguridad\Views\Shared\EditorTemplates\TemplateColaborador.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Colaboradores\Index.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Colaboradores\Create.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
@@ -810,7 +809,7 @@
     <Folder Include="Areas\MonteCarlo\Views\Shared\" />
     <Folder Include="Areas\Plantilla\Views\Shared\" />
     <Folder Include="Areas\Proyectos\Views\Shared\" />
-    <Folder Include="Areas\Seguridad\Models\" />
+    <Folder Include="Areas\Seguridad\Views\Shared\" />
     <Folder Include="Areas\Simulaciones\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
