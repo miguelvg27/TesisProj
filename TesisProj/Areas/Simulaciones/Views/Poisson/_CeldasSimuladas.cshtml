@@ -1,0 +1,18 @@
+﻿@using Telerik.Web.Mvc.UI
+@using TesisProj.Areas.Proyectos.Models
+@using TesisProj.Areas.Modelo.Models 
+@model ICollection<TesisProj.Areas.Modelo.Models.Celda>
+
+<ul class="thumbnails row-fluid">
+    
+        @foreach (Celda e in Model)
+        {
+            <li style="text-align:center">
+                <div class="thumbnail">
+                    <h4>@e.Periodo</h4>
+                    <p>@(Math.Round(e.Valor,2))</p>
+                </div>
+            </li>
+        }
+</ul>       
+ 

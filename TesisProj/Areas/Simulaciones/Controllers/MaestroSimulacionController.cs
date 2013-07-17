@@ -20,7 +20,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public ActionResult Index(int idProyecto)
         {
-            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
+            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Include("Poisson").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
             ViewBag.ProyectoId = idProyecto;
             List<Parametro> salida = new List<Parametro>();
 
@@ -34,7 +34,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                         if (parametro.geometrica==null) parametro.geometrica = new Geometrica();
                         if (parametro.hipergeometrica == null) parametro.hipergeometrica = new Hipergeometrica();
                         if (parametro.pascal==null) parametro.pascal = new Pascal();
-                        if (parametro.poison == null) parametro.poison = new Poisson();
+                        if (parametro.poisson == null) parametro.poisson = new Poisson();
                         if (parametro.uniforme == null) parametro.uniforme = new Uniforme();
                         if (parametro.normal ==null) parametro.normal = new Normal();
                         context.Entry(parametro).State = EntityState.Modified;

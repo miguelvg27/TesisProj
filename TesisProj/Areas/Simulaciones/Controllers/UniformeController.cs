@@ -38,7 +38,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             p.geometrica.IsEliminado = true;
             p.hipergeometrica.IsEliminado = true;
             p.pascal.IsEliminado = true;
-            p.poison.IsEliminado = true;
+            p.poisson.IsEliminado = true;
             p.uniforme.IsEliminado = false;
             Session["GraficoSimulacion"] = p.uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
@@ -81,7 +81,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             p.geometrica.IsEliminado = true;
             p.hipergeometrica.IsEliminado = true;
             p.pascal.IsEliminado = true;
-            p.poison.IsEliminado = true;
+            p.poisson.IsEliminado = true;
             p.uniforme.IsEliminado = false;
             Session["GraficoSimulacion"] = p.uniforme.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;

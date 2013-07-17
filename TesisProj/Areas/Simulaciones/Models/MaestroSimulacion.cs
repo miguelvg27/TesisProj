@@ -51,10 +51,24 @@ namespace TesisProj.Areas.Simulaciones.Models
                 CeldasSensibles = celdas;                
             }
 
-            if(uniforme!=null)
+            if(modelo=="Uniforme")
             {
                 List<Celda> celdas = new List<Celda>();
                 Graficos = uniforme.GenerarNumerosAleatorios(parametro.Celdas.Count);
+                int i = 0;
+                foreach (Grafico g in Graficos)
+                {
+                    decimal valor = Convert.ToDecimal(g.fx);
+                    celdas.Add(new Celda { IdParametro = parametro.Celdas[i].IdParametro, Valor = valor, Periodo = parametro.Celdas[i].Periodo });
+                    i++;
+                }
+                CeldasSensibles = celdas;
+            }
+
+            if (modelo == "Poisson")
+            {
+                List<Celda> celdas = new List<Celda>();
+                Graficos = poisson.GenerarNumerosAleatorios(parametro.Celdas.Count);
                 int i = 0;
                 foreach (Grafico g in Graficos)
                 {
