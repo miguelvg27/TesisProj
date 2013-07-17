@@ -97,6 +97,17 @@ namespace TesisProj.Areas.Modelo.Controllers
             var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
 
+
+            int idUser = getUserId();
+
+            bool IsCreador = (idUser == proyecto.IdCreador);
+            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
+            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
+
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
+
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.IdElemento = elemento.Id;
             ViewBag.Parametros = parametros.ToList();

@@ -9,19 +9,33 @@
     int Horizonte = ViewBag.Horizonte;
     int IdElemento = ViewBag.IdElemento;
     int IdProyecto = ViewBag.IdProyecto;
+
+    bool IsCreador = ViewBag.IsCreador;
+    bool IsEditor = ViewBag.IsEditor;
+    bool IsRevisor = ViewBag.IsRevisor;
 }
 
 <h2>Ver parámetros de @ViewBag.Elemento (@ViewBag.Proyecto)</h2>
 
 <p>
     <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("SetParametros", new { id = ViewBag.IdElemento })"">
+    @if (!IsRevisor)
+    {
+    <a class="btn btn-inverse" style="color: #E6F0F2;"href="@Url.Action("SetParametros", new { id = ViewBag.IdElemento })">
   	    <i class="icon-pencil icon-white"></i>Editar
     </a>
     <a style="margin:5px"></a>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
+    
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })">
   	    <i class="icon-arrow-left icon-white"></i>Regresar
-    </a> <br /><br />
+    </a>
+    } else {
+        <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })">
+  	        <i class="icon-arrow-left icon-white"></i>Regresar
+        </a>
+    }
+    
+    <br /><br />
 </p>
 
 @using (Html.BeginForm()) {
@@ -78,9 +92,17 @@
 }
 
 <p>
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })"">
-  			<i class="icon-arrow-left icon-white"></i>Regresar
-    </a>
+    @if(!IsRevisor)
+    {    
+        <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id = ViewBag.IdElemento   })">
+  			    <i class="icon-arrow-left icon-white"></i>Regresar
+        </a>
+    } else 
+    {
+        <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })">
+  	        <i class="icon-arrow-left icon-white"></i>Regresar
+        </a>
+    }
 </p> 
 
 @section Scripts {

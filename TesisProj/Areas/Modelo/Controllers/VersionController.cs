@@ -279,6 +279,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 proyecto_dirty.Nombre = nombreTest;
 
                 db.ProyectosRequester.AddElement(proyecto_dirty);
+                db.AuditsRequester.AddElement(new Audit { IdProyecto = proyecto_dirty.Id, Fecha = DateTime.Now, IdUsuario = getUserId(), Transaccion = "Crear", TipoObjeto = proyecto_dirty.GetType().ToString(), Original = proyecto_dirty.LogValues() });
 
                 db.Configuration.ValidateOnSaveEnabled = true;
                 db.Configuration.ProxyCreationEnabled = true;

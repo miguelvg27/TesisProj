@@ -81,7 +81,7 @@ namespace TesisProj.Areas.Seguridad.Controllers
             {
                 ModelState.AddModelError("IdUsuario", "No existe este nombre de usuario");
             }
-            if (creador.Equals(colaborador) || db.Colaboradores.Include(c => c.Usuario).Any(c => c.Usuario.UserName.Equals(colaborador)))
+            if (creador.Equals(colaborador) || db.Colaboradores.Include(c => c.Usuario).Any(c => c.Usuario.UserName.Equals(colaborador) && c.IdProyecto == idProyecto))
             {
                 ModelState.AddModelError("IdUsuario", "El usuario ya ha sido agregado al proyecto.");
             }

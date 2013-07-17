@@ -52,6 +52,9 @@
                     @Html.Raw(" | ") @Html.ActionLink("Parámetros", "Catalog", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null)
                     @Html.Raw(" | ") @Html.ActionLink("Fórmulas", "Cuaderno", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null)
                     @Html.Raw(" | ") @Html.ActionLink("Eliminar", "DeleteElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: new { onclick="return DeleteConfirm()" })
+                } else 
+                {
+                    @Html.Raw(" | ") @Html.ActionLink("Parámetros", "VerParametros", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null)
                 }
             </td>
         </tr>
