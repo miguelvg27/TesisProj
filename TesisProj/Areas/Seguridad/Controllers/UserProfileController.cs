@@ -29,6 +29,11 @@ namespace TesisProj.Areas.Seguridad.Controllers
                 Roles.RemoveUserFromRole(username, "nav");
             }
 
+            if (policy && Roles.IsUserInRole(username, "admin"))
+            {
+                Roles.RemoveUserFromRole(username, "admin");
+            }
+
             if (!policy && !Roles.IsUserInRole(username, "nav"))
             {
                 Roles.AddUserToRole(username, "nav");
