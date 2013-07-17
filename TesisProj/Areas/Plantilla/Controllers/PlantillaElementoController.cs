@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
@@ -130,6 +131,84 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DuplicarPlantilla(int id)
+        {
+            PlantillaElemento plantilla = db.PlantillaElementos.Include(e => e.Formulas).Include(e => e.Parametros).FirstOrDefault(e => e.Id == id);
+
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            string nombre = "Copia de " + plantilla.Nombre + " ";
+            string nombreTest = nombre;
+            int i = 1;
+
+            while (db.PlantillaElementos.Any(p => p.Nombre.Equals(nombreTest)))
+            {
+                nombreTest = nombre + i++;
+            }
+
+            PlantillaElemento elemento = new PlantillaElemento { IdTipoElemento = plantilla.IdTipoElemento, Nombre = nombreTest };
+            elemento.Parametros = new List<PlantillaParametro>();
+            elemento.Formulas = new List<PlantillaFormula>();
+
+            foreach (PlantillaParametro parametro in plantilla.Parametros)
+            {
+                elemento.Parametros.Add(new PlantillaParametro(parametro));
+            }
+
+            foreach (PlantillaFormula formula in plantilla.Formulas)
+            {
+                elemento.Formulas.Add(new PlantillaFormula(formula));
+            }
+
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.PlantillaElementosRequester.AddElement(elemento);
+            db.Configuration.ValidateOnSaveEnabled = true;
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult VolverPlantilla(int id)
+        {
+            Elemento plantilla = db.Elementos.Include(e => e.Formulas).Include(e => e.Parametros).FirstOrDefault(e => e.Id == id);
+
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            string nombre = "Copia de " + plantilla.Nombre + " ";
+            string nombreTest = nombre;
+            int i = 1;
+
+            while (db.PlantillaElementos.Any(p => p.Nombre.Equals(nombreTest)))
+            {
+                nombreTest = nombre + i++;
+            }
+
+            PlantillaElemento elemento = new PlantillaElemento { IdTipoElemento = plantilla.IdTipoElemento, Nombre = nombreTest };
+            elemento.Parametros = new List<PlantillaParametro>();
+            elemento.Formulas = new List<PlantillaFormula>();
+
+            foreach (Parametro parametro in plantilla.Parametros)
+            {
+                elemento.Parametros.Add(new PlantillaParametro(parametro));
+            }
+
+            foreach (Formula formula in plantilla.Formulas)
+            {
+                elemento.Formulas.Add(new PlantillaFormula(formula));
+            }
+
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.PlantillaElementosRequester.AddElement(elemento);
+            db.Configuration.ValidateOnSaveEnabled = true;
+
+            return RedirectToAction("Programa", "Proyecto", new { Area = "Modelo", id = plantilla.Id });
         }
 
         protected override void Dispose(bool disposing)

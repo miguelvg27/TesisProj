@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
@@ -132,6 +133,86 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult DuplicarPlantilla(int id)
+        {
+            PlantillaProyecto plantilla = db.PlantillaProyectos.Include(e => e.Salidas).Include(e => e.Operaciones).Include(e => e.Salidas.Select(s => s.Operaciones)).FirstOrDefault(e => e.Id == id);
+
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            string nombre = "Copia de " + plantilla.Nombre + " ";
+            string nombreTest = nombre;
+            int i = 1;
+
+            while (db.PlantillaProyectos.Any(p => p.Nombre.Equals(nombreTest)))
+            {
+                nombreTest = nombre + i++;
+            }
+
+            int idPlantilla = db.PlantillaProyectosRequester.AddElement(new PlantillaProyecto { Nombre = nombreTest });
+
+
+            foreach (PlantillaOperacion operacion in plantilla.Operaciones.OrderBy(o => o.Secuencia))
+            {
+                db.PlantillaOperacionesRequester.AddElement(new PlantillaOperacion(operacion, idPlantilla));
+            }
+
+            foreach (PlantillaSalidaProyecto salida in plantilla.Salidas)
+            {
+                int idSalida = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto(salida, idPlantilla));
+
+                foreach (PlantillaSalidaOperacion cruce in salida.Operaciones)
+                {
+                    int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idPlantilla).Id;
+                    db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult VolverPlantilla(int id)
+        {
+            Proyecto plantilla = db.Proyectos.Include(e => e.Salidas).Include(e => e.Operaciones).Include(e => e.Salidas.Select(s => s.Operaciones)).FirstOrDefault(e => e.Id == id);
+
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            string nombre = "Copia de " + plantilla.Nombre + " ";
+            string nombreTest = nombre;
+            int i = 1;
+
+            while (db.PlantillaProyectos.Any(p => p.Nombre.Equals(nombreTest)))
+            {
+                nombreTest = nombre + i++;
+            }
+
+            int idPlantilla = db.PlantillaProyectosRequester.AddElement(new PlantillaProyecto { Nombre = nombreTest });
+
+
+            foreach (Operacion operacion in plantilla.Operaciones.OrderBy(o => o.Secuencia))
+            {
+                db.PlantillaOperacionesRequester.AddElement(new PlantillaOperacion(operacion, idPlantilla));
+            }
+
+            foreach (SalidaProyecto salida in plantilla.Salidas)
+            {
+                int idSalida = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto(salida, idPlantilla));
+
+                foreach (SalidaOperacion cruce in salida.Operaciones)
+                {
+                    int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idPlantilla).Id;
+                    db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
+                }
+            }
+
+            return RedirectToAction("Cine", "Proyecto", new { Area = "Modelo", id = plantilla.Id });
         }
 
         protected override void Dispose(bool disposing)

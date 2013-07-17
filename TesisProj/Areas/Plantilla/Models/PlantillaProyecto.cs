@@ -17,6 +17,12 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Plantilla")]
         public string Nombre { get; set; }
 
+        [InverseProperty("PlantillaProyecto")]
+        public virtual List<PlantillaSalidaProyecto> Salidas { get; set; }
+
+        [InverseProperty("PlantillaProyecto")]
+        public virtual List<PlantillaOperacion> Operaciones { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())
