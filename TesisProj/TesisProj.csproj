@@ -198,6 +198,7 @@
     <Compile Include="Areas\Modelos\Models\Binomial.cs" />
     <Compile Include="Areas\Modelos\Models\Geometrica.cs" />
     <Compile Include="Areas\Modelos\Models\Grafico.cs" />
+    <Compile Include="Areas\Modelos\Models\Hash.cs" />
     <Compile Include="Areas\Modelos\Models\Hipergeometrica.cs" />
     <Compile Include="Areas\Modelos\Models\ModeloSimlacion.cs" />
     <Compile Include="Areas\Modelos\Models\Normal.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Areas\Simulaciones\Controllers\MaestroSimulacionController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\NormalController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\ParametroController.cs" />
+    <Compile Include="Areas\Simulaciones\Controllers\PoissonController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\SimulacionController.cs" />
     <Compile Include="Areas\Simulaciones\Controllers\UniformeController.cs" />
     <Compile Include="Areas\Simulaciones\Models\Asignacion.cs" />
@@ -666,6 +668,12 @@
     <Content Include="Areas\Seguridad\Views\Web.config" />
     <Content Include="Areas\Seguridad\Views\Colaboradores\Index.cshtml" />
     <Content Include="Areas\Seguridad\Views\Colaboradores\Create.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Seguridad\Index.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Seguridad\Colaboradores.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Shared\EditorTemplates\TemplateColaborador.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\_CeldasSimuladas.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\_GraficoSimulacion.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />

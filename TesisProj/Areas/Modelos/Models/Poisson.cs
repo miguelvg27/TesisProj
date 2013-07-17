@@ -23,13 +23,23 @@ namespace TesisProj.Areas.Modelos.Models
 
         [DisplayName("Numero de muestra")]
         [Required]
-        public double po_K { get; set; }
+        public int po_K { get; set; }
+
+        [DisplayName("Limite Inferior")]
+        [Required]
+        public int limiteInf { get; set; }
+
+        [DisplayName("Limite Superior")]
+        [Required]
+        public int limiteSup{ get; set; }
 
         [DisplayName("Valor Esperado")]
         public double po_E { get; set; }
 
         [DisplayName("Varianza")]
         public double po_V { get; set; }
+
+        public List<Grafico> graficar { get; set; }
 
         #endregion
 
@@ -89,28 +99,71 @@ namespace TesisProj.Areas.Modelos.Models
             return (Math.Exp(-po_L) * Math.Pow(po_L, K)) / (Calculos.Factorial(K));
         }
 
-        public List<Grafico> GetFuncionSimpleArreglo()
+        public List<Grafico> GenerarNumerosAleatorios(int k)
         {
+            List<HashSimulacion> Indices = new List<HashSimulacion>();
             List<Grafico> s = new List<Grafico>();
-            for (int i = 0; i <= po_K; i++)
+            Double aux = 0;
+
+            for (int i = limiteInf; i <= limiteSup; i++)
             {
+                Indices.Add(new HashSimulacion { probabilidad = GetFuncion(i), numeroqaparece = i });
+            }
+
+            if (Indices.Sum(f => f.probabilidad) < 0.001)
+            {
+                for (int i = 1; i <= k; i++)
+                {
+                    Grafico t = new Grafico();
+                    aux = 0;
+                    t.fx = aux;
+                    t.sfx = Convert.ToString(Math.Round(t.fx));
+                    t.x = i;
+                    t.sx = Convert.ToString(i);
+                    s.Add(t);
+                }
+                graficar = s;
+                return s;
+            }
+
+            int[] temporal = new int[1000];
+            int cont = 0;
+
+            foreach (HashSimulacion h in Indices)
+            {
+                int n = Convert.ToInt32(Math.Round(h.probabilidad *100, 2));
+                for (int i = 1; i <= n; i++)
+                {
+                    temporal[cont] = h.numeroqaparece;
+                    cont++;
+                }
+            }
+            Random r = new Random(DateTime.Now.Millisecond);
+            for (int i = 0; i < k; i++)
+            {
+                int f=r.Next(cont);
                 Grafico t = new Grafico();
-                t.fx = GetFuncion(i);
+                aux = temporal[f]; ;
+                t.fx = aux;
+                t.sfx = Convert.ToString(Math.Round(t.fx));
                 t.x = i;
                 t.sx = Convert.ToString(i);
-                t.sfx = Convert.ToString(Math.Round(t.fx * 100, 2));
                 s.Add(t);
             }
-            using (StreamWriter sw = new StreamWriter(@"C:\Modelo\Poisson.txt", true))
+
+            int max= Convert.ToInt32(Math.Truncate(s.Max(o=>o.fx)));
+            int min= Convert.ToInt32(Math.Truncate(s.Min(o=>o.fx)));
+            graficar = new List<Grafico>();
+            for (int y =min; y<=max;y++)
             {
-                sw.WriteLine("Poisson fx" + " - " + DateTime.Now.ToString());
-                sw.WriteLine("|x" + "  -  " + "fx|");
-                foreach (Grafico g in s)
-                {
-                    sw.WriteLine("|" + g.sx + "  -  " + g.sfx + "|");
-                }
-                sw.WriteLine();
+                Grafico t = new Grafico();
+                t.fx = s.Where(f=>f.fx==y).Count();
+                t.sfx = Convert.ToString(Math.Round(t.fx));
+                t.x = y;
+                t.sx = Convert.ToString(y);
+                graficar.Add(t);
             }
+ 
             return s;
         }
 

@@ -60,7 +60,7 @@ namespace TesisProj.Areas.Modelo.Models
         public virtual Geometrica geometrica { get; set; }
         public virtual Hipergeometrica hipergeometrica { get; set; }
         public virtual Pascal pascal { get; set; }
-        public virtual Poisson poison { get; set; }
+        public virtual Poisson poisson { get; set; }
 
         [NotMapped]
         public List<Celda> CeldasSensibles { get; set; }

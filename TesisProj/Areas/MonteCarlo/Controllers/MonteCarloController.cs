@@ -32,6 +32,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
         [HttpPost]
         public ActionResult Index(AlgoritmoMonteCarlo mc, int idProyecto)
         {
+            ViewBag.idProyecto = idProyecto;
             mc.Parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Where(e => e.Elemento.IdProyecto == idProyecto).Where(oo => oo.Sensible == true).ToList();
             Proyecto proy = context.Proyectos.Find(idProyecto);
             List<Hash>  vanE = new List<Hash>();
@@ -70,6 +71,13 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             maestro.ActualizarCeldas("Uniforme", p);
                             p.CeldasSensibles = maestro.CeldasSensibles;
                         }
+                        if (p.poisson.IsEliminado == false)
+                        {
+                            MaestroSimulacion maestro = new MaestroSimulacion();
+                            maestro.poisson = p.poisson;
+                            maestro.ActualizarCeldas("Poisson", p);
+                            p.CeldasSensibles = maestro.CeldasSensibles;
+                        }
                         Parametrossensibles.Add(new Parametro
                         {
                             Nombre = p.Nombre,
@@ -88,7 +96,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             geometrica = p.geometrica,
                             hipergeometrica = p.hipergeometrica,
                             pascal = p.pascal,
-                            poison = p.poison
+                            poisson = p.poisson
                         });
                        // Alacena(p);
 
@@ -113,7 +121,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             geometrica = p.geometrica,
                             hipergeometrica = p.hipergeometrica,
                             pascal = p.pascal,
-                            poison = p.poison
+                            poisson = p.poisson
                         });
                         // Alacena(p);
 
