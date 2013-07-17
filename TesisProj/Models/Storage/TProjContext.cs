@@ -42,7 +42,10 @@ namespace TesisProj.Models.Storage
         public void Seed()
         {
             SeedPlantilla();
+
+            SeedUserProfiles();
             SeedProyecto();
+
 
             //Pedro Curich
             SeedEstadoCivil();

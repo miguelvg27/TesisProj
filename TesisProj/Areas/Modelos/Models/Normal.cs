@@ -129,7 +129,7 @@ namespace TesisProj.Areas.Modelos.Models
             for (int i = 1; i <= Veces; i++)
             {
                 Grafico t = new Grafico();
-                aux = rg.NormalDeviate() + n_mean;
+                aux = rg.NormalDeviate()*n_std + n_mean;
                 t.fx = aux;
                 t.x = i;
                 t.sx = Convert.ToString(i);

@@ -15,13 +15,83 @@
             <td>@item.Nombre</td>
             <td>
                 <div class="btn-group">
-                    <a class="btn btn" href="@Url.Action("Index", "Binomial", new { Area = "Simulaciones", idParametro = item.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
-                    <a class="btn btn" href="@Url.Action("Index", "Geometrica", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Geometrica</a> 
-                    <a class="btn btn" href="@Url.Action("Index", "Hipergeometrica", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Hipergeometrica</a> 
-                    <a class="btn btn" href="@Url.Action("Index", "Pascal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Pascal</a> 
-                    <a class="btn btn" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> 
-                    <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
-                    <a class="btn" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>               
+                    @if(item.binomial!=null)
+                    {
+                        if(item.binomial.IsEliminado==false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
+                        }
+                        else
+                        {
+                            <a class="btn btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
+                        }
+                    }
+                    @if(item.geometrica!=null)
+                    {
+                        if (item.geometrica.IsEliminado == false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Geometrica</a> 
+                        }
+                        else
+                        {
+                            <a class="btn btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Geometrica</a> 
+                        }
+                    }
+                    @if (item.hipergeometrica != null)
+                    {
+                        if (item.hipergeometrica.IsEliminado == false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Hipergeometrica</a> 
+                        }
+                        else
+                        {
+                            <a class="btn btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Hipergeometrica</a> 
+                        }
+                    }
+                    @if (item.pascal != null)
+                    {
+                        if (item.pascal.IsEliminado == false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Pascal</a> 
+                        }
+                        else
+                        {
+                            <a class="btn btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Pascal</a> 
+                        }
+                    }
+                    @if (item.poisson != null)
+                    {
+                        if (item.poisson.IsEliminado == false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> 
+                        }
+                        else
+                        {
+                            <a class="btn btn" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> 
+                        }
+                    } 
+                    @if (item.normal != null)
+                    {
+                        if (item.normal.IsEliminado == false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
+                        }
+                        else
+                        {
+                            <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
+                        }
+                    } 
+                    @if (item.uniforme != null)
+                    {
+                        if (item.uniforme.IsEliminado == false)
+                        {
+                            <a class="btn btn-info" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>               
+                        }
+                        else
+                        {
+                            <a class="btn" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = item.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>               
+                        }
+                    }                   
                 </div>
             </td>     
         </tr>

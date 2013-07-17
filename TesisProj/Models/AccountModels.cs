@@ -8,6 +8,7 @@ using System.Web.Security;
 using System.Xml.Serialization;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Seguridad.Models;
+using TesisProj.Models.Storage;
 
 namespace TesisProj.Models
 {
