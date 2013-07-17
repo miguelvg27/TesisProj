@@ -9,7 +9,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "nav")]
     public class HomeController : Controller
     {
         public ActionResult Index()

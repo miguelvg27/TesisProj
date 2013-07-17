@@ -12,7 +12,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Seguridad.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "nav")]
     public class ColaboradoresController : Controller
     {
         private TProjContext db = new TProjContext();

@@ -11,6 +11,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
+    [Authorize(Roles = "nav")]
     public class PlantillaOperacionController : Controller
     {
         private TProjContext db = new TProjContext();

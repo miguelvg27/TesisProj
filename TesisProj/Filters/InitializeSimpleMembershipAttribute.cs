@@ -46,15 +46,22 @@ namespace TesisProj.Filters
                         Roles.CreateRole("admin");
                     }
 
+                    if (!Roles.RoleExists("nav"))
+                    {
+                        Roles.CreateRole("nav");
+                    }
+
                     if (!WebSecurity.UserExists("miguelavg"))
                     {
                         WebSecurity.CreateUserAndAccount("miguelavg", "miguelavg");
                         Roles.AddUserToRole("miguelavg", "admin");
+                        Roles.AddUserToRole("miguelavg", "nav");
                     }
 
                     if (!WebSecurity.UserExists("pedrocg"))
                     {
                         WebSecurity.CreateUserAndAccount("pedrocg", "pedrocg");
+                        Roles.AddUserToRole("pedrocg", "nav");
                     }
                 }
                 catch (Exception ex)

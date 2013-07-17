@@ -1,20 +1,17 @@
 ﻿@{
     ViewBag.Title = "Evaluación de proyectos";
 }
-@section featured {
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>@ViewBag.Title.</h1>
-                <h2>@ViewBag.Message</h2>
-            </hgroup>
-            <p>
-                ¡Aquí vamos!
-            </p>
-        </div>
-    </section>
-}
-<h3>Administración y plantillas:</h3>
+
+<h2>Administración y plantillas:</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Home", new { Area = "" })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br />
+</p>
+
 <table class="table table-hover table-striped table-bordered table-condensed">
     <tr>
         <td>
@@ -67,3 +64,9 @@
         </td>
     </tr>
 </table>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Home", new { Area = "" })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>

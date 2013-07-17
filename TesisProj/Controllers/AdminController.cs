@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace TesisProj.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles="nav")]
     public class AdminController : Controller
     {
         //
