@@ -208,7 +208,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             db.PlantillaElementosRequester.AddElement(elemento);
             db.Configuration.ValidateOnSaveEnabled = true;
 
-            return RedirectToAction("Journal", "Proyecto", new { Area = "Modelo", id = plantilla.IdProyecto });
+            return RedirectToAction("Programa", "Proyecto", new { Area = "Modelo", id = plantilla.Id });
         }
 
         protected override void Dispose(bool disposing)

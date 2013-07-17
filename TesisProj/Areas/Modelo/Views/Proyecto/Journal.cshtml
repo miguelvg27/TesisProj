@@ -42,7 +42,6 @@
                 @Html.ActionLink("Editar", "EditElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Parámetros", "Catalog", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
                 @Html.ActionLink("Fórmulas", "Cuaderno", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: null) |
-                @Html.ActionLink("Volver plantilla", "VolverPlantilla", "PlantillaElemento", routeValues: new { Area = "Plantilla", id = element.Id }, htmlAttributes: new { onclick="return DuplicateConfirm()" }) |
                 @Html.ActionLink("Eliminar", "DeleteElemento", "Proyecto", routeValues: new { Area = "Modelo", id = element.Id }, htmlAttributes: new { onclick="return DeleteConfirm()" })
             </td>
         </tr>
