@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Models.Storage;
 
@@ -38,10 +39,31 @@ namespace TesisProj.Areas.Plantilla.Models
         public int IdPlantillaProyecto { get; set; }
 
         [ForeignKey("IdPlantillaProyecto")]
-        public PlantillaProyecto PlantillaProyecto { get; set; }
+        public virtual PlantillaProyecto PlantillaProyecto { get; set; }
 
         [InverseProperty("Salida")]
-        public List<PlantillaSalidaOperacion> Operaciones { get; set; }
+        public virtual List<PlantillaSalidaOperacion> Operaciones { get; set; }
+
+        public PlantillaSalidaProyecto(PlantillaSalidaProyecto plantilla, int idPlantilla)
+        {
+            this.Nombre = plantilla.Nombre;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Secuencia = plantilla.Secuencia;
+            this.IdPlantillaProyecto = idPlantilla;
+        }
+
+        public PlantillaSalidaProyecto(SalidaProyecto plantilla, int idPlantilla)
+        {
+            this.Nombre = plantilla.Nombre;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Secuencia = plantilla.Secuencia;
+            this.IdPlantillaProyecto = idPlantilla;
+        }
+
+
+        public PlantillaSalidaProyecto() { }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

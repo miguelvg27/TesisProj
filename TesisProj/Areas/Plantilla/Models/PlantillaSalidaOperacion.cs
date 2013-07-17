@@ -21,10 +21,10 @@ namespace TesisProj.Areas.Plantilla.Models
         public int IdSalida { get; set; }
 
         [ForeignKey("IdOperacion")]
-        public PlantillaOperacion Operacion { get; set; }
+        public virtual PlantillaOperacion Operacion { get; set; }
 
         [ForeignKey("IdSalida")]
-        public PlantillaSalidaProyecto Salida { get; set; }
+        public virtual PlantillaSalidaProyecto Salida { get; set; }
 
         public String Nombre { get { return Operacion.Nombre; } }
 

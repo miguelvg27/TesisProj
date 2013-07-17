@@ -16,7 +16,7 @@ namespace TesisProj.Areas.Modelo.Models
     public class Proyecto : DbObject, IValidatableObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
+        [StringLength(255, MinimumLength = 3, ErrorMessage = "El campo {0} debe tener un mínimo de {2} y un máximo de {1} carácteres.")]
         [DisplayName("Proyecto")]
         public string Nombre { get; set; }
 

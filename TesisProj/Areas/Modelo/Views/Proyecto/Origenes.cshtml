@@ -40,7 +40,8 @@
             @Html.DisplayFor(modelItem => item.Creador.UserName)
         </td>
         <td>
-            @Html.ActionLink("Restaurar", "RestaurarVersion", new { id=item.Id }, new { onclick = " return RestoreConfirm()" })
+            @Html.ActionLink("Restaurar", "RestaurarVersion", new { id=item.Id }, new { onclick = " return RestoreConfirm()" }) | 
+            @Html.ActionLink("Duplicar", "DuplicarVersion", new { id = item.Id }, new { onclick = " return DuplicateConfirm()" })
         </td>
     </tr>
 }
@@ -64,6 +65,13 @@
 
     function RestoreConfirm() {
         if (confirm("¿Está seguro que desea restaurar la versión? Se guardará el estado actual como una versión."))
+            return true;
+        else
+            return false;
+    }
+
+    function DuplicateConfirm() {
+        if (confirm("¿Está seguro que desea crear un nuevo proyecto?"))
             return true;
         else
             return false;

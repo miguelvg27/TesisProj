@@ -22,15 +22,15 @@ namespace TesisProj.Areas.Plantilla.Models
         public int IdTipoElemento { get; set; }
 
         [ForeignKey("IdTipoElemento")]
-        public TipoElemento TipoElemento { get; set; }
+        public virtual TipoElemento TipoElemento { get; set; }
 
         [InverseProperty("PlantillaElemento")]
-        List<PlantillaParametro> Parametros { get; set; }
+        public virtual List<PlantillaParametro> Parametros { get; set; }
 
         [InverseProperty("PlantillaElemento")]
-        List<PlantillaFormula> Formulas { get; set; }
+        public virtual List<PlantillaFormula> Formulas { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())
             {

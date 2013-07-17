@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
@@ -44,7 +45,7 @@ namespace TesisProj.Areas.Plantilla.Models
         public int IdPlantillaProyecto { get; set; }
 
         [ForeignKey("IdPlantillaProyecto")]
-        public PlantillaProyecto PlantillaProyecto { get; set; }
+        public virtual PlantillaProyecto PlantillaProyecto { get; set; }
 
         [DisplayName("Indicador")]
         public bool Indicador { get; set; }
@@ -56,6 +57,34 @@ namespace TesisProj.Areas.Plantilla.Models
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
+
+        public PlantillaOperacion(PlantillaOperacion plantilla, int idPlantilla)
+        {
+            this.Indicador = plantilla.Indicador;
+            this.Nombre = plantilla.Nombre;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Referencia = plantilla.Referencia;
+            this.Secuencia = plantilla.Secuencia;
+            this.Cadena = plantilla.Cadena;
+            this.Subrayar = plantilla.Subrayar;
+            this.IdPlantillaProyecto = idPlantilla;
+        }
+
+        public PlantillaOperacion(Operacion plantilla, int idPlantilla)
+        {
+            this.Indicador = plantilla.Indicador;
+            this.Nombre = plantilla.Nombre;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Referencia = plantilla.Referencia;
+            this.Secuencia = plantilla.Secuencia;
+            this.Cadena = plantilla.Cadena;
+            this.Subrayar = plantilla.Subrayar;
+            this.IdPlantillaProyecto = idPlantilla;
+        }
+
+        public PlantillaOperacion() { }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

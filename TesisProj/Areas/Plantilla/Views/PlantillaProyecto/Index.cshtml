@@ -35,6 +35,7 @@
             @Html.ActionLink("Salidas", "Index", "PlantillaSalidaProyecto", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
             @Html.ActionLink("Operaciones", "Index", "PlantillaOperacion", routeValues: new { Area = "Plantilla", id = item.Id }, htmlAttributes: null) |
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Copiar", "DuplicarPlantilla", new { id = item.Id }, new { onclick = "return DuplicateConfirm()" }) |
             @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick="return DeleteConfirm()" })
         </td>
     </tr>
@@ -55,5 +56,12 @@
             return true;
         else
             return false;     
+    }
+
+    function DuplicateConfirm() {
+        if (confirm("¿Está seguro que desea copiar el registro?"))
+            return true;
+        else
+            return false;
     }
 </script>

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.Modelo.Models;
 using TesisProj.Models;
 using TesisProj.Models.Storage;
 
@@ -34,14 +35,14 @@ namespace TesisProj.Areas.Plantilla.Models
         public int IdPlantillaElemento { get; set; }
 
         [ForeignKey("IdPlantillaElemento")]
-        public PlantillaElemento PlantillaElemento { get; set; }
+        public virtual PlantillaElemento PlantillaElemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
         public int IdTipoFormula { get; set; }
 
         [ForeignKey("IdTipoFormula")]
-        public TipoFormula TipoFormula { get; set; }
+        public virtual TipoFormula TipoFormula { get; set; }
 
         [DisplayName("Visible")]
         public bool Visible { get; set; }
@@ -60,6 +61,32 @@ namespace TesisProj.Areas.Plantilla.Models
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
+
+        public PlantillaFormula(PlantillaFormula plantilla)
+        {
+            this.Referencia = plantilla.Referencia;
+            this.Secuencia = plantilla.Secuencia;
+            this.Nombre = plantilla.Nombre;
+            this.IdTipoFormula = plantilla.IdTipoFormula;
+            this.Cadena = plantilla.Cadena;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Visible = plantilla.Visible;
+        }
+
+        public PlantillaFormula(Formula plantilla)
+        {
+            this.Referencia = plantilla.Referencia;
+            this.Secuencia = plantilla.Secuencia;
+            this.Nombre = plantilla.Nombre;
+            this.IdTipoFormula = plantilla.IdTipoFormula;
+            this.Cadena = plantilla.Cadena;
+            this.PeriodoInicial = plantilla.PeriodoInicial;
+            this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.Visible = plantilla.Visible;
+        }
+
+        public PlantillaFormula() { }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

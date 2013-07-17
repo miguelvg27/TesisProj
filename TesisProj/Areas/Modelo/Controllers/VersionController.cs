@@ -239,5 +239,60 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             return RedirectToAction("LoadXml");
         }
+
+        public ActionResult DuplicarVersion(int id)
+        {
+            //
+            // Inicia zona crítica de serialización
+
+            db.Configuration.ProxyCreationEnabled = false;
+            db.Configuration.ValidateOnSaveEnabled = false;
+
+            DbVersion version = db.DbVersions.Find(id);
+
+            if (version == null)
+            {
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Configuration.ProxyCreationEnabled = true;
+                return HttpNotFound();
+            }
+
+            try
+            {
+                XmlSerializer s = new XmlSerializer(typeof(Proyecto));
+                MemoryStream memStream = new MemoryStream(version.Data);
+                Proyecto proyecto_dirty = (Proyecto)s.Deserialize(memStream);
+
+                proyecto_dirty.Version = 0;
+                proyecto_dirty.Creacion = DateTime.Now;
+                proyecto_dirty.IdCreador = getUserId();
+
+                string nombre = "Copia de " + proyecto_dirty.Nombre + " ";
+                string nombreTest = nombre;
+                int i = 1;
+
+                while (db.Proyectos.Any(p => p.Nombre.Equals(nombreTest)))
+                {
+                    nombreTest = nombre + i++;
+                }
+
+                proyecto_dirty.Nombre = nombreTest;
+
+                db.ProyectosRequester.AddElement(proyecto_dirty);
+
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Configuration.ProxyCreationEnabled = true;
+
+                return RedirectToAction("Console", new { id = proyecto_dirty.Id });
+
+            }
+            catch (Exception)
+            {
+                db.Configuration.ValidateOnSaveEnabled = true;
+                db.Configuration.ProxyCreationEnabled = true;
+            }
+
+            return RedirectToAction("Origenes", new { id = version.IdProyecto });
+        }
     }
 }
