@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Telerik.Web.Mvc;
 using TesisProj.Areas.CompararProyecto.Models;
 using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
@@ -23,7 +24,12 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
         public ActionResult Index()
         {
             List<Comparar> c = new List<Comparar>();
-            List<Proyecto> lista = context.Proyectos.ToList();
+
+            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+
+            List<Proyecto> lista = proyectos.Union(colab).ToList();
             int cont =0;
             int[] i=new int[100];
 

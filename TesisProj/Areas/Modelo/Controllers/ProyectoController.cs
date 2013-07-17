@@ -55,6 +55,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 }
                 catch (Exception)
                 {
+                    return 0;
                 }
             }
 
