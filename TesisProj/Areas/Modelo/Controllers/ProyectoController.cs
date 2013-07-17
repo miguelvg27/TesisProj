@@ -65,7 +65,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             int idUser = getUserId();
             var proyectos = db.Proyectos.Include(p => p.Creador).Where(p => p.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = db.Colaboradores.Include(c => c.Proyecto).Where(c => c.IdUsuario == idUser).Select(c => c.Proyecto).ToList();
+            var colab = db.Colaboradores.Include(c => c.Proyecto).Where(c => c.IdUsuario == idUser).Select(c => c.Proyecto).Include(p => p.Creador).ToList();
 
             return View(proyectos.Union(colab).ToList());
         }
