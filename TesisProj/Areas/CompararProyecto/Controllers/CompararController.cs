@@ -89,7 +89,13 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             ViewData["checkedRecords"] = checkedRecords;
 
             List<Comparar> c = new List<Comparar>();
-            List<Proyecto> lproyecto = context.Proyectos.ToList();
+
+            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+
+            List<Proyecto> lproyecto = proyectos.Union(colab).ToList();
+            //List<Proyecto> lproyecto = context.Proyectos.ToList();
 
             foreach (Proyecto p in lproyecto)
             {
