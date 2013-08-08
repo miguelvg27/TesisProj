@@ -99,7 +99,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                             pascal = p.pascal,
                             poisson = p.poisson
                         });
-                       // Alacena(p);
+                        Alacena(p);
 
                     }
                     foreach (Parametro p in e.Parametros.Where(o => o.Sensible == false))
@@ -295,13 +295,15 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
         private void Alacena(Parametro p)
         {
-            using (StreamWriter sw = new StreamWriter(@"C:\Reportes\MonteCarlo.txt", true))
+            string archivo="";
+            if (p.uniforme.IsEliminado == false) archivo = @"C:\Reportes\"+p.Nombre+p.Id+"Uniforme.txt";
+
+            if (p.normal.IsEliminado == false) archivo = @"C:\Reportes\" + p.Nombre + p.Id + "Normal.txt"; 
+            using (StreamWriter sw = new StreamWriter(archivo, true))
             {
-                sw.WriteLine("Normal fx" + " - " + DateTime.Now.ToString());
+                sw.WriteLine(p.Nombre);
                 sw.WriteLine("|x" + "  -  " + "fx|");
                 int i = 0;
-                if (p.uniforme.IsEliminado == false) sw.WriteLine("Uniforme");
-                if (p.normal.IsEliminado == false) sw.WriteLine("Normal");
                 foreach (Celda g in p.CeldasSensibles)
                 {
                     sw.WriteLine("|" + ++i + "  -  " + g.Valor + "|");
