@@ -20,31 +20,45 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public ActionResult Index(int idProyecto)
         {
-            var parametros = context.Parametros.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Include("Poisson").Where(e => e.Elemento.IdProyecto == idProyecto).ToList();
             ViewBag.ProyectoId = idProyecto;
-            List<Parametro> salida = new List<Parametro>();
-
-                foreach (Parametro parametro in parametros)
+            var elementos = context.Elementos.Include("Elemento").Include("Celdas").Include("Normal").Include("Uniforme").Include("Poisson").Where(e => e.IdProyecto == idProyecto);
+            List<Elemento> salidaElementos = new List<Elemento>();
+            bool conf = false;
+            foreach(Elemento e in elementos)
+            {
+                conf = false;
+                List<Parametro> salidaParametros = new List<Parametro>();
+                foreach (Parametro p in e.Parametros)
                 {
-                    if (parametro.Sensible)
+                    if (p.Sensible)
                     {
+                        conf = true;
                         ModeloSimlacion m = new ModeloSimlacion();
-
-                        if (parametro.binomial==null) parametro.binomial = new Binomial(); 
-                        if (parametro.geometrica==null) parametro.geometrica = new Geometrica();
-                        if (parametro.hipergeometrica == null) parametro.hipergeometrica = new Hipergeometrica();
-                        if (parametro.pascal==null) parametro.pascal = new Pascal();
-                        if (parametro.poisson == null) parametro.poisson = new Poisson();
-                        if (parametro.uniforme == null) parametro.uniforme = new Uniforme();
-                        if (parametro.normal ==null) parametro.normal = new Normal();
-                        context.Entry(parametro).State = EntityState.Modified;
+                        if (p.binomial == null) p.binomial = new Binomial();
+                        if (p.geometrica == null) p.geometrica = new Geometrica();
+                        if (p.hipergeometrica == null) p.hipergeometrica = new Hipergeometrica();
+                        if (p.pascal == null) p.pascal = new Pascal();
+                        if (p.poisson == null) p.poisson = new Poisson();
+                        if (p.uniforme == null) p.uniforme = new Uniforme();
+                        if (p.normal == null) p.normal = new Normal();
+                        context.Entry(p).State = EntityState.Modified;
                         context.SaveChanges();
-                        Parametro aux =new Parametro();
-                        aux = parametro;
-                        salida.Add(aux);
+                        Parametro aux = new Parametro();
+                        aux = p;
+                        salidaParametros.Add(aux);
                     }
                 }
-                return View(salida);
+                if (conf)
+                {
+                    Elemento elemento = new Elemento();
+                    elemento = e;
+                    elemento.Parametros = new List<Parametro>();
+                    elemento.Parametros.AddRange(salidaParametros);
+                    salidaElementos.Add(elemento);
+                    conf = false;
+                }
+            }
+            return View(salidaElementos);
         }
 
     }

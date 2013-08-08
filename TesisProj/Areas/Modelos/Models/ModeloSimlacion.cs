@@ -45,6 +45,8 @@ namespace TesisProj.Areas.Modelos.Models
 
         public List<Grafico> graficoDistribucion { get; set; }
 
+        public List<Grafico> graficoDistribucionEsperado { get; set; }
+
         [DisplayName("Valor Mínimo Esperado")]
         public double minimoEsperado { get; set; }
 
@@ -54,6 +56,12 @@ namespace TesisProj.Areas.Modelos.Models
         public List<Grafico> graficoEsperado{ get; set; }
 
         public List<Grafico> graficoSimulacion { get; set; }
+
+        #endregion
+
+        #region Parametros de Simulacion
+
+        public int numeroCeldas { set; get; }
 
         #endregion
 

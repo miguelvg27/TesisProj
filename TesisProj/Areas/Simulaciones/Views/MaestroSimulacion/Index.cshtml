@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
+﻿@using Telerik.Web.Mvc.UI
+@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
 
 @{
     ViewBag.Title = "Asignar Modelo";
@@ -6,6 +7,15 @@
 }
 
 <h2>Asignar Modelo</h2>
+
+@{ Html.Telerik().PanelBar()
+        .Name("PanelSensibles")
+        .HtmlAttributes(new { style = "width: 300px; float: left; margin-bottom: 30px;" })
+        .ExpandMode((PanelBarExpandMode)Enum.Parse(typeof(PanelBarExpandMode), (string)ViewData["expandMode"]))
+        .SelectedIndex(0)
+        .Items(item =>
+
+
 
 <table class="table table-hover table-striped">
 <thead><tr><th>Parametro</th><th>Modelo Disponible</th></tr></thead>

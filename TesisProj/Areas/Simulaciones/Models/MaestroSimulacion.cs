@@ -21,6 +21,9 @@ namespace TesisProj.Areas.Simulaciones.Models
         public virtual List<Celda> CeldasSensibles { get; set; }
         public virtual List<Grafico> Graficos { get; set; }
 
+        public int numeroCeldas { get; set; }
+
+
         public MaestroSimulacion()
         {
             this.Graficos = new List<Grafico>();

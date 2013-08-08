@@ -101,12 +101,29 @@ namespace TesisProj.Areas.Modelos.Models
                 s.Add(CrearGrafico(avance, GetFuncion(avance) * 100));
                 avance += amplitud;
             }
-            this.graficoEsperado = s;
+            this.graficoDistribucionEsperado = s;
             AlmacenarArchivo("graficoEsperadoNormal", graficoEsperado);
             return s;
         }
 
-        public List<Grafico> GetAleatorios(int n)
+        public List<Grafico> GetAleatoriosTotales()
+        {
+            Random r = new Random();
+            double v;
+            double s;
+            int n = Convert.ToInt32(Math.Truncate(Math.Round(maximo - minimo + 1, 1)));
+            for (int i = 0; i < n; i++)
+            {
+                v = Math.Round(graficoEsperado.ElementAt(r.Next(0, graficoEsperado.Count)).fx / 100.0,2);
+                s = Math.Round(n_mean + n_std * (Math.Sqrt(Math.Sqrt(-2 * Math.Log(2 * Math.PI * v)))),2);
+                graficoSimulacion.Add(CrearGrafico(i, s));
+            }
+            AlmacenarArchivo("graficoSimulacionNormal", graficoSimulacion);
+            return graficoSimulacion;
+
+        }
+
+        public List<Grafico> GetAleatoriosEsperados(int n)
         {
             Random r = new Random();
             double v;
