@@ -1,15 +1,93 @@
 ﻿@using Telerik.Web.Mvc.UI
-@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
+@model IEnumerable<TesisProj.Areas.Modelo.Models.Elemento>
 
 @{
     ViewBag.Title = "Asignar Modelo";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Asignar Modelo</h2>
+<div class="page-header">
+    <h1>Elementos<small>  Seleccione un elemento para asignarle un modelo de distribución</small></h1>
+</div>
 
-@{ Html.Telerik().PanelBar()
-        .Name("PanelSensibles")
+<div class="row-fluid">
+    
+        @foreach(TesisProj.Areas.Modelo.Models.Elemento e in Model)
+        {
+            <ul class="thumbnails">
+            @foreach(TesisProj.Areas.Modelo.Models.Parametro p in e.Parametros)
+            {
+                 <li class="span3">
+                    <a class="thumbnail">
+                        <b>Elemento: </b>@e.Nombre <br />
+                        <b>Parametro: </b>@p.Nombre 
+                    </a>
+                </li>
+                <li class="thumbnail span9">
+                    @if(p.binomial==null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
+                    }else
+                    {
+                        <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id , ProyectoId=ViewBag.ProyectoId })">Binomial</a> 
+                    }
+
+                    @if(p.geometrica==null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Geometrica</a> 
+                    }else
+                    {
+                        <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Geometrica</a> 
+                    }
+
+                    @if (p.hipergeometrica == null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Hipergeometrica</a> 
+                    }else
+                    {
+                         <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Hipergeometrica</a> 
+                    }
+
+                    @if (p.pascal == null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Pascal</a> 
+                    }else
+                    {
+                        <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Pascal</a> 
+                    }
+                        
+                    @if (p.poisson == null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> 
+                    }else
+                    {
+                        <a class="btn btn-info" href="@Url.Action("Index", "Poisson", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Poisson</a> 
+                    }
+
+                    @if (p.normal == null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
+                    }else
+                    {
+                        <a class="btn btn-info" href="@Url.Action("Index", "Normal", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Normal</a> 
+                    }
+                      
+                    @if (p.uniforme == null)
+                    {
+                        <a class="btn" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>  
+                    }else
+                    {
+                        <a class="btn btn-info" href="@Url.Action("Index", "Uniforme", new { Area = "Simulaciones", idParametro = p.Id, ProyectoId=ViewBag.ProyectoId  })">Uniforme</a>
+                    }
+                
+                </li>
+            }
+            </ul>
+        }
+</div>
+
+@*            
+.Name("PanelSensibles")
         .HtmlAttributes(new { style = "width: 300px; float: left; margin-bottom: 30px;" })
         .ExpandMode((PanelBarExpandMode)Enum.Parse(typeof(PanelBarExpandMode), (string)ViewData["expandMode"]))
         .SelectedIndex(0)
@@ -106,7 +184,7 @@
             </td>     
         </tr>
 }
-            </table>
+            </table>*@
 
 <p>
         <br />    <br />

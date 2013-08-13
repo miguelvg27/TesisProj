@@ -40,19 +40,19 @@ namespace TesisProj.Areas.Simulaciones.Models
         public void ActualizarCeldas(string modelo,Parametro parametro)
         {
             //aca genero los numeros aleatorios
-            if (modelo=="Normal")
-            {
-                List<Celda> celdas = new List<Celda>();
-                Graficos= normal.GenerarNumerosAleatorios(parametro.Celdas.Count);
-                int i = 0;
-                foreach (Grafico g in Graficos)
-                {
-                    decimal valor = Convert.ToDecimal(g.fx);
-                    celdas.Add(new Celda { IdParametro = parametro.Celdas[i].IdParametro, Valor = valor, Periodo = parametro.Celdas[i].Periodo });
-                    i++;
-                }
-                CeldasSensibles = celdas;                
-            }
+            //if (modelo=="Normal")
+            //{
+            //    List<Celda> celdas = new List<Celda>();
+            //    Graficos= normal.GenerarNumerosAleatorios(parametro.Celdas.Count);
+            //    int i = 0;
+            //    foreach (Grafico g in Graficos)
+            //    {
+            //        decimal valor = Convert.ToDecimal(g.fx);
+            //        celdas.Add(new Celda { IdParametro = parametro.Celdas[i].IdParametro, Valor = valor, Periodo = parametro.Celdas[i].Periodo });
+            //        i++;
+            //    }
+            //    CeldasSensibles = celdas;                
+            //}
 
             if(modelo=="Uniforme")
             {

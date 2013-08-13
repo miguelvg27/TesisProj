@@ -44,22 +44,25 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                 p.normal.amplitud = 0.1*10*Math.Truncate(Math.Log10(p.normal.maximo - p.normal.minimo));
                 p.normal.minimoEsperado = p.normal.minimo;
                 p.normal.maximoEsperado = p.normal.maximo;
-                
-                List<Grafico>  CeldasSensibles =p.normal.GetAleatoriosEsperados(p.Celdas.Count);
+
+                List<Grafico> CeldasProbabilidad = p.normal.GetFuncionProbabilidad();
+                List<Grafico> CeldasProbabilidadEsperados = p.normal.GetFuncionProbabilidadEsperados();
+                List<Grafico> CeldasSimulacion = p.normal.GetAleatoriosSimulacion();
+                List<Grafico> CeldasSimulacionEsperados = p.normal.GetAleatoriosSimulacionEsperados(p.Celdas.Count);
                 p.CeldasSensibles= new List<Celda>();
-                for(int i=0; i<CeldasSensibles.Count; i++)
+                for (int i = 0; i < CeldasSimulacionEsperados.Count; i++)
                 {
-                    decimal valor = Math.Round(Convert.ToDecimal(CeldasSensibles[i].fx),2);
+                    decimal valor = Math.Round(Convert.ToDecimal(CeldasSimulacionEsperados[i].fx), 2);
                     p.CeldasSensibles.Add(new Celda { 
                         IdParametro = p.Celdas[i].IdParametro, 
                         Valor = valor, 
                         Periodo = p.Celdas[i].Periodo 
                     });
                 }
-                Session["FuncionProbabilidad"] = p.normal.GetFuncionProbabilidad();
-                Session["FuncionEsperados"] = p.normal.GetFuncionEsperados();
-                Session["CeldasSensibles"] = p.CeldasSensibles;
-                Session["AleatoriosTotales"] = p.normal.GetAleatoriosTotales();
+                Session["CeldasProbabilidad"] = CeldasProbabilidad;
+                Session["CeldasProbabilidadEsperados"] = CeldasProbabilidadEsperados;
+                Session["CeldasSimulacion"] = CeldasSimulacion;
+                Session["CeldasSimulacionEsperados"] = CeldasSimulacionEsperados;
                 context.Entry(p).State = EntityState.Modified;
                 context.SaveChanges();
                 return View(p.normal);
@@ -90,7 +93,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             double std = n.n_std;
             p.normal.n_mean = mean;
             p.normal.n_std = std;
-            p.normal.n_K = p.Celdas.Count;
+           // p.normal.n_K = p.Celdas.Count;
             p.normal.Nombre = "Normal";
             MaestroSimulacion maestro = new MaestroSimulacion();
             maestro.normal = p.normal;
@@ -103,7 +106,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             p.pascal.IsEliminado = true;
             p.poisson.IsEliminado = true;
             p.uniforme.IsEliminado = true;
-            Session["GraficoSimulacion"] = p.normal.graficar;
+           // Session["GraficoSimulacion"] = p.normal.graficar;
             Session["Celdas_simulada"] = p.CeldasSensibles;
             context.Entry(p).State = EntityState.Modified;
             context.SaveChanges();

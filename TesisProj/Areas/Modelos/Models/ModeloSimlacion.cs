@@ -53,9 +53,9 @@ namespace TesisProj.Areas.Modelos.Models
         [DisplayName("Valor Máximo Esperado")]
         public double maximoEsperado { get; set; }
 
-        public List<Grafico> graficoEsperado{ get; set; }
-
         public List<Grafico> graficoSimulacion { get; set; }
+
+        public List<Grafico> graficoSimulacionEsperado { get; set; }
 
         #endregion
 

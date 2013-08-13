@@ -91,7 +91,7 @@ namespace TesisProj.Areas.Modelos.Models
             return s;
         }
 
-        public List<Grafico> GetFuncionEsperados()
+        public List<Grafico> GetFuncionProbabilidadEsperados()
         {
             List<Grafico> s = new List<Grafico>();
             Double avance = minimoEsperado;
@@ -102,37 +102,53 @@ namespace TesisProj.Areas.Modelos.Models
                 avance += amplitud;
             }
             this.graficoDistribucionEsperado = s;
-            AlmacenarArchivo("graficoEsperadoNormal", graficoEsperado);
+            AlmacenarArchivo("graficoEsperadoNormal", graficoDistribucionEsperado);
             return s;
         }
 
-        public List<Grafico> GetAleatoriosTotales()
+        public List<Grafico> GetAleatoriosSimulacion()
         {
             Random r = new Random();
             double v;
             double s;
             int n = Convert.ToInt32(Math.Truncate(Math.Round(maximo - minimo + 1, 1)));
+            graficoSimulacion = new List<Grafico>();
             for (int i = 0; i < n; i++)
             {
-                v = Math.Round(graficoEsperado.ElementAt(r.Next(0, graficoEsperado.Count)).fx / 100.0,2);
+                v = Math.Round(graficoDistribucion.ElementAt(r.Next(0, graficoDistribucion.Count-1)).fx / 100.0, 2);
                 s = Math.Round(n_mean + n_std * (Math.Sqrt(Math.Sqrt(-2 * Math.Log(2 * Math.PI * v)))),2);
-                graficoSimulacion.Add(CrearGrafico(i, s));
+                try
+                {
+                    graficoSimulacion.Add(CrearGrafico(i, s));
+                }
+                catch
+                {
+                    graficoSimulacion.Add(CrearGrafico(i, 0));
+                }
             }
             AlmacenarArchivo("graficoSimulacionNormal", graficoSimulacion);
             return graficoSimulacion;
 
         }
 
-        public List<Grafico> GetAleatoriosEsperados(int n)
+        public List<Grafico> GetAleatoriosSimulacionEsperados(int n)
         {
             Random r = new Random();
             double v;
             double s;
+            graficoSimulacionEsperado = new List<Grafico>();
             for (int i = 0; i < n; i++)
             {
-                v=graficoEsperado.ElementAt(r.Next(0, graficoEsperado.Count)).fx/100.0;
+                v = graficoDistribucionEsperado.ElementAt(r.Next(0, graficoDistribucionEsperado.Count-1)).fx / 100.0;
                 s=n_mean+n_std*(Math.Sqrt(Math.Sqrt(-2*Math.Log(2*Math.PI*v))));
-                graficoSimulacion.Add(CrearGrafico(i,s));
+                try
+                {
+                    graficoSimulacionEsperado.Add(CrearGrafico(i, s));
+                }
+                catch
+                {
+                    graficoSimulacionEsperado.Add(CrearGrafico(i, 0));
+                }
             }
             AlmacenarArchivo("graficoSimulacionNormal", graficoSimulacion);
             return graficoSimulacion;

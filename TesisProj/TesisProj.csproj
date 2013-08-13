@@ -677,6 +677,7 @@
     <Content Include="Areas\Simulaciones\Views\Poisson\_GraficoSimulacion.cshtml" />
     <Content Include="Areas\Seguridad\Views\UserProfile\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\fondo.png" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
     <Content Include="Scripts\2013.2.611\jquery-1.7.1.min.js" />
