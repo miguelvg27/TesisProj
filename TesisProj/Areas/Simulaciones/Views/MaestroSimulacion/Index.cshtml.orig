@@ -1,5 +1,7 @@
 ﻿@using Telerik.Web.Mvc.UI
 @model IEnumerable<TesisProj.Areas.Modelo.Models.Elemento>
+<<<<<<< HEAD
+=======
 
 @{
     ViewBag.Title = "Asignar Modelo";
@@ -132,6 +134,8 @@
 
 ---------------
 @using Telerik.Web.Mvc.UI
+@model IEnumerable<TesisProj.Areas.Modelo.Models.Parametro>
+>>>>>>> ebcde42abb68de7defada233568650340002f31c
 
 @{
     ViewBag.Title = "Asignar Modelo";
@@ -142,6 +146,7 @@
     <h1>Elementos<small>  Seleccione un elemento para asignarle un modelo de distribución</small></h1>
 </div>
 
+<<<<<<< HEAD
 <div class="row-fluid">
     
         @foreach(TesisProj.Areas.Modelo.Models.Elemento e in Model)
@@ -219,6 +224,49 @@
 </div>
 
 @*            
+.Name("PanelSensibles")
+        .HtmlAttributes(new { style = "width: 300px; float: left; margin-bottom: 30px;" })
+        .ExpandMode((PanelBarExpandMode)Enum.Parse(typeof(PanelBarExpandMode), (string)ViewData["expandMode"]))
+        .SelectedIndex(0)
+        .Items(item =>
+=======
+@{  Html.Telerik().Splitter().Name("Splitter")
+        .Orientation(SplitterOrientation.Horizontal)
+        .Panes(hPanes =>
+        {
+            hPanes.Add()
+                .Size("200px")
+                .MinSize("100px")
+                .MaxSize("300px")
+                .Collapsible(true)
+                .HtmlAttributes(new { style = "overflow: hidden" })
+                .Content(() =>
+                {
+                    Html.Telerik().Splitter()
+                        .Name("NestedSplitter")
+                        .HtmlAttributes(new { style = "height: 100%; border: 0;" })
+                        .Orientation(SplitterOrientation.Vertical)
+                        .Panes(vPanes =>
+                        {
+                            vPanes.Add()
+                                .Content(() =>
+                                {
+                                    Html.Telerik().PanelBar()
+                                            .Name("PanelBar")
+                                            .HtmlAttributes(new { style = "height: 100%; border: 0;" })
+                                            .Items(panelbar =>
+                                            {
+                                                panelbar.Add()
+                                                    .Text("Parametros")
+                                                    .Expanded(true)
+                                                   .LoadContentFrom("Index", "MaestroSimulacionController");
+                                            });
+                                });
+                        });
+                });
+        });
+}
+>>>>>>> ebcde42abb68de7defada233568650340002f31c
 
 
 
