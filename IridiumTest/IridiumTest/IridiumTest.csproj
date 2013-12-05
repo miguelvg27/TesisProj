@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0E0E159C-9490-41D5-8C24-D26EED27F6DC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IridiumTest</RootNamespace>
+    <AssemblyName>IridiumTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\packages\MathNet.Numerics.3.0.0-alpha5\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Const\_String.cs" />
+    <Compile Include="Models\Continuous\_Beta.cs" />
+    <Compile Include="Models\Continuous\_ChiCuadrado.cs" />
+    <Compile Include="Models\Continuous\_Exponencial.cs" />
+    <Compile Include="Models\Continuous\_F.cs" />
+    <Compile Include="Models\Continuous\_Gamma.cs" />
+    <Compile Include="Models\Continuous\_Normal.cs" />
+    <Compile Include="Models\Continuous\_Pareto.cs" />
+    <Compile Include="Models\Continuous\_TStudent.cs" />
+    <Compile Include="Models\Continuous\_UniformeContinua.cs" />
+    <Compile Include="Models\Continuous\_Weibull.cs" />
+    <Compile Include="Models\Datos.cs" />
+    <Compile Include="Models\Discrete\_Binomial.cs" />
+    <Compile Include="Models\Discrete\_Geometrica.cs" />
+    <Compile Include="Models\Discrete\_HiperGeometrica.cs" />
+    <Compile Include="Models\Discrete\_Poisson.cs" />
+    <Compile Include="Models\Discrete\_UniformeDiscreta.cs" />
+    <Compile Include="Models\Formulate.cs" />
+    <Compile Include="Models\Graphic.cs" />
+    <Compile Include="Models\Param.cs" />
+    <Compile Include="Models\Result.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Format.cs" />
+    <Compile Include="Util\Img.cs" />
+    <Compile Include="Util\Out.cs" />
+    <Compile Include="Util\Xml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Img\_Beta\DX.png" />
+    <Content Include="Img\_Beta\EX.png" />
+    <Content Include="Img\_Beta\Imagen.png" />
+    <Content Include="Img\_Beta\PX.png" />
+    <Content Include="Img\_Beta\Resumen.png" />
+    <Content Include="Img\_Beta\y1.png" />
+    <Content Include="Img\_Beta\y2.png" />
+    <Content Include="Img\_Binomial\DX.png" />
+    <Content Include="Img\_Binomial\EX.png" />
+    <Content Include="Img\_Binomial\Imagen.png" />
+    <Content Include="Img\_Binomial\PX.png" />
+    <Content Include="Img\_Binomial\Resumen.png" />
+    <Content Include="Img\_Binomial\y1.png" />
+    <Content Include="Img\_Binomial\y2.png" />
+    <Content Include="Img\_ChiCuadrado\DX.png" />
+    <Content Include="Img\_ChiCuadrado\EX.png" />
+    <Content Include="Img\_ChiCuadrado\Imagen.png" />
+    <Content Include="Img\_ChiCuadrado\PX.png" />
+    <Content Include="Img\_ChiCuadrado\Resumen.png" />
+    <Content Include="Img\_ChiCuadrado\y1.png" />
+    <Content Include="Img\_Geometrica\DX.png" />
+    <Content Include="Img\_Geometrica\EX.png" />
+    <Content Include="Img\_Geometrica\Imagen.png" />
+    <Content Include="Img\_Geometrica\PX.png" />
+    <Content Include="Img\_Geometrica\Resumen.png" />
+    <Content Include="Img\_Geometrica\y1.png" />
+    <Content Include="Img\_Geometrica\y2.png" />
+    <Content Include="Img\_HiperGeometrica\DX.png" />
+    <Content Include="Img\_HiperGeometrica\EX.png" />
+    <Content Include="Img\_HiperGeometrica\Imagen.png" />
+    <Content Include="Img\_HiperGeometrica\PX.png" />
+    <Content Include="Img\_HiperGeometrica\Resumen.png" />
+    <Content Include="Img\_HiperGeometrica\y1.png" />
+    <Content Include="Img\_HiperGeometrica\y2.png" />
+    <Content Include="Img\_Normal\DX.png" />
+    <Content Include="Img\_Normal\EX.png" />
+    <Content Include="Img\_Normal\Imagen.png" />
+    <Content Include="Img\_Normal\PX.png" />
+    <Content Include="Img\_Normal\Resumen.png" />
+    <Content Include="Img\_Normal\y1.png" />
+    <Content Include="Img\_Poisson\DX.png" />
+    <Content Include="Img\_Poisson\EX.png" />
+    <Content Include="Img\_Poisson\Imagen.png" />
+    <Content Include="Img\_Poisson\PX.png" />
+    <Content Include="Img\_Poisson\Resumen.png" />
+    <Content Include="Img\_Poisson\y1.png" />
+    <Content Include="Img\_Poisson\y2.png" />
+    <Content Include="Img\_UniformeContinua\DX.png" />
+    <Content Include="Img\_UniformeContinua\EX.png" />
+    <Content Include="Img\_UniformeContinua\Imagen.png" />
+    <Content Include="Img\_UniformeContinua\PX.png" />
+    <Content Include="Img\_UniformeContinua\Resumen.png" />
+    <Content Include="Img\_UniformeContinua\y1.png" />
+    <Content Include="Img\_UniformeDiscreta\DX.png" />
+    <Content Include="Img\_UniformeDiscreta\EX.png" />
+    <Content Include="Img\_UniformeDiscreta\Imagen.png" />
+    <Content Include="Img\_UniformeDiscreta\PX.png" />
+    <Content Include="Img\_UniformeDiscreta\Resumen.png" />
+    <Content Include="Img\_UniformeDiscreta\y1.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
