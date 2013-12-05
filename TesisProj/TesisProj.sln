@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesisProj", "TesisProj\TesisProj.csproj", "{AE65FE6F-DDE9-4B2B-BE25-1CB0943E6061}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IridiumTest", "..\IridiumTest\IridiumTest\IridiumTest.csproj", "{0E0E159C-9490-41D5-8C24-D26EED27F6DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IridiumTest", "IridiumTest\IridiumTest.csproj", "{C7D824DE-D1BF-4FF0-9130-FA7ECC62D9AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,10 @@ Global
 		{AE65FE6F-DDE9-4B2B-BE25-1CB0943E6061}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE65FE6F-DDE9-4B2B-BE25-1CB0943E6061}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE65FE6F-DDE9-4B2B-BE25-1CB0943E6061}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E0E159C-9490-41D5-8C24-D26EED27F6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E0E159C-9490-41D5-8C24-D26EED27F6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E0E159C-9490-41D5-8C24-D26EED27F6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E0E159C-9490-41D5-8C24-D26EED27F6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7D824DE-D1BF-4FF0-9130-FA7ECC62D9AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7D824DE-D1BF-4FF0-9130-FA7ECC62D9AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7D824DE-D1BF-4FF0-9130-FA7ECC62D9AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7D824DE-D1BF-4FF0-9130-FA7ECC62D9AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

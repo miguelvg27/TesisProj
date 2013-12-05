@@ -15,7 +15,8 @@ namespace TesisProj.Models
     public class UsersContext : DbContext
     {
         public UsersContext()
-            : base("TProjDb")
+            //: base("TProjDb")
+            : base("TProjContext")
         {
         }
         
