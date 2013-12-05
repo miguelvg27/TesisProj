@@ -1,0 +1,49 @@
+﻿@model TesisProj.Areas.Plantilla.Models.TipoFormula
+
+@{
+    ViewBag.Title = "Tipos de fórmula";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Está seguro de eliminar este registro?</h3>
+<fieldset>
+    <legend>Tipos de fórmula</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.IdTipoElemento)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipoElemento.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Referencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Referencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Unico)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Unico)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Eliminar" /> |
+        @Html.ActionLink("Regresar", "Index")
+    </p>
+    @Html.ValidationMessageFor(model => model.Nombre)
+}

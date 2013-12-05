@@ -1,0 +1,75 @@
+﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.TipoFormula>
+
+@{
+    ViewBag.Title = "Tipos de fórmula";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tipos de fórmula</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Create")">
+  	    <i class="icon-plus icon-white"></i>Nuevo
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Admin", new { Area = "" })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
+
+<table class="table table-hover table-striped table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdTipoElemento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Referencia)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.Unico)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoElemento.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Referencia)
+        </td>
+        <td style="text-align:center">
+            @Html.DisplayFor(modelItem => item.Unico)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick="return DeleteConfirm()" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Admin", new { Area = "" })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+</script>

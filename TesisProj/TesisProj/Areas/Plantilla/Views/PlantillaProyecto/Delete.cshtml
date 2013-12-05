@@ -1,0 +1,28 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaProyecto
+
+@{
+    ViewBag.Title = "Plantillas de proyectos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Eliminar</h2>
+
+<h3>¿Está seguro de eliminar este registro?</h3>
+<fieldset>
+    <legend>Plantilla de proyecto</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <p>
+        <input type="submit" value="Eliminar" /> |
+        @Html.ActionLink("Regresar", "Index")
+    </p>
+    @Html.ValidationMessageFor(model => model.Nombre)
+}

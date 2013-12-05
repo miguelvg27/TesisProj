@@ -1,0 +1,80 @@
+Indice=1 Nombre=Máximo ValorI=50 valorD=0
+Indice=2 Nombre=Mínimo ValorI=0 valorD=0
+Indice=3 Nombre=Media  ValorI=0 valorD=10.5
+Indice=4 Nombre=Mediana  ValorI=10 valorD=0
+Indice=5 Nombre=Moda  ValorI=10 valorD=0
+Indice=6 Nombre=Varianza  ValorI=0 valorD=8.3
+Indice=7 Nombre=Coeficiente de Simetria  ValorI=0 valorD=0.2
+N=0 fx=0 AC=0
+N=1 fx=0 AC=0
+N=2 fx=0 AC=0
+N=3 fx=0 AC=0
+N=4 fx=0.01 AC=0.01
+N=5 fx=0.02 AC=0.03
+N=6 fx=0.04 AC=0.08
+N=7 fx=0.07 AC=0.15
+N=8 fx=0.1 AC=0.25
+N=9 fx=0.13 AC=0.38
+N=10 fx=0.14 AC=0.51
+N=11 fx=0.13 AC=0.65
+N=12 fx=0.11 AC=0.76
+N=13 fx=0.09 AC=0.85
+N=14 fx=0.06 AC=0.91
+N=15 fx=0.04 AC=0.95
+N=16 fx=0.02 AC=0.98
+N=17 fx=0.01 AC=0.99
+N=18 fx=0.01 AC=1
+N=19 fx=0 AC=1
+N=20 fx=0 AC=1
+N=21 fx=0 AC=1
+N=22 fx=0 AC=1
+N=23 fx=0 AC=1
+N=24 fx=0 AC=1
+N=25 fx=0 AC=1
+N=26 fx=0 AC=1
+N=27 fx=0 AC=1
+N=28 fx=0 AC=1
+N=29 fx=0 AC=1
+N=30 fx=0 AC=1
+N=31 fx=0 AC=1
+N=32 fx=0 AC=1
+N=33 fx=0 AC=1
+N=34 fx=0 AC=1
+N=35 fx=0 AC=1
+N=36 fx=0 AC=1
+N=37 fx=0 AC=1
+N=38 fx=0 AC=1
+N=39 fx=0 AC=1
+N=40 fx=0 AC=1
+N=41 fx=0 AC=1
+N=42 fx=0 AC=1
+N=43 fx=0 AC=1
+N=44 fx=0 AC=1
+N=45 fx=0 AC=1
+N=46 fx=0 AC=1
+N=47 fx=0 AC=1
+N=48 fx=0 AC=1
+N=49 fx=0 AC=1
+N=50 fx=0 AC=1
+P=1 Valor=2
+P=2 Valor=20
+P=3 Valor=114
+P=4 Valor=472
+P=5 Valor=1640
+P=6 Valor=3732
+P=7 Valor=7595
+P=8 Valor=11904
+P=9 Valor=17694
+P=10 Valor=20300
+P=11 Valor=21373
+P=12 Valor=20328
+P=13 Valor=17732
+P=14 Valor=13748
+P=15 Valor=9045
+P=16 Valor=5888
+P=17 Valor=3264
+P=18 Valor=1980
+P=19 Valor=608
+P=20 Valor=300
+P=21 Valor=84
+P=22 Valor=132

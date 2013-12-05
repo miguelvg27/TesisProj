@@ -1,0 +1,79 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaFormula
+
+@{
+    ViewBag.Title = "Parámetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detalle</h2>
+
+<fieldset>
+    <legend>Fórmula</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Referencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Referencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Secuencia)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Secuencia)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodoInicial)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodoInicial)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PeriodoFinal)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PeriodoFinal)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PlantillaElemento.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TipoFormula.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TipoFormula.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Visible)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Visible)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Cadena)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Cadena)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Regresar", "Index", routeValues: new { id = @Model.IdPlantillaElemento }, htmlAttributes: null)
+</p>

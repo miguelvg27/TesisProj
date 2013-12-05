@@ -1,0 +1,22 @@
+﻿@{
+    List<IridiumTest.Models.Result> salida = (List<IridiumTest.Models.Result>)Session["_GraficoMuestra"];
+}
+@(
+     Html.Telerik().Chart<IridiumTest.Models.Result>(salida)
+     .Name("chart2")
+     .Title(title => title.Text("Muestra").Visible(true))
+     .Legend(legend => legend.Position(ChartLegendPosition.Bottom).Visible(true))
+     .SeriesDefaults(series => series.ScatterLine().Width(2))
+     .Series(series =>
+            {
+             series
+                 .Column(s => s.cantidad)
+                 .Stack(true)
+                 .Color("#13558E")
+                 .Name("N");
+            })
+    .CategoryAxis(axis => axis
+            .Categories(s => s.ValorObtenidoI))
+            .Tooltip(true)
+
+)

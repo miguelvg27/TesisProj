@@ -1,0 +1,172 @@
+﻿@model TesisProj.Areas.Modelo.Models.Operacion
+
+@{
+    ViewBag.Title = "Operaciones: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear operación de @ViewBag.Proyecto</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Corolario", new { id = ViewBag.IdProyectoReturn })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br />
+</p>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Operación</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoInicial)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoInicial)
+            @Html.ValidationMessageFor(model => model.PeriodoInicial)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PeriodoFinal)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PeriodoFinal)
+            @Html.ValidationMessageFor(model => model.PeriodoFinal)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Secuencia)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Secuencia, new { @Value = ViewBag.defSecuencia })
+            @Html.ValidationMessageFor(model => model.Secuencia)
+        </div>
+    <div class="row-fluid">
+            <div class="span5">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Referencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Referencia)
+            @Html.ValidationMessageFor(model => model.Referencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdProyecto)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdProyecto")
+            @Html.ValidationMessageFor(model => model.IdProyecto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Indicador)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Indicador)
+            @Html.ValidationMessageFor(model => model.Indicador)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Marcar como:")
+            <a href="#" onclick="return Mark('TIRE');">TIR del proyecto</a> |
+            <a href="#" onclick="return Mark('TIRF');">TIR del inversionista</a> |
+        </div>
+        <div class="editor-label">
+            <a href="#" onclick="return Mark('VANE');">VAN del proyecto</a> |
+            <a href="#" onclick="return Mark('VANF');">VAN del inversionista</a> |
+        </div>
+        <div class="editor-label">
+            <a href="#" onclick="return Mark('KE');">Costo capital del proyecto</a> |
+            <a href="#" onclick="return Mark('KF');">Costo capital del inversionista</a>
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Subrayar)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Subrayar)
+            @Html.ValidationMessageFor(model => model.Subrayar)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cadena)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Cadena, new { @rows = 5, style="width: 350px" })
+        </div>
+        <div>
+            @Html.ValidationMessageFor(model => model.Cadena)
+        </div>
+    </div>
+        <div class="span7">
+            <div class="editor-label">
+                @Html.Label("Parámetros disponibles")
+            </div>
+            <div>
+                @Html.ListBox("ListTipos", ViewBag.ListTipos as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Operaciones disponibles")
+            </div>
+            <div>
+                @Html.ListBox("ListOperaciones", ViewBag.ListOperaciones as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Variables globales")
+            </div>
+            <div>
+                @Html.ListBox("GlobalList", ViewBag.GlobalList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+
+            <div class="editor-label">
+                @Html.Label("Funciones disponibles")
+            </div>
+            <div>
+                @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
+        </div>
+    </div>
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Corolario", new { id = ViewBag.IdProyectoReturn })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    function Mark(story) {
+        document.getElementById('Indicador').checked = true;
+        document.getElementById('Referencia').value = story;
+        return false;
+    }
+
+    $(".Chooser").click(function() {
+        var referencia = $(this).val();
+        $("#Cadena").val($("#Cadena").val() + " " + referencia);
+        $("#Cadena").focus();
+    })
+</script>
