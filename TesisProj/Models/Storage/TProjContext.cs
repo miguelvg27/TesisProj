@@ -43,7 +43,7 @@ namespace TesisProj.Models.Storage
         }
     }
 
-     public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
+      public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
     //public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
     {
         protected override void Seed(TProjContext context)
