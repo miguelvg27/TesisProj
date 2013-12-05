@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+        @Scripts.Render("~/Scripts/jquery.js")
+        @Scripts.Render("~/Scripts/bootstrap.js")
+        @Scripts.Render("~/Scripts/bootstrap-dropdown.js")
+        @Scripts.Render("~/Scripts/bootstrap-tab.js")
+
+@(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))</head>
+@RenderSection("HeadContent", required:false) 
+<body>
+	<div class="page">
+		<header>
+			<div id="title">
+				<p class="site-title">@Html.ActionLink("Evaluación de proyectos de inversión - ProyEval", "Index", "Home", routeValues: new { Area = "" }, htmlAttributes: null)</a></p>
+			</div>
+
+			@(Html.Telerik().Menu()
+					.Name("menu")
+					.Items(menu => {
+                        menu.Add().Text("Proyectos").Url("../../../Modelo/Proyecto");
+                        menu.Add().Text("Comparar").Url("../../../CompararProyecto/Comparar");
+                        menu.Add().Text("Plantillas").Url("../../../Admin");
+					}))
+		</header>
+		<section id="main">
+            @RenderSection("featured", required: false)
+			@RenderBody()
+		</section>
+		<footer>
+		</footer>
+	</div>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+@(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))</body>
+</html>

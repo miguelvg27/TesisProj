@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asignar Modelo</h2>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2" href="@Url.Action("Console", "Proyecto", new { Area = "Modelo",id = ViewBag.ProyectoId  })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /> <br />
+</p>
+
+    <table class="table table-hover table-striped table-bordered">
+        <tr class="success">
+            <td><u><b>Elemento</b></u></td>
+            <td><u><b>Parametros</b></u></td>
+        </tr>
+@foreach (TesisProj.Areas.Modelo.Models.Elemento e in Model)
+{
+
+        <tr>
+            <td> @e.Nombre
+            </td>
+            <td>
+                @foreach (TesisProj.Areas.Modelo.Models.Parametro p in e.Parametros)
+                {   <table>
+                        <tr>
+                            <td><a href="@Url.Action("Index", "ModeloSimulacion", new { Area = "Simulaciones",ProyectoId = ViewBag.ProyectoId, ElementoId=e.Id , ParametroId=p.Id  })">@p.Nombre</a></td>
+                        </tr>
+                    </table>
+                }
+            </td>
+        </tr>
+
+}
+    </table>
+
