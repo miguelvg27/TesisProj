@@ -1,0 +1,66 @@
+﻿    @model ICollection<TesisProj.Areas.CompararProyecto.Models.Comparar>
+    @using Telerik.Web.Mvc.UI
+
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        int[] checkedRecords = (int[])ViewData["checkedRecords"];
+    }
+
+    <h2>Comparar Rentabilidad de proyectos</h2>
+    <br />
+@{ Html.BeginForm(); 
+
+    Html.Telerik().Grid(Model)
+        .Name("Grid")
+        .Columns(columns =>
+        {
+            columns
+                .Template(
+                @<text>
+                    <input name="checkedRecords" type="checkbox" value="@item.Id " title="checkedRecords" 
+                        @if (checkedRecords.Contains(item.Id))
+                        {
+                            <text>checked="checked"</text>
+                        }
+                    />
+                </text>)
+                   .Title("")
+                   .Width(20)
+                   .HtmlAttributes(new { style = "text-align:center" });
+            
+            columns.Bound(o => o.proyecto.Id).Width(20);
+            columns.Bound(o => o.proyecto.Nombre).Width(100);
+            columns.Bound(o => o.proyecto.Version).Width(200);
+            columns.Bound(o => o.proyecto.Creacion).Format("{0:dd/MM/yyyy}").Width(120);
+        })
+        .Scrollable()
+        .Pageable()
+        .Render();
+}
+
+<p>
+    <button type="submit" class="t-button t-state-default">Ver Resultados</button>
+</p>
+@{ Html.EndForm(); }
+
+@if (checkedRecords.Any())
+{
+    
+<table style="width:100%">
+    <tr>
+        <td>@{Html.RenderAction("_GraficoVanE", "Comparar");}</td>
+        <td>@{Html.RenderAction("_GraficoVanF", "Comparar");}</td>
+    </tr>
+        <tr>
+        <td>@{Html.RenderAction("_GraficoTirE", "Comparar");}</td>
+        <td>@{Html.RenderAction("_GraficoTirF", "Comparar");}</td>
+    </tr>
+</table>     
+}
+<p>
+        <br />    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("index", "Home", new { Area = "" })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 

@@ -1,0 +1,88 @@
+﻿@model TesisProj.Areas.Modelo.Models.Parametro
+
+@{
+    ViewBag.Title = "Parámetros: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editar @Model.Nombre (@ViewBag.Elemento - @ViewBag.Proyecto)</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo", id = Model.IdElemento   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p> 
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Parametro</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Referencia)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Referencia)
+            @Html.ValidationMessageFor(model => model.Referencia)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdElemento)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdElemento")
+            @Html.ValidationMessageFor(model => model.IdElemento)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoParametro)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoParametro", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdTipoParametro)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Constante)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.Constante)
+            @Html.ValidationMessageFor(model => model.Constante)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Sensible)
+        </div>
+        <div class="editor-field">
+            @Html.CheckBoxFor(model => model.Sensible)
+            @Html.ValidationMessageFor(model => model.Sensible)
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Catalog", "Proyecto", new { Area = "Modelo",id =Model.IdElemento   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

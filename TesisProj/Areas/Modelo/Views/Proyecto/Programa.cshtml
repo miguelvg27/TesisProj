@@ -1,0 +1,85 @@
+﻿@using TesisProj.Areas.Modelo.Models
+@model List<TesisProj.Areas.Modelo.Models.Formula>
+
+@{
+    ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int Horizonte = ViewBag.Horizonte;
+    bool IsCreador = ViewBag.IsCreador;
+    bool IsEditor = ViewBag.IsEditor;
+    bool IsRevisor = ViewBag.IsRevisor;
+
+}
+
+<h2>Resultados de @ViewBag.Elemento (@ViewBag.TipoElemento)</h2>
+
+<p>
+    <br />
+    @if(!IsRevisor){
+        <a class="btn btn-inverse" onclick="return DuplicateConfirm()" style="color: #E6F0F2;"href="@Url.Action("VolverPlantilla", "PlantillaElemento", new { Area = "Plantilla", id = ViewBag.IdElemento })">
+  	        <i class="icon-briefcase icon-white"></i>Volver plantilla
+        </a>
+        <a style="margin:5px"></a>
+    }
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo",id = ViewBag.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a> <br /><br />
+</p> 
+
+<div style="overflow: auto; max-height: 600px">
+<table class="table table-hover table-striped table-bordered">
+    <tr>
+        <th>
+            Concepto
+        </th>
+        @for (int periodo = 1; periodo <= Horizonte; periodo++)
+        {
+            <th style="text-align:center; width:50px;">
+                @periodo
+            </th>
+        }
+    </tr>
+
+@foreach (var salida in Model)
+{
+    <tr>
+        <td>
+            @salida.Nombre
+        </td>
+        @for (int periodo = 0; periodo < salida.Valores.Count; periodo++)
+        {
+            <td style="text-align:right;">
+                @String.Format("{0:#,##0.##}", salida.Valores[periodo])
+            </td>
+        }
+    </tr>
+}
+
+</table>
+</div>
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Journal", "Proyecto", new { Area = "Modelo", id = ViewBag.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+
+    function DuplicateConfirm() {
+        if (confirm("¿Está seguro que desea copiar el registro a una plantilla?"))
+            return true;
+        else
+            return false;
+    }
+</script>

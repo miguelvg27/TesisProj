@@ -1,0 +1,68 @@
+﻿@model TesisProj.Areas.Modelo.Models.SalidaProyecto
+
+@{
+    ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Asociar operaciones a @Model.Nombre (@ViewBag.Proyecto)</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p> 
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Salida</legend>
+
+        <table class="table table-hover table-striped table-bordered" style="width: 500px">
+            <tr>
+                <th>
+                    Operaciones disponibles
+                </th>
+                <th></th>
+                <th>
+                     Operaciones asociados
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.ListBox("Opciones", ViewBag.Opciones as MultiSelectList, new { @Size = 20 })
+                </td>
+                <td style="text-align:center; vertical-align:middle">
+                    <input type="submit" value=">" name="add" id="add"/>
+                    <br />
+                    <input type="submit" value="<" name="remove" id="remove"/>
+                    <br />
+                    <input type="submit" value=">>" name="addall" id="addall"/>
+                    <br />
+                    <input type="submit" value="<<" name="removeall" id="removeall"/>
+                </td>
+                <td>
+                    @Html.ListBox("Asociados", ViewBag.Asociados as MultiSelectList, new { @Size = 20 })
+                </td>
+            </tr>
+        </table>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Nombre)
+        @Html.HiddenFor(model => model.Secuencia)
+        @Html.HiddenFor(model => model.IdProyecto)
+    </fieldset>
+}
+
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Cine", "Proyecto", new { Area = "Modelo", id = @Model.IdProyecto   })"">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p> 
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,20 @@
+﻿@{
+    List<IridiumTest.Models.Result> salida = (List<IridiumTest.Models.Result>)Session["_GraficoMuestra"];
+}
+@using Telerik.Web.Mvc.UI;
+@( Html.Telerik().Grid(salida)
+                        .Name("GridMedioPago")
+                        .Filterable()
+                        .Columns(columns =>
+                        {
+                            columns.Bound(c => c.Probabilidad).Format("{0:N0}%");
+                            columns.Bound(c => c.cantidad);
+                            columns.Bound(c => c.ValorObtenidoI);
+                           
+                        })
+                        .Pageable(paging => paging.Enabled(true).PageSize(2000).Style(GridPagerStyles.Status))
+                        //.Selectable(selectable => selectable.Enabled(true))
+                        //.Groupable(grouping => grouping.Enabled(true))
+                        .Scrollable(scrolling => scrolling.Height(450))
+                        .Filterable(filtering => filtering.Enabled(true))
+                        )

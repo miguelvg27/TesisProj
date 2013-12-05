@@ -1,0 +1,117 @@
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\obj\Debug\TesisProj.csprojResolveAssemblyReference.cache
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\TesisProj.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\TesisProj.pdb
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Antlr3.Runtime.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.AspNet.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.Core.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.Consumer.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\EntityFramework.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\IridiumTest.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\MathParserNet.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Microsoft.Web.Infrastructure.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Microsoft.Web.WebPages.OAuth.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Newtonsoft.Json.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Net.Http.Formatting.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Helpers.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Http.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Http.WebHost.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Mvc.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Optimization.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Razor.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.WebPages.Deployment.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.WebPages.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.WebPages.Razor.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Telerik.Web.Mvc.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\WebGrease.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\WebMatrix.Data.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\WebMatrix.WebData.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\MathNet.Numerics.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\IridiumTest.pdb
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\EntityFramework.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Newtonsoft.Json.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Net.Http.Formatting.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Helpers.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Http.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Http.WebHost.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Mvc.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.Razor.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.WebPages.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.WebPages.Deployment.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\System.Web.WebPages.Razor.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Telerik.Web.Mvc.pdb
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Telerik.Web.Mvc.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\WebMatrix.Data.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\Microsoft.Web.WebPages.OAuth.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\WebMatrix.WebData.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.AspNet.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.Core.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.Consumer.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\MathNet.Numerics.pdb
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\bin\MathNet.Numerics.xml
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\obj\Debug\TesisProj.dll
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProj\obj\Debug\TesisProj.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\TesisProj.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\TesisProj.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Antlr3.Runtime.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.AspNet.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.Core.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.Consumer.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\EntityFramework.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\IridiumTest.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\MathParserNet.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Microsoft.Web.WebPages.OAuth.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Newtonsoft.Json.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Net.Http.Formatting.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Helpers.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Http.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Http.WebHost.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Mvc.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Optimization.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Razor.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.WebPages.Deployment.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.WebPages.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.WebPages.Razor.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Telerik.Web.Mvc.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\WebGrease.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\WebMatrix.Data.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\WebMatrix.WebData.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\MathNet.Numerics.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\IridiumTest.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\EntityFramework.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Newtonsoft.Json.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Net.Http.Formatting.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Helpers.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Http.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Http.WebHost.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Mvc.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.Razor.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.WebPages.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.WebPages.Deployment.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\System.Web.WebPages.Razor.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Telerik.Web.Mvc.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Telerik.Web.Mvc.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\WebMatrix.Data.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\Microsoft.Web.WebPages.OAuth.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\WebMatrix.WebData.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.AspNet.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.Core.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.Consumer.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OAuth.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\MathNet.Numerics.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\bin\MathNet.Numerics.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\obj\Debug\TesisProj.csprojResolveAssemblyReference.cache
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\obj\Debug\TesisProj.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\TesisProj\obj\Debug\TesisProj.pdb

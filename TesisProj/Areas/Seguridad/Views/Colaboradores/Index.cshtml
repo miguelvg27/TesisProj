@@ -1,0 +1,92 @@
+﻿@model IEnumerable<TesisProj.Areas.Seguridad.Models.Colaborador>
+
+@{
+    ViewBag.Title = "Colaboradores: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Colaboradores de @ViewBag.Proyecto</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("Create", new { IdProyecto = ViewBag.ProyectoId } )"">
+  	    <i class="icon-plus icon-white"></i>Nuevo
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId   })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br />
+</p>
+
+<table class="table table-hover table-striped table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IdUsuario)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdProyecto)
+        </th>
+        <th style="text-align: center">
+            @Html.DisplayNameFor(model => model.SoloLectura)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Usuario.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Proyecto.Nombre)
+        </td>
+        <td style="text-align: center">
+            @Html.DisplayFor(modelItem => item.SoloLectura)
+        </td>
+        <td>
+            @if(item.SoloLectura)
+            {
+                @Html.ActionLink("Dar permisos de edición", "Edit", new { idColaborador=item.Id, policy = false }, new { onclick="return GiveConfirm()" })
+            }
+            else
+            {
+                @Html.ActionLink("Quitar permisos de edición", "Edit", new { idColaborador=item.Id, policy = true}, new { onclick="return TakeConfirm()" })
+            }
+                
+                                                                 
+            | @Html.ActionLink("Eliminar", "Delete", new { id=item.Id }, new { onclick="return DeleteConfirm()" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId   })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+<script>
+    function DeleteConfirm(){
+        if (confirm("¿Está seguro que desea eliminar el registro?"))
+            return true;
+        else
+            return false;     
+    }
+
+    function TakeConfirm() {
+        if (confirm("¿Está seguro que desea quitarle los permisos de edición al usuario seleccionado?"))
+            return true;
+        else
+            return false;
+    }
+
+    function GiveConfirm() {
+        if (confirm("¿Está seguro que desea darle permisos de edición al usuario seleccionado?"))
+            return true;
+        else
+            return false;
+    }
+</script>

@@ -1,0 +1,1 @@
+c:\users\pedro\documents\visual studio 2012\Projects\TesisProj\TesisProjTests\obj\Debug\TesisProjTests.csprojResolveAssemblyReference.cache

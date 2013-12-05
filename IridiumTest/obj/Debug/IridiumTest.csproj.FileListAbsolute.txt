@@ -1,0 +1,7 @@
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\bin\Debug\IridiumTest.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\bin\Debug\IridiumTest.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\bin\Debug\MathNet.Numerics.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\bin\Debug\MathNet.Numerics.pdb
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\bin\Debug\MathNet.Numerics.xml
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\obj\Debug\IridiumTest.dll
+C:\Users\pcurich\Documents\Github\TesisProj\TesisProj\IridiumTest\obj\Debug\IridiumTest.pdb

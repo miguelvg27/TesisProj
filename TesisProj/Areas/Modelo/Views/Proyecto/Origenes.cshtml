@@ -1,0 +1,83 @@
+﻿@model IEnumerable<TesisProj.Areas.Modelo.Models.DbVersion>
+
+@{
+    ViewBag.Title = "Versiones: " + ViewBag.Proyecto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Versiones de @ViewBag.Proyecto</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("GuardarVersion", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId } )"">
+  	    <i class="icon-plus icon-white"></i>Guardar versión actual
+    </a>
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId   })"">
+  			<i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+    <br /><br />
+</p>
+<table class="table table-hover table-striped table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Version)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdUsuario)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Version)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Creador.UserName)
+        </td>
+        <td>
+            @Html.ActionLink("Restaurar", "RestaurarVersion", new { id=item.Id }, new { onclick = " return RestoreConfirm()" }) | 
+            @Html.ActionLink("Duplicar", "DuplicarVersion", new { id = item.Id }, new { onclick = " return DuplicateConfirm()" })
+        </td>
+    </tr>
+}
+
+</table>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+<script>
+    function CreateConfirm(){
+        if (confirm("¿Está seguro que desea guardar el estado actual del proyecto como una versión?"))
+            return true;
+        else
+            return false;     
+    }
+
+    function RestoreConfirm() {
+        if (confirm("¿Está seguro que desea restaurar la versión? Se guardará el estado actual como una versión."))
+            return true;
+        else
+            return false;
+    }
+
+    function DuplicateConfirm() {
+        if (confirm("¿Está seguro que desea crear un nuevo proyecto?"))
+            return true;
+        else
+            return false;
+    }
+</script>
