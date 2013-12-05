@@ -39,7 +39,7 @@ namespace TesisProj.Models.Storage
             SeedPlantilla();
 
             SeedUserProfiles();
-            SeedProyecto();
+            SeedProyecto(); 
         }
     }
 
