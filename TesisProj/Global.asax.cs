@@ -62,7 +62,7 @@ namespace TesisProj
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+ 
             //Database.SetInitializer<TProjContext>(new TProjInitializer());
 
             using (TProjContext context = new TProjContext())
