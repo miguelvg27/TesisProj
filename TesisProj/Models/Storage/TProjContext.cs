@@ -15,8 +15,8 @@ namespace TesisProj.Models.Storage
     {
 
         public TProjContext()
-            : base("TProjContext")
-            //: base("Server=b2b54485-7ca7-43cc-9153-a28f004c1a40.sqlserver.sequelizer.com;Database=dbb2b544857ca743cc9153a28f004c1a40;User ID=bmprfcrbhkmmbkoa;Password=LybRmMNWAWF7BLMuV56FWdhmSZRF4PYFqLawYrGxYVpxHSHNUiQhAbmHqX7u5g2T;")
+           // : base("TProjContext")
+           : base("Server=b2b54485-7ca7-43cc-9153-a28f004c1a40.sqlserver.sequelizer.com;Database=dbb2b544857ca743cc9153a28f004c1a40;User ID=bmprfcrbhkmmbkoa;Password=LybRmMNWAWF7BLMuV56FWdhmSZRF4PYFqLawYrGxYVpxHSHNUiQhAbmHqX7u5g2T;")
         {
             RegistrarTablas();
         }
