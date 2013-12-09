@@ -1,8 +1,8 @@
-﻿@{
+﻿@using Telerik.Web.Mvc.UI;
+@{
     List<TesisProj.Areas.IridiumTest.Models.Result> salida = (List<TesisProj.Areas.IridiumTest.Models.Result>)Session["_GraficoMuestra"];
 }
-@(
-     Html.Telerik().Chart<TesisProj.Areas.IridiumTest.Models.Result>(salida)
+@(Html.Telerik().Chart<TesisProj.Areas.IridiumTest.Models.Result>(salida)
      .Name("chart2")
      .Title(title => title.Text("Muestra").Visible(true))
      .Legend(legend => legend.Position(ChartLegendPosition.Bottom).Visible(true))
