@@ -1,9 +1,9 @@
 ﻿@using Telerik.Web.Mvc.UI
 @{
-    List<IridiumTest.Models.Graphic> salida = (List<IridiumTest.Models.Graphic>)Session["_GraficoProbabilidad"];
+    List<TesisProj.Areas.IridiumTest.Models.Graphic> salida = (List<TesisProj.Areas.IridiumTest.Models.Graphic>)Session["_GraficoProbabilidad"];
 }
 @(
-     Html.Telerik().Chart<IridiumTest.Models.Graphic>(salida)
+     Html.Telerik().Chart<TesisProj.Areas.IridiumTest.Models.Graphic>(salida)
      .Name("chart")
      .Title(title => title.Text("f(X) vs F(X)").Visible(true))
      .Legend(legend => legend.Position(ChartLegendPosition.Bottom).Visible(true))

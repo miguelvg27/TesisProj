@@ -33,7 +33,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpPost]
         public ActionResult Index(_Binomial b)
         {
-            ModeloSimulacion modelo = new ModeloSimulacion("Binomial",b.ParamsIN[0].valorD,b.ParamsIN[1].valorI,0,0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Binomial").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Binomial",b.ParamsIN[0].valorD,b.ParamsIN[1].valorI,0,0,lista);
             modelo.binomial.GetModelo();
             modelo.binomial.GetSimulacion(b.ParamsIN[2].valorI);
             modelo.binomial.GetResumen();

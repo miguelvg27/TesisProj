@@ -34,7 +34,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             //u.ParamsIN[0].valorI  MINIMO
             //u.ParamsIN[1].valorI  MAXIMO
             //u.ParamsIN[2].valorI  MUESTRA
-            ModeloSimulacion modelo = new ModeloSimulacion("Exponencial", u.ParamsIN[0].valorD, 0, 0, 0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Exponencial").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Exponencial", u.ParamsIN[0].valorD, 0, 0, 0,lista);
             modelo.exponencial.GetModelo();
             modelo.exponencial.GetSimulacion(u.ParamsIN[1].valorI);
             modelo.exponencial.GetResumen();

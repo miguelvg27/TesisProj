@@ -33,7 +33,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         {
             //u.ParamsIN[0].valorI  freedn
             //u.ParamsIN[1].valorI  MUESTRA
-            ModeloSimulacion modelo = new ModeloSimulacion("ChiCuadrado", c.ParamsIN[0].valorD,0, 0, 0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "ChiCuadrado").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("ChiCuadrado", c.ParamsIN[0].valorD,0, 0, 0,lista);
             modelo.chicuadrado.GetModelo();
             modelo.chicuadrado.GetSimulacion(c.ParamsIN[1].valorI);
             modelo.chicuadrado.GetResumen();

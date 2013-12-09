@@ -29,13 +29,15 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(_Poisson p)
+        public ActionResult Index(_Poisson pr)
         {
             //g.ParamsIN[0].valorD  promedio
             //g.ParamsIN[1].valorI  Número de ocurrencias (n)
-            ModeloSimulacion modelo = new ModeloSimulacion("Poisson", p.ParamsIN[0].valorD,0,0, 0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Poisson").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Poisson", pr.ParamsIN[0].valorD,0,0, 0,lista);
             modelo.poisson.GetModelo();
-            modelo.poisson.GetSimulacion(p.ParamsIN[1].valorI);
+            modelo.poisson.GetSimulacion(pr.ParamsIN[1].valorI);
             modelo.poisson.GetResumen();
 
             Session["_GraficoProbabilidad"] = modelo.poisson.Graphics;
@@ -48,8 +50,8 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             {
                 try
                 {
-                    modelo.poisson.ParamsIN[i].valorD = p.ParamsIN[i].valorD;
-                    modelo.poisson.ParamsIN[i].valorI = p.ParamsIN[i].valorI;
+                    modelo.poisson.ParamsIN[i].valorD = pr.ParamsIN[i].valorD;
+                    modelo.poisson.ParamsIN[i].valorI = pr.ParamsIN[i].valorI;
                 }
                 catch
                 {
@@ -57,7 +59,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                 }
             }
             
-            Asignar((int)Session["ProyectoId"], (int)Session["ParametroId"], "Poisson", p.ParamsIN[0].valorD,0,0, 0, modelo.poisson.ParamsIN);
+            Asignar((int)Session["ProyectoId"], (int)Session["ParametroId"], "Poisson", pr.ParamsIN[0].valorD,0,0, 0, modelo.poisson.ParamsIN);
             return View(modelo.poisson);
         }
 

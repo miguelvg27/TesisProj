@@ -28,10 +28,18 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
             };
         }
 
-        public _F(double d1, double d2)
+        public _F(double d1, double d2,List<ListField> lists)
         {
             modelo = new MathNet.Numerics.Distributions.FisherSnedecor(d1, d2);
             CrearComplemento();
+			this.Resumen = lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "Resumen").FirstOrDefault().Imagen;
+            this.Imagen = lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "Imagen").FirstOrDefault().Imagen;
+            this.Formulates = new List<Formulate> {
+                            new Formulate { NombreFormula="E(X)=", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "EX").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="D(X)=", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "DX").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="y1=", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "y1").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="P(X=r)", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "PX").FirstOrDefault().Imagen}
+            };
         }
 
         public double Sample()

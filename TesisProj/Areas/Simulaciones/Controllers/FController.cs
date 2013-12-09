@@ -34,7 +34,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             //u.ParamsIN[0].valorI  MINIMO
             //u.ParamsIN[1].valorI  MAXIMO
             //u.ParamsIN[2].valorI  MUESTRA
-            ModeloSimulacion modelo = new ModeloSimulacion("F", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "F").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("F", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0,lista);
             modelo.f.GetModelo();
             modelo.f.GetSimulacion(u.ParamsIN[2].valorI);
             modelo.f.GetResumen();

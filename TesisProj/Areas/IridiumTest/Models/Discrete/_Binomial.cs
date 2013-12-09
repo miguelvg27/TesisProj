@@ -65,10 +65,19 @@ namespace TesisProj.Areas.IridiumTest.Models.Discrete
             this.Results = new List<Result>();
         }
 
-        public _Binomial(double p, int n)
+        public _Binomial(double p, int n,List<ListField> lists)
         {
             modelo = new MathNet.Numerics.Distributions.Binomial(p, n);
             CrearComplemento();
+			this.Resumen = lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "Resumen").FirstOrDefault().Imagen;
+            this.Imagen = lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "Imagen").FirstOrDefault().Imagen;
+            this.Formulates = new List<Formulate> {
+                            new Formulate { NombreFormula="E(X)=", Imagen=lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "EX").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="D(X)=", Imagen=lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "DX").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="y1=", Imagen=lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "y1").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="y2=", Imagen=lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "y2").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="P(X=r)", Imagen=lists.Where(pr => pr.Modelo == this.Titulo && pr.Atributo == "PX").FirstOrDefault().Imagen}
+            };
         }
 
         public void GetModelo()

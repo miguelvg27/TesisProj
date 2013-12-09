@@ -61,7 +61,9 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     foreach (Parametro p in parametros)
                     {
                         String[] z= p.XML_ModeloAsignado.Split('|');
-                        ModeloSimulacion modelo = new ModeloSimulacion(z[0], Convert.ToDouble(z[1]), Convert.ToDouble(z[2]), Convert.ToDouble(z[3]), Convert.ToDouble(z[4]));
+                        TProjContext db = new TProjContext();
+                        List<ListField> lista = db.ListFields.Where(pe => pe.Modelo == z[0]).ToList();
+                        ModeloSimulacion modelo = new ModeloSimulacion(z[0], Convert.ToDouble(z[1]), Convert.ToDouble(z[2]), Convert.ToDouble(z[3]), Convert.ToDouble(z[4]),lista);
                         p.CeldasSensibles = RetornarCeldas(modelo,p.Celdas.Count,p.Celdas[2]);
 
                         Parametrossensibles.Add(new Parametro

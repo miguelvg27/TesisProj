@@ -155,32 +155,32 @@ namespace TesisProj.Areas.Simulaciones.Models
                 weibull = null;
         }
 
-        public ModeloSimulacion(string nombre, double a, double b, double c, double d)
+        public ModeloSimulacion(string nombre, double a, double b, double c, double d,List<ListField> lists)
         {
             #region Discreta
 
             if (nombre.CompareTo("Binomial") == 0)
-                binomial = new _Binomial(Convert.ToDouble(a), Convert.ToInt16(b));
+                binomial = new _Binomial(Convert.ToDouble(a), Convert.ToInt16(b),lists);
             else
                 binomial = null;
 
             if (nombre.CompareTo("Geometrica") == 0)
-                geometrica = new _Geometrica(Convert.ToDouble(a));
+                geometrica = new _Geometrica(Convert.ToDouble(a),lists);
             else
                 geometrica = null;
 
             if (nombre.CompareTo("HiperGeometrica") == 0)
-                hipergeometrica = new _HiperGeometrica(Convert.ToInt16(a), Convert.ToInt16(b), Convert.ToInt16(c));
+                hipergeometrica = new _HiperGeometrica(Convert.ToInt16(a), Convert.ToInt16(b), Convert.ToInt16(c),lists);
             else
                 hipergeometrica = null;
 
             if (nombre.CompareTo("Poisson") == 0)
-                poisson = new _Poisson(Convert.ToDouble(a));
+                poisson = new _Poisson(Convert.ToDouble(a), lists);
             else
                 poisson = null;
 
             if (nombre.CompareTo("UniformeDiscreta") == 0)
-                uniformediscreta = new _UniformeDiscreta(Convert.ToInt16(a), Convert.ToInt16(b));
+                uniformediscreta = new _UniformeDiscreta(Convert.ToInt16(a), Convert.ToInt16(b),lists);
             else
                 uniformediscreta = null;
 
@@ -189,52 +189,52 @@ namespace TesisProj.Areas.Simulaciones.Models
             #region Continua
 
             if (nombre.CompareTo("Normal") == 0)
-                normal = new _Normal(a, b, a - 15, a + 15);
+                normal = new _Normal(a, b, a - 15, a + 15,lists);
             else
                 normal = null;
 
             if (nombre.CompareTo("Beta") == 0)
-                beta = new _Beta(a, b);
+                beta = new _Beta(a, b,lists);
             else
                 beta = null;
 
             if (nombre.CompareTo("ChiCuadrado") == 0)
-                chicuadrado = new _ChiCuadrado(a);
+                chicuadrado = new _ChiCuadrado(a,lists);
             else
                 chicuadrado = null;
 
             if (nombre.CompareTo("Exponencial") == 0)
-                exponencial = new _Exponencial(a);
+                exponencial = new _Exponencial(a,lists);
             else
                 exponencial = null;
 
             if (nombre.CompareTo("TStudent") == 0)
-                tstudent = new _TStudent(a, b, c);
+                tstudent = new _TStudent(a, b, c,lists);
             else
                 tstudent = null;
 
             if (nombre.CompareTo("Gamma") == 0)
-                gamma = new _Gamma(a, b);
+                gamma = new _Gamma(a, b,lists);
             else
                 gamma = null;
 
             if (nombre.CompareTo("F") == 0)
-                f = new _F(a, b);
+                f = new _F(a, b,lists);
             else
                 f = null;
 
             if (nombre.CompareTo("Weibull") == 0)
-                weibull = new _Weibull(a, b);
+                weibull = new _Weibull(a, b,lists);
             else
                 weibull = null;
 
             if (nombre.CompareTo("Pareto") == 0)
-                pareto = new _Pareto(a, b);
+                pareto = new _Pareto(a, b,lists);
             else
                 pareto = null;
 
             if (nombre.CompareTo("UniformeContinua") == 0)
-                uniformecontinua = new _UniformeContinua(a, b);
+                uniformecontinua = new _UniformeContinua(a, b,lists);
             else
                 uniformecontinua = null;
 

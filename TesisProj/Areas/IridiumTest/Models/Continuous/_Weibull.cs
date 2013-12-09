@@ -69,10 +69,18 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
             this.Results = new List<Result>();
         }
 
-        public _Weibull(double a, double b)
+        public _Weibull(double a, double b,List<ListField> lists)
         {
             modelo = new MathNet.Numerics.Distributions.Weibull(a, b);
             CrearComplemento();
+			this.Resumen = lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "Resumen").FirstOrDefault().Imagen;
+            this.Imagen = lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "Imagen").FirstOrDefault().Imagen;
+            this.Formulates = new List<Formulate> {
+                            new Formulate { NombreFormula="E(X)=", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "EX").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="D(X)=", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "DX").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="y1=", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "y1").FirstOrDefault().Imagen},
+                            new Formulate { NombreFormula="P(X=r)", Imagen=lists.Where(p => p.Modelo == this.Titulo && p.Atributo == "PX").FirstOrDefault().Imagen}
+            };
         }
 
         public void GetModelo()

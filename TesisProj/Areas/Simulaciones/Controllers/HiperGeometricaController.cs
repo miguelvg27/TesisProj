@@ -35,7 +35,10 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             //g.ParamsIN[1].valorD  k
             //g.ParamsIN[0].valorD  n
             //g.ParamsIN[1].valorD  muuestras
-            ModeloSimulacion modelo = new ModeloSimulacion("HiperGeometrica", h.ParamsIN[0].valorI, h.ParamsIN[1].valorI, h.ParamsIN[2].valorI, 0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "HiperGeometrica").ToList();
+
+            ModeloSimulacion modelo = new ModeloSimulacion("HiperGeometrica", h.ParamsIN[0].valorI, h.ParamsIN[1].valorI, h.ParamsIN[2].valorI, 0,lista);
             modelo.hipergeometrica.GetModelo();
             modelo.hipergeometrica.GetSimulacion(h.ParamsIN[3].valorI);
             modelo.hipergeometrica.GetResumen();

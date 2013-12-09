@@ -66,8 +66,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                         string[] p = todo[i].Split('?');
                         parametrosalmacenados.Add(new Param { indice = Convert.ToInt16(p[0]), nombre = p[1], rango = p[2], valorD = Math.Round(Convert.ToDouble(p[3]),2), valorI = Convert.ToInt32(p[4]) });
                     }
-
-                    ModeloSimulacion modelo2 = new ModeloSimulacion(nombre,a,b,c,d);
+                    TProjContext db = new TProjContext();
+                    List<ListField> lista = db.ListFields.Where(p => p.Modelo == nombre).ToList();
+                    ModeloSimulacion modelo2 = new ModeloSimulacion(nombre,a,b,c,d,lista);
                     String simulaciones = CadenaSimulaciones(modelo2, nombre, proyecto.Horizonte);
                     string tabla = CadenaModelo(modelo2, nombre, parametrosalmacenados);
                     

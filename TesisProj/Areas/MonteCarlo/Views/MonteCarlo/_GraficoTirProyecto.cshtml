@@ -1,12 +1,12 @@
-﻿@using TesisProj.@using Telerik.Web.Mvc.UI	
-@model ICollection<IridiumTest.Models.Graphic>
+﻿@using Telerik.Web.Mvc.UI	
+@model ICollection<TesisProj.Areas.IridiumTest.Models.Graphic>
 <h1>Tir Financiero</h1>
 		@(Html.Telerik().Chart(Model)
 			.Name("chartTirProyecto")
 			.Legend(legend => legend
 				.Position(ChartLegendPosition.Bottom)
 				.Visible(true)
-			)
+                        )
 			.Series(series =>
 			{
 				series.Column(s => s.N).Name("X");  // LO QUE DIBUJA LAS BARRAS

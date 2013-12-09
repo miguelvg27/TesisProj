@@ -35,7 +35,10 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         {
             //g.ParamsIN[0].valorD  probabilidad de exito
             //g.ParamsIN[1].valorD  muuestras
-            ModeloSimulacion modelo = new ModeloSimulacion("Geometrica", g.ParamsIN[0].valorD, 0, 0, 0);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Geometrica").ToList();
+
+            ModeloSimulacion modelo = new ModeloSimulacion("Geometrica", g.ParamsIN[0].valorD, 0, 0, 0, lista);
             modelo.geometrica.GetModelo();
             modelo.geometrica.GetSimulacion(g.ParamsIN[1].valorI);
             modelo.geometrica.GetResumen();
