@@ -31,6 +31,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
         [HttpPost]
         public ActionResult Index(MetodoMonteCarlo mc, int idProyecto)
         {
+            ViewBag.idProyecto = (int)Session["idProyecto"];
+
             Proyecto proy = context.Proyectos.Find(idProyecto);
             List<Result> vanE = new List<Result>();
             List<Result> vanF = new List<Result>();
@@ -39,31 +41,16 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
             for (int u = 1; u <= mc.NumeroSimulaciones; u++)
             {
-                //List<Proyecto> Proyectos = new List<Proyecto>();
-
                 List<Parametro> Parametrossensibles = new List<Parametro>();
                 foreach (Elemento e in proy.Elementos)
                 {
-                    //Proyecto PROYECTOSIMULADO = new Proyecto();
-                    //PROYECTOSIMULADO.Nombre = proy.Nombre;
-                    //PROYECTOSIMULADO.Elementos = new List<Elemento>();
-
-
-                    List<Parametro> parametros = e.Parametros.Where(o=>o.Sensible==true).ToList();
-
-                    //Elemento ex = new Elemento();
-                    //ex.Id = e.Id;
-                    //ex.IdProyecto = e.IdProyecto;
-                    //ex.IdTipoElemento = e.IdTipoElemento;
-                    //ex.Nombre = e.Nombre;
-                    //ex.Parametros = new List<Parametro>();
-
-                    foreach (Parametro p in parametros)
+                    foreach (Parametro p in e.Parametros.Where(o => o.Sensible == true))
                     {
                         String[] z= p.XML_ModeloAsignado.Split('|');
                         TProjContext db = new TProjContext();
                         List<ListField> lista = db.ListFields.Where(pe => pe.Modelo == z[0]).ToList();
                         ModeloSimulacion modelo = new ModeloSimulacion(z[0], Convert.ToDouble(z[1]), Convert.ToDouble(z[2]), Convert.ToDouble(z[3]), Convert.ToDouble(z[4]),lista);
+                        p.CeldasSensibles = new List<Celda>();
                         p.CeldasSensibles = RetornarCeldas(modelo,p.Celdas.Count,p.Celdas[2]);
 
                         Parametrossensibles.Add(new Parametro
@@ -83,6 +70,25 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                         );
                     }
 
+                    foreach (Parametro p in e.Parametros.Where(o => o.Sensible == false))
+                    {
+                        Parametrossensibles.Add(new Parametro
+                        {
+                            Nombre = p.Nombre,
+                            Referencia = p.Referencia,
+                            IdElemento = p.IdElemento,
+                            Elemento = p.Elemento,
+                            IdTipoParametro = p.IdTipoParametro,
+                            TipoParametro = p.TipoParametro,
+                            Constante = p.Constante,
+                            Sensible = p.Sensible,
+                            CeldasSensibles = p.CeldasSensibles,
+                            Celdas = p.Celdas,
+                            XML_ModeloAsignado = p.XML_ModeloAsignado
+                        }
+                        );
+                    }
+
                     //PROYECTOSIMULADO.Elementos.Add(ex);
                 }
                 //Aca las celdas para los elementos y sus parametros ya estan simuladoas con un modelo
@@ -90,8 +96,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 SimAns r = MetodoMiguel(proy, Parametrossensibles);
                 vanE.Add(new Result { ValorObtenidoD = r.VanE});
                 vanF.Add(new Result { ValorObtenidoD = r.VanF });
-                tirE.Add(new Result { ValorObtenidoD = r.TirE });
-                tirF.Add(new Result { ValorObtenidoD = r.TirF });
+                tirE.Add(new Result { ValorObtenidoD = r.TirE * 100 });
+                tirF.Add(new Result { ValorObtenidoD = r.TirF * 100 });
             }
             //ya tengo los valores obtenidos
             //los agrupo en intervalos 
@@ -101,35 +107,49 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             List<Graphic> GraficoTirE = new List<Graphic>();
             List<Graphic> GraficoTirF = new List<Graphic>();
 
-            int _x_, _x_puls_;
+
+            double Rango=vanE.Max(i=>i.ValorObtenidoD)-vanE.Min(i=>i.ValorObtenidoD);
+            double Amplitud=(Rango)/((mc.NumeroIntervalos)*1.0);
+            double minimo=vanE.Min(i=>i.ValorObtenidoD);
             double _fx_;
 
-            for (int i = 1; i <= mc.NumeroIntervalos; i++)
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
             {
-                _x_ = PuntoIntervalo(vanE.Min(u => u.ValorObtenidoD), vanE.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i);
-                _x_puls_ = PuntoIntervalo(vanE.Min(u => u.ValorObtenidoD), vanE.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i + 1);
-                _fx_ = vanE.Where(n => (n.ValorObtenidoD >= _x_ && n.ValorObtenidoD < _x_puls_)).Count();
+                _fx_= vanE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                GraficoVanE.Add(new Graphic { fx = _fx_, N = u });
+            }
 
-                GraficoVanE.Add(new Graphic { fx = _fx_, N = _x_ });
+            Rango = vanF.Max(i => i.ValorObtenidoD) - vanF.Min(i => i.ValorObtenidoD);
+            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            minimo = vanF.Min(i => i.ValorObtenidoD);
 
-                _x_ = PuntoIntervalo(vanF.Min(u => u.ValorObtenidoD), vanF.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i);
-                _x_puls_ = PuntoIntervalo(vanF.Min(u => u.ValorObtenidoD), vanF.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i + 1);
-                _fx_ = vanF.Where(n => (n.ValorObtenidoD >= _x_ && n.ValorObtenidoD < _x_puls_)).Count();
 
-                GraficoVanF.Add(new Graphic { fx = _fx_, N = _x_ });
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = vanF.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                GraficoVanF.Add(new Graphic { fx = _fx_, N = u });
+            }
 
-                _x_ = PuntoIntervalo(tirE.Min(u => u.ValorObtenidoD), tirE.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i);
-                _x_puls_ = PuntoIntervalo(tirE.Min(u => u.ValorObtenidoD), tirE.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i + 1);
-                _fx_ = tirE.Where(n => (n.ValorObtenidoD >= _x_ && n.ValorObtenidoD < _x_puls_)).Count();
+            Rango = tirE.Max(i => i.ValorObtenidoD) - tirE.Min(i => i.ValorObtenidoD);
+            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            minimo = tirE.Min(i => i.ValorObtenidoD);
 
-                GraficoTirE.Add(new Graphic { fx = _fx_, N = _x_ });
 
-                _x_ = PuntoIntervalo(tirE.Min(u => u.ValorObtenidoD), tirE.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i);
-                _x_puls_ = PuntoIntervalo(tirE.Min(u => u.ValorObtenidoD), tirE.Max(u => u.ValorObtenidoD), mc.NumeroIntervalos, i + 1);
-                _fx_ = tirE.Where(n => (n.ValorObtenidoD >= _x_ && n.ValorObtenidoD < _x_puls_)).Count();
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = tirE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                GraficoTirE.Add(new Graphic { fx = _fx_, N = u });
+            }
 
-                GraficoTirE.Add(new Graphic { fx = _fx_, N = _x_ });
+            Rango = tirF.Max(i => i.ValorObtenidoD) - tirF.Min(i => i.ValorObtenidoD);
+            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            minimo = tirF.Min(i => i.ValorObtenidoD);
 
+
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = tirF.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                GraficoTirF.Add(new Graphic { fx = _fx_, N = u });
             }
 
             mc.VanEconomico = GraficoVanE;
@@ -149,8 +169,10 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
             Session["_GraficoVanInversionista"] = mc.VanEconomico;
             Session["_GraficoVanProyecto"] = mc.VanFinanciero;
-            Session["_GraficoTirProyecto"] = mc.TirEconomico;
-            Session["_GraficoTirInversionista"] = mc.TirFinanciero;
+            Session["_GraficoTirProyecto"] = mc.TirFinanciero;
+            Session["_GraficoTirInversionista"] = mc.TirEconomico;
+
+            
 
             return RedirectToAction("Resultados", mc);
 
@@ -205,7 +227,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
             return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
         }
-        private List<Celda> RetornarCeldas(ModeloSimulacion modelo, int cantidad, Celda celda)
+
+        public  List<Celda> RetornarCeldas(ModeloSimulacion modelo, int cantidad, Celda celda)
         {
             List<Celda> salida = new List<Celda>();
 
@@ -216,7 +239,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;
                     c.Valor = Convert.ToDecimal(modelo.beta.Sample());
                     salida.Add(c);
                 }
@@ -231,7 +254,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;
                     c.Valor = Convert.ToDecimal(modelo.binomial.Sample());
                     salida.Add(c);
                 }
@@ -245,7 +268,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.chicuadrado.Sample());
                     salida.Add(c);
                 }
@@ -259,7 +282,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.exponencial.Sample());
                     salida.Add(c);
                 }
@@ -273,7 +296,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.f.Sample());
                     salida.Add(c);
                 }
@@ -287,7 +310,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.gamma.Sample());
                     salida.Add(c);
                 }
@@ -301,7 +324,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.geometrica.Sample());
                     salida.Add(c);
                 }
@@ -315,7 +338,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.hipergeometrica.Sample());
                     salida.Add(c);
                 }
@@ -329,7 +352,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.normal.Sample());
                     salida.Add(c);
                 }
@@ -343,7 +366,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.pareto.Sample());
                     salida.Add(c);
                 }
@@ -357,7 +380,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.poisson.Sample());
                     salida.Add(c);
                 }
@@ -371,7 +394,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.tstudent.Sample());
                     salida.Add(c);
                 }
@@ -385,7 +408,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.uniformecontinua.Sample());
                     salida.Add(c);
                 }
@@ -398,7 +421,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.uniformediscreta.Sample());
                     salida.Add(c);
                 }
@@ -412,7 +435,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     Celda c = new Celda();
                     c.IdParametro = celda.IdParametro;
                     c.Parametro = celda.Parametro;
-                    c.Periodo = celda.Periodo;
+                    c.Periodo = i;;
                     c.Valor = Convert.ToDecimal(modelo.weibull.Sample());
                     salida.Add(c);
                 }

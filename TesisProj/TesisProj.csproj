@@ -724,6 +724,14 @@
     <Content Include="Images\_UniformeContinua\Thumbs.db" />
     <Content Include="Images\_UniformeDiscreta\Thumbs.db" />
     <Content Include="Images\_Weibull\Thumbs.db" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTir.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirE.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirF.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVan.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanE.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanF.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />

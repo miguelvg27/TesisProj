@@ -54,7 +54,7 @@ namespace TesisProj.Areas.Modelo.Models
         public string XML_ModeloAsignado { get; set; }
 
         [NotMapped]
-        public List<Celda> CeldasSensibles { get; set; }
+        public virtual List<Celda> CeldasSensibles { get; set; }
 
         public Parametro()
         {
