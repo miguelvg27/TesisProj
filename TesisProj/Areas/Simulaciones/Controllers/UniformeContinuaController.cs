@@ -1,10 +1,10 @@
-﻿using IridiumTest.Models;
-using IridiumTest.Models.Continuous;
-using TesisProj.Areas.Simulaciones.Models;
+﻿using TesisProj.Areas.Simulaciones.Models;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.IridiumTest.Models.Continuous;
+using TesisProj.Areas.IridiumTest.Models;
 
 namespace TesisProj.Areas.Simulaciones.Controllers
 {
@@ -16,7 +16,10 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpGet]
         public ActionResult Index(int ProyectoId, int ParametroId)
         {
-            ModeloSimulacion modelo = new ModeloSimulacion("UniformeContinua");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "UniformeContinua").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("UniformeContinua", lista);
+
             Session["_GraficoProbabilidad"] = null;
             Session["_GraficoMuestra"] = null;
             Session["ParametroId"] = ParametroId;
@@ -97,7 +100,10 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public FileContentResult getImg(int Id)
         {
-            ModeloSimulacion m = new ModeloSimulacion("UniformeContinua");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "UniformeContinua").ToList();
+            ModeloSimulacion m = new ModeloSimulacion("UniformeContinua", lista);
+
             byte[] byteArray;
             if (Id == -1)
                 byteArray = m.uniformecontinua.Resumen;

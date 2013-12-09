@@ -1,13 +1,12 @@
-﻿using IridiumTest.Models;
-using IridiumTest.Models.Discrete;
-using TesisProj.Areas.Simulaciones.Models;
+﻿using TesisProj.Areas.Simulaciones.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TesisProj.Models.Storage;
-using IridiumTest.Util;
+using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.IridiumTest.Models.Discrete;
 
 namespace TesisProj.Areas.Simulaciones.Controllers
 {
@@ -19,7 +18,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpGet]
         public ActionResult Index(int ProyectoId, int ParametroId)
         {
-            ModeloSimulacion modelo = new ModeloSimulacion("Binomial");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Binomial").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Binomial", lista);
             Session["_GraficoProbabilidad"] = null;
             Session["_GraficoMuestra"] = null;
             Session["ParametroId"] = ParametroId;
@@ -95,7 +96,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public FileContentResult getImg(int Id)
         {
-            ModeloSimulacion m = new ModeloSimulacion("Binomial");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Binomial").ToList();
+            ModeloSimulacion m = new ModeloSimulacion("Binomial", lista);
             byte[] byteArray;
             if (Id == -1)
                 byteArray = m.binomial.Resumen;

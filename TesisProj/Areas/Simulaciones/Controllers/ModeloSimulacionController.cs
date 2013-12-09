@@ -1,9 +1,10 @@
-﻿using IridiumTest.Models;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TesisProj.Areas.IridiumTest.Models;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models.Storage;
@@ -211,13 +212,17 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public ActionResult Asignacion(string Name, int ProyectoId, int ParametroId)
         {
-            ModeloSimulacion modelo = new ModeloSimulacion(Name);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == Name).ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion(Name, lista);
             return RedirectToAction("Index", Name, new { ProyectoId = ProyectoId,ParametroId = ParametroId });
         }
 
         public FileContentResult getImg(string nombre)
         {
-            ModeloSimulacion m = new ModeloSimulacion(nombre);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == nombre).ToList();
+            ModeloSimulacion m = new ModeloSimulacion(nombre, lista);
             byte[] byteArray=null;
 
             if (nombre.CompareTo("Binomial") == 0)

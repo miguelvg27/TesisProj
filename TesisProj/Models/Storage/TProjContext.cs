@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.IridiumTest.Models.Discrete;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 
@@ -13,7 +15,6 @@ namespace TesisProj.Models.Storage
     {
 
         public TProjContext()
-            //: base("TProjDb")
             : base("TProjContext")
         {
             RegistrarTablas();
@@ -25,25 +26,27 @@ namespace TesisProj.Models.Storage
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToOneConstraintIntroductionConvention>();
             modelBuilder.Entity<Celda>().Property(c => c.Valor).HasPrecision(16, 5);
+            modelBuilder.Entity<ListField>().Property(p => p.Imagen).HasColumnType("Image");
         }
 
         public void RegistrarTablas()
         {
             RegistrarTablasPlantilla();
             RegistrarTablasProyecto();
+            RegistrarTablaImagenes();
 
         }
 
         public void Seed()
         {
             SeedPlantilla();
-
             SeedUserProfiles();
-            SeedProyecto(); 
+            SeedProyecto();
+            SeedTablaImagenes();
         }
     }
 
-      public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
+    public class TProjInitializer : DropCreateDatabaseIfModelChanges<TProjContext>
     //public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
     {
         protected override void Seed(TProjContext context)

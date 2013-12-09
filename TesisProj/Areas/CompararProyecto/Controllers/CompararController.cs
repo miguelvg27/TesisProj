@@ -1,12 +1,9 @@
-﻿using IridiumTest.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.CompararProyecto.Models;
+using TesisProj.Areas.IridiumTest.Models;
 using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Models.Storage;
@@ -17,7 +14,7 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
     {
         //
         // GET: /CompararProyecto/Comparar/
-        TProjContext context = new TProjContext();
+        private TProjContext context = new TProjContext();
 
         [HttpGet]
         public ActionResult Index()
@@ -47,7 +44,6 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
         [HttpPost]
         public ActionResult Index(int[] checkedRecords)
         {
-
             List<Proyecto> lista = new List<Proyecto>();
             foreach (int i in checkedRecords)
             {
@@ -76,13 +72,11 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 graficosVanF.Add(Asignar(proyecto.Id, resultado.VanF));
                 graficosTirF.Add(Asignar(proyecto.Id, resultado.TirF));
                 graficosTirE.Add(Asignar(proyecto.Id, resultado.TirE));
-
             }
             Session["_GraficoVanE"] = graficosVanE;
             Session["_GraficoVanF"] = graficosVanF;
             Session["_GraficoTirE"] = graficosTirE;
             Session["_GraficoTirF"] = graficosTirF;
-
 
             checkedRecords = checkedRecords ?? new int[] { 3, 4, 5 };
             ViewData["checkedRecords"] = checkedRecords;
@@ -135,6 +129,5 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             gr.N = x;
             return gr;
         }
-
     }
 }

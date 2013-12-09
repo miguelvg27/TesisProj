@@ -1,8 +1,8 @@
-﻿using IridiumTest.Models;
-using IridiumTest.Models.Continuous;
-using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
+using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.IridiumTest.Models.Continuous;
 using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models.Storage;
 
@@ -16,7 +16,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpGet]
         public ActionResult Index(int ProyectoId, int ParametroId)
         {
-            ModeloSimulacion modelo = new ModeloSimulacion("Exponencial");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Exponencial").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Exponencial", lista);
             Session["_GraficoProbabilidad"] = null;
             Session["_GraficoMuestra"] = null;
             Session["ParametroId"] = ParametroId;
@@ -96,7 +98,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public FileContentResult getImg(int Id)
         {
-            ModeloSimulacion m = new ModeloSimulacion("Exponencial");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Exponencial").ToList();
+            ModeloSimulacion m = new ModeloSimulacion("Exponencial", lista);
             byte[] byteArray;
             if (Id == -1)
                 byteArray = m.exponencial.Resumen;
@@ -111,6 +115,5 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                 return null;
             }
         }
-
     }
 }

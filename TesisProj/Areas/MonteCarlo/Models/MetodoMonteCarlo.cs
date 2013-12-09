@@ -1,10 +1,10 @@
-﻿using IridiumTest.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using TesisProj.Areas.IridiumTest.Models;
 
 namespace TesisProj.Areas.MonteCarlo.Models
 {

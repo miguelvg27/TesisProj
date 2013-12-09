@@ -1,10 +1,10 @@
-﻿using IridiumTest.Models;
-using IridiumTest.Models.Continuous;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Linq;
 using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models.Storage;
+using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.IridiumTest.Models.Continuous;
 
 namespace TesisProj.Areas.Simulaciones.Controllers
 {
@@ -16,7 +16,10 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpGet]
         public ActionResult Index(int ProyectoId, int ParametroId)
         {
-            ModeloSimulacion modelo = new ModeloSimulacion("Weibull");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Weibull").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Weibull", lista);
+
             Session["_GraficoProbabilidad"] = null;
             Session["_GraficoMuestra"] = null;
             Session["ParametroId"] = ParametroId;
@@ -97,7 +100,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public FileContentResult getImg(int Id)
         {
-            ModeloSimulacion m = new ModeloSimulacion("Weibull");
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Weibull").ToList();
+            ModeloSimulacion m = new ModeloSimulacion("Weibull", lista);
             byte[] byteArray;
             if (Id == -1)
                 byteArray = m.weibull.Resumen;

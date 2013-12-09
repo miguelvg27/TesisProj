@@ -1,6 +1,8 @@
-﻿using IridiumTest.Models.Continuous;
-using IridiumTest.Models.Discrete;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.IridiumTest.Models.Continuous;
+using TesisProj.Areas.IridiumTest.Models.Discrete;
 
 namespace TesisProj.Areas.Simulaciones.Models
 {
@@ -75,80 +77,80 @@ namespace TesisProj.Areas.Simulaciones.Models
             uniformediscreta = null;
         }
 
-        public ModeloSimulacion(string nombre)
+        public ModeloSimulacion(string nombre, List<ListField> list)
         {
             if (nombre.CompareTo("Binomial") == 0)
-                binomial = new _Binomial();
+                binomial = new _Binomial(list);
             else
                 binomial = null;
 
             if (nombre.CompareTo("Geometrica") == 0)
-                geometrica = new _Geometrica();
+                geometrica = new _Geometrica(list);
             else
                 geometrica = null;
 
             if (nombre.CompareTo("HiperGeometrica") == 0)
-                hipergeometrica = new _HiperGeometrica();
+                hipergeometrica = new _HiperGeometrica(list);
             else
                 hipergeometrica = null;
 
             if (nombre.CompareTo("Poisson") == 0)
-                poisson = new _Poisson();
+                poisson = new _Poisson(list);
             else
                 poisson = null;
 
             if (nombre.CompareTo("UniformeDiscreta") == 0)
-                uniformediscreta = new _UniformeDiscreta();
+                uniformediscreta = new _UniformeDiscreta(list);
             else
                 uniformediscreta = null;
 
             if (nombre.CompareTo("Beta") == 0)
-                beta = new _Beta();
+                beta = new _Beta(list);
             else
                 beta = null;
 
             if (nombre.CompareTo("ChiCuadrado") == 0)
-                chicuadrado = new _ChiCuadrado();
+                chicuadrado = new _ChiCuadrado(list);
             else
                 chicuadrado = null;
 
             if (nombre.CompareTo("Exponencial") == 0)
-                exponencial = new _Exponencial();
+                exponencial = new _Exponencial(list);
             else
                 exponencial = null;
 
             if (nombre.CompareTo("F") == 0)
-                f = new _F();
+                f = new _F(list);
             else
                 f = null;
 
             if (nombre.CompareTo("Gamma") == 0)
-                gamma = new _Gamma();
+                gamma = new _Gamma(list);
             else
                 gamma = null;
 
             if (nombre.CompareTo("Normal") == 0)
-                normal = new _Normal();
+                normal = new _Normal(list);
             else
                 normal = null;
 
             if (nombre.CompareTo("Pareto") == 0)
-                pareto = new _Pareto();
+                pareto = new _Pareto(list);
             else
                 pareto = null;
 
             if (nombre.CompareTo("TStudent") == 0)
-                tstudent = new _TStudent();
+                tstudent = new _TStudent(list);
             else
                 tstudent = null;
 
             if (nombre.CompareTo("UniformeContinua") == 0)
-                uniformecontinua = new _UniformeContinua();
+                uniformecontinua = new _UniformeContinua(list);
             else
                 uniformecontinua = null;
 
             if (nombre.CompareTo("Weibull") == 0)
-                weibull = new _Weibull();
+                weibull = new _Weibull(list);
             else
                 weibull = null;
         }

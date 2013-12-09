@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AE65FE6F-DDE9-4B2B-BE25-1CB0943E6061}</ProjectGuid>
+    <ProjectGuid>{F709A832-573E-4D75-9D7B-542DB8C7A4E5}</ProjectGuid>
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,21 +41,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=3.0.0.38, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MathNet.Numerics.3.0.0-alpha5\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="MathParserNet">
-      <HintPath>..\lib\MathParserNet.dll</HintPath>
+      <HintPath>..\packages\MathParseNet\MathParserNet.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Data.Edm, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Data.OData, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes">
-      <HintPath>..\..\..\..\GitHub\TesisProj\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Spatial, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -70,9 +75,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -358,6 +360,29 @@
     <Compile Include="Areas\CompararProyecto\CompararProyectoAreaRegistration.cs" />
     <Compile Include="Areas\CompararProyecto\Controllers\CompararController.cs" />
     <Compile Include="Areas\CompararProyecto\Models\Comparar.cs" />
+    <Compile Include="Areas\IridiumTest\IridiumTestAreaRegistration.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Beta.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_ChiCuadrado.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Exponencial.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_F.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Gamma.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Normal.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Pareto.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Tstudent.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_UniformeContinua.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Continuous\_Weibull.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Datos.cs" />
+    <Compile Include="Areas\IridiumTest\Models\ListField.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Discrete\_Binomial.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Discrete\_Geometrica.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Discrete\_HiperGeometrica.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Discrete\_Poisson.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Discrete\_UniformeDiscreta.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Formulate.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Graphic.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Param.cs" />
+    <Compile Include="Areas\IridiumTest\Models\Result.cs" />
+    <Compile Include="Areas\IridiumTest\Models\TProjContext.cs" />
     <Compile Include="Areas\Modelo\Controllers\AuditController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ElementoController.cs" />
     <Compile Include="Areas\Modelo\Controllers\FormulaController.cs" />
@@ -709,9 +734,9 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
+    <Content Include="Areas\CompararProyecto\Views\Web.config" />
+    <Content Include="Areas\CompararProyecto\Views\Comparar\Index.cshtml" />
     <Content Include="Areas\Modelo\Views\Web.config" />
-    <Content Include="Areas\Plantilla\Views\Web.config" />
-    <Content Include="Areas\Simulaciones\Views\Web.config" />
     <Content Include="Areas\Modelo\Views\Proyecto\Assoc.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Catalog.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Cine.cshtml" />
@@ -741,136 +766,13 @@
     <Content Include="Areas\Modelo\Views\Proyecto\PutParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\SetParametros.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\VerParametros.cshtml" />
-    <Content Include="Areas\Seguridad\Views\Web.config" />
-    <Content Include="Areas\Seguridad\Views\Colaboradores\Create.cshtml" />
-    <Content Include="Areas\Seguridad\Views\Colaboradores\Index.cshtml" />
-    <Content Include="Images\accent.png" />
-    <Content Include="Images\bullet.png" />
-    <Content Include="Images\fondo.png" />
-    <Content Include="Images\heroAccent.png" />
-    <Content Include="Images\orderedList0.png" />
-    <Content Include="Images\orderedList1.png" />
-    <Content Include="Images\orderedList2.png" />
-    <Content Include="Images\orderedList3.png" />
-    <Content Include="Images\orderedList4.png" />
-    <Content Include="Images\orderedList5.png" />
-    <Content Include="Images\orderedList6.png" />
-    <Content Include="Images\orderedList7.png" />
-    <Content Include="Images\orderedList8.png" />
-    <Content Include="Images\orderedList9.png" />
-    <Content Include="img\glyphicons-halflings-white.png" />
-    <Content Include="img\glyphicons-halflings.png" />
-    <Content Include="Scripts\2013.2.611\jquery-1.7.1.min.js" />
-    <Content Include="Scripts\2013.2.611\jquery.validate.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.all.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.autocomplete.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.calendar.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.chart.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.combobox.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.common.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.datepicker.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.datetimepicker.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.draganddrop.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.editor.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.editing.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.filtering.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.grouping.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.reordering.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.grid.resizing.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.imagebrowser.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.list.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.menu.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.panelbar.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.slider.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.splitter.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.tabstrip.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.textbox.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.timepicker.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.treeview.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
-    <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\images\Thumbs.db" />
-    <Content Include="Areas\Simulaciones\Views\Beta\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Beta\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Beta\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Beta\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Binomial\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Binomial\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Binomial\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Binomial\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Exponencial\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Exponencial\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Exponencial\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Exponencial\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Gamma\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Gamma\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Gamma\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Gamma\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Geometrica\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Geometrica\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Geometrica\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Geometrica\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\ModeloSimulacion\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Normal\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Normal\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Normal\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Normal\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Pareto\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Pareto\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Pareto\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Pareto\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\TStudent\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\TStudent\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\TStudent\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\TStudent\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeContinua\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeContinua\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeContinua\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeContinua\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Weibull\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Weibull\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Weibull\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Weibull\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\F\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\F\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\F\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\F\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Poisson\Index.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Poisson\_GraficoMuestra.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Poisson\_GraficoProbabilidad.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\Poisson\_Resumen.cshtml" />
-    <Content Include="Areas\Simulaciones\Views\ParametrosSencibles\Index.cshtml" />
-    <Content Include="Areas\MonteCarlo\Views\Web.config" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Index.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Resultados.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoTirInversionista.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoTirProyecto.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanInversionista.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanProyecto.cshtml" />
-    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\Index.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Web.config" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\Index.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTir.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirE.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirF.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVan.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanE.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanF.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\Web.config" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Create.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Delete.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Details.cshtml" />
@@ -917,22 +819,251 @@
     <Content Include="Areas\Plantilla\Views\TipoParametro\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoParametro\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoParametro\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Web.config" />
+    <Content Include="Areas\Seguridad\Views\Colaboradores\Create.cshtml" />
+    <Content Include="Areas\Seguridad\Views\Colaboradores\Index.cshtml" />
     <Content Include="Areas\Seguridad\Views\UserProfile\Index.cshtml" />
-    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Areas\Seguridad\Views\Web.config" />
+    <Content Include="Areas\Simulaciones\Views\Beta\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Beta\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Beta\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Beta\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Binomial\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Binomial\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Binomial\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Binomial\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\ChiCuadrado\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Exponencial\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Exponencial\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Exponencial\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Exponencial\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\F\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\F\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\F\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\F\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Gamma\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Gamma\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Gamma\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Gamma\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Geometrica\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Geometrica\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Geometrica\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Geometrica\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\HiperGeometrica\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\ModeloSimulacion\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Normal\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Normal\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Normal\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Normal\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\ParametrosSencibles\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Pareto\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Pareto\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Pareto\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Pareto\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Poisson\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Tstudent\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Tstudent\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Tstudent\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Tstudent\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeContinua\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeContinua\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeContinua\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeContinua\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\UniformeDiscreta\_Resumen.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Web.config" />
+    <Content Include="Areas\Simulaciones\Views\Weibull\Index.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Weibull\_GraficoMuestra.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Weibull\_GraficoProbabilidad.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Weibull\_Resumen.cshtml" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\images\Thumbs.db" />
+    <Content Include="Images\Thumbs.db" />
+    <Content Include="Areas\IridiumTest\Views\Web.config" />
+    <Content Include="Images\_Beta\Thumbs.db" />
+    <Content Include="Images\_Binomial\Thumbs.db" />
+    <Content Include="Images\_ChiCuadrado\Thumbs.db" />
+    <Content Include="Images\_Exponencial\Thumbs.db" />
+    <Content Include="Images\_F\Thumbs.db" />
+    <Content Include="Images\_Gamma\Thumbs.db" />
+    <Content Include="Images\_Geometrica\Thumbs.db" />
+    <Content Include="Images\_HiperGeometrica\Thumbs.db" />
+    <Content Include="Images\_Normal\Thumbs.db" />
+    <Content Include="Images\_Pareto\Thumbs.db" />
+    <Content Include="Images\_Poisson\Thumbs.db" />
+    <Content Include="Images\_TStudent\Thumbs.db" />
+    <Content Include="Images\_UniformeContinua\Thumbs.db" />
+    <Content Include="Images\_UniformeDiscreta\Thumbs.db" />
+    <Content Include="Images\_Weibull\Thumbs.db" />
+    <None Include="Scripts\jquery-1.7.1.intellisense.js" />
+    <Content Include="Images\accent.png" />
+    <Content Include="Images\bullet.png" />
+    <Content Include="Images\fondo.png" />
+    <Content Include="Images\heroAccent.png" />
+    <Content Include="Images\orderedList0.png" />
+    <Content Include="Images\orderedList1.png" />
+    <Content Include="Images\orderedList2.png" />
+    <Content Include="Images\orderedList3.png" />
+    <Content Include="Images\orderedList4.png" />
+    <Content Include="Images\orderedList5.png" />
+    <Content Include="Images\orderedList6.png" />
+    <Content Include="Images\orderedList7.png" />
+    <Content Include="Images\orderedList8.png" />
+    <Content Include="Images\orderedList9.png" />
+    <Content Include="Images\_Beta\DX.png" />
+    <Content Include="Images\_Beta\EX.png" />
+    <Content Include="Images\_Beta\Imagen.png" />
+    <Content Include="Images\_Beta\PX.png" />
+    <Content Include="Images\_Beta\Resumen.png" />
+    <Content Include="Images\_Beta\y1.png" />
+    <Content Include="Images\_Beta\y2.png" />
+    <Content Include="Images\_Binomial\DX.png" />
+    <Content Include="Images\_Binomial\EX.png" />
+    <Content Include="Images\_Binomial\Imagen.png" />
+    <Content Include="Images\_Binomial\PX.png" />
+    <Content Include="Images\_Binomial\Resumen.png" />
+    <Content Include="Images\_Binomial\y1.png" />
+    <Content Include="Images\_Binomial\y2.png" />
+    <Content Include="Images\_ChiCuadrado\DX.png" />
+    <Content Include="Images\_ChiCuadrado\EX.png" />
+    <Content Include="Images\_ChiCuadrado\Imagen.png" />
+    <Content Include="Images\_ChiCuadrado\PX.png" />
+    <Content Include="Images\_ChiCuadrado\Resumen.png" />
+    <Content Include="Images\_ChiCuadrado\y1.png" />
+    <Content Include="Images\_Exponencial\DX.png" />
+    <Content Include="Images\_Exponencial\EX.png" />
+    <Content Include="Images\_Exponencial\Imagen.png" />
+    <Content Include="Images\_Exponencial\PX.png" />
+    <Content Include="Images\_Exponencial\Resumen.png" />
+    <Content Include="Images\_Exponencial\y1.png" />
+    <Content Include="Images\_F\DX.png" />
+    <Content Include="Images\_F\EX.png" />
+    <Content Include="Images\_F\Imagen.png" />
+    <Content Include="Images\_F\PX.png" />
+    <Content Include="Images\_F\Resumen.png" />
+    <Content Include="Images\_F\y1.png" />
+    <Content Include="Images\_Gamma\DX.png" />
+    <Content Include="Images\_Gamma\EX.png" />
+    <Content Include="Images\_Gamma\Imagen.png" />
+    <Content Include="Images\_Gamma\PX.png" />
+    <Content Include="Images\_Gamma\Resumen.png" />
+    <Content Include="Images\_Gamma\y1.png" />
+    <Content Include="Images\_Geometrica\DX.png" />
+    <Content Include="Images\_Geometrica\EX.png" />
+    <Content Include="Images\_Geometrica\Imagen.png" />
+    <Content Include="Images\_Geometrica\PX.png" />
+    <Content Include="Images\_Geometrica\Resumen.png" />
+    <Content Include="Images\_Geometrica\y1.png" />
+    <Content Include="Images\_Geometrica\y2.png" />
+    <Content Include="Images\_HiperGeometrica\DX.png" />
+    <Content Include="Images\_HiperGeometrica\EX.png" />
+    <Content Include="Images\_HiperGeometrica\Imagen.png" />
+    <Content Include="Images\_HiperGeometrica\PX.png" />
+    <Content Include="Images\_HiperGeometrica\Resumen.png" />
+    <Content Include="Images\_HiperGeometrica\y1.png" />
+    <Content Include="Images\_HiperGeometrica\y2.png" />
+    <Content Include="Images\_Normal\DX.png" />
+    <Content Include="Images\_Normal\EX.png" />
+    <Content Include="Images\_Normal\Imagen.png" />
+    <Content Include="Images\_Normal\PX.png" />
+    <Content Include="Images\_Normal\Resumen.png" />
+    <Content Include="Images\_Normal\y1.png" />
+    <Content Include="Images\_Pareto\DX.png" />
+    <Content Include="Images\_Pareto\EX.png" />
+    <Content Include="Images\_Pareto\Imagen.png" />
+    <Content Include="Images\_Pareto\PX.png" />
+    <Content Include="Images\_Pareto\Resumen.png" />
+    <Content Include="Images\_Pareto\y1.png" />
+    <Content Include="Images\_Poisson\DX.png" />
+    <Content Include="Images\_Poisson\EX.png" />
+    <Content Include="Images\_Poisson\Imagen.png" />
+    <Content Include="Images\_Poisson\PX.png" />
+    <Content Include="Images\_Poisson\Resumen.png" />
+    <Content Include="Images\_Poisson\y1.png" />
+    <Content Include="Images\_Poisson\y2.png" />
+    <Content Include="Images\_TStudent\DX.png" />
+    <Content Include="Images\_TStudent\EX.png" />
+    <Content Include="Images\_TStudent\Imagen.png" />
+    <Content Include="Images\_TStudent\PX.png" />
+    <Content Include="Images\_TStudent\Resumen.png" />
+    <Content Include="Images\_TStudent\y1.png" />
+    <Content Include="Images\_UniformeContinua\DX.png" />
+    <Content Include="Images\_UniformeContinua\EX.png" />
+    <Content Include="Images\_UniformeContinua\Imagen.png" />
+    <Content Include="Images\_UniformeContinua\PX.png" />
+    <Content Include="Images\_UniformeContinua\Resumen.png" />
+    <Content Include="Images\_UniformeContinua\y1.png" />
+    <Content Include="Images\_UniformeDiscreta\DX.png" />
+    <Content Include="Images\_UniformeDiscreta\EX.png" />
+    <Content Include="Images\_UniformeDiscreta\Imagen.png" />
+    <Content Include="Images\_UniformeDiscreta\PX.png" />
+    <Content Include="Images\_UniformeDiscreta\Resumen.png" />
+    <Content Include="Images\_UniformeDiscreta\y1.png" />
+    <Content Include="Images\_Weibull\DX.png" />
+    <Content Include="Images\_Weibull\EX.png" />
+    <Content Include="Images\_Weibull\Imagen.png" />
+    <Content Include="Images\_Weibull\PX.png" />
+    <Content Include="Images\_Weibull\Resumen.png" />
+    <Content Include="Images\_Weibull\y1.png" />
+    <Content Include="img\glyphicons-halflings-white.png" />
+    <Content Include="img\glyphicons-halflings.png" />
+    <Content Include="Scripts\2013.2.611\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\2013.2.611\jquery.validate.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.all.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.autocomplete.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.calendar.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.chart.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.combobox.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.common.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.datepicker.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.datetimepicker.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.draganddrop.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.editor.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.grid.editing.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.grid.filtering.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.grid.grouping.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.grid.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.grid.reordering.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.grid.resizing.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.imagebrowser.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.list.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.menu.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.panelbar.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.slider.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.splitter.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.tabstrip.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.textbox.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.timepicker.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.treeview.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.upload.min.js" />
+    <Content Include="Scripts\2013.2.611\telerik.window.min.js" />
     <Content Include="Scripts\bootstrap-dropdown.js" />
     <Content Include="Scripts\bootstrap-tab.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\jquery-1.9.1.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
     <Content Include="Scripts\jquery.js" />
@@ -979,9 +1110,7 @@
     <Content Include="Scripts\telerik.treeview.js" />
     <Content Include="Scripts\telerik.upload.js" />
     <Content Include="Scripts\telerik.window.js" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1014,19 +1143,21 @@
     <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
     <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
-    <Content Include="Views\Seguridad\Index.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Seguridad\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\CompararProyecto\Views\Shared\" />
+    <Folder Include="Areas\IridiumTest\Controllers\" />
+    <Folder Include="Areas\IridiumTest\Views\Shared\" />
     <Folder Include="Areas\Modelo\Views\Shared\" />
     <Folder Include="Areas\MonteCarlo\Views\Shared\" />
     <Folder Include="Areas\Plantilla\Views\Shared\" />
     <Folder Include="Areas\Seguridad\Views\Seguridad\" />
-    <Folder Include="Areas\Seguridad\Views\Shared\" />
+    <Folder Include="Areas\Seguridad\Views\Shared\EditorTemplates\" />
     <Folder Include="Areas\Simulaciones\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
@@ -1254,12 +1385,6 @@
       <LastGenOutput>UploadLocalization.zh-CN.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IridiumTest\IridiumTest.csproj">
-      <Project>{c7d824de-d1bf-4ff0-9130-fa7ecc62d9ae}</Project>
-      <Name>IridiumTest</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -1278,7 +1403,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:9068/</IISUrl>
+          <IISUrl>http://localhost:58140/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -1288,4 +1413,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
