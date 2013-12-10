@@ -16,10 +16,11 @@ namespace TesisProj.Models.Storage
     {
 
         public TProjContext()
-            //  : base("TProjContext")
-           : base("Server=b2b54485-7ca7-43cc-9153-a28f004c1a40.sqlserver.sequelizer.com;Database=dbb2b544857ca743cc9153a28f004c1a40;User ID=bmprfcrbhkmmbkoa;Password=LybRmMNWAWF7BLMuV56FWdhmSZRF4PYFqLawYrGxYVpxHSHNUiQhAbmHqX7u5g2T;")
+           //   : base("TProjContext")
+          // : base("Server=b2b54485-7ca7-43cc-9153-a28f004c1a40.sqlserver.sequelizer.com;Database=dbb2b544857ca743cc9153a28f004c1a40;User ID=bmprfcrbhkmmbkoa;Password=LybRmMNWAWF7BLMuV56FWdhmSZRF4PYFqLawYrGxYVpxHSHNUiQhAbmHqX7u5g2T;")
+            : base("Server=623434a1-3168-4a29-9c5c-a28c00691ad4.sqlserver.sequelizer.com;Database=db623434a131684a299c5ca28c00691ad4;User ID=njjzhaanrftdgkpu;Password=F7bfgVTLsGYuJvUpberqPBU3pRbpVbQeeQvJpo2TLTLSjN6tAEfmgsgdmgYxUDXq")
         {
-            RegistrarTablas();
+            RegistrarTablas(); 
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
