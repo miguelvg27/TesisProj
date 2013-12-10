@@ -27,7 +27,7 @@ namespace TesisProj.Models.Storage
             modelBuilder.Conventions.Remove<IncludeMetadataConvention>(); 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-            modelBuilder.Conventions.Remove<OneToOneConstraintIntroductionConvention>();
+            modelBuilder.Conventions.Remove<OneToOneConstraintIntroductionConvention>(); 
             modelBuilder.Entity<Celda>().Property(c => c.Valor).HasPrecision(16, 5);
             modelBuilder.Entity<ListField>().Property(p => p.Imagen).HasColumnType("Image");
         }
