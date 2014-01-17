@@ -20,8 +20,6 @@
 
     </text>
 } else {
-    <ul>
-        <li>@Html.ActionLink("Regístrate", "Register", "Account", routeValues: new { Area = "" }, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: new { Area = "" }, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
+    @Html.ActionLink("Regístrate", "Register", "Account", routeValues: new { Area = "" }, htmlAttributes: new { id = "registerLink" })<br />
+    @Html.ActionLink("Log in", "Login", "Account", routeValues: new { Area = "" }, htmlAttributes: new { id = "loginLink" })
 }

@@ -10,6 +10,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.CompararProyecto.Controllers
 {
+    [Authorize(Roles = "nav")]
     public class CompararController : Controller
     {
         //

@@ -23,7 +23,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
-        <th>
+        <th style="text-align:center">
             @Html.DisplayNameFor(model => model.Version)
         </th>   
         <th>
@@ -42,7 +42,7 @@
         <td>
             @Html.ActionLink(item.Nombre, "Console", new { id=item.Id })
         </td>
-        <td>
+        <td style="text-align:center">
             @Html.DisplayFor(modelItem => item.Version)
         </td>
         <td>

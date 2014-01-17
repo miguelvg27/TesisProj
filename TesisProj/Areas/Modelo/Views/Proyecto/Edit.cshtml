@@ -69,23 +69,8 @@
             @Html.TextBoxFor(model => model.Version, new { @Readonly = "readonly" })
             @Html.ValidationMessageFor(model => model.Version)
         </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IdCreador)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownList("IdCreador")
-            @Html.ValidationMessageFor(model => model.IdCreador)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Creacion)
-        </div>
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Creacion, new { @Readonly = "readonly", @Value = Model.Creacion.ToShortDateString() })
-            @Html.ValidationMessageFor(model => model.Creacion)
-        </div>
-
+        @Html.HiddenFor(model => model.Creacion)
+        @Html.HiddenFor(model => model.IdCreador)
         @Html.HiddenFor(model => model.Id)
         @Html.Hidden("PreHorizonte")
 
