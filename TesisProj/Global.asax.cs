@@ -19,6 +19,10 @@ namespace TesisProj
 
     public class MvcApplication : System.Web.HttpApplication
     {
+
+        static bool IsDebug = System.Configuration.ConfigurationManager.AppSettings["Environment"].ToString().Equals("Debug");
+        public static string ConnectionString = IsDebug ? "TProjContextLocal" : "TProjContextAppHb";
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -63,11 +67,9 @@ namespace TesisProj
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //Database.SetInitializer<TProjContext>(new TProjInitializer());
-
             using (TProjContext context = new TProjContext())
             {
-                context.TipoElementosRequester.All();
+                context.ColaboradoresRequester.All();
             }
         }
     }

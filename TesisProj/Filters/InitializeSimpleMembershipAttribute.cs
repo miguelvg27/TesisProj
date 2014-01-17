@@ -39,7 +39,7 @@ namespace TesisProj.Filters
                         }
                     }
 
-                    WebSecurity.InitializeDatabaseConnection("TProjContext", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection(TesisProj.MvcApplication.ConnectionString, "UserProfile", "UserId", "UserName", autoCreateTables: true);
 
                     if (!Roles.RoleExists("admin"))
                     {

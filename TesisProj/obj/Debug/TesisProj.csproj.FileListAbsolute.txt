@@ -270,3 +270,4 @@ C:\Users\Novausr-01\Documents\Visual Studio 2012\Projects\TesisProj\TesisProj\bi
 C:\Users\Novausr-01\Documents\Visual Studio 2012\Projects\TesisProj\TesisProj\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
 C:\Users\Novausr-01\Documents\Visual Studio 2012\Projects\TesisProj\TesisProj\obj\Debug\TesisProj.dll
 C:\Users\Novausr-01\Documents\Visual Studio 2012\Projects\TesisProj\TesisProj\obj\Debug\TesisProj.pdb
+C:\Users\Novausr-01\Documents\Visual Studio 2012\Projects\TesisProj\TesisProj\obj\Debug\TesisProj.csprojResolveAssemblyReference.cache
