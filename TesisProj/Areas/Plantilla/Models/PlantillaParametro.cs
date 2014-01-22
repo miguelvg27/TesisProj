@@ -25,10 +25,10 @@ namespace TesisProj.Areas.Plantilla.Models
         [RegularExpression("[A-Za-z]+[A-Za-z1-9]*", ErrorMessage = "El campo solo puede contener alfanuméricos y debe comenzar con una letra.")]
         public string Referencia { get; set; }
 
-        [DisplayName("Constante")]
+        [DisplayName("Valor único")]
         public bool Constante { get; set; }
 
-        [DisplayName("Sensible")]
+        [DisplayName("Disponible para sensibilidad")]
         public bool Sensible { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]

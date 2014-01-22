@@ -42,10 +42,10 @@ namespace TesisProj.Areas.Modelo.Models
         [ForeignKey("IdTipoParametro")]
         public virtual TipoParametro TipoParametro { get; set; }
 
-        [DisplayName("Constante")]
+        [DisplayName("Valor único")]
         public bool Constante { get; set; }
 
-        [DisplayName("Sensible")]
+        [DisplayName("Disponible para sensibilidad")]
         public bool Sensible { get; set; }
 
         [InverseProperty("Parametro")]
