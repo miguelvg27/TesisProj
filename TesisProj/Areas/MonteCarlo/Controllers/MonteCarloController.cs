@@ -172,7 +172,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             Session["_GraficoTirProyecto"] = mc.TirFinanciero;
             Session["_GraficoTirInversionista"] = mc.TirEconomico;
 
-            
+            Session["idProyectop"] = idProyecto;
 
             return RedirectToAction("Resultados", mc);
 
