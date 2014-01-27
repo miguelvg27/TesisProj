@@ -92,12 +92,15 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
 
         public void GetSimulacion(int valores)
         {
+            double d;
             for (int i = 1; i <= valores; i++)
             {
                 Result r = new Result();
                 Random rnd = modelo.RandomSource;
+                d = modelo.Sample();
                 r.Probabilidad = rnd.NextDouble();
-                r.ValorObtenidoD = Math.Round(modelo.Sample(), 2);
+                r.ValorObtenidoI = Convert.ToInt16(Math.Round(d));
+                r.ValorObtenidoD = Math.Round(d, 3);
                 Results.Add(r);
             }
         }

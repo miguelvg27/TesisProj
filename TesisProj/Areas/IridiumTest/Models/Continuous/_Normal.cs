@@ -106,8 +106,8 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
                 Random rnd = modelo.RandomSource;
                 d = modelo.Sample();
                 r.Probabilidad = rnd.NextDouble();
-                r.ValorObtenidoI = Convert.ToInt16(Math.Round(d));
-                r.ValorObtenidoD = d;
+                r.ValorObtenidoI = Convert.ToInt32(Math.Round(d));
+                r.ValorObtenidoD = Math.Round(d,3);
                 Results.Add(r);
             }
         }
@@ -122,13 +122,14 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
             ParamsOUT[5].valorD = Math.Round(modelo.Variance, 2);
             ParamsOUT[6].valorD = Math.Round(modelo.Skewness, 2);
 
+            double total = (from s in Results select s).Count();
             Results = (from s in Results
                        group s by new { s.ValorObtenidoI } into g
                        select new Result()
                        {
                            ValorObtenidoI = g.Key.ValorObtenidoI,
                            cantidad = g.Count(),
-                           Probabilidad = g.Average(o => o.Probabilidad)
+                           Probabilidad = Math.Round((g.Count()*100/total),2)
                        }).OrderBy(u => u.ValorObtenidoI).ToList();
         }
 

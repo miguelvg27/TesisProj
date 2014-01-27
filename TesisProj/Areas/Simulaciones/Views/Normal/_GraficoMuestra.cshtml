@@ -14,10 +14,13 @@
                  .Column(s => s.cantidad)
                  .Stack(true)
                  .Color("#13558E")
-                 .Name("N");
+                 .Name("Muestras");
             })
-    .CategoryAxis(axis => axis
-            .Categories(s => s.ValorObtenidoI))
-            .Tooltip(true)
+    //.CategoryAxis(axis => axis
+    //        .Categories(s => s.ValorObtenidoI))
+   .Tooltip(tooltip => tooltip
+           .Visible(true)
+           .Template("<b>Cantidad=<#= dataItem.cantidad #><br/>Valor= <#= dataItem.ValorObtenidoI #></b>"))
+       
 
 )

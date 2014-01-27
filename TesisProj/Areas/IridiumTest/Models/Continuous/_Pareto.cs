@@ -99,7 +99,7 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
                 {
                     r.Probabilidad = rnd.NextDouble();
                     r.ValorObtenidoI = Convert.ToInt16(Math.Round(d));
-                    r.ValorObtenidoD = d;
+                    r.ValorObtenidoD = Math.Round(d, 3);
                 }
                 catch
                 {
@@ -107,7 +107,7 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
                     d = modelo.Sample();
                     r.Probabilidad = rnd.NextDouble();
                     r.ValorObtenidoI = Convert.ToInt16(Math.Round(d));
-                    r.ValorObtenidoD = d;
+                    r.ValorObtenidoD = Math.Round(d, 3);
                 }
 
                 Results.Add(r);

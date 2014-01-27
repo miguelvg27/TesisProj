@@ -9,8 +9,8 @@
                         .Columns(columns =>
                         {
                             columns.Bound(c => c.Probabilidad).Format("{0:N0}%");
-                            columns.Bound(c => c.cantidad);
-                            columns.Bound(c => c.ValorObtenidoI);
+                            columns.Bound(c => c.cantidad).Format("{0:#,##0.00}");
+                            columns.Bound(c => c.ValorObtenidoI).Format("{0:#,##0.00}");
                            
                         })
                         .Pageable(paging => paging.Enabled(true).PageSize(2000).Style(GridPagerStyles.Status))
