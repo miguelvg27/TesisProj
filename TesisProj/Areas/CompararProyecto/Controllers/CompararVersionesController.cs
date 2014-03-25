@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
+using Telerik.Web.Mvc;
 using TesisProj.Areas.CompararProyecto.Models;
 using TesisProj.Areas.IridiumTest.Models;
 using TesisProj.Areas.Modelo.Controllers;
@@ -11,10 +12,10 @@ using TesisProj.Models.Storage;
 namespace TesisProj.Areas.CompararProyecto.Controllers
 {
     [Authorize(Roles = "nav")]
-    public class CompararController : Controller
+    public class CompararVersionesController : Controller
     {
         //
-        // GET: /CompararProyecto/Comparar/
+        // GET: /CompararProyecto/CompararVersiones/
         private TProjContext context = new TProjContext();
 
         [HttpGet]
@@ -22,11 +23,13 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
         {
             List<Comparar> c = new List<Comparar>();
 
+            //obtener las versiones como si fueran proyectos
             int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
             var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
             var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
 
             List<Proyecto> lista = proyectos.Union(colab).ToList();
+
             int cont = 0;
             int[] i = new int[100];
 
@@ -36,12 +39,69 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 i[cont] = p.Id;
                 cont = +1;
             }
-
             ViewData["checkedRecords"] = i;
+            ViewData["Proyectos"] = c;
+            ViewData["Versiones"] = new List<Comparar> {new Comparar{ Id=0, proyecto= new Proyecto() } };
+            ViewData["id"] = "0";
 
             return View(c);
         }
 
+        [GridAction]
+        public ActionResult _Selection_Proyecto()
+        {
+            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+
+            List<Proyecto> lista = proyectos.Union(colab).ToList();
+            List<Comparar> c = new List<Comparar>();
+            foreach (Proyecto p in lista)
+            {
+                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
+            }
+
+            return View(new GridModel<Proyecto>
+            {
+                Data = lista
+            });
+        }
+
+        [GridAction]
+        public ActionResult _Selection_Version(string IdProyecto)
+        {
+            IdProyecto = IdProyecto ?? "0";
+            List<Comparar> c = new List<Comparar>();
+
+            //obtener las versiones como si fueran proyectos
+            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+
+            List<Proyecto> lista = proyectos.Union(colab).ToList();
+
+            int cont = 0;
+            int[] i = new int[100];
+
+            foreach (Proyecto p in lista)
+            {
+                p.Colaboradores = null;
+                p.Elementos = null;
+                p.Salidas = null;
+                p.Operaciones = null;
+                p.Colaboradores = null;
+                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
+                i[cont] = p.Id;
+                cont = +1;
+            }
+
+            return View(new GridModel<Comparar>
+            {
+                Data = c
+            });
+        }
+
+        
         [HttpPost]
         public ActionResult Index(int[] checkedRecords)
         {
@@ -130,5 +190,6 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             gr.N = x;
             return gr;
         }
+
     }
 }

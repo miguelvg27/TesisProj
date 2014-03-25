@@ -1,0 +1,104 @@
+﻿@model ICollection<TesisProj.Areas.CompararProyecto.Models.Comparar>
+@using Telerik.Web.Mvc.UI
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int[] checkedRecords = (int[])ViewData["checkedRecords"];
+}
+
+<h2>Comparar Rentabilidad de las versiones</h2>
+<br />
+@(Html.Telerik().Grid((IEnumerable<TesisProj.Areas.CompararProyecto.Models.Comparar>)ViewData["Proyectos"])
+       .Name("Proyectos")
+       .Columns(columns =>
+       {
+           columns.Bound(o => o.proyecto.Id).Width(20);
+           columns.Bound(o => o.proyecto.Nombre).Width(100);
+           columns.Bound(o => o.proyecto.Version).Width(200);
+           columns.Bound(o => o.proyecto.Creacion).Format("{0:dd/MM/yyyy}").Width(120);
+       })
+       .DataBinding(dataBinding => dataBinding.Ajax().Select("_Selection_Proyecto", "CompararVersiones"))
+       .Pageable()
+        .Sortable()
+        .Selectable()
+        .ClientEvents(events => events.OnRowSelect("onRowSelected"))
+        .RowAction(row =>
+        {
+            row.Selected = row.DataItem.Id.Equals(ViewData["id"]);
+        })
+)
+<h3>Versiones del proyecto (<span id="IdProyecto">@ViewData["id"] </span>)</h3>
+@{
+    Html.BeginForm();
+    Html.Telerik().Grid((IEnumerable<TesisProj.Areas.CompararProyecto.Models.Comparar>)ViewData["Versiones"])
+        .Name("Versiones")
+        .Columns(columns =>
+        {
+            columns
+                .Template(
+    @<text>
+    <input name="checkedRecords" type="checkbox" value="@item.Id " title="checkedRecords"
+                        @if (checkedRecords.Contains(item.Id))
+                        {
+                            <text>checked="checked"</text>
+                        }
+ />
+    </text>)
+                   .Title("")
+                   .Width(20)
+                   .HtmlAttributes(new { style = "text-align:center" });
+
+            columns.Bound(o => o.proyecto.Id).Width(20);
+            columns.Bound(o => o.proyecto.Nombre).Width(100);
+            columns.Bound(o => o.proyecto.Version).Width(200);
+            columns.Bound(o => o.proyecto.Creacion).Format("{0:dd/MM/yyyy}").Width(120);
+        })
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("_Selection_Version", "CompararVersiones", new{IdProyecto = "0"}))
+        .ClientEvents(clientEvents => clientEvents.OnDataBinding("onDataBinding"))
+        .Pageable()
+        .Scrollable()
+        .Render();
+}
+<p>
+    <button type="submit" class="t-button t-state-default">Ver Resultados</button>
+</p>
+@{ Html.EndForm(); }
+
+@if (checkedRecords.Any())
+{
+
+    <table style="width: 100%">
+        <tr>
+            <td>@{Html.RenderAction("_GraficoVanE", "CompararVersiones");}</td>
+            <td>@{Html.RenderAction("_GraficoVanF", "CompararVersiones");}</td>
+        </tr>
+        <tr>
+            <td>@{Html.RenderAction("_GraficoTirE", "CompararVersiones");}</td>
+            <td>@{Html.RenderAction("_GraficoTirF", "CompararVersiones");}</td>
+        </tr>
+    </table>
+}
+<p>
+    <br />
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("index", "Home", new { Area = "" })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+
+<script type="text/javascript">
+    var customerID;
+    function onRowSelected(e) {
+        var VersionesGrid = $('#Versiones').data('tGrid');
+        IdProyecto = e.row.cells[0].innerHTML;
+
+        // update ui text
+        $('#IdProyecto').text(IdProyecto);
+        // rebind the related grid
+        VersionesGrid.rebind();
+    }
+    function onDataBinding(e) {
+        e.data = $.extend(e.data, { IdProyecto: IdProyecto });// creo q aca es Id
+    }
+</script>
