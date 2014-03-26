@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
 using TesisProj.Areas.CompararProyecto.Models;
 using TesisProj.Areas.IridiumTest.Models;
 using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.CompararProyecto.Controllers
@@ -18,20 +20,51 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
         // GET: /CompararProyecto/CompararVersiones/
         private TProjContext context = new TProjContext();
 
+
+        [HttpPost]
+        public ActionResult _AjaxLoading(string text)
+        {
+            Thread.Sleep(1000);
+            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+            
+            return new JsonResult { Data = new SelectList(proyectos.ToList(), "Id", "Nombre") };
+        }
+
+        [HttpPost]
+        public JsonResult Refresh(int Id)
+        {
+            Session["Id"] = Id;
+            return Json("Ok", JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         public ActionResult Index()
         {
             List<Comparar> c = new List<Comparar>();
+            List<Proyecto> proyectos;
+            List<Proyecto> colab;
 
-            //obtener las versiones como si fueran proyectos
-            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
-
-            List<Proyecto> lista = proyectos.Union(colab).ToList();
-
+            int idUser;
             int cont = 0;
-            int[] i = new int[100];
+            int[] i;
+
+            if (Session["Id"] == null)
+            {
+                i = new int[100];
+                ViewData["checkedRecords"] = i;
+                return View(c);
+            }
+            else
+            {
+                idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+                proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+                colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+            }
+            
+            List<Proyecto> lista = proyectos.Union(colab).ToList();
+            i = new int[100];
 
             foreach (Proyecto p in lista)
             {
@@ -39,72 +72,21 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 i[cont] = p.Id;
                 cont = +1;
             }
-            ViewData["checkedRecords"] = i;
-            ViewData["Proyectos"] = c;
-            ViewData["Versiones"] = new List<Comparar> {new Comparar{ Id=0, proyecto= new Proyecto() } };
-            ViewData["id"] = "0";
 
+            ViewData["checkedRecords"] = i;
+            ViewData["Versiones"] = c;
             return View(c);
         }
 
-        [GridAction]
-        public ActionResult _Selection_Proyecto()
-        {
-            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
-
-            List<Proyecto> lista = proyectos.Union(colab).ToList();
-            List<Comparar> c = new List<Comparar>();
-            foreach (Proyecto p in lista)
-            {
-                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
-            }
-
-            return View(new GridModel<Proyecto>
-            {
-                Data = lista
-            });
-        }
-
-        [GridAction]
-        public ActionResult _Selection_Version(string IdProyecto)
-        {
-            IdProyecto = IdProyecto ?? "0";
-            List<Comparar> c = new List<Comparar>();
-
-            //obtener las versiones como si fueran proyectos
-            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
-
-            List<Proyecto> lista = proyectos.Union(colab).ToList();
-
-            int cont = 0;
-            int[] i = new int[100];
-
-            foreach (Proyecto p in lista)
-            {
-                p.Colaboradores = null;
-                p.Elementos = null;
-                p.Salidas = null;
-                p.Operaciones = null;
-                p.Colaboradores = null;
-                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
-                i[cont] = p.Id;
-                cont = +1;
-            }
-
-            return View(new GridModel<Comparar>
-            {
-                Data = c
-            });
-        }
-
-        
         [HttpPost]
         public ActionResult Index(int[] checkedRecords)
         {
+            if (checkedRecords == null)
+            {
+                ViewData["checkedRecords"] = new int[100];
+                return View(new List<Comparar>());
+            }
+
             List<Proyecto> lista = new List<Proyecto>();
             foreach (int i in checkedRecords)
             {

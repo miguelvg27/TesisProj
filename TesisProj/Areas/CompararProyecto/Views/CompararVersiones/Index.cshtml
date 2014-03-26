@@ -9,26 +9,25 @@
 
 <h2>Comparar Rentabilidad de las versiones</h2>
 <br />
-@(Html.Telerik().Grid((IEnumerable<TesisProj.Areas.CompararProyecto.Models.Comparar>)ViewData["Proyectos"])
-       .Name("Proyectos")
-       .Columns(columns =>
-       {
-           columns.Bound(o => o.proyecto.Id).Width(20);
-           columns.Bound(o => o.proyecto.Nombre).Width(100);
-           columns.Bound(o => o.proyecto.Version).Width(200);
-           columns.Bound(o => o.proyecto.Creacion).Format("{0:dd/MM/yyyy}").Width(120);
-       })
-       .DataBinding(dataBinding => dataBinding.Ajax().Select("_Selection_Proyecto", "CompararVersiones"))
-       .Pageable()
-        .Sortable()
-        .Selectable()
-        .ClientEvents(events => events.OnRowSelect("onRowSelected"))
-        .RowAction(row =>
-        {
-            row.Selected = row.DataItem.Id.Equals(ViewData["id"]);
-        })
-)
-<h3>Versiones del proyecto (<span id="IdProyecto">@ViewData["id"] </span>)</h3>
+
+<table style="width:50%">
+    <tr><td style="width:100%">
+            @(Html.Telerik().DropDownList()
+                .Name("DropDownListProyectos")
+                .DataBinding(binding => binding.Ajax().Select("_AjaxLoading", "CompararVersiones"))
+                .ClientEvents(events => events.OnChange("OnChange"))
+                .HtmlAttributes(new { style = "width:100%"})
+        )
+        </td>
+        <td>
+            <button class="t-widget t-header" onclick="refresh()" type="button">Refrescar</button>
+        </td>
+
+    </tr>
+</table>
+ 
+
+<h3>Versiones del proyecto (<span id="IdProyecto">@Session["Id"] </span>)</h3>
 @{
     Html.BeginForm();
     Html.Telerik().Grid((IEnumerable<TesisProj.Areas.CompararProyecto.Models.Comparar>)ViewData["Versiones"])
@@ -54,8 +53,6 @@
             columns.Bound(o => o.proyecto.Version).Width(200);
             columns.Bound(o => o.proyecto.Creacion).Format("{0:dd/MM/yyyy}").Width(120);
         })
-        .DataBinding(dataBinding => dataBinding.Ajax().Select("_Selection_Version", "CompararVersiones", new{IdProyecto = "0"}))
-        .ClientEvents(clientEvents => clientEvents.OnDataBinding("onDataBinding"))
         .Pageable()
         .Scrollable()
         .Render();
@@ -88,17 +85,22 @@
 </p>
 
 <script type="text/javascript">
-    var customerID;
-    function onRowSelected(e) {
-        var VersionesGrid = $('#Versiones').data('tGrid');
-        IdProyecto = e.row.cells[0].innerHTML;
-
-        // update ui text
-        $('#IdProyecto').text(IdProyecto);
-        // rebind the related grid
-        VersionesGrid.rebind();
+    function OnChange(e) {
+        var Id = e.value;
+        $.ajax({
+            url: "../../CompararVersiones/Refresh",
+            type: 'post',
+            data: { Id: Id },
+            success: function (data) {
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+        });
+        
     }
-    function onDataBinding(e) {
-        e.data = $.extend(e.data, { IdProyecto: IdProyecto });// creo q aca es Id
+
+    function refresh() {
+        location.reload();
     }
 </script>
