@@ -74,7 +74,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                     
                     ViewBag.Cabeceras = tabla.Split('°')[0].Split('|');
                     ViewBag.Valores = tabla.Split('°')[1].Split('|');
-                    sssssss
+                    //sssssss
                         //eliminar el exceo de cariables en la vista segun session[Opcion]
                     simulaciones = simulaciones.Substring(0, simulaciones.Length - 1);
                     ViewBag.ValoresSimulados = simulaciones.Split('|');

@@ -174,7 +174,8 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\CompararProyecto\CompararProyectoAreaRegistration.cs" />
-    <Compile Include="Areas\CompararProyecto\Controllers\CompararController.cs" />
+    <Compile Include="Areas\CompararProyecto\Controllers\CompararProyectosController.cs" />
+    <Compile Include="Areas\CompararProyecto\Controllers\CompararVersionesController.cs" />
     <Compile Include="Areas\CompararProyecto\Models\Comparar.cs" />
     <Compile Include="Areas\IridiumTest\IridiumTestAreaRegistration.cs" />
     <Compile Include="Areas\IridiumTest\Models\Continuous\_Beta.cs" />
