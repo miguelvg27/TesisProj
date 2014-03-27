@@ -21,7 +21,6 @@ namespace TesisProj
     {
 
         static bool IsLocalDb = System.Configuration.ConfigurationManager.AppSettings["IsLocalDb"].ToString().Equals("True");
-        static bool DropDb = System.Configuration.ConfigurationManager.AppSettings["DropDb"].ToString().Equals("True");
         public static string ConnectionString = IsLocalDb ? "TProjContextLocal" : "TProjContextAppHb";
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -68,14 +67,8 @@ namespace TesisProj
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if (DropDb)
-            {
-                Database.SetInitializer<TProjContext>(new TProjInitializerDebug());
-            }
-            else
-            {
-                Database.SetInitializer<TProjContext>(new TProjInitializer());
-            }
+            Database.SetInitializer<TProjContext>(new TProjInitializer());
+   
 
             using (TProjContext context = new TProjContext())
             {
