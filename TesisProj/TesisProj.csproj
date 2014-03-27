@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Devtalk.EF.CodeFirst">
+      <HintPath>..\packages\EFCodeFirst.CreateTablesOnly.1.0.2\lib\Devtalk.EF.CodeFirst.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -126,6 +129,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\TelerikMvcExtensions.2013.2.611\lib\net40\Telerik.Web.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.1.4.4\lib\net40\WebActivator.dll</HintPath>
+    </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -173,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\DontDropDbJustCreateTablesIfModelChangedStart.cs" />
     <Compile Include="Areas\CompararProyecto\CompararProyectoAreaRegistration.cs" />
     <Compile Include="Areas\CompararProyecto\Controllers\CompararProyectosController.cs" />
     <Compile Include="Areas\CompararProyecto\Controllers\CompararVersionesController.cs" />

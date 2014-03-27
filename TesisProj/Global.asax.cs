@@ -20,8 +20,9 @@ namespace TesisProj
     public class MvcApplication : System.Web.HttpApplication
     {
 
-        static bool IsDebug = System.Configuration.ConfigurationManager.AppSettings["Environment"].ToString().Equals("Debug");
-        public static string ConnectionString = IsDebug ? "TProjContextLocal" : "TProjContextAppHb";
+        static bool IsLocalDb = System.Configuration.ConfigurationManager.AppSettings["IsLocalDb"].ToString().Equals("True");
+        static bool DropDb = System.Configuration.ConfigurationManager.AppSettings["DropDb"].ToString().Equals("True");
+        public static string ConnectionString = IsLocalDb ? "TProjContextLocal" : "TProjContextAppHb";
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -67,7 +68,14 @@ namespace TesisProj
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            Database.SetInitializer<TProjContext>(new TProjInitializer());
+            if (DropDb)
+            {
+                Database.SetInitializer<TProjContext>(new TProjInitializerDebug());
+            }
+            else
+            {
+                Database.SetInitializer<TProjContext>(new TProjInitializer());
+            }
 
             using (TProjContext context = new TProjContext())
             {

@@ -114,8 +114,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.IdProyecto = salida.IdProyecto;
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.Salida = salida.Nombre;
-            ViewBag.Inicio = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoInicial, proyecto.Horizonte, 1));
-            ViewBag.Horizonte = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoFinal, proyecto.Horizonte, proyecto.Horizonte));
+            ViewBag.Inicio = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoInicial, proyecto.Horizonte, 1, proyecto.PeriodosPreOp, proyecto.PeriodosCierre));
+            ViewBag.Horizonte = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoFinal, proyecto.Horizonte, proyecto.Horizonte, proyecto.PeriodosPreOp, proyecto.PeriodosCierre));
 
             db.Configuration.ProxyCreationEnabled = true;
 

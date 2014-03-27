@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Devtalk.EF.CodeFirst;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
@@ -48,9 +49,14 @@ namespace TesisProj.Models.Storage
         }
     }
 
-    public class TProjInitializer : CreateDatabaseIfNotExists<TProjContext>
+    public class TProjInitializer : DontDropDbJustCreateTablesIfModelChanged<TProjContext>
+    {
+
+    }
+
+    //public class TProjInitializer : CreateDatabaseIfNotExists<TProjContext>
     //public class TProjInitializer:  DropCreateDatabaseIfModelChanges<TProjContext>
-    //public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
+    public class TProjInitializerDebug : DropCreateDatabaseAlways<TProjContext>
     {
         protected override void Seed(TProjContext context)
         {
