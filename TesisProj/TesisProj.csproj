@@ -552,7 +552,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Areas\CompararProyecto\Views\Web.config" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\Index.cshtml" />
     <Content Include="Areas\Modelo\Views\Web.config" />
     <Content Include="Areas\Modelo\Views\Proyecto\Assoc.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\Catalog.cshtml" />
@@ -725,14 +724,6 @@
     <Content Include="Images\_UniformeContinua\Thumbs.db" />
     <Content Include="Images\_UniformeDiscreta\Thumbs.db" />
     <Content Include="Images\_Weibull\Thumbs.db" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTir.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirE.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoTirF.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVan.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanE.cshtml" />
-    <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanF.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Areas\CompararProyecto\Views\CompararProyectos\Index.cshtml" />
     <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoTir.cshtml" />
     <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoTirE.cshtml" />
