@@ -10,7 +10,7 @@ using TesisProj.Models.Storage;
 namespace TesisProj.Areas.Plantilla.Models
 {
     [Table("PlantillaOperacionXSalida")]
-    public class PlantillaSalidaOperacion : DbObject, IValidatableObject
+    public class PlantillaSalidaOperacion : DbObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Operacion")]
@@ -20,6 +20,10 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Salida")]
         public int IdSalida { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Secuencia")]
+        public int Secuencia { get; set; }
+
         [ForeignKey("IdOperacion")]
         public virtual PlantillaOperacion Operacion { get; set; }
 
@@ -27,16 +31,5 @@ namespace TesisProj.Areas.Plantilla.Models
         public virtual PlantillaSalidaProyecto Salida { get; set; }
 
         public String Nombre { get { return Operacion.Nombre; } }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            using (TProjContext context = new TProjContext())
-            {
-                if (context.PlantillaSalidaOperaciones.Any(p => p.IdSalida == this.IdSalida && p.IdOperacion == this.IdOperacion && (this.Id > 0 ? p.Id != this.Id : true)))
-                {
-                    yield return new ValidationResult("Ya existe un registro con la misma combinación Salida/Operacion.", new string[] { "IdOperacion", "IdSalida" });
-                }
-            }
-        }
     }
 }

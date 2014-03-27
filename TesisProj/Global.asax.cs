@@ -67,6 +67,8 @@ namespace TesisProj
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            Database.SetInitializer<TProjContext>(new TProjInitializer());
+
             using (TProjContext context = new TProjContext())
             {
                 context.ColaboradoresRequester.All();

@@ -47,10 +47,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
 
-            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).Select(p => p.Operacion);
-            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).Except(asociados);
-            ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
-            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
+            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion);
+            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto);
+            ViewBag.Asociados = new MultiSelectList(asociados.ToList(), "Id", "ListName");
+            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "ListName");
 
             return View(salida);
         }
@@ -60,74 +60,33 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Assoc(PlantillaSalidaProyecto salida, FormCollection form, string add, string remove, string addall, string removeall)
+        public ActionResult Assoc(PlantillaSalidaProyecto salida, FormCollection form)
         {
-            string seleccionados;
-            int idOperacion;
-            int idSalida = salida.Id;
+            string strSeleccionados = form["Asociados"];
+            if (strSeleccionados == null) return RedirectToAction("Index", new { id = salida.IdPlantillaProyecto });
 
-            seleccionados = form["Opciones"];
-            if (!string.IsNullOrEmpty(add) && !string.IsNullOrEmpty(seleccionados))
+            string[] seleccionados = strSeleccionados.Split(',');
+            var operaciones = db.PlantillaSalidaOperaciones.Where(s => s.IdSalida == salida.Id);
+            foreach (PlantillaSalidaOperacion oldOperacion in operaciones)
             {
-                foreach (string sIdOperacion in seleccionados.Split(','))
-                {
-                    idOperacion = int.Parse(sIdOperacion);
-                    if (!db.PlantillaSalidaOperaciones.Any(p => p.IdSalida == idSalida && p.IdOperacion == idOperacion))
-                    {
-                        db.PlantillaSalidaOperaciones.Add(new PlantillaSalidaOperacion { IdOperacion = idOperacion, IdSalida = idSalida });
-                        db.SaveChanges();
-                    }
-                }
+                db.PlantillaSalidaOperaciones.Remove(oldOperacion);
             }
+            db.SaveChanges();
 
-            seleccionados = form["Asociados"];
-            if (!string.IsNullOrEmpty(remove) && !string.IsNullOrEmpty(seleccionados))
+            for(int i = 0; i < seleccionados.Length; i++)
             {
-
-                PlantillaSalidaOperacion operacion;
-                foreach (string sIdOperacion in seleccionados.Split(','))
-                {
-                    idOperacion = int.Parse(sIdOperacion);
-                    operacion = db.PlantillaSalidaOperaciones.FirstOrDefault(p => p.IdOperacion == idOperacion && p.IdSalida == idSalida);
-                    if (operacion != null)
-                    {
-                        db.PlantillaSalidaOperaciones.Remove(operacion);
-                        db.SaveChanges();
-                    }
-                }
+                int idOperacion = int.Parse(seleccionados[i]);
+                db.PlantillaSalidaOperaciones.Add(new PlantillaSalidaOperacion { IdOperacion = idOperacion, IdSalida = salida.Id, Secuencia = i });
             }
+            db.SaveChanges();
 
-            if (!string.IsNullOrEmpty(addall))
-            {
-                var plantillas = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).ToList();
-                foreach (PlantillaOperacion operacion in plantillas)
-                {
-                    idOperacion = operacion.Id;
-                    if (!db.PlantillaSalidaOperaciones.Any(p => p.IdSalida == idSalida && p.IdOperacion == idOperacion))
-                    {
-                        db.PlantillaSalidaOperaciones.Add(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
-                        db.SaveChanges();
-                    }
-                }
-            }
-
-            if (!string.IsNullOrEmpty(removeall))
-            {
-                var plantillas = db.PlantillaSalidaOperaciones.Where(p => p.IdSalida == idSalida).ToList();
-                foreach (PlantillaSalidaOperacion operacion in plantillas)
-                {
-                    db.PlantillaSalidaOperaciones.Remove(operacion);
-                    db.SaveChanges();
-                }
-            }
-
-            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).Select(p => p.Operacion);
-            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto).Except(asociados);
-            ViewBag.Asociados = new MultiSelectList(asociados.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
-            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "Nombre");
             ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
+            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion);
+            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto);
+            ViewBag.Asociados = new MultiSelectList(asociados.ToList(), "Id", "ListName");
+            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "ListName");
 
-            return View(salida);
+            return RedirectToAction("Index", new { id = salida.IdPlantillaProyecto });
         }
 
         //
@@ -256,6 +215,36 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
             
             return RedirectToAction("Index", new { id = salidaproyecto.IdPlantillaProyecto });
+        }
+
+        public ActionResult DuplicarPlantilla(int id)
+        {
+            PlantillaSalidaProyecto plantilla = db.PlantillaSalidaProyectos.Include(s => s.Operaciones).FirstOrDefault(e => e.Id == id);
+
+            if (plantilla == null)
+            {
+                return HttpNotFound();
+            }
+
+            string nombre = "Copia de " + plantilla.Nombre + " ";
+            string nombreTest = nombre;
+            int i = 1;
+
+            while (db.PlantillaSalidaProyectos.Any(p => p.Nombre.Equals(nombreTest)))
+            {
+                nombreTest = nombre + i++;
+            }
+
+            int seq = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantilla.IdPlantillaProyecto).Max(s => s.Secuencia) + 1;
+            int idCopia = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Nombre = nombreTest, Secuencia = seq, PeriodoFinal = plantilla.PeriodoFinal, PeriodoInicial = plantilla.PeriodoInicial, IdPlantillaProyecto = plantilla.IdPlantillaProyecto });
+
+
+            foreach (PlantillaSalidaOperacion operacion in plantilla.Operaciones.OrderBy(o => o.Secuencia))
+            {
+                db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idCopia, IdOperacion = operacion.IdOperacion, Secuencia = operacion.Secuencia });
+            }
+
+            return RedirectToAction("Edit", new { id = idCopia });
         }
 
         protected override void Dispose(bool disposing)

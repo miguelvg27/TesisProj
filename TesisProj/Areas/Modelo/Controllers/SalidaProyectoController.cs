@@ -109,7 +109,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             var tipoformulas = db.TipoFormulas.ToList();
 
             CalcularProyecto(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas);
-            var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).Select(s => s.Operacion).ToList();
+            var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion).ToList();
 
             ViewBag.IdProyecto = salida.IdProyecto;
             ViewBag.Proyecto = proyecto.Nombre;
@@ -122,7 +122,13 @@ namespace TesisProj.Areas.Modelo.Controllers
             //
             //  Finaliza zona crítica
 
-            return View(operaciones.Intersect(exoperaciones).ToList());
+            foreach(Operacion operacion in exoperaciones)
+            {
+                Operacion original = operaciones.First(o => o.Id == operacion.Id);
+                operacion.Valores = original.Valores;
+            }
+
+            return View(exoperaciones.ToList());
         }
 
         //

@@ -168,11 +168,11 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 foreach (PlantillaSalidaOperacion cruce in salida.Operaciones)
                 {
                     int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idPlantilla).Id;
-                    db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
+                    db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion, Secuencia = cruce.Secuencia });
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { id = idPlantilla } );
         }
 
         public ActionResult VolverPlantilla(int id)
@@ -208,7 +208,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 foreach (SalidaOperacion cruce in salida.Operaciones)
                 {
                     int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idPlantilla).Id;
-                    db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
+                    db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion, Secuencia = cruce.Secuencia });
                 }
             }
 

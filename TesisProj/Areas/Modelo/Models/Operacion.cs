@@ -66,6 +66,8 @@ namespace TesisProj.Areas.Modelo.Models
 
         public List<double> Valores;
 
+        public String ListName { get { return Nombre + "(" + Referencia + ")"; } }
+
         public Operacion()
         {
         }

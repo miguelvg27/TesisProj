@@ -145,7 +145,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                         foreach (PlantillaSalidaOperacion cruce in plantilla.Operaciones)
                         {
                             int idOperacion = db.Operaciones.First(o => o.IdProyecto == proyecto.Id && o.Referencia == cruce.Operacion.Referencia).Id;
-                            db.SalidaOperacionesRequester.AddElement(new SalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion });
+                            db.SalidaOperacionesRequester.AddElement(new SalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion, Secuencia = cruce.Secuencia });
                         }
                     }
                 }

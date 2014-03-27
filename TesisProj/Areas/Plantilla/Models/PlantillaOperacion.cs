@@ -58,6 +58,8 @@ namespace TesisProj.Areas.Plantilla.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        public String ListName { get { return Nombre + " (" + Referencia + ")"; } }
+
         public PlantillaOperacion(PlantillaOperacion plantilla, int idPlantilla)
         {
             this.Indicador = plantilla.Indicador;

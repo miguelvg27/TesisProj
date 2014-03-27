@@ -24,6 +24,10 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Salida")]
         public int IdSalida { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Secuencia")]
+        public int Secuencia { get; set; }
+
         [XmlIgnore]
         [ForeignKey("IdOperacion")]
         public virtual Operacion Operacion { get; set; }
@@ -45,9 +49,9 @@ namespace TesisProj.Areas.Modelo.Models
         {
             using (TProjContext context = new TProjContext())
             {
-                if (context.SalidaOperaciones.Any(p => p.IdSalida == this.IdSalida && p.IdOperacion == this.IdOperacion && (this.Id > 0 ? p.Id != this.Id : true)))
+                if (context.SalidaOperaciones.Any(p => p.IdSalida == this.IdSalida && p.Secuencia == this.Secuencia && (this.Id > 0 ? p.Id != this.Id : true)))
                 {
-                    yield return new ValidationResult("Ya existe un registro con la misma combinación Salida/Operacion.", new string[] { "IdOperacion", "IdSalida" });
+                    yield return new ValidationResult("Ya existe un registro con la misma secuencia en esta Salida.", new string[] { "Secuencia" });
                 }
             }
         }

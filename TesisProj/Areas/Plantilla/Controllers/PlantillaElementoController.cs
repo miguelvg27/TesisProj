@@ -166,10 +166,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             db.Configuration.ValidateOnSaveEnabled = false;
-            db.PlantillaElementosRequester.AddElement(elemento);
+            int idPlantilla = db.PlantillaElementosRequester.AddElement(elemento);
             db.Configuration.ValidateOnSaveEnabled = true;
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { id = idPlantilla });
         }
 
         public ActionResult VolverPlantilla(int id)
