@@ -80,12 +80,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
             db.SaveChanges();
 
-            ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
-            var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion);
-            var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto);
-            ViewBag.Asociados = new MultiSelectList(asociados.ToList(), "Id", "ListName");
-            ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "ListName");
-
             return RedirectToAction("Index", new { id = salida.IdPlantillaProyecto });
         }
 

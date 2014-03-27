@@ -284,7 +284,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 db.Configuration.ValidateOnSaveEnabled = true;
                 db.Configuration.ProxyCreationEnabled = true;
 
-                return RedirectToAction("Console", new { id = proyecto_dirty.Id });
+                return RedirectToAction("Edit", new { id = proyecto_dirty.Id });
 
             }
             catch (Exception)

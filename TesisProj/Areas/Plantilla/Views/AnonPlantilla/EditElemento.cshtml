@@ -1,0 +1,51 @@
+﻿@model TesisProj.Areas.Plantilla.Models.PlantillaElemento
+
+@{
+    ViewBag.Title = "Plantillas de elementos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int idElemento = ViewBag.IdElemento;
+}
+
+<h2>Editar plantilla de elementos</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Programa", "Proyecto", new { Area = "Modelo", id = idElemento })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Plantilla de elemento</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        @Html.HiddenFor(model => model.IdTipoElemento)
+        @Html.HiddenFor(model => model.Id)
+        @Html.Hidden("idElemento")
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Programa", "Proyecto", new { Area = "Modelo", id = idElemento })">
+  	    <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

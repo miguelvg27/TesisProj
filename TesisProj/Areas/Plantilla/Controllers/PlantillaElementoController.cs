@@ -205,10 +205,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             db.Configuration.ValidateOnSaveEnabled = false;
-            db.PlantillaElementosRequester.AddElement(elemento);
+            int idPlantilla = db.PlantillaElementosRequester.AddElement(elemento);
             db.Configuration.ValidateOnSaveEnabled = true;
 
-            return RedirectToAction("Programa", "Proyecto", new { Area = "Modelo", id = plantilla.Id });
+            return RedirectToAction("EditElemento", "AnonPlantilla", new { id = idPlantilla, idElemento = id });
         }
 
         protected override void Dispose(bool disposing)

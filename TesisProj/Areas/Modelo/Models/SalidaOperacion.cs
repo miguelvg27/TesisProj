@@ -14,7 +14,7 @@ using TesisProj.Models.Storage;
 namespace TesisProj.Areas.Modelo.Models
 {
     [Table("OperacionXSalida")]
-    public class SalidaOperacion : DbObject, IValidatableObject
+    public class SalidaOperacion : DbObject
     {
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Operacion")]
@@ -41,19 +41,9 @@ namespace TesisProj.Areas.Modelo.Models
         public override string LogValues()
         {
             return "Nombre = " + this.Nombre + Environment.NewLine +
+                "Secuencia = " + this.Secuencia + Environment.NewLine +
                 "Operación = " + this.Operacion.Nombre + Environment.NewLine +
                 "Salida = " + this.Salida.Nombre;
-        }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            using (TProjContext context = new TProjContext())
-            {
-                if (context.SalidaOperaciones.Any(p => p.IdSalida == this.IdSalida && p.Secuencia == this.Secuencia && (this.Id > 0 ? p.Id != this.Id : true)))
-                {
-                    yield return new ValidationResult("Ya existe un registro con la misma secuencia en esta Salida.", new string[] { "Secuencia" });
-                }
-            }
         }
     }
 }

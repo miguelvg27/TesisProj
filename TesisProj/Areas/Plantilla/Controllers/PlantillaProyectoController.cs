@@ -212,7 +212,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 }
             }
 
-            return RedirectToAction("Cine", "Proyecto", new { Area = "Modelo", id = plantilla.Id });
+            return RedirectToAction("EditProyecto", "AnonPlantilla", new { id = idPlantilla, idProyecto = id });
         }
 
         protected override void Dispose(bool disposing)
