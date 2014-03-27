@@ -733,6 +733,21 @@
     <Content Include="Areas\CompararProyecto\Views\Comparar\_GraficoVanF.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\Index.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoTir.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoTirE.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoTirF.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoVan.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoVanE.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararProyectos\_GraficoVanF.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\Index.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\Version.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoTir.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoTirE.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoTirF.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoVan.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoVanE.cshtml" />
+    <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoVanF.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
