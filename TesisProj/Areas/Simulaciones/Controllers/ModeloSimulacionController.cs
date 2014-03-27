@@ -74,6 +74,8 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                     
                     ViewBag.Cabeceras = tabla.Split('°')[0].Split('|');
                     ViewBag.Valores = tabla.Split('°')[1].Split('|');
+                    sssssss
+                        //eliminar el exceo de cariables en la vista segun session[Opcion]
                     simulaciones = simulaciones.Substring(0, simulaciones.Length - 1);
                     ViewBag.ValoresSimulados = simulaciones.Split('|');
                 }
@@ -211,8 +213,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             return salida;
         }
 
-        public ActionResult Asignacion(string Name, int ProyectoId, int ParametroId)
+        public ActionResult Asignacion(string Name, int ProyectoId, int ParametroId, int Opcion)
         {
+            Session["Opcion"] = Opcion;
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == Name).ToList();
             ModeloSimulacion modelo = new ModeloSimulacion(Name, lista);

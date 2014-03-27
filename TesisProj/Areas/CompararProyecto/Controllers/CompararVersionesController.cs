@@ -1,34 +1,70 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
+using Telerik.Web.Mvc;
 using TesisProj.Areas.CompararProyecto.Models;
 using TesisProj.Areas.IridiumTest.Models;
 using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.CompararProyecto.Controllers
 {
     [Authorize(Roles = "nav")]
-    public class CompararController : Controller
+    public class CompararVersionesController : Controller
     {
         //
-        // GET: /CompararProyecto/Comparar/
+        // GET: /CompararProyecto/CompararVersiones/
         private TProjContext context = new TProjContext();
+
+
+        [HttpPost]
+        public ActionResult _AjaxLoading(string text)
+        {
+            Thread.Sleep(1000);
+            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+            
+            return new JsonResult { Data = new SelectList(proyectos.ToList(), "Id", "Nombre") };
+        }
+
+        [HttpPost]
+        public JsonResult Refresh(int Id)
+        {
+            Session["Id"] = Id;
+            return Json("Ok", JsonRequestBehavior.AllowGet);
+        }
 
         [HttpGet]
         public ActionResult Index()
         {
             List<Comparar> c = new List<Comparar>();
+            List<Proyecto> proyectos;
+            List<Proyecto> colab;
 
-            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
-
-            List<Proyecto> lista = proyectos.Union(colab).ToList();
+            int idUser;
             int cont = 0;
-            int[] i = new int[100];
+            int[] i;
+
+            if (Session["Id"] == null)
+            {
+                i = new int[100];
+                ViewData["checkedRecords"] = i;
+                return View(c);
+            }
+            else
+            {
+                idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+                proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
+                colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
+            }
+            
+            List<Proyecto> lista = proyectos.Union(colab).ToList();
+            i = new int[100];
 
             foreach (Proyecto p in lista)
             {
@@ -38,13 +74,19 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             }
 
             ViewData["checkedRecords"] = i;
-
+            ViewData["Versiones"] = c;
             return View(c);
         }
 
         [HttpPost]
         public ActionResult Index(int[] checkedRecords)
         {
+            if (checkedRecords == null)
+            {
+                ViewData["checkedRecords"] = new int[100];
+                return View(new List<Comparar>());
+            }
+
             List<Proyecto> lista = new List<Proyecto>();
             foreach (int i in checkedRecords)
             {
@@ -130,5 +172,6 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             gr.N = x;
             return gr;
         }
+
     }
 }
