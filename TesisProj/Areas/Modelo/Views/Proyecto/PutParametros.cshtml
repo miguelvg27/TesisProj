@@ -26,7 +26,7 @@
             <table class="table table-hover table-striped table-bordered">
                 <tr>
                     <th>
-                        Período
+                        Parámetro
                     </th>
                     <th>
                         Tipo
@@ -48,6 +48,8 @@
                     <td>
                         @Html.TextBoxFor(model => model[i].Valor, new { style="width = 50px", @Value = String.Format("{0:0.##}", Model[i].Valor) })
                         @Html.HiddenFor(model => model[i].IdParametro)
+                        @Html.HiddenFor(model => model[i].Periodo)
+                        @Html.HiddenFor(model => model[i].Id)
                     </td>
                 </tr>
 }

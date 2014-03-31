@@ -45,12 +45,19 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
-            List<Celda> celdas = new List<Celda>();
+            // List<Celda> celdas = new List<Celda>();
 
             foreach(Parametro parametro in parametros)
             {
-                celdas.Add(new Celda { IdParametro = parametro.Id, Parametro = parametro, Periodo = 1, Valor = 0 });
+                for (int periodo = 1; periodo <= proyecto.Horizonte; periodo++)
+                {
+                    db.Celdas.Add(new Celda { IdParametro = parametro.Id, Periodo = periodo, Valor = 0 });
+                }
             }
+
+            db.SaveChanges();
+
+            var celdas = db.Celdas.Include(c => c.Parametro).Where(c => c.Parametro.IdElemento == id && c.Periodo == 1).ToList();
 
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.IdElemento = elemento.Id;
@@ -70,16 +77,39 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(IdProyecto);
             int Horizonte = proyecto.Horizonte;
 
+            if (ModelState.IsValid)
+            {
+
+                foreach (Celda celda in celdas)
+                {
+                    Parametro parametro = db.Parametros.Find(celda.IdParametro);
+                    for (int periodo = 2; periodo <= Horizonte; periodo++)
+                    {
+                        Celda nextCelda = db.Celdas.First(c => c.Periodo == periodo && c.IdParametro == celda.IdParametro);
+                        nextCelda.Valor = celda.Valor;
+                        db.CeldasRequester.ModifyElement(celda);
+                        celda.Parametro = parametro;
+                    }
+                }
+
+                return RedirectToAction("SetParametros", new { id = IdElemento });
+            }
+
             foreach (Celda celda in celdas)
             {
                 Parametro parametro = db.Parametros.Find(celda.IdParametro);
-                for (int periodo = 1; periodo <= Horizonte; periodo++)
-                {
-                    db.CeldasRequester.AddElement(new Celda { IdParametro = celda.IdParametro, Periodo = periodo, Valor = celda.Valor });
-                }
+                celda.Parametro = parametro;
             }
 
-            return RedirectToAction("SetParametros", new { id = IdElemento });
+            Elemento elemento = db.Elementos.Find(IdElemento);
+
+            ViewBag.IdProyecto = proyecto.Id;
+            ViewBag.IdElemento = elemento.Id;
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.Proyecto = proyecto.Nombre;
+
+            return View(celdas);
+            
         }
 
         //
@@ -157,9 +187,22 @@ namespace TesisProj.Areas.Modelo.Controllers
                     celda.Parametro = db.Parametros.Include(p => p.Elemento).FirstOrDefault(p => p.Id == celda.IdParametro);
                     db.CeldasRequester.ModifyElement(celda, true, IdProyecto, getUserId());
                 }
+
+                return RedirectToAction("VerParametros", new { id = IdElemento });
             }
 
-            return RedirectToAction("VerParametros", new { id = IdElemento });
+            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == IdElemento).OrderBy(p => p.Nombre); ;
+            Elemento elemento = db.Elementos.Find(IdElemento);
+            Proyecto proyecto = db.Proyectos.Find(IdProyecto);
+
+            ViewBag.IdProyecto = IdProyecto;
+            ViewBag.IdElemento = IdElemento;
+            ViewBag.Parametros = parametros.ToList();
+            ViewBag.Horizonte = celdas.Any(c => c.Periodo > 1) ? proyecto.Horizonte : 1;
+            ViewBag.Elemento = elemento.Nombre;
+            ViewBag.Proyecto = proyecto.Nombre;
+
+            return View(celdas.ToList());    
         }
 
         //

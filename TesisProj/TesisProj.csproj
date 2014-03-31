@@ -951,7 +951,9 @@
     <Content Include="Scripts\telerik.treeview.js" />
     <Content Include="Scripts\telerik.upload.js" />
     <Content Include="Scripts\telerik.window.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
