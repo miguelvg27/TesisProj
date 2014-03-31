@@ -120,6 +120,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             if (ModelState.IsValid)
             {
                 proyecto.Creacion = DateTime.Now;
+                proyecto.Calculado = DateTime.Now;
                 db.ProyectosRequester.AddElement(proyecto);
 
                 if (IdPlantilla > 0)

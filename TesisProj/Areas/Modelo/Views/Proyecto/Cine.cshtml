@@ -7,7 +7,8 @@
     bool IsCreador = ViewBag.IsCreador;
     bool IsEditor = ViewBag.IsEditor;
     bool IsRevisor = ViewBag.IsRevisor;
-
+    DateTime LastCalculated = ViewBag.LastCalculated;
+    DateTime LastModified = ViewBag.LastModified;
 }
 
 <h2>Resultados de @ViewBag.Proyecto</h2>
@@ -28,10 +29,17 @@
         </a>
         <a style="margin:5px"></a>
     }
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Calc", new { id = ViewBag.ProyectoId })"">
+        <i class="icon-screenshot icon-white"></i>Calcular
+    </a>
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
         <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
-    <br /><br />
+    <br /> <br />
+    Última vez calculado: @LastCalculated
+    <br />
+    Última vez modificado: @LastModified
+    <br /> <br />
 </p>
 <table class="table table-hover table-striped table-bordered">
     <tr>

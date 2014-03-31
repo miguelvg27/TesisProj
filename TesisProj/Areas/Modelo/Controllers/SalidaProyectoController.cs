@@ -28,6 +28,8 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.ProyectoId = proyecto.Id;
+            ViewBag.LastCalculated = proyecto.Calculado;
+            ViewBag.LastModified = db.Audits.Where(a => a.IdProyecto == id).Count() > 0 ? db.Audits.Where(a => a.IdProyecto == id).Max(a => a.Fecha) : proyecto.Creacion;
 
             var salidaproyectos = db.SalidaProyectos.Include(s => s.Proyecto).Where(s => s.IdProyecto == proyecto.Id);
 
@@ -262,6 +264,55 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.Proyecto = db.Proyectos.Find(salidaproyecto.IdProyecto).Nombre;
 
             return View(salidaproyecto);
+        }
+
+
+        public ActionResult Calc(int id = 0)
+        {
+
+            //
+            //  Comienza zona crítica 
+
+            db.Configuration.ProxyCreationEnabled = false;
+            Proyecto proyecto = db.Proyectos.Find(id);
+
+            if (proyecto == null)
+            {
+                db.Configuration.ProxyCreationEnabled = true;
+                return HttpNotFound();
+            }
+
+            int horizonte = proyecto.Horizonte;
+            int preoperativos = proyecto.PeriodosPreOp;
+            int cierre = proyecto.PeriodosCierre;
+
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == id).OrderBy(s => s.Secuencia).ToList();
+            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == id).ToList();
+            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == id).ToList();
+            var tipoformulas = db.TipoFormulas.ToList();
+
+            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas);
+            db.Configuration.ProxyCreationEnabled = true;
+
+            //
+            //  Finaliza zona crítica
+
+            foreach (Operacion operacion in operaciones)
+            {
+                operacion.strValores = ArrayToString(operacion);
+                db.OperacionesRequester.ModifyElement(operacion);
+            }
+
+            proyecto.Calculado = DateTime.Now;
+            db.ProyectosRequester.ModifyElement(proyecto);
+
+            return RedirectToAction("Cine", new { id = id });
+        }
+
+        private string ArrayToString(Operacion operacion)
+        {
+            string str = String.Join(",", operacion.Valores.Select(p => p.ToString()).ToArray());
+            return str;
         }
 
         //

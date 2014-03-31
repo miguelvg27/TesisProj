@@ -5,7 +5,7 @@
     ViewBag.Title = "Resultados: " + ViewBag.Proyecto;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int Horizonte = ViewBag.Horizonte;
-    int Inicio = (ViewBag.Inicio > 0 ? ViewBag.Inicio : 1) - 1;
+    int Inicio = ViewBag.Inicio > 0 ? ViewBag.Inicio : 1;
     string format;
 }
 
@@ -26,7 +26,7 @@
             <th>
                 Concepto
             </th>
-            @for (int periodo = 1; periodo <= Horizonte; periodo++)
+            @for (int periodo = Inicio; periodo <= Horizonte; periodo++)
             {
                 <th style="text-align:center; width:80px;">
                     @periodo
@@ -40,10 +40,10 @@
             <td>
                 @salida.Nombre
             </td>
-            @for (int periodo = Inicio; (periodo < salida.Valores.Count) && (periodo < Horizonte); periodo++)
+            @for (int periodo = Inicio; (periodo <= salida.Valores.Count) && (periodo <= Horizonte); periodo++)
             {
                 <td style="text-align:right;">
-                    @String.Format("{0:#,##0}", salida.Valores[periodo])
+                    @String.Format("{0:#,##0}", salida.Valores[periodo - 1])
                 </td>
             }
         </tr>
@@ -51,7 +51,7 @@
         <tr>
             <th>
             </th>
-            @for (int periodo = 1; periodo <= Horizonte; periodo++)
+            @for (int periodo = Inicio; periodo <= Horizonte; periodo++)
             {
                 <th style="text-align:center; width:80px;">
                     @periodo

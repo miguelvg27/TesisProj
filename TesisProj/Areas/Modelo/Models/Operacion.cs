@@ -61,6 +61,10 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        [StringLength(2048)]
+        [DisplayName("Valores")]
+        public string strValores { get; set; }
+
         [InverseProperty("Operacion")]
         public List<SalidaOperacion> Salidas { get; set; }
 

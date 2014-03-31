@@ -26,6 +26,10 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Creacion { get; set; }
 
+        [DisplayName("Fecha de cálculo")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Calculado { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Creador")]
         public int IdCreador { get; set; }
