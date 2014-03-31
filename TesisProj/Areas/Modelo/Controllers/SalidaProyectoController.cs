@@ -86,31 +86,14 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         public ActionResult Pelicula(int id = 0)
         {
-
-            //
-            //  Comienza zona crítica 
-
-            db.Configuration.ProxyCreationEnabled = false;
-
             SalidaProyecto salida = db.SalidaProyectos.Find(id);
             Proyecto proyecto = db.Proyectos.Find(salida.IdProyecto);
 
             if (salida == null)
             {
-                db.Configuration.ProxyCreationEnabled = true;
                 return HttpNotFound();
             }
 
-            int horizonte = proyecto.Horizonte;
-            int preoperativos = proyecto.PeriodosPreOp;
-            int cierre = proyecto.PeriodosCierre;
-
-            var operaciones = db.Operaciones.Where(o => o.IdProyecto == salida.IdProyecto).OrderBy(s => s.Secuencia).ToList();
-            var formulas = db.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == salida.IdProyecto).ToList();
-            var parametros = db.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == salida.IdProyecto).ToList();
-            var tipoformulas = db.TipoFormulas.ToList();
-
-            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas);
             var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion).ToList();
 
             ViewBag.IdProyecto = salida.IdProyecto;
@@ -119,15 +102,9 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.Inicio = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoInicial, proyecto.Horizonte, 1, proyecto.PeriodosPreOp, proyecto.PeriodosCierre));
             ViewBag.Horizonte = Convert.ToInt32(Generics.SimpleParse(salida.PeriodoFinal, proyecto.Horizonte, proyecto.Horizonte, proyecto.PeriodosPreOp, proyecto.PeriodosCierre));
 
-            db.Configuration.ProxyCreationEnabled = true;
-
-            //
-            //  Finaliza zona crítica
-
             foreach(Operacion operacion in exoperaciones)
             {
-                Operacion original = operaciones.First(o => o.Id == operacion.Id);
-                operacion.Valores = original.Valores;
+                operacion.Valores = operacion.strValores != null ? StringToArray(operacion) : new List<double>();
             }
 
             return View(exoperaciones.ToList());
@@ -313,6 +290,12 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             string str = String.Join(",", operacion.Valores.Select(p => p.ToString()).ToArray());
             return str;
+        }
+
+        private List<double> StringToArray(Operacion operacion)
+        {
+            List<double> arr = operacion.strValores.Split(',').Select(s => double.Parse(s)).ToList();
+            return arr;
         }
 
         //
