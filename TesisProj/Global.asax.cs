@@ -11,6 +11,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using TesisProj.Models.Storage;
 using WebMatrix.WebData;
+using Devtalk.EF.CodeFirst;
 
 namespace TesisProj
 {
@@ -21,6 +22,8 @@ namespace TesisProj
     {
 
         static bool IsLocalDb = System.Configuration.ConfigurationManager.AppSettings["IsLocalDb"].ToString().Equals("True");
+        static bool InitDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Init");
+        static bool SeedDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Seed");
         public static string ConnectionString = IsLocalDb ? "TProjContextLocal" : "TProjContextAppHb";
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -67,11 +70,18 @@ namespace TesisProj
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            Database.SetInitializer<TProjContext>(new TProjInitializer());
-   
+            if (InitDb)
+            {
+                Database.SetInitializer<TProjContext>(new DontDropDbJustCreateTablesIfModelChanged<TProjContext>());            
+            }
+            else
+            {
+                Database.SetInitializer<TProjContext>(new TProjInitializer());
+            }
 
             using (TProjContext context = new TProjContext())
             {
+                if (SeedDb) context.Seed();
                 context.ColaboradoresRequester.All();
             }
         }
