@@ -265,6 +265,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                 proyecto_dirty.Version = 0;
                 proyecto_dirty.Creacion = DateTime.Now;
+                proyecto_dirty.Calculado = proyecto_dirty.Creacion;
                 proyecto_dirty.IdCreador = getUserId();
 
                 string nombre = "Copia de " + proyecto_dirty.Nombre + " ";
