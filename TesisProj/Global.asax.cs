@@ -12,6 +12,7 @@ using System.Web.Routing;
 using TesisProj.Models.Storage;
 using WebMatrix.WebData;
 using Devtalk.EF.CodeFirst;
+using TesisProj.Controllers;
 
 namespace TesisProj
 {
@@ -24,6 +25,7 @@ namespace TesisProj
         static bool IsLocalDb = System.Configuration.ConfigurationManager.AppSettings["IsLocalDb"].ToString().Equals("True");
         static bool InitDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Init");
         static bool SeedDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Seed");
+
         public static string ConnectionString = IsLocalDb ? "TProjContextLocal" : "TProjContextAppHb";
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
@@ -34,6 +36,16 @@ namespace TesisProj
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "FailWhale",
+                url: "FailWhale/{action}/{id}",
+                defaults: new {
+                    controller = "Error",
+                    action = "FailWhale",
+                    id = UrlParameter.Optional
+                }
+            );
 
             routes.MapHttpRoute(
                 name: "DefaultApi",
@@ -85,5 +97,6 @@ namespace TesisProj
                 context.ColaboradoresRequester.All();
             }
         }
+
     }
 }

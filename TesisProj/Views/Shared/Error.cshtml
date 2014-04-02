@@ -5,6 +5,20 @@
 }
 
 <hgroup class="title">
-    <h1 class="error">Error.</h1>
-    <h2 class="error">An error occurred while processing your request.</h2>
+    <h1 class="error">Error del servidor.</h1>
+    <h2 class="error">Ocurrió un error al procesar su solicitud.</h2>
+
+    @{
+        if(Request.IsLocal && @Model != null && @Model.Exception != null)
+        {
+            <h4>
+                Excepción: @Model.Exception.Message
+            </h4>
+            <text>
+                Trace: @Model.Exception.StackTrace
+            </text>
+        } else {
+            <text> El error se ha reportado a los administradores.</text>
+        }    
+    }
 </hgroup>
