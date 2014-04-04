@@ -10,7 +10,7 @@ using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
 {
-    [Authorize(Roles = "nav")]
+    [Authorize(Roles = "admin")]
     public class TipoFormulaController : Controller
     {
         private TProjContext db = new TProjContext();
@@ -22,20 +22,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             var tipoformulas = db.TipoFormulas.Include(f => f.TipoElemento).OrderBy(f => f.TipoElemento.Nombre);
             return View(tipoformulas.ToList());
-        }
-
-        //
-        // GET: /Plantilla/TipoFormula/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            TipoFormula tipoformula = db.TipoFormulas.Find(id);
-            tipoformula.TipoElemento = db.TipoElementos.Find(tipoformula.IdTipoElemento);
-            if (tipoformula == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tipoformula);
         }
 
         //
@@ -56,9 +42,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.TipoFormulas.Add(tipoformula);
-                db.SaveChanges();
-                
+                db.TipoFormulasRequester.AddElement(tipoformula);                
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +58,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             TipoFormula tipoformula = db.TipoFormulas.Find(id);
             if (tipoformula == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
             
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", tipoformula.IdTipoElemento); 
@@ -90,8 +74,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tipoformula).State = EntityState.Modified;
-                db.SaveChanges();
+                db.TipoFormulasRequester.ModifyElement(tipoformula);
                 return RedirectToAction("Index");
             }
             
@@ -105,16 +88,22 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id)
         {
             TipoFormula tipoformula = db.TipoFormulas.Find(id);
+            if (tipoformula == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
             try
             {
-                db.TipoFormulas.Remove(tipoformula);
-                db.SaveChanges(); 
+                db.TipoFormulasRequester.RemoveElementByID(id);
             }
             catch (Exception)
             {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                ModelState.AddModelError("ErrorIndex", "No se puede eliminar porque existen registros dependientes.");
+                var tipoformulas = db.TipoFormulas.Include(f => f.TipoElemento).OrderBy(f => f.TipoElemento.Nombre);
+                return View("Index", tipoformulas.ToList());
             }
-             
+
             return RedirectToAction("Index");
         }
 

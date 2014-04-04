@@ -239,7 +239,7 @@
     <Compile Include="Areas\Plantilla\Controllers\PlantillaSalidaProyectoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoFormulaController.cs" />
-    <Compile Include="Areas\Plantilla\Controllers\TipoParametroController.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\TipoDatoController.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaFormula.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaOperacion.cs" />
@@ -249,7 +249,7 @@
     <Compile Include="Areas\Plantilla\Models\PlantillaSalidaProyecto.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\TipoFormula.cs" />
-    <Compile Include="Areas\Plantilla\Models\TipoParametro.cs" />
+    <Compile Include="Areas\Plantilla\Models\TipoDato.cs" />
     <Compile Include="Areas\Plantilla\Models\TProjContext.cs" />
     <Compile Include="Areas\Plantilla\PlantillaAreaRegistration.cs" />
     <Compile Include="Areas\Seguridad\Controllers\ColaboradoresController.cs" />
@@ -614,13 +614,9 @@
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaParametro\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaParametro\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaParametro\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaParametro\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaParametro\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Assoc.cshtml" />
@@ -630,20 +626,14 @@
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoElemento\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoElemento\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoElemento\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoElemento\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoElemento\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoFormula\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoFormula\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoFormula\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoFormula\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoFormula\Index.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoParametro\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoParametro\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoParametro\Details.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoParametro\Edit.cshtml" />
-    <Content Include="Areas\Plantilla\Views\TipoParametro\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoDato\Create.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoDato\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\TipoDato\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\Web.config" />
     <Content Include="Areas\Seguridad\Views\Colaboradores\Create.cshtml" />
     <Content Include="Areas\Seguridad\Views\Colaboradores\Index.cshtml" />
@@ -992,6 +982,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\FailWhale.cshtml" />
+    <Content Include="Views\Shared\DeniedWhale.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -11,21 +11,20 @@ using TesisProj.Models.Storage;
 namespace TesisProj.Areas.Plantilla.Controllers
 {
     [Authorize(Roles = "admin")]
-    public class TipoElementoController : Controller
+    public class TipoDatoController : Controller
     {
         private TProjContext db = new TProjContext();
 
         //
-        // GET: /Plantilla/TipoElemento/
+        // GET: /Plantilla/TipoDato/
 
         public ActionResult Index()
         {
-            return View(db.TipoElementos.OrderBy(t => t.Nombre).ToList());
+            return View(db.TipoDatos.OrderBy(p => p.Nombre).ToList());
         }
 
-
         //
-        // GET: /Plantilla/TipoElemento/Create
+        // GET: /Plantilla/TipoDato/Create
 
         public ActionResult Create()
         {
@@ -33,73 +32,70 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Create
+        // POST: /Plantilla/TipoDato/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TipoElemento tipoelemento)
+        public ActionResult Create(TipoDato tipodato)
         {
             if (ModelState.IsValid)
             {
-                db.TipoElementosRequester.AddElement(tipoelemento);
+                db.TipoDatosRequester.AddElement(tipodato);     
                 return RedirectToAction("Index");
             }
-
-            return View(tipoelemento);
+            return View(tipodato);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Edit/5
+        // GET: /Plantilla/TipoDato/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            TipoDato tipodato = db.TipoDatos.Find(id);
+            if (tipodato == null)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-
-            return View(tipoelemento);
+            return View(tipodato);
         }
 
         //
-        // POST: /Plantilla/TipoElemento/Edit/5
+        // POST: /Plantilla/TipoDato/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(TipoElemento tipoelemento)
+        public ActionResult Edit(TipoDato tipodato)
         {
             if (ModelState.IsValid)
             {
-                db.TipoElementosRequester.ModifyElement(tipoelemento);
+                db.TipoDatosRequester.ModifyElement(tipodato);
                 return RedirectToAction("Index");
             }
-
-            return View(tipoelemento);
+            return View(tipodato);
         }
 
         //
-        // GET: /Plantilla/TipoElemento/Delete/5
+        // GET: /Plantilla/TipoDato/Delete/5
 
-        public ActionResult Delete(int id)
+         public ActionResult Delete(int id)
         {
-            TipoElemento tipoelemento = db.TipoElementos.Find(id);
-            if (tipoelemento == null)
+            TipoDato tipodato = db.TipoDatos.Find(id);
+            if (tipodato == null)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             try
             {
-                db.TipoElementosRequester.RemoveElementByID(id);
+                db.TipoDatosRequester.RemoveElementByID(id);
             }
             catch (Exception)
             {
                 ModelState.AddModelError("ErrorIndex", "No se puede eliminar porque existen registros dependientes.");
-                var tipoelementos = db.TipoElementos.OrderBy(p => p.Nombre);
-                return View("Index", tipoelementos.ToList());
+                var tipodatos = db.TipoDatos.OrderBy(p => p.Nombre);
+                return View("Index", tipodatos.ToList());
             }
-
+ 
             return RedirectToAction("Index");
         }
 

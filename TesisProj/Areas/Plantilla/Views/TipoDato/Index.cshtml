@@ -1,11 +1,11 @@
-﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.TipoParametro>
+﻿@model IEnumerable<TesisProj.Areas.Plantilla.Models.TipoDato>
 
 @{
-    ViewBag.Title = "Tipos de parámetro";
+    ViewBag.Title = "Tipos de dato";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Tipos de parámetro</h2>
+<h2>Tipos de dato</h2>
 
 <p>
     <br />
@@ -18,10 +18,14 @@
     </a><br /><br />
 </p>
 
+@Html.ValidationMessage("ErrorIndex")
 <table class="table table-hover table-striped table-bordered">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Formato)
         </th>
         <th></th>
     </tr>
@@ -30,6 +34,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Formato)
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |

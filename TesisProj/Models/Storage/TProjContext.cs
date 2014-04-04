@@ -24,7 +24,6 @@ namespace TesisProj.Models.Storage
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-         //   modelBuilder.Conventions.Remove<IncludeMetadataConvention>(); 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToOneConstraintIntroductionConvention>(); 
@@ -58,8 +57,14 @@ namespace TesisProj.Models.Storage
     }
 
     public class TProjInitializer : CreateDatabaseIfNotExists<TProjContext>
-    //public class TProjInitializer:  DropCreateDatabaseIfModelChanges<TProjContext>
-    //public class TProjInitializer : DropCreateDatabaseAlways<TProjContext>
+    {
+        protected override void Seed(TProjContext context)
+        {
+            context.Seed();
+        }
+    }
+
+    public class TProjDropInitializer : DropCreateDatabaseAlways<TProjContext>
     {
         protected override void Seed(TProjContext context)
         {

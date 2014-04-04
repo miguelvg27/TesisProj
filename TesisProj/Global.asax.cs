@@ -13,6 +13,9 @@ using TesisProj.Models.Storage;
 using WebMatrix.WebData;
 using Devtalk.EF.CodeFirst;
 using TesisProj.Controllers;
+using System.Web.Security;
+using TesisProj.Models;
+using TesisProj.Filters;
 
 namespace TesisProj
 {
@@ -25,6 +28,7 @@ namespace TesisProj
         static bool IsLocalDb = System.Configuration.ConfigurationManager.AppSettings["IsLocalDb"].ToString().Equals("True");
         static bool InitDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Init");
         static bool SeedDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Seed");
+        static bool DropDb = System.Configuration.ConfigurationManager.AppSettings["DbStage"].ToString().Equals("Drop");
 
         public static string ConnectionString = IsLocalDb ? "TProjContextLocal" : "TProjContextAppHb";
 
@@ -82,19 +86,22 @@ namespace TesisProj
             RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            if (InitDb)
+            if (InitDb || DropDb || SeedDb)
             {
-                Database.SetInitializer<TProjContext>(new DontDropDbJustCreateTablesIfModelChanged<TProjContext>());            
-            }
-            else
-            {
-                Database.SetInitializer<TProjContext>(new TProjInitializer());
-            }
 
-            using (TProjContext context = new TProjContext())
-            {
+                if (InitDb)
+                {
+                    Database.SetInitializer<TProjContext>(new DontDropDbJustCreateTablesIfModelChanged<TProjContext>());
+                }
+
+                if (DropDb)
+                {
+                    Database.SetInitializer<TProjContext>(new TProjDropInitializer());
+                }
+
+                TProjContext context = new TProjContext();
+                context.Database.Initialize(false);
                 if (SeedDb) context.Seed();
-                context.ColaboradoresRequester.All();
             }
         }
 

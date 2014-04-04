@@ -31,6 +31,14 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre.", new string[] { "Nombre" });
                 }
             }
+
+            using (TProjContext context = new TProjContext())
+            {
+                if (context.TipoElementos.Any(t => t.NombrePlural == this.NombrePlural && (this.Id > 0 ? t.Id != this.Id : true)))
+                {
+                    yield return new ValidationResult("Ya existe un registro con el mismo nombre plural.", new string[] { "NombrePlural" });
+                }
+            }
         }
     }
 }

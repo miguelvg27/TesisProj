@@ -25,20 +25,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // GET: /Plantilla/PlantillaProyecto/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
-            if (plantillaproyecto == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(plantillaproyecto);
-        }
-
-        //
         // GET: /Plantilla/PlantillaProyecto/Create
 
         public ActionResult Create()
@@ -55,9 +41,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PlantillaProyectos.Add(plantillaproyecto);
-                db.SaveChanges();
-
+                db.PlantillaProyectosRequester.AddElement(plantillaproyecto);
                 return RedirectToAction("Index");
             }
 
@@ -72,7 +56,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
             if (plantillaproyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             return View(plantillaproyecto);
@@ -87,9 +71,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(plantillaproyecto).State = EntityState.Modified;
-                db.SaveChanges();
-
+                db.PlantillaProyectosRequester.ModifyElement(plantillaproyecto);
                 return RedirectToAction("Index");
             }
 
@@ -102,24 +84,26 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id)
         {
             PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
+            if (plantillaproyecto == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
             try
             {
                 var salidaoperaciones = db.PlantillaSalidaOperaciones.Include(s => s.Operacion).Where(p => p.Operacion.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
-
                 foreach (PlantillaSalidaOperacion salida in salidaoperaciones)
                 {
                     db.PlantillaSalidaOperacionesRequester.RemoveElementByID(salida.Id);
                 }
 
                 var salidas = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
-
                 foreach (PlantillaSalidaProyecto salida in salidas)
                 {
                     db.PlantillaSalidaProyectosRequester.RemoveElementByID(salida.Id);
                 }
 
                 var operaciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
-
                 foreach (PlantillaOperacion operacion in operaciones)
                 {
                     db.PlantillaOperacionesRequester.RemoveElementByID(operacion.Id);
@@ -130,6 +114,8 @@ namespace TesisProj.Areas.Plantilla.Controllers
             catch (Exception)
             {
                 ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                var plantillaproyectos = db.PlantillaProyectos.OrderBy(t => t.Nombre);
+                return View("Index", plantillaproyectos.ToList());
             }
 
             return RedirectToAction("Index");
@@ -138,11 +124,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult DuplicarPlantilla(int id)
         {
             PlantillaProyecto plantilla = db.PlantillaProyectos.Include(e => e.Salidas).Include(e => e.Operaciones).Include(e => e.Salidas.Select(s => s.Operaciones)).FirstOrDefault(e => e.Id == id);
-
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
+
+            // Begin: Get unique name
 
             string nombre = "Copia de " + plantilla.Nombre + " ";
             string nombreTest = nombre;
@@ -153,38 +140,38 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 nombreTest = nombre + i++;
             }
 
-            int idPlantilla = db.PlantillaProyectosRequester.AddElement(new PlantillaProyecto { Nombre = nombreTest });
+            // End: Get unique name
 
-
+            int idDuplicado = db.PlantillaProyectosRequester.AddElement(new PlantillaProyecto { Nombre = nombreTest });
             foreach (PlantillaOperacion operacion in plantilla.Operaciones.OrderBy(o => o.Secuencia))
             {
-                db.PlantillaOperacionesRequester.AddElement(new PlantillaOperacion(operacion, idPlantilla));
+                db.PlantillaOperacionesRequester.AddElement(new PlantillaOperacion(operacion, idDuplicado));
             }
 
             foreach (PlantillaSalidaProyecto salida in plantilla.Salidas)
             {
-                int idSalida = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto(salida, idPlantilla));
-
+                int idSalida = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto(salida, idDuplicado));
                 foreach (PlantillaSalidaOperacion cruce in salida.Operaciones)
                 {
-                    int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idPlantilla).Id;
+                    int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idDuplicado).Id;
                     db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idSalida, IdOperacion = idOperacion, Secuencia = cruce.Secuencia });
                 }
             }
 
-            return RedirectToAction("Edit", new { id = idPlantilla } );
+            return RedirectToAction("Edit", new { id = idDuplicado });
         }
 
         public ActionResult VolverPlantilla(int id)
         {
-            Proyecto plantilla = db.Proyectos.Include(e => e.Salidas).Include(e => e.Operaciones).Include(e => e.Salidas.Select(s => s.Operaciones)).FirstOrDefault(e => e.Id == id);
-
-            if (plantilla == null)
+            Proyecto proyecto = db.Proyectos.Include(e => e.Salidas).Include(e => e.Operaciones).Include(e => e.Salidas.Select(s => s.Operaciones)).FirstOrDefault(e => e.Id == id);
+            if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            string nombre = "Copia de " + plantilla.Nombre + " ";
+            // Begin: Get unique name
+
+            string nombre = "Plantilla de " + proyecto.Nombre + " ";
             string nombreTest = nombre;
             int i = 1;
 
@@ -193,18 +180,18 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 nombreTest = nombre + i++;
             }
 
+            // End: Get unique name
+
             int idPlantilla = db.PlantillaProyectosRequester.AddElement(new PlantillaProyecto { Nombre = nombreTest });
 
-
-            foreach (Operacion operacion in plantilla.Operaciones.OrderBy(o => o.Secuencia))
+            foreach (Operacion operacion in proyecto.Operaciones.OrderBy(o => o.Secuencia))
             {
                 db.PlantillaOperacionesRequester.AddElement(new PlantillaOperacion(operacion, idPlantilla));
             }
 
-            foreach (SalidaProyecto salida in plantilla.Salidas)
+            foreach (SalidaProyecto salida in proyecto.Salidas)
             {
                 int idSalida = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto(salida, idPlantilla));
-
                 foreach (SalidaOperacion cruce in salida.Operaciones)
                 {
                     int idOperacion = db.PlantillaOperaciones.First(o => o.Referencia.Equals(cruce.Operacion.Referencia) && o.IdPlantillaProyecto == idPlantilla).Id;

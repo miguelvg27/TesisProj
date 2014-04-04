@@ -23,10 +23,10 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaElemento plantilla = db.PlantillaElementos.Find(id);
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            var parametros = db.PlantillaParametros.Include(p => p.PlantillaElemento).Include(p => p.TipoParametro).Where(p => p.IdPlantillaElemento == id).OrderBy(p => p.TipoParametro.Nombre);
+            var parametros = db.PlantillaParametros.Include(p => p.PlantillaElemento).Include(p => p.TipoDato).Where(p => p.IdPlantillaElemento == id).OrderBy(p => p.TipoDato.Nombre);
 
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;
@@ -37,23 +37,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // GET: /Plantilla/PlantillaParametro/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            PlantillaParametro parametro = db.PlantillaParametros.Find(id);
-            if (parametro == null)
-            {
-                return HttpNotFound();
-            }
-            
-            parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
-            parametro.PlantillaElemento = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
-            
-            return View(parametro);
-        }
-
-        //
         // GET: /Plantilla/PlantillaParametro/Create
 
         public ActionResult Create(int idPlantilla = 0)
@@ -61,12 +44,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaElemento plantilla = db.PlantillaElementos.Find(idPlantilla);
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdPlantilla = idPlantilla;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre");
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre");
             ViewBag.Plantilla = plantilla.Nombre;
 
             return View();
@@ -88,7 +71,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             ViewBag.IdPlantilla = parametro.IdPlantillaElemento;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoDato);
 
             PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
             ViewBag.Plantilla = plantilla.Nombre;
@@ -108,7 +91,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoDato);
 
             PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
             ViewBag.Plantilla = plantilla.Nombre;
@@ -131,7 +114,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
             
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoDato);
 
             PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
             ViewBag.Plantilla = plantilla.Nombre;

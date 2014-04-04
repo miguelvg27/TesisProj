@@ -18,5 +18,9 @@ namespace TesisProj.Controllers
             return View();
         }
 
+        public ActionResult DeniedWhale()
+        {
+            return View();
+        }
     }
 }

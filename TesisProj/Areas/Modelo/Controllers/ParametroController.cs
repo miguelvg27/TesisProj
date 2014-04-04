@@ -22,7 +22,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 return HttpNotFound();
             }
-            var parametros = db.Parametros.Include("Elemento").Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre);
+            var parametros = db.Parametros.Include("Elemento").Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre);
 
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.Proyecto = proyecto.Nombre;
@@ -44,7 +44,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
+            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             // List<Celda> celdas = new List<Celda>();
 
             foreach(Parametro parametro in parametros)
@@ -124,7 +124,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
+            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
 
 
@@ -160,7 +160,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
+            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
             var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
 
             ViewBag.IdProyecto = proyecto.Id;
@@ -191,7 +191,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("VerParametros", new { id = IdElemento });
             }
 
-            var parametros = db.Parametros.Include("TipoParametro").Where(p => p.IdElemento == IdElemento).OrderBy(p => p.Nombre); ;
+            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == IdElemento).OrderBy(p => p.Nombre); ;
             Elemento elemento = db.Elementos.Find(IdElemento);
             Proyecto proyecto = db.Proyectos.Find(IdProyecto);
 
@@ -217,7 +217,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre");
+            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre");
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == elemento.Id), "Id", "Nombre", elemento.Id);
             ViewBag.IdElementoReturn = elemento.Id;
             ViewBag.IdProyecto = proyecto.Id;
@@ -248,7 +248,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             if (ModelState.IsValid)
             {
                 parametro.Elemento = db.Elementos.Find(parametro.IdElemento);
-                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
+                parametro.TipoDato = db.TipoDatos.Find(parametro.IdTipoDato);
                 db.ParametrosRequester.AddElement(parametro, true, parametro.Elemento.IdProyecto, getUserId());              
 
                 for (int periodo = 1; periodo <= proyecto.Horizonte; periodo++)
@@ -259,7 +259,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("SetParametros", new { id = parametro.IdElemento });
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 
@@ -282,7 +282,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return HttpNotFound();
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 
@@ -305,13 +305,13 @@ namespace TesisProj.Areas.Modelo.Controllers
             if (ModelState.IsValid)
             {
                 parametro.Elemento = db.Elementos.Find(parametro.IdElemento);
-                parametro.TipoParametro = db.TipoParametros.Find(parametro.IdTipoParametro);
+                parametro.TipoDato = db.TipoDatos.Find(parametro.IdTipoDato);
                 db.ParametrosRequester.ModifyElement(parametro, true, parametro.Elemento.IdProyecto, getUserId());
 
                 return RedirectToAction("SetParametros", new { id = parametro.IdElemento });
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoParametros, "Id", "Nombre", parametro.IdTipoParametro);
+            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 

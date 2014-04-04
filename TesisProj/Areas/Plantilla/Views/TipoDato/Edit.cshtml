@@ -1,11 +1,11 @@
-﻿@model TesisProj.Areas.Plantilla.Models.TipoParametro
+﻿@model TesisProj.Areas.Plantilla.Models.TipoDato
 
 @{
-    ViewBag.Title = "Tipos de parámetro";
+    ViewBag.Title = "Tipos de dato";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar tipo de parámetro</h2>
+<h2>Editar tipo de dato</h2>
 
 <p>
     <br />
@@ -27,6 +27,14 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.Nombre)
             @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Formato)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Formato)
+            @Html.ValidationMessageFor(model => model.Formato)
         </div>
 
         @Html.HiddenFor(model => model.Id)

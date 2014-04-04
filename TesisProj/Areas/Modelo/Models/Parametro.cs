@@ -36,11 +36,11 @@ namespace TesisProj.Areas.Modelo.Models
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo")]
-        public int IdTipoParametro { get; set; }
+        public int IdTipoDato { get; set; }
 
         [XmlIgnore]
-        [ForeignKey("IdTipoParametro")]
-        public virtual TipoParametro TipoParametro { get; set; }
+        [ForeignKey("IdTipoDato")]
+        public virtual TipoDato TipoDato { get; set; }
 
         [DisplayName("Valor único")]
         public bool Constante { get; set; }
@@ -63,7 +63,7 @@ namespace TesisProj.Areas.Modelo.Models
         public Parametro(PlantillaParametro plantilla, int IdElemento)
         {
             this.IdElemento = IdElemento;
-            this.IdTipoParametro = plantilla.IdTipoParametro;
+            this.IdTipoDato = plantilla.IdTipoDato;
             this.Nombre = plantilla.Nombre;
             this.Referencia = plantilla.Referencia;
             this.Constante = plantilla.Constante;
@@ -75,7 +75,7 @@ namespace TesisProj.Areas.Modelo.Models
             return "Elemento = " + this.Elemento.Nombre + Environment.NewLine +
                 "Nombre = " + this.Nombre + Environment.NewLine +
                 "Referencia = " + this.Referencia + Environment.NewLine +
-                "Tipo parámetro = " + this.TipoParametro.Nombre + Environment.NewLine +
+                "Tipo parámetro = " + this.TipoDato.Nombre + Environment.NewLine +
                 "Sensible = " + this.Sensible + Environment.NewLine +
                 "Constante = " + this.Constante;
         }
