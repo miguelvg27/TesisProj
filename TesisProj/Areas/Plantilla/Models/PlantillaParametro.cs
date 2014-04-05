@@ -25,7 +25,7 @@ namespace TesisProj.Areas.Plantilla.Models
         [RegularExpression("[A-Za-z]+[A-Za-z1-9]*", ErrorMessage = "El campo solo puede contener alfanuméricos y debe comenzar con una letra.")]
         public string Referencia { get; set; }
 
-        [DisplayName("Valor único")]
+        [DisplayName("Constante")]
         public bool Constante { get; set; }
 
         [DisplayName("Disponible para sensibilidad")]
@@ -44,6 +44,8 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [ForeignKey("IdTipoDato")]
         public virtual TipoDato TipoDato { get; set; }
+
+        public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
 
         public PlantillaParametro(PlantillaParametro plantilla, int idPlantilla)
         {

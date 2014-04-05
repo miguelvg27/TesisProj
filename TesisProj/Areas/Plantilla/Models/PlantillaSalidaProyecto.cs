@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Models
@@ -79,40 +80,18 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
                 }
 
-                bool cadenavalida = true;
-                double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
-
                 parser.AddVariable("Horizonte", 10);
-                parser.AddVariable("PeriodosPreOperativos", 10);
-                parser.AddVariable("PeriodosCierre", 10);
+                parser.AddVariable("PeriodosCierre", 1);
+                parser.AddVariable("PeriodosPreOperativos", 1);
 
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                //  Valida períodos
+                if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
                 }
 
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                if (!Generics.Validar(this.PeriodoFinal, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }

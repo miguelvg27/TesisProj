@@ -26,13 +26,11 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            var parametros = db.PlantillaParametros.Include(p => p.PlantillaElemento).Include(p => p.TipoDato).Where(p => p.IdPlantillaElemento == id).OrderBy(p => p.TipoDato.Nombre);
-
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;
-            TipoElemento tipo = db.TipoElementos.Find(plantilla.IdTipoElemento);
-            ViewBag.TipoPlantilla = tipo != null ? tipo.Nombre : "";
+            ViewBag.TipoPlantilla = db.TipoElementos.Find(plantilla.IdTipoElemento).Nombre;
             
+            var parametros = db.PlantillaParametros.Include(p => p.TipoDato).Where(p => p.IdPlantillaElemento == id).OrderBy(p => p.TipoDato.Nombre);
             return View(parametros.ToList());
         }
 
@@ -48,9 +46,9 @@ namespace TesisProj.Areas.Plantilla.Controllers
             }
 
             ViewBag.IdPlantilla = idPlantilla;
+            ViewBag.Plantilla = plantilla.Nombre;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
             ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre");
-            ViewBag.Plantilla = plantilla.Nombre;
 
             return View();
         }
@@ -60,23 +58,22 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PlantillaParametro parametro)
+        public ActionResult Create(PlantillaParametro plantillaparametro)
         {
             if (ModelState.IsValid)
             {
-                db.PlantillaParametros.Add(parametro);
-                db.SaveChanges();
-                return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
+                db.PlantillaParametrosRequester.AddElement(plantillaparametro);
+                return RedirectToAction("Index", new { id = plantillaparametro.IdPlantillaElemento });
             }
 
-            ViewBag.IdPlantilla = parametro.IdPlantillaElemento;
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoDato);
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(plantillaparametro.IdPlantillaElemento);
 
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", plantillaparametro.IdPlantillaElemento);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaparametro.IdTipoDato);
 
-            return View(parametro);
+            return View(plantillaparametro);
         }
 
         //
@@ -84,19 +81,20 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            PlantillaParametro parametro = db.PlantillaParametros.Find(id);
-            if (parametro == null)
+            PlantillaParametro plantillaparametro = db.PlantillaParametros.Find(id);
+            if (plantillaparametro == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoDato);
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(plantillaparametro.IdPlantillaElemento);
 
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre",  plantillaparametro.IdPlantillaElemento);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaparametro.IdTipoDato);
 
-            return View(parametro);
+            return View(plantillaparametro);
         }
 
         //
@@ -104,22 +102,22 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PlantillaParametro parametro)
+        public ActionResult Edit(PlantillaParametro plantillaparametro)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(parametro).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
+                db.PlantillaParametrosRequester.ModifyElement(plantillaparametro);
+                return RedirectToAction("Index", new { id = plantillaparametro.IdPlantillaElemento });
             }
             
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == parametro.IdPlantillaElemento), "Id", "Nombre", parametro.IdPlantillaElemento);
-            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", parametro.IdTipoDato);
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(plantillaparametro.IdPlantillaElemento);
 
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(parametro.IdPlantillaElemento);
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre",  plantillaparametro.IdPlantillaElemento);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaparametro.IdTipoDato);
 
-            return View(parametro);
+            return View(plantillaparametro);
         }
 
         //
@@ -127,17 +125,15 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Delete(int id)
         {
-            PlantillaParametro parametro = db.PlantillaParametros.Find(id);
-            try
+            PlantillaParametro plantillaparametro = db.PlantillaParametros.Find(id);
+            if (plantillaparametro == null)
             {
-                db.PlantillaParametrosRequester.RemoveElementByID(parametro.Id);
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            catch (Exception)
-            {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-            }
-            
-            return RedirectToAction("Index", new { id = parametro.IdPlantillaElemento });
+
+            db.PlantillaParametrosRequester.RemoveElementByID(plantillaparametro.Id);
+ 
+            return RedirectToAction("Index", new { id = plantillaparametro.IdPlantillaElemento });
         }
 
         protected override void Dispose(bool disposing)

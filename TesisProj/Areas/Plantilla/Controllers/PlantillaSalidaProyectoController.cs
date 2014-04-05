@@ -23,14 +23,13 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(id);
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            var salidaproyectos = db.PlantillaSalidaProyectos.Include(s => s.PlantillaProyecto).Where(s => s.IdPlantillaProyecto == plantilla.Id).OrderBy(s => s.Secuencia);
-
-            ViewBag.IdPlantilla = id;
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
-
+            
+            var salidaproyectos = db.PlantillaSalidaProyectos.Include(s => s.PlantillaProyecto).Where(s => s.IdPlantillaProyecto == plantilla.Id).OrderBy(s => s.Secuencia);
             return View(salidaproyectos.ToList());
         }
 
@@ -42,21 +41,20 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaSalidaProyecto salida = db.PlantillaSalidaProyectos.Find(id);
             if (salida == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-
-            ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
 
             var asociados = db.PlantillaSalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion);
             var opciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == salida.IdPlantillaProyecto);
             ViewBag.Asociados = new MultiSelectList(asociados.ToList(), "Id", "ListName");
             ViewBag.Opciones = new MultiSelectList(opciones.OrderBy(o => o.Secuencia).ToList(), "Id", "ListName");
+            ViewBag.Plantilla = db.PlantillaProyectos.Find(salida.IdPlantillaProyecto).Nombre;
 
             return View(salida);
         }
 
         //
-        // POST: /Plantilla/PlantillaSalidaProyecto/Assoc
+        // POST: /Plantilla/PlantillaSalidaProyecto/Assoc/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -66,37 +64,19 @@ namespace TesisProj.Areas.Plantilla.Controllers
             if (strSeleccionados == null) return RedirectToAction("Index", new { id = salida.IdPlantillaProyecto });
 
             string[] seleccionados = strSeleccionados.Split(',');
-            var operaciones = db.PlantillaSalidaOperaciones.Where(s => s.IdSalida == salida.Id);
+            var operaciones = db.PlantillaSalidaOperaciones.Where(s => s.IdSalida == salida.Id).ToList();
             foreach (PlantillaSalidaOperacion oldOperacion in operaciones)
             {
-                db.PlantillaSalidaOperaciones.Remove(oldOperacion);
+                db.PlantillaSalidaOperacionesRequester.RemoveElementByID(oldOperacion.Id);
             }
-            db.SaveChanges();
 
             for(int i = 0; i < seleccionados.Length; i++)
             {
                 int idOperacion = int.Parse(seleccionados[i]);
-                db.PlantillaSalidaOperaciones.Add(new PlantillaSalidaOperacion { IdOperacion = idOperacion, IdSalida = salida.Id, Secuencia = i });
+                db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdOperacion = idOperacion, IdSalida = salida.Id, Secuencia = i });
             }
-            db.SaveChanges();
 
             return RedirectToAction("Index", new { id = salida.IdPlantillaProyecto });
-        }
-
-        //
-        // GET: /Plantilla/PlantillaSalidaProyecto/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            PlantillaSalidaProyecto salidaproyecto = db.PlantillaSalidaProyectos.Find(id);
-            if (salidaproyecto == null)
-            {
-                return HttpNotFound();
-            }
-
-            salidaproyecto.PlantillaProyecto = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
-            
-            return View(salidaproyecto);
         }
 
         //
@@ -107,16 +87,20 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(idPlantilla);
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            ViewBag.IdPlantilla = idPlantilla;
-            ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
+            ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
+
+            // Begin: Get sequence
 
             var salidas = db.PlantillaSalidaProyectos.Where(f => f.IdPlantillaProyecto == plantilla.Id);
-            int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 1 : 1;
+            int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 10 : 10;
             ViewBag.defSecuencia = defSecuencia;
+
+            // End: Get sequence
 
             return View();
         }
@@ -130,20 +114,24 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PlantillaSalidaProyectos.Add(salidaproyecto);
-                db.SaveChanges();
+                db.PlantillaSalidaProyectosRequester.AddElement(salidaproyecto);
                 return RedirectToAction("Index", new { id = salidaproyecto.IdPlantillaProyecto });
             }
 
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
-            ViewBag.IdPlantilla = plantilla.Id;
-            ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
+
+            ViewBag.IdPlantilla = plantilla.Id; 
             ViewBag.Plantilla = plantilla.Nombre;
+            ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
+
+            // Begin: Get sequence
 
             var salidas = db.PlantillaSalidaProyectos.Where(f => f.IdPlantillaProyecto == plantilla.Id);
             int defSecuencia = salidas.Count() > 0 ? salidas.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
-            
+
+            // End: Get sequence
+
             return View(salidaproyecto);
         }
 
@@ -155,10 +143,12 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaSalidaProyecto salidaproyecto = db.PlantillaSalidaProyectos.Find(id);
             if (salidaproyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
+
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
             ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
 
@@ -174,12 +164,13 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(salidaproyecto).State = EntityState.Modified;
-                db.SaveChanges();
+                db.PlantillaSalidaProyectosRequester.ModifyElement(salidaproyecto);
                 return RedirectToAction("Index", new { id = salidaproyecto.IdPlantillaProyecto });
             }
             
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(salidaproyecto.IdPlantillaProyecto);
+
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
             ViewBag.IdPlantillaProyecto = new SelectList(db.PlantillaProyectos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", salidaproyecto.IdPlantillaProyecto);
             
@@ -192,33 +183,33 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id)
         {
             PlantillaSalidaProyecto salidaproyecto = db.PlantillaSalidaProyectos.Find(id);
-            try
+            if (salidaproyecto == null)
             {
-                var operaciones = db.PlantillaSalidaOperaciones.Where(p => p.IdSalida == salidaproyecto.Id).ToList();
-
-                foreach (PlantillaSalidaOperacion operacion in operaciones)
-                {
-                    db.PlantillaSalidaOperacionesRequester.RemoveElementByID(operacion.Id);
-                }
-
-                db.PlantillaSalidaProyectosRequester.RemoveElementByID(salidaproyecto.Id);
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            catch (Exception)
+
+            var operaciones = db.PlantillaSalidaOperaciones.Where(p => p.IdSalida == salidaproyecto.Id).ToList();
+            foreach (PlantillaSalidaOperacion operacion in operaciones)
             {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                db.PlantillaSalidaOperacionesRequester.RemoveElementByID(operacion.Id);
             }
-            
+
+            db.PlantillaSalidaProyectosRequester.RemoveElementByID(salidaproyecto.Id);
             return RedirectToAction("Index", new { id = salidaproyecto.IdPlantillaProyecto });
         }
+
+        //
+        // GET: /Plantilla/PlantillaSalidaProyecto/DuplicarPlantilla/5
 
         public ActionResult DuplicarPlantilla(int id)
         {
             PlantillaSalidaProyecto plantilla = db.PlantillaSalidaProyectos.Include(s => s.Operaciones).FirstOrDefault(e => e.Id == id);
-
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
+
+            // Begin: Get unique name
 
             string nombre = "Copia de " + plantilla.Nombre + " ";
             string nombreTest = nombre;
@@ -229,16 +220,17 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 nombreTest = nombre + i++;
             }
 
-            int seq = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantilla.IdPlantillaProyecto).Max(s => s.Secuencia) + 1;
-            int idCopia = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Nombre = nombreTest, Secuencia = seq, PeriodoFinal = plantilla.PeriodoFinal, PeriodoInicial = plantilla.PeriodoInicial, IdPlantillaProyecto = plantilla.IdPlantillaProyecto });
+            // End: Get unique name
 
+            int seqDuplicado = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantilla.IdPlantillaProyecto).Max(s => s.Secuencia) + 10;
+            int idDuplicado = db.PlantillaSalidaProyectosRequester.AddElement(new PlantillaSalidaProyecto { Nombre = nombreTest, Secuencia = seqDuplicado, PeriodoFinal = plantilla.PeriodoFinal, PeriodoInicial = plantilla.PeriodoInicial, IdPlantillaProyecto = plantilla.IdPlantillaProyecto });
 
             foreach (PlantillaSalidaOperacion operacion in plantilla.Operaciones.OrderBy(o => o.Secuencia))
             {
-                db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idCopia, IdOperacion = operacion.IdOperacion, Secuencia = operacion.Secuencia });
+                db.PlantillaSalidaOperacionesRequester.AddElement(new PlantillaSalidaOperacion { IdSalida = idDuplicado, IdOperacion = operacion.IdOperacion, Secuencia = operacion.Secuencia });
             }
 
-            return RedirectToAction("Edit", new { id = idCopia });
+            return RedirectToAction("Edit", new { id = idDuplicado });
         }
 
         protected override void Dispose(bool disposing)

@@ -602,8 +602,6 @@
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaFormula\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaFormula\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Create.cshtml" />
@@ -617,8 +615,6 @@
     <Content Include="Areas\Plantilla\Views\PlantillaProyecto\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Assoc.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaSalidaProyecto\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\TipoElemento\Create.cshtml" />

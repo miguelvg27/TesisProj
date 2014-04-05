@@ -165,6 +165,8 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
                 }
 
+                parser.RemoveVariable("Periodo");
+
                 //  Valida períodos
                 if (!Generics.Validar(this.PeriodoInicial, parser))
                 {

@@ -160,7 +160,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             // Begin: Get unique name
 
-            string nombre = "Copia de " + plantilla.Nombre + " ";
+            string nombre = "Plantilla de " + plantilla.Nombre + " ";
             string nombreTest = nombre;
             int i = 1;
 

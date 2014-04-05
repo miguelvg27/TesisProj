@@ -30,10 +30,10 @@
             @Html.DisplayNameFor(model => model.Referencia)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PlantillaElemento.Nombre)
+            @Html.DisplayNameFor(model => model.IdTipoDato)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TipoFormula.Nombre)
+            @Html.DisplayNameFor(model => model.IdTipoFormula)
         </th>
         <th style="text-align: center">
             @Html.DisplayNameFor(model => model.Visible)
@@ -53,7 +53,7 @@
             @Html.DisplayFor(modelItem => item.Referencia)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PlantillaElemento.Nombre)
+            @Html.DisplayFor(modelItem => item.TipoDato.Nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TipoFormula.Nombre)
@@ -80,7 +80,7 @@
 
 <script>
     function DeleteConfirm(){
-        if (confirm("¿Está seguro que desea eliminar el registro?"))
+        if (confirm("¿Está seguro que desea eliminar el registro? Otras fórmulas que referencien a este registro podrían fallar en tiempo de ejecución."))
             return true;
         else
             return false;     

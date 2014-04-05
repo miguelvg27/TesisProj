@@ -149,6 +149,8 @@ namespace TesisProj.Areas.Plantilla.Models
                     }
                 }
 
+                parser.RemoveVariable("Periodo");
+
                 //  Valida períodos
                 if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
