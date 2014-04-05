@@ -984,7 +984,6 @@
     <Folder Include="Areas\Modelo\Views\Shared\" />
     <Folder Include="Areas\MonteCarlo\Views\Shared\" />
     <Folder Include="Areas\Plantilla\Views\Shared\" />
-    <Folder Include="Areas\Seguridad\Views\Seguridad\" />
     <Folder Include="Areas\Seguridad\Views\Shared\EditorTemplates\" />
     <Folder Include="Areas\Simulaciones\Views\Shared\" />
   </ItemGroup>

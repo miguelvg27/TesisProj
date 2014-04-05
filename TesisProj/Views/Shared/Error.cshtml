@@ -9,7 +9,7 @@
     <h2 class="error">Ocurrió un error al procesar su solicitud.</h2>
 
     @{
-        if(Request.IsLocal && @Model != null && @Model.Exception != null)
+        if(/*Request.IsLocal && */@Model != null && @Model.Exception != null)
         {
             <h4>
                 Excepción: @Model.Exception.Message

@@ -3,13 +3,14 @@
     if (Request.IsAuthenticated) {
         <text>
             ¡Hola, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: new { Area = "" }, htmlAttributes: new { @class = "username", title = "Manage" })!
+            <br />
+            @if (Roles.IsUserInRole("admin"))
+            {
+                @Html.ActionLink("Administrar usuarios", "Index", "UserProfile", routeValues: new { Area = "Seguridad" }, htmlAttributes: new { id = "adminLink" })
+            }
             @using (Html.BeginForm("Logoff", "Account", new { Area = "" }, FormMethod.Post, new { id = "logoutForm" })) {
                 @Html.AntiForgeryToken()
                 <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-            }
-            if (Roles.IsUserInRole("admin"))
-            {
-                @Html.ActionLink("Usuarios", "Index", "UserProfile", routeValues: new { Area = "Seguridad" }, htmlAttributes: new { id = "adminLink" })
             }
         </text>
     } else {

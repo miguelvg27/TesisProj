@@ -1,54 +1,64 @@
 ﻿<!DOCTYPE html>
 <link rel="SHORTCUT ICON" href="@Url.Content("~/Images/favicon.ico")"/>
 <html>
-<head>
-	<title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
-    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
-        @Scripts.Render("~/Scripts/jquery.js")
-        @Scripts.Render("~/Scripts/bootstrap.js")
-        @Scripts.Render("~/Scripts/bootstrap-dropdown.js")
-        @Scripts.Render("~/Scripts/bootstrap-tab.js")
-
-@(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))</head>
+    <head>
+	    <title>@ViewBag.Title</title>
+        <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/bootstrap-responsive.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+            @Scripts.Render("~/Scripts/jquery.js")
+            @Scripts.Render("~/Scripts/bootstrap.js")
+            @Scripts.Render("~/Scripts/bootstrap-dropdown.js")
+            @Scripts.Render("~/Scripts/bootstrap-tab.js")
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css").Combined(true).Compress(true)))
+    </head>
 @RenderSection("HeadContent", required:false) 
-<body>
-	<div class="page">
-		<header>
-			<div id="title">
-                <div style="float:right; margin-top:10px; margin-right:15px">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
+    <body>
+        <div class="page">
+            <header>
+                <div id="title" class="row-fluid">
+                    <div class="span10">
+                        <p class="site-title">@Html.ActionLink("Evaluación de proyectos de inversión - ProyEval", "Index", "Home", routeValues: new { Area = "" }, htmlAttributes: null)</p>
+                    </div>
+                    <div class="span2">
+                        <div style="margin-top:10px; margin-right:15px; margin-bottom: 10px; text-align:right">
+                            <section id="login">
+                                @Html.Partial("_LoginPartial")
+                            </section>
+                        </div>
+                    </div>   
                 </div>
-				    <p class="site-title">@Html.ActionLink("Evaluación de proyectos de inversión - ProyEval", "Index", "Home", routeValues: new { Area = "" }, htmlAttributes: null)</p>
-                    
+            </header>
+            <div class="row-fluid;">
+                <div class="splan12;">
+                    @(Html.Telerik().Menu()
+	                    .Name("menu")
+	                    .Items(menu => {
+                            menu.Add().Text("Proyectos").Url("../../../Modelo/Proyecto");
+                            menu.Add().Text("Comparar Proyectos").Url("../../../CompararProyecto/CompararProyectos");
+                            menu.Add().Text("Comparar Versiones").Url("../../../CompararProyecto/CompararVersiones");
+                            menu.Add().Text("Plantillas").Url("../../../Admin");
+	            }))
+                </div>
             </div>
 
-            @(Html.Telerik().Menu()
-					.Name("menu")
-					.Items(menu => {
-                        menu.Add().Text("Proyectos").Url("../../../Modelo/Proyecto");
-                        menu.Add().Text("Comparar Proyectos").Url("../../../CompararProyecto/CompararProyectos");
-                        menu.Add().Text("Comparar Versiones").Url("../../../CompararProyecto/CompararVersiones");
-                        menu.Add().Text("Plantillas").Url("../../../Admin");
-					}))
-		</header>
-		<section id="main">
-            @RenderSection("featured", required: false)
-			@RenderBody()
-		</section>
-		<footer>
-            <div class="content-wrapper">
-                <p>&copy; @DateTime.Now.Year - Proyectos de tesis</p>
-            </div>
-		</footer>
-	</div>
-    @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
-@(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))</body>
+            <section id="main">
+                @RenderSection("featured", required: false)
+                @RenderBody()
+            </section>
+            <footer>
+                <div class="content-wrapper">
+                    <p>&copy; @DateTime.Now.Year - Proyectos de tesis</p>
+                </div>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @RenderSection("scripts", required: false)
+        @(Html.Telerik().ScriptRegistrar().Globalization(true).DefaultGroup(group => group.Combined(true).Compress(true)))
+
+    </body>
 </html>
