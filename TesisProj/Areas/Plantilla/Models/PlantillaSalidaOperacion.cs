@@ -29,7 +29,5 @@ namespace TesisProj.Areas.Plantilla.Models
 
         [ForeignKey("IdSalida")]
         public virtual PlantillaSalidaProyecto Salida { get; set; }
-
-        public String Nombre { get { return Operacion.Nombre; } }
     }
 }

@@ -58,11 +58,20 @@ namespace TesisProj.Areas.Plantilla.Models
         public string PeriodoFinal { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Tipo de dato")]
+        public int IdTipoDato { get; set; }
+
+        [ForeignKey("IdTipoDato")]
+        public virtual TipoDato TipoDato { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
-        public PlantillaFormula(PlantillaFormula plantilla)
+        public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
+
+        public PlantillaFormula(PlantillaFormula plantilla, int idPlantilla)
         {
             this.Referencia = plantilla.Referencia;
             this.Secuencia = plantilla.Secuencia;
@@ -72,9 +81,11 @@ namespace TesisProj.Areas.Plantilla.Models
             this.PeriodoInicial = plantilla.PeriodoInicial;
             this.PeriodoFinal = plantilla.PeriodoFinal;
             this.Visible = plantilla.Visible;
+            this.IdTipoDato = plantilla.IdTipoDato;
+            this.IdPlantillaElemento = idPlantilla;
         }
 
-        public PlantillaFormula(Formula plantilla)
+        public PlantillaFormula(Formula plantilla, int idPlantilla)
         {
             this.Referencia = plantilla.Referencia;
             this.Secuencia = plantilla.Secuencia;
@@ -84,6 +95,8 @@ namespace TesisProj.Areas.Plantilla.Models
             this.PeriodoInicial = plantilla.PeriodoInicial;
             this.PeriodoFinal = plantilla.PeriodoFinal;
             this.Visible = plantilla.Visible;
+            this.IdTipoDato = plantilla.IdTipoDato;
+            this.IdPlantillaElemento = idPlantilla;
         }
 
         public PlantillaFormula() { }
@@ -122,24 +135,7 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe una fórmula de este tipo en el elemento. Dicho tipo de fórmula solo permite una por elemento.", new string[] { "IdTipoFormula" });
                 }
 
-                //  Valida cadena de la fórmula
-
-                bool cadenavalida = true;
-                double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
-                var parametros = context.PlantillaParametros.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento);
-                var formulas = context.PlantillaFormulas.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento && p.Secuencia < this.Secuencia);
-
-                foreach (PlantillaParametro parametro in parametros)
-                {
-                    parser.AddVariable(parametro.Referencia, 2);
-                }
-
-                foreach (PlantillaFormula formula in formulas)
-                {
-                    parser.AddVariable(formula.Referencia, 2);
-                }
-
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
                 parser.AddVariable("PeriodosCierre", 1);
@@ -151,52 +147,33 @@ namespace TesisProj.Areas.Plantilla.Models
                 parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Generics.Syn);
                 parser.RegisterCustomDoubleFunction("ValorResidual", Generics.ResSln);
 
-                try
+                var parametros = context.PlantillaParametros.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento);
+                foreach (PlantillaParametro parametro in parametros)
                 {
-                    testvalue = parser.SimplifyDouble(this.Cadena);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
+                    parser.AddVariable(parametro.Referencia, 2);
                 }
 
-                if (!cadenavalida)
+                var formulas = context.PlantillaFormulas.Where(p => p.IdPlantillaElemento == this.IdPlantillaElemento && p.Secuencia < this.Secuencia);
+                foreach (PlantillaFormula formula in formulas)
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia de la plantilla.", new string[] { "Cadena" });
+                    parser.AddVariable(formula.Referencia, 2);
                 }
 
-                //  Valida las fórmulas del período inicial y final
-
-                cadenavalida = true;
-
-                try
+                //  Valida la cadena
+                if (!Generics.Validar(this.Cadena, parser))
                 {
-                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
+                    yield return new ValidationResult("Cadena inválida. La operación solo puede contener referencias a tipos de fórmula.", new string[] { "Cadena" });
                 }
 
-                if (!cadenavalida)
+                //  Valida períodos
+                if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoInicial" });
+                    yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
                 }
 
-                cadenavalida = true;
-
-                try
+                if (!Generics.Validar(this.PeriodoFinal, parser))
                 {
-                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
-                {
-                    yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "PeriodoFinal" });
+                    yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }
             }
         }

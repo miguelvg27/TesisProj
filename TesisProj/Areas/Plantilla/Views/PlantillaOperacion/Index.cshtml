@@ -30,7 +30,7 @@
             @Html.DisplayNameFor(model => model.Referencia)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PlantillaProyecto.Nombre)
+            @Html.DisplayNameFor(model => model.IdTipoDato)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Indicador)
@@ -50,12 +50,13 @@
             @Html.DisplayFor(modelItem => item.Referencia)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PlantillaProyecto.Nombre)
+            @Html.DisplayFor(modelItem => item.TipoDato.Nombre)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Indicador)
         </td>
         <td>
+            @Html.HiddenFor(modelItem => item.Id)
             @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { onclick="return DeleteConfirm()" })
         </td>
@@ -75,7 +76,7 @@
 
 <script>
     function DeleteConfirm(){
-        if (confirm("¿Está seguro que desea eliminar el registro?"))
+        if (confirm("¿Está seguro que desea eliminar el registro? Otra operaciones que referencien a este registro podrían fallar en tiempo de ejecución."))
             return true;
         else
             return false;     

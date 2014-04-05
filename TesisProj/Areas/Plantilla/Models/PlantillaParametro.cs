@@ -39,28 +39,30 @@ namespace TesisProj.Areas.Plantilla.Models
         public virtual PlantillaElemento PlantillaElemento { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Tipo")]
+        [DisplayName("Tipo de dato")]
         public int IdTipoDato { get; set; }
 
         [ForeignKey("IdTipoDato")]
         public virtual TipoDato TipoDato { get; set; }
 
-        public PlantillaParametro(PlantillaParametro plantilla)
+        public PlantillaParametro(PlantillaParametro plantilla, int idPlantilla)
         {
             this.IdTipoDato = plantilla.IdTipoDato;
             this.Nombre = plantilla.Nombre;
             this.Referencia = plantilla.Referencia;
             this.Constante = plantilla.Constante;
             this.Sensible = plantilla.Sensible;
+            this.IdPlantillaElemento = idPlantilla;
         }
 
-        public PlantillaParametro(Parametro plantilla)
+        public PlantillaParametro(Parametro plantilla, int idPlantilla)
         {
             this.IdTipoDato = plantilla.IdTipoDato;
             this.Nombre = plantilla.Nombre;
             this.Referencia = plantilla.Referencia;
             this.Constante = plantilla.Constante;
             this.Sensible = plantilla.Sensible;
+            this.IdPlantillaElemento = idPlantilla;
         }
 
         public PlantillaParametro() { }

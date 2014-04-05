@@ -61,6 +61,14 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Tipo de dato")]
+        public int IdTipoDato { get; set; }
+
+        [XmlIgnore]
+        [ForeignKey("IdTipoDato")]
+        public virtual TipoDato TipoDato { get; set; }
+
         [StringLength(2048)]
         [DisplayName("Valores")]
         public string strValores { get; set; }
@@ -76,9 +84,9 @@ namespace TesisProj.Areas.Modelo.Models
         {
         }
 
-        public Operacion(PlantillaOperacion plantilla, int IdProyecto)
+        public Operacion(PlantillaOperacion plantilla, int idProyecto)
         {
-            this.IdProyecto = IdProyecto;
+            this.IdProyecto = idProyecto;
             this.Indicador = plantilla.Indicador;
             this.Nombre = plantilla.Nombre;
             this.PeriodoInicial = plantilla.PeriodoInicial;
@@ -87,6 +95,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.Secuencia = plantilla.Secuencia;
             this.Cadena = plantilla.Cadena;
             this.Subrayar = plantilla.Subrayar;
+            this.IdTipoDato = plantilla.IdTipoDato;
         }
 
         public override string LogValues()

@@ -54,11 +54,18 @@ namespace TesisProj.Areas.Plantilla.Models
         public bool Subrayar { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Tipo de dato")]
+        public int IdTipoDato { get; set; }
+
+        [ForeignKey("IdTipoDato")]
+        public virtual TipoDato TipoDato { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
-        public String ListName { get { return Nombre + " (" + Referencia + ")"; } }
+        public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
 
         public PlantillaOperacion(PlantillaOperacion plantilla, int idPlantilla)
         {
@@ -70,6 +77,7 @@ namespace TesisProj.Areas.Plantilla.Models
             this.Secuencia = plantilla.Secuencia;
             this.Cadena = plantilla.Cadena;
             this.Subrayar = plantilla.Subrayar;
+            this.IdTipoDato = plantilla.IdTipoDato;
             this.IdPlantillaProyecto = idPlantilla;
         }
 
@@ -83,6 +91,7 @@ namespace TesisProj.Areas.Plantilla.Models
             this.Secuencia = plantilla.Secuencia;
             this.Cadena = plantilla.Cadena;
             this.Subrayar = plantilla.Subrayar;
+            this.IdTipoDato = plantilla.IdTipoDato;
             this.IdPlantillaProyecto = idPlantilla;
         }
 
@@ -97,9 +106,6 @@ namespace TesisProj.Areas.Plantilla.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre de referencia en la misma plantilla.", new string[] { "Referencia" });
                 }
 
-                var tipos = context.TipoFormulas.ToList();
-
-
                 if (context.TipoFormulas.Any(f => this.Referencia.Equals(f.Referencia)))
                 {
                     yield return new ValidationResult("Ya existe un tipo de fórmula con el mismo nombre de referencia.", new string[] { "Referencia" });
@@ -109,29 +115,31 @@ namespace TesisProj.Areas.Plantilla.Models
                 {
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en la misma plantilla.", new string[] { "Secuencia" });
                 }
+
+                if (Generics.Reservadas.Contains(this.Referencia))
+                {
+                    yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
+                }
             
                 MathParserNet.Parser parser = new MathParserNet.Parser();
-                var tipoformulas = context.TipoFormulas;
-                var operaciones = context.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == this.IdPlantillaProyecto && o.Secuencia < this.Secuencia);
-
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
                 parser.AddVariable("PeriodosCierre", 1);
                 parser.AddVariable("PeriodosPreOperativos", 1);
-                parser.AddVariable("RiesgoPais", 1);
-                parser.AddVariable("RiesgoProyecto", 1);
 
+                //  Valida cadena
+                var tipoformulas = context.TipoFormulas;
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {
                     parser.AddVariable(tipoformula.Referencia, 2);
                 }
 
+                var operaciones = context.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == this.IdPlantillaProyecto && o.Secuencia < this.Secuencia);
                 foreach (PlantillaOperacion operacion in operaciones)
                 {
                     parser.AddVariable(operacion.Referencia, 2);
                 }
 
-                //
                 //  Valida si es Tir o Van
                 if (!Generics.Validar(this.Cadena, parser))
                 {
@@ -141,7 +149,6 @@ namespace TesisProj.Areas.Plantilla.Models
                     }
                 }
 
-                //
                 //  Valida períodos
                 if (!Generics.Validar(this.PeriodoInicial, parser))
                 {

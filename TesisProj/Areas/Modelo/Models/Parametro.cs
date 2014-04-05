@@ -60,9 +60,9 @@ namespace TesisProj.Areas.Modelo.Models
         {
         }
 
-        public Parametro(PlantillaParametro plantilla, int IdElemento)
+        public Parametro(PlantillaParametro plantilla, int idElemento)
         {
-            this.IdElemento = IdElemento;
+            this.IdElemento = idElemento;
             this.IdTipoDato = plantilla.IdTipoDato;
             this.Nombre = plantilla.Nombre;
             this.Referencia = plantilla.Referencia;

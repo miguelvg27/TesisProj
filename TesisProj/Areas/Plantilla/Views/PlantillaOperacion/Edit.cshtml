@@ -101,6 +101,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoDato)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoDato", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdTipoDato)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">
@@ -140,12 +148,12 @@
             </div>
         </div>
     </div>
-        @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Id)
 
-        <p>
-            <input type="submit" value="Guardar" />
-        </p>
-    </fieldset>
+    <p>
+        <input type="submit" value="Guardar" />
+   </p>
+   </fieldset>
 }
 
 <p>
@@ -153,10 +161,6 @@
   	    <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
 
 <script type="text/javascript">
     function Mark(story) {

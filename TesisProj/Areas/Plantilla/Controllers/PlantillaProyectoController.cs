@@ -63,7 +63,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // POST: /Plantilla/PlantillaProyecto/Assoc/5
+        // POST: /Plantilla/PlantillaProyecto/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -89,37 +89,30 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            try
+            var salidaoperaciones = db.PlantillaSalidaOperaciones.Include(s => s.Operacion).Where(p => p.Operacion.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
+            foreach (PlantillaSalidaOperacion salida in salidaoperaciones)
             {
-                var salidaoperaciones = db.PlantillaSalidaOperaciones.Include(s => s.Operacion).Where(p => p.Operacion.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
-                foreach (PlantillaSalidaOperacion salida in salidaoperaciones)
-                {
-                    db.PlantillaSalidaOperacionesRequester.RemoveElementByID(salida.Id);
-                }
-
-                var salidas = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
-                foreach (PlantillaSalidaProyecto salida in salidas)
-                {
-                    db.PlantillaSalidaProyectosRequester.RemoveElementByID(salida.Id);
-                }
-
-                var operaciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
-                foreach (PlantillaOperacion operacion in operaciones)
-                {
-                    db.PlantillaOperacionesRequester.RemoveElementByID(operacion.Id);
-                }
-
-                db.PlantillaProyectosRequester.RemoveElementByID(plantillaproyecto.Id);
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                var plantillaproyectos = db.PlantillaProyectos.OrderBy(t => t.Nombre);
-                return View("Index", plantillaproyectos.ToList());
+                db.PlantillaSalidaOperacionesRequester.RemoveElementByID(salida.Id);
             }
 
+            var salidas = db.PlantillaSalidaProyectos.Where(s => s.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
+            foreach (PlantillaSalidaProyecto salida in salidas)
+            {
+                db.PlantillaSalidaProyectosRequester.RemoveElementByID(salida.Id);
+            }
+
+            var operaciones = db.PlantillaOperaciones.Where(o => o.IdPlantillaProyecto == plantillaproyecto.Id).ToList();
+            foreach (PlantillaOperacion operacion in operaciones)
+            {
+                db.PlantillaOperacionesRequester.RemoveElementByID(operacion.Id);
+            }
+
+            db.PlantillaProyectosRequester.RemoveElementByID(plantillaproyecto.Id);
             return RedirectToAction("Index");
         }
+
+        //
+        // GET: /Plantilla/PlantillaProyecto/DuplicarPlantilla/5
 
         public ActionResult DuplicarPlantilla(int id)
         {
@@ -160,6 +153,9 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             return RedirectToAction("Edit", new { id = idDuplicado });
         }
+
+        //
+        // GET: /Plantilla/PlantillaProyecto/VolverPlantilla/5
 
         public ActionResult VolverPlantilla(int id)
         {

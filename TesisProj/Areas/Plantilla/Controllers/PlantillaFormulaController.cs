@@ -24,34 +24,15 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaElemento plantilla = db.PlantillaElementos.Find(id);
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-
-            var formulas = db.PlantillaFormulas.Include(f => f.PlantillaElemento).Include(f => f.TipoFormula).Where(f => f.IdPlantillaElemento == id).OrderBy(f => f.Secuencia);
 
             ViewBag.IdPlantilla = id;
             ViewBag.Plantilla = plantilla.Nombre;
-            TipoElemento tipo = db.TipoElementos.Find(plantilla.IdTipoElemento);
-            ViewBag.TipoPlantilla = tipo != null ? tipo.Nombre : "";
+            ViewBag.TipoPlantilla = db.TipoElementos.Find(plantilla.IdTipoElemento).Nombre;
 
+            var formulas = db.PlantillaFormulas.Include(f => f.TipoDato).Include(f => f.TipoFormula).Where(f => f.IdPlantillaElemento == id).OrderBy(f => f.Secuencia);
             return View(formulas.ToList());
-        }
-
-        //
-        // GET: /Plantilla/PlantillaFormula/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            PlantillaFormula formula = db.PlantillaFormulas.Find(id);
-            if (formula == null)
-            {
-                return HttpNotFound();
-            }
-
-            formula.TipoFormula = db.TipoFormulas.Find(formula.IdTipoFormula);
-            formula.PlantillaElemento = db.PlantillaElementos.Find(formula.IdPlantillaElemento);
-
-            return View(formula);
         }
 
         //
@@ -62,23 +43,26 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaElemento plantilla = db.PlantillaElementos.Find(idPlantilla);
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdPlantilla = idPlantilla;
+            ViewBag.Plantilla = plantilla.Nombre;
             ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre");
             ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre");
-
-            ViewBag.Plantilla = plantilla.Nombre;
-
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre");
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
             ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == idPlantilla).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
             ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == idPlantilla).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
 
+            // Begin: Get sequence
+
             var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantilla.Id);
             int defSecuencia = formulas.Count() > 0 ? formulas.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
+
+            // End: Get sequence
 
             return View();
         }
@@ -88,32 +72,35 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PlantillaFormula formula)
+        public ActionResult Create(PlantillaFormula plantillaformula)
         {
             if (ModelState.IsValid)
             {
-                db.PlantillaFormulas.Add(formula);
-                db.SaveChanges();
-                return RedirectToAction("Index", new { id = formula.IdPlantillaElemento });
+                db.PlantillaFormulasRequester.AddElement(plantillaformula);
+                return RedirectToAction("Index", new { id = plantillaformula.IdPlantillaElemento });
             }
 
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(formula.IdPlantillaElemento);
-            ViewBag.IdPlantilla = formula.IdPlantillaElemento;
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == formula.IdPlantillaElemento), "Id", "Nombre", formula.IdPlantillaElemento);
-            ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
-
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(plantillaformula.IdPlantillaElemento);
+            
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
-
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", plantillaformula.IdPlantillaElemento);
+            ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoFormula);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoDato);
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
-            ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == formula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
-            ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == formula.IdPlantillaElemento).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
+
+            // Begin: Get sequence
 
             var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantilla.Id);
             int defSecuencia = formulas.Count() > 0 ? formulas.Max(f => f.Secuencia) + 1 : 1;
             ViewBag.defSecuencia = defSecuencia;
 
-            return View(formula);
+            // End: Get sequence
+
+            return View(plantillaformula);
         }
 
         //
@@ -121,24 +108,25 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            PlantillaFormula formula = db.PlantillaFormulas.Find(id);
-            if (formula == null)
+            PlantillaFormula plantillaformula = db.PlantillaFormulas.Find(id);
+            if (plantillaformula == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(formula.IdPlantillaElemento);
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == formula.IdPlantillaElemento), "Id", "Nombre", formula.IdPlantillaElemento);
-            ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(plantillaformula.IdPlantillaElemento);
 
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
-
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", plantillaformula.IdPlantillaElemento);
+            ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoFormula);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoDato);
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
-            ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == formula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
-            ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == formula.IdPlantillaElemento).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
 
-            return View(formula);
+            return View(plantillaformula);
         }
 
         //
@@ -146,22 +134,28 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PlantillaFormula formula)
+        public ActionResult Edit(PlantillaFormula plantillaformula)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(formula).State = EntityState.Modified;
+                db.Entry(plantillaformula).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = formula.IdPlantillaElemento });
+                return RedirectToAction("Index", new { id = plantillaformula.IdPlantillaElemento });
             }
 
-            PlantillaElemento plantilla = db.PlantillaElementos.Find(formula.IdPlantillaElemento);
-            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == formula.IdPlantillaElemento), "Id", "Nombre", formula.IdPlantillaElemento);
-            ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", formula.IdTipoFormula);
-
+            PlantillaElemento plantilla = db.PlantillaElementos.Find(plantillaformula.IdPlantillaElemento);
+            
+            ViewBag.IdPlantilla = plantilla.Id;
             ViewBag.Plantilla = plantilla.Nombre;
+            ViewBag.IdPlantillaElemento = new SelectList(db.PlantillaElementos.Where(p => p.Id == plantilla.Id), "Id", "Nombre", plantillaformula.IdPlantillaElemento);
+            ViewBag.IdTipoFormula = new SelectList(db.TipoFormulas.Where(t => t.IdTipoElemento == plantilla.IdTipoElemento).OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoFormula);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoDato);
+            ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
+            ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
+            ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
+            ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(f => f.Nombre).ToList(), "Referencia", "Nombre");
 
-            return View(formula);
+            return View(plantillaformula);
         }
 
         //
@@ -169,20 +163,14 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
         public ActionResult Delete(int id)
         {
-            PlantillaFormula formula = db.PlantillaFormulas.Find(id);
-            try
+            PlantillaFormula plantillaformula = db.PlantillaFormulas.Find(id);
+            if (plantillaformula == null)
             {
-                db.PlantillaFormulasRequester.RemoveElementByID(formula.Id);
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            catch (Exception)
-            {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                formula.TipoFormula = db.TipoFormulas.Find(formula.IdTipoFormula);
-                formula.PlantillaElemento = db.PlantillaElementos.Find(formula.IdPlantillaElemento);
-                return View("Delete", formula);
-            }
-            
-            return RedirectToAction("Index", new { id = formula.IdPlantillaElemento });
+
+            db.PlantillaFormulasRequester.RemoveElementByID(plantillaformula.Id);
+            return RedirectToAction("Index", new { id = plantillaformula.IdPlantillaElemento });
         }
 
         protected override void Dispose(bool disposing)

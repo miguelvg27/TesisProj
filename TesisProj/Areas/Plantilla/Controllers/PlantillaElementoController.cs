@@ -25,21 +25,6 @@ namespace TesisProj.Areas.Plantilla.Controllers
         }
 
         //
-        // GET: /Plantilla/PlantillaElemento/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            if (plantillaelemento == null)
-            {
-                return HttpNotFound();
-            }
-
-            plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
-            return View(plantillaelemento);
-        }
-
-        //
         // GET: /Plantilla/PlantillaElemento/Create
 
         public ActionResult Create()
@@ -57,8 +42,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PlantillaElementos.Add(plantillaelemento);
-                db.SaveChanges();
+                db.PlantillaElementosRequester.AddElement(plantillaelemento);
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +58,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
             if (plantillaelemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaelemento.IdTipoElemento);
@@ -90,8 +74,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(plantillaelemento).State = EntityState.Modified;
-                db.SaveChanges();
+                db.PlantillaElementosRequester.ModifyElement(plantillaelemento);
                 return RedirectToAction("Index");
             }
 
@@ -105,42 +88,39 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult Delete(int id)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            try
+            if (plantillaelemento == null)
             {
-                var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaelemento.Id).OrderByDescending(f => f.Secuencia).ToList();
-
-                foreach (PlantillaFormula formula in formulas)
-                {
-                    db.PlantillaFormulasRequester.RemoveElementByID(formula.Id);
-                }
-
-                var parametros = db.PlantillaParametrosRequester.Where(p => p.IdPlantillaElemento == plantillaelemento.Id).ToList();
-
-                foreach (PlantillaParametro parametro in parametros)
-                {
-                    db.PlantillaParametrosRequester.RemoveElementByID(parametro.Id);
-                }
-
-                db.PlantillaElementosRequester.RemoveElementByID(plantillaelemento.Id);
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                plantillaelemento.TipoElemento = db.TipoElementos.Find(plantillaelemento.IdTipoElemento);
-                return View("Delete", plantillaelemento);
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
+            var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaelemento.Id).OrderByDescending(f => f.Secuencia).ToList();
+            foreach (PlantillaFormula formula in formulas)
+            {
+                db.PlantillaFormulasRequester.RemoveElementByID(formula.Id);
+            }
+
+            var parametros = db.PlantillaParametrosRequester.Where(p => p.IdPlantillaElemento == plantillaelemento.Id).ToList();
+            foreach (PlantillaParametro parametro in parametros)
+            {
+                db.PlantillaParametrosRequester.RemoveElementByID(parametro.Id);
+            }
+
+            db.PlantillaElementosRequester.RemoveElementByID(plantillaelemento.Id);
             return RedirectToAction("Index");
         }
+
+        //
+        // GET: /Plantilla/PlantillaElemento/DuplicarPlantilla/5
 
         public ActionResult DuplicarPlantilla(int id)
         {
             PlantillaElemento plantilla = db.PlantillaElementos.Include(e => e.Formulas).Include(e => e.Parametros).FirstOrDefault(e => e.Id == id);
-
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
+
+            // Begin: Get unique name
 
             string nombre = "Copia de " + plantilla.Nombre + " ";
             string nombreTest = nombre;
@@ -151,35 +131,34 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 nombreTest = nombre + i++;
             }
 
-            PlantillaElemento elemento = new PlantillaElemento { IdTipoElemento = plantilla.IdTipoElemento, Nombre = nombreTest };
-            elemento.Parametros = new List<PlantillaParametro>();
-            elemento.Formulas = new List<PlantillaFormula>();
+            // End: Get unique name
 
+            int idDuplicado = db.PlantillaElementosRequester.AddElement(new PlantillaElemento { IdTipoElemento = plantilla.IdTipoElemento, Nombre = nombreTest });
             foreach (PlantillaParametro parametro in plantilla.Parametros)
             {
-                elemento.Parametros.Add(new PlantillaParametro(parametro));
+                db.PlantillaParametrosRequester.AddElement(new PlantillaParametro(parametro, idDuplicado));
             }
 
-            foreach (PlantillaFormula formula in plantilla.Formulas)
+            foreach (PlantillaFormula formula in plantilla.Formulas.OrderBy(f => f.Secuencia))
             {
-                elemento.Formulas.Add(new PlantillaFormula(formula));
+                db.PlantillaFormulasRequester.AddElement(new PlantillaFormula(formula, idDuplicado));
             }
 
-            db.Configuration.ValidateOnSaveEnabled = false;
-            int idPlantilla = db.PlantillaElementosRequester.AddElement(elemento);
-            db.Configuration.ValidateOnSaveEnabled = true;
-
-            return RedirectToAction("Edit", new { id = idPlantilla });
+            return RedirectToAction("Edit", new { id = idDuplicado });
         }
+
+        //
+        // GET: /Plantilla/PlantillaElemento/VolverPlantilla/5
 
         public ActionResult VolverPlantilla(int id)
         {
             Elemento plantilla = db.Elementos.Include(e => e.Formulas).Include(e => e.Parametros).FirstOrDefault(e => e.Id == id);
-
             if (plantilla == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
+
+            // Begin: Get unique name
 
             string nombre = "Copia de " + plantilla.Nombre + " ";
             string nombreTest = nombre;
@@ -190,23 +169,19 @@ namespace TesisProj.Areas.Plantilla.Controllers
                 nombreTest = nombre + i++;
             }
 
-            PlantillaElemento elemento = new PlantillaElemento { IdTipoElemento = plantilla.IdTipoElemento, Nombre = nombreTest };
-            elemento.Parametros = new List<PlantillaParametro>();
-            elemento.Formulas = new List<PlantillaFormula>();
+            // End: Get unique name
 
+            int idPlantilla = db.PlantillaElementosRequester.AddElement(new PlantillaElemento { IdTipoElemento = plantilla.IdTipoElemento, Nombre = nombreTest });
+            
             foreach (Parametro parametro in plantilla.Parametros)
             {
-                elemento.Parametros.Add(new PlantillaParametro(parametro));
+                db.PlantillaParametrosRequester.AddElement(new PlantillaParametro(parametro, idPlantilla));
             }
 
             foreach (Formula formula in plantilla.Formulas)
             {
-                elemento.Formulas.Add(new PlantillaFormula(formula));
+                db.PlantillaFormulasRequester.AddElement(new PlantillaFormula(formula, idPlantilla));
             }
-
-            db.Configuration.ValidateOnSaveEnabled = false;
-            int idPlantilla = db.PlantillaElementosRequester.AddElement(elemento);
-            db.Configuration.ValidateOnSaveEnabled = true;
 
             return RedirectToAction("EditElemento", "AnonPlantilla", new { id = idPlantilla, idElemento = id });
         }

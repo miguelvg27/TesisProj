@@ -62,15 +62,23 @@ namespace TesisProj.Areas.Modelo.Models
         public string PeriodoFinal { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        [DisplayName("Tipo de dato")]
+        public int IdTipoDato { get; set; }
+
+        [XmlIgnore]
+        [ForeignKey("IdTipoDato")]
+        public virtual TipoDato TipoDato { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [StringLength(1024, MinimumLength = 1, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
+
         public List<double> Valores;
 
-        public Formula()
-        {
-        }
+        public Formula() { }
 
         public Formula(PlantillaFormula plantilla, int IdElemento)
         {
@@ -82,6 +90,7 @@ namespace TesisProj.Areas.Modelo.Models
             this.Cadena = plantilla.Cadena;
             this.PeriodoInicial = plantilla.PeriodoInicial;
             this.PeriodoFinal = plantilla.PeriodoFinal;
+            this.IdTipoDato = plantilla.IdTipoDato;
             this.Visible = plantilla.Visible;
         }
 

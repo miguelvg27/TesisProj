@@ -599,8 +599,6 @@
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_GraficoVanProyecto.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\Web.config" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaElemento\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaElemento\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaElemento\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Create.cshtml" />
@@ -609,8 +607,6 @@
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaFormula\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Create.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Delete.cshtml" />
-    <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Details.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaOperacion\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\PlantillaParametro\Create.cshtml" />
