@@ -53,7 +53,7 @@
                         @parametro.Nombre
                     </td>
                     <td>
-                        @parametro.TipoParametro.Nombre
+                        @parametro.TipoDato.Nombre
                     </td>
     
                 @foreach (var celda in Model.Where(c => c.IdParametro == parametro.Id).OrderBy(c => c.Periodo))

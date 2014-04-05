@@ -43,7 +43,7 @@
                         @Html.DisplayFor(model => model[i].Parametro.Nombre)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => model[i].Parametro.TipoParametro.Nombre)
+                        @Html.DisplayFor(model => model[i].Parametro.TipoDato.Nombre)
                     </td>
                     <td>
                         @Html.TextBoxFor(model => model[i].Valor, new { style="width = 50px", @Value = String.Format("{0:0.##}", Model[i].Valor) })
