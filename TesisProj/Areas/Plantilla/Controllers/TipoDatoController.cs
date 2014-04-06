@@ -77,7 +77,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/TipoDato/Delete/5
 
-         public ActionResult Delete(int id)
+         public ActionResult Delete(int id = 0)
         {
             TipoDato tipodato = db.TipoDatos.Find(id);
             if (tipodato == null)

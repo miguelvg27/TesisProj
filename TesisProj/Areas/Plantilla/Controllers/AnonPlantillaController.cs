@@ -16,17 +16,23 @@ namespace TesisProj.Areas.Plantilla.Controllers
     {
         private TProjContext db = new TProjContext();
 
+        //
+        // GET: /Plantilla/AnonPlantilla/EditProyecto/5&idProyecto=10
+
         public ActionResult EditProyecto(int id = 0, int idProyecto = 0)
         {
             PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
             if (plantillaproyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdProyecto = idProyecto;
             return View(plantillaproyecto);
         }
+
+        //
+        // POST: /Plantilla/AnonPlantilla/EditProyecto/5&idProyecto=10
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -34,9 +40,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(plantillaproyecto).State = EntityState.Modified;
-                db.SaveChanges();
-
+                db.PlantillaProyectosRequester.ModifyElement(plantillaproyecto);
                 return RedirectToAction("Cine", "Proyecto", new { Area = "Modelo", id = idProyecto });
             }
 
@@ -44,19 +48,23 @@ namespace TesisProj.Areas.Plantilla.Controllers
             return View(plantillaproyecto);
         }
 
+        //
+        // GET: /Plantilla/AnonPlantilla/EditElemento/5&idElemento=10
+
         public ActionResult EditElemento(int id = 0, int idElemento = 0)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
             if (plantillaelemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdElemento = idElemento;
-
             return View(plantillaelemento);
         }
 
+        //
+        // POST: /Plantilla/AnonPlantilla/EditElemento/5&idElemento=10
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -64,13 +72,11 @@ namespace TesisProj.Areas.Plantilla.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(plantillaelemento).State = EntityState.Modified;
-                db.SaveChanges();
+                db.PlantillaElementosRequester.ModifyElement(plantillaelemento);
                 return RedirectToAction("Programa", "Proyecto", new { Area = "Modelo", id = idElemento });
             }
 
             ViewBag.IdElemento = idElemento;
-
             return View(plantillaelemento);
         }
 

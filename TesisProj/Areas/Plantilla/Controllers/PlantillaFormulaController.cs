@@ -160,7 +160,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaFormula/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             PlantillaFormula plantillaformula = db.PlantillaFormulas.Find(id);
             if (plantillaformula == null)

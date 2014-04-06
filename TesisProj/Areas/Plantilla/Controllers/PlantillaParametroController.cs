@@ -123,7 +123,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaParametro/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             PlantillaParametro plantillaparametro = db.PlantillaParametros.Find(id);
             if (plantillaparametro == null)

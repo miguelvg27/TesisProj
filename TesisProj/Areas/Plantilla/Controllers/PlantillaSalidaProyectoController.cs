@@ -180,7 +180,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaSalidaProyecto/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             PlantillaSalidaProyecto salidaproyecto = db.PlantillaSalidaProyectos.Find(id);
             if (salidaproyecto == null)
@@ -201,7 +201,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaSalidaProyecto/DuplicarPlantilla/5
 
-        public ActionResult DuplicarPlantilla(int id)
+        public ActionResult DuplicarPlantilla(int id = 0)
         {
             PlantillaSalidaProyecto plantilla = db.PlantillaSalidaProyectos.Include(s => s.Operaciones).FirstOrDefault(e => e.Id == id);
             if (plantilla == null)

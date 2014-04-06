@@ -37,7 +37,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaOperacion/Create
 
-        public ActionResult Create(int idPlantilla)
+        public ActionResult Create(int idPlantilla = 0)
         {
             PlantillaProyecto plantilla = db.PlantillaProyectos.Find(idPlantilla);
             if (plantilla == null)
@@ -151,7 +151,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaOperacion/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             PlantillaOperacion plantillaoperacion = db.PlantillaOperaciones.Find(id);
             if (plantillaoperacion == null)

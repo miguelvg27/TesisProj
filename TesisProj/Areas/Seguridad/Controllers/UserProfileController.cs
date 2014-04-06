@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TesisProj.Models.Storage;
 using System.Web.Security;
 using WebMatrix.WebData;
+using TesisProj.Models;
 
 namespace TesisProj.Areas.Seguridad.Controllers
 {
@@ -19,40 +20,41 @@ namespace TesisProj.Areas.Seguridad.Controllers
         public ActionResult Index()
         {
             var users = db.UserProfiles.OrderBy(u => u.UserName).ToList();
-            return View(users);
+            var usersansadmin = new List<UserProfile>();
+            foreach(UserProfile user in users)
+            {
+                if (!Roles.IsUserInRole(user.UserName, "sadmin"))
+                {
+                    usersansadmin.Add(user);
+                }
+            }
+
+            return View(usersansadmin);
         }
 
         public ActionResult Block(string username, bool policy)
         {
-            if (policy && Roles.IsUserInRole(username, "nav"))
+            if (!WebSecurity.UserExists(username) || Roles.IsUserInRole(username, "sadmin"))
             {
-                Roles.RemoveUserFromRole(username, "nav");
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            if (policy && Roles.IsUserInRole(username, "admin"))
-            {
-                Roles.RemoveUserFromRole(username, "admin");
-            }
-
-            if (!policy && !Roles.IsUserInRole(username, "nav"))
-            {
-                Roles.AddUserToRole(username, "nav");
-            }
+            if (policy && Roles.IsUserInRole(username, "nav")) Roles.RemoveUserFromRole(username, "nav");
+            if (policy && Roles.IsUserInRole(username, "admin")) Roles.RemoveUserFromRole(username, "admin");
+            if (!policy && !Roles.IsUserInRole(username, "nav")) Roles.AddUserToRole(username, "nav");
 
             return RedirectToAction("Index");
         }
 
         public ActionResult Prize(string username, bool policy)
         {
-            if (!policy && Roles.IsUserInRole(username, "admin"))
+            if (!WebSecurity.UserExists(username) || Roles.IsUserInRole(username, "sadmin"))
             {
-                Roles.RemoveUserFromRole(username, "admin");
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            if (policy && !Roles.IsUserInRole(username, "admin"))
-            {
-                Roles.AddUserToRole(username, "admin");
-            }
+            if (!policy && Roles.IsUserInRole(username, "admin")) Roles.RemoveUserFromRole(username, "admin");
+            if (policy && !Roles.IsUserInRole(username, "admin")) Roles.AddUserToRole(username, "admin");
 
             return RedirectToAction("Index");
         }

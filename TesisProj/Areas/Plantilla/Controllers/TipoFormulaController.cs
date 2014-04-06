@@ -85,7 +85,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/TipoFormula/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             TipoFormula tipoformula = db.TipoFormulas.Find(id);
             if (tipoformula == null)

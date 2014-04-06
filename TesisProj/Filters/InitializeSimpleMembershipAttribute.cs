@@ -41,19 +41,14 @@ namespace TesisProj.Filters
 
                     WebSecurity.InitializeDatabaseConnection(TesisProj.MvcApplication.ConnectionString, "UserProfile", "UserId", "UserName", autoCreateTables: true);
 
-                    if (!Roles.RoleExists("admin"))
-                    {
-                        Roles.CreateRole("admin");
-                    }
-
-                    if (!Roles.RoleExists("nav"))
-                    {
-                        Roles.CreateRole("nav");
-                    }
+                    if (!Roles.RoleExists("sadmin")) Roles.CreateRole("sadmin");
+                    if (!Roles.RoleExists("admin")) Roles.CreateRole("admin");
+                    if (!Roles.RoleExists("nav")) Roles.CreateRole("nav");
 
                     if (!WebSecurity.UserExists("miguelavg"))
                     {
                         WebSecurity.CreateUserAndAccount("miguelavg", "miguelavg");
+                        Roles.AddUserToRole("miguelavg", "sadmin");
                         Roles.AddUserToRole("miguelavg", "admin");
                         Roles.AddUserToRole("miguelavg", "nav");
                     }

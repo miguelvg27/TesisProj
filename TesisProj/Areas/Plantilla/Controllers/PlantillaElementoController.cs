@@ -85,7 +85,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaElemento/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
             if (plantillaelemento == null)
@@ -112,7 +112,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaElemento/DuplicarPlantilla/5
 
-        public ActionResult DuplicarPlantilla(int id)
+        public ActionResult DuplicarPlantilla(int id = 0)
         {
             PlantillaElemento plantilla = db.PlantillaElementos.Include(e => e.Formulas).Include(e => e.Parametros).FirstOrDefault(e => e.Id == id);
             if (plantilla == null)
@@ -150,7 +150,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/PlantillaElemento/VolverPlantilla/5
 
-        public ActionResult VolverPlantilla(int id)
+        public ActionResult VolverPlantilla(int id = 0)
         {
             Elemento plantilla = db.Elementos.Include(e => e.Formulas).Include(e => e.Parametros).FirstOrDefault(e => e.Id == id);
             if (plantilla == null)

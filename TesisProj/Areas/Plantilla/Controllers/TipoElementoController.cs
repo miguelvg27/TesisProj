@@ -81,7 +81,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         //
         // GET: /Plantilla/TipoElemento/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             TipoElemento tipoelemento = db.TipoElementos.Find(id);
             if (tipoelemento == null)

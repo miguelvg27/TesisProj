@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Usuarios";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string admin = "miguelavg";
 }
 
 <h2>Usuarios del sistema</h2>
@@ -30,25 +29,22 @@
             @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
-            @if (!item.UserName.Equals(admin))
+            @if (Roles.IsUserInRole(item.UserName, "nav"))
             {
-                if (Roles.IsUserInRole(item.UserName, "nav"))
-                {
-                    @Html.ActionLink("Bloquear usuario", "Block", new { username=item.UserName, policy = true }, new { onclick="return BlockConfirm()" })
-                }
-                else
-                {
-                    @Html.ActionLink("Desbloquear usuario", "Block", new { username=item.UserName, policy = false }, new { onclick="return UnBlockConfirm()" })
-                }
-                @Html.Raw(" | ")
-                if (Roles.IsUserInRole(item.UserName, "admin"))
-                {
-                    @Html.ActionLink("Quitar privilegios de administración", "Prize", new { username=item.UserName, policy = false }, new { onclick="return UnPrizeConfirm()" })
-                }
-                else
-                {
-                    @Html.ActionLink("Dar privilegios de administración", "Prize", new { username=item.UserName, policy = true }, new { onclick="return PrizeConfirm()" })
-                }
+                @Html.ActionLink("Bloquear usuario", "Block", new { username=item.UserName, policy = true }, new { onclick="return BlockConfirm()" })
+            }
+            else
+            {
+                @Html.ActionLink("Desbloquear usuario", "Block", new { username=item.UserName, policy = false }, new { onclick="return UnBlockConfirm()" })
+            }
+            @Html.Raw(" | ")
+            if (Roles.IsUserInRole(item.UserName, "admin"))
+            {
+                @Html.ActionLink("Quitar privilegios de administración", "Prize", new { username=item.UserName, policy = false }, new { onclick="return UnPrizeConfirm()" })
+            }
+            else
+            {
+                @Html.ActionLink("Dar privilegios de administración", "Prize", new { username=item.UserName, policy = true }, new { onclick="return PrizeConfirm()" })
             }
         </td>
     </tr>
