@@ -57,7 +57,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             // Begin: Get sequence
 
-            var operaciones = db.PlantillaOperaciones.Where(f => f.IdPlantillaProyecto == plantilla.Id);
+            var operaciones = db.PlantillaOperaciones.Where(f => f.IdPlantillaProyecto == plantilla.Id).ToList();
             int defSecuencia = operaciones.Count() > 0 ? operaciones.Max(f => f.Secuencia) + 10 : 10;
             ViewBag.defSecuencia = defSecuencia;
 

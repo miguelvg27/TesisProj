@@ -7,13 +7,14 @@ using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Controllers
 {
     public partial class ProyectoController : Controller
     {
-        //
+        // Permissions: Creador, Editor, Revisor
         // GET: /Modelo/Proyecto/Journal/5
 
         public ActionResult Journal(int id = 0)
@@ -23,27 +24,30 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
+            // Check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            bool IsCreador = current.Creador;
+            bool IsEditor = !current.Creador && !current.SoloLectura;
+            bool IsRevisor = current.SoloLectura;
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
 
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.ProyectoId = proyecto.Id;
             ViewBag.TipoElementos = db.TipoElementos.OrderBy(t => t.NombrePlural).ToList();
 
-            int idUser = getUserId();
-
-            bool IsCreador = (idUser == proyecto.IdCreador);
-            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
-            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
-
-            ViewBag.IsCreador = IsCreador;
-            ViewBag.IsEditor = IsEditor;
-            ViewBag.IsRevisor = IsRevisor;
-
             var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id);
-
             return View(elementos.ToList());
         }
 
-        //
+        // Permissions: Creador, Editor
         // GET: /Modelo/Proyecto/CreateElemento?idProyecto=5&idTipoElemento=1
 
         public ActionResult CreateElemento(int idProyecto = 0, int idTipoElemento = 0)
@@ -51,6 +55,13 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(idProyecto);
             TipoElemento tipo = db.TipoElementos.Find(idTipoElemento);
             if (proyecto == null || tipo == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+            // Check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
@@ -128,10 +139,18 @@ namespace TesisProj.Areas.Modelo.Controllers
         //
         // GET: /Modelo/Proyecto/EditElemento/5
 
-        public ActionResult EditElemento(int id)
+        public ActionResult EditElemento(int id = 0)
         {
             Elemento elemento = db.Elementos.Find(id);
             if (elemento == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+            
+            // Check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.Id); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
@@ -167,39 +186,40 @@ namespace TesisProj.Areas.Modelo.Controllers
         //
         // GET: /Modelo/Proyecto/DeleteElemento/5
 
-        public ActionResult DeleteElemento(int id)
+        public ActionResult DeleteElemento(int id = 0)
         {
             Elemento elemento = db.Elementos.Include(e => e.TipoElemento).FirstOrDefault(e => e.Id == id);
-            try
+            if (elemento == null)
             {
-                var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id).ToList();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
 
-                foreach (Formula formula in formulas)
-                {
-                    db.FormulasRequester.RemoveElementByID(formula.Id);
-                }
+            // Check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.Id); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
 
-                var celdas = db.Celdas.Where(c => c.Parametro.Elemento.Id == elemento.Id).ToList();
+            var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id).ToList();
+            foreach (Formula formula in formulas)
+            {
+                db.FormulasRequester.RemoveElementByID(formula.Id);
+            }
 
+            var parametros = db.Parametros.Where(p => p.Elemento.Id == elemento.Id).ToList();
+            foreach (Parametro parametro in parametros)
+            {
+                var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id).ToList();
                 foreach (Celda celda in celdas)
                 {
                     db.CeldasRequester.RemoveElementByID(celda.Id);
                 }
-
-                var parametros = db.Parametros.Where(p => p.Elemento.Id == elemento.Id).ToList();
-
-                foreach (Parametro parametro in parametros)
-                {
-                    db.ParametrosRequester.RemoveElementByID(parametro.Id);
-                }
-
-                db.ElementosRequester.RemoveElementByID(elemento.Id, true, true, elemento.IdProyecto, getUserId());
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                db.ParametrosRequester.RemoveElementByID(parametro.Id);
             }
 
+            db.ElementosRequester.RemoveElementByID(elemento.Id, true, true, elemento.IdProyecto, getUserId());
             return RedirectToAction("Journal", new { id = elemento.IdProyecto });
         }
     }

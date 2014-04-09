@@ -26,6 +26,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Referencia)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdTipoDato)
+        </th>
         <th style="text-align:center;">
             @Html.DisplayNameFor(model => model.Secuencia)
         </th>
@@ -39,6 +42,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Referencia)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoDato.Nombre)
         </td>
         <td style="text-align:center;">
             @Html.DisplayFor(modelItem => item.Secuencia)

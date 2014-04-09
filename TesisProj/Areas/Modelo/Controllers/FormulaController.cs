@@ -122,7 +122,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.ListParametros = new SelectList(db.Parametros.Where(p => p.IdElemento == idElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "Nombre");
             ViewBag.ListFormulas = new SelectList(db.Formulas.Where(f => f.IdElemento == idElemento).OrderBy(f => f.Secuencia).ToList(), "Referencia", "ListName");
 
-            var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id);
+            var formulas = db.Formulas.Where(f => f.IdElemento == elemento.Id).ToList();
             int defSecuencia = formulas.Count() > 0 ? formulas.Max(f => f.Secuencia) + 10 : 10;
             ViewBag.defSecuencia = defSecuencia;
 

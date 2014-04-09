@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Areas.Seguridad.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Plantilla.Controllers
@@ -15,6 +16,24 @@ namespace TesisProj.Areas.Plantilla.Controllers
     public class AnonPlantillaController : Controller
     {
         private TProjContext db = new TProjContext();
+        private int userId = 0;
+
+        private int getUserId()
+        {
+            if (userId < 1)
+            {
+                try
+                {
+                    userId = db.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+
+            return userId;
+        }
 
         //
         // GET: /Plantilla/AnonPlantilla/EditProyecto/5&idProyecto=10
@@ -22,7 +41,16 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult EditProyecto(int id = 0, int idProyecto = 0)
         {
             PlantillaProyecto plantillaproyecto = db.PlantillaProyectos.Find(id);
+            Proyecto proyecto = db.Proyectos.Find(idProyecto); 
             if (plantillaproyecto == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            // Get project and check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
@@ -54,7 +82,16 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult EditElemento(int id = 0, int idElemento = 0)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            if (plantillaelemento == null)
+            Elemento elemento = db.Elementos.Find(id);
+            if (plantillaelemento == null || elemento == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            // Get project and check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == elemento.IdProyecto);
+            if (current == null || current.SoloLectura)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }

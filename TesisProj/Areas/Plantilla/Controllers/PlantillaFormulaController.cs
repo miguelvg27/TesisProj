@@ -59,7 +59,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
 
             // Begin: Get sequence
 
-            var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantilla.Id);
+            var formulas = db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantilla.Id).ToList();
             int defSecuencia = formulas.Count() > 0 ? formulas.Max(f => f.Secuencia) + 10 : 10;
             ViewBag.defSecuencia = defSecuencia;
 

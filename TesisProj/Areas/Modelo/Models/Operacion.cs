@@ -76,7 +76,16 @@ namespace TesisProj.Areas.Modelo.Models
         [InverseProperty("Operacion")]
         public List<SalidaOperacion> Salidas { get; set; }
 
+        [XmlIgnore]
         public List<double> Valores;
+
+        [XmlIgnore]
+        [NotMapped]
+        public int valPeriodoInicial { get; set; }
+
+        [XmlIgnore]
+        [NotMapped]
+        public int valPeriodoFinal { get; set; }
 
         public String ListName { get { return Nombre + "(" + Referencia + ")"; } }
 
@@ -113,7 +122,7 @@ namespace TesisProj.Areas.Modelo.Models
             List<double> resultado = new List<double>();
 
             MathParserNet.Parser parser = new MathParserNet.Parser();
-            double valor, pinicial, pfinal;
+            double valor;
 
             try
             {
@@ -136,12 +145,12 @@ namespace TesisProj.Areas.Modelo.Models
                         parser.AddVariable(operacion.Referencia, operacion.Valores[i - 1]);
                     }
 
-                    pinicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
-                    pfinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
+                    this.valPeriodoInicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
+                    this.valPeriodoFinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
 
                     valor = 0;
 
-                    if (i >= pinicial && i <= pfinal)
+                    if (i >= this.valPeriodoInicial && i <= this.valPeriodoFinal)
                     {
                         if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
                         {
@@ -149,7 +158,7 @@ namespace TesisProj.Areas.Modelo.Models
                         }
                         else
                         {
-                            valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
+                            valor = (i >= this.valPeriodoInicial && i <= this.valPeriodoFinal) ? parser.SimplifyDouble(this.Cadena) : 0;
                             valor = double.IsNaN(valor) ? 0 : valor;
                         }
                     }
@@ -162,6 +171,7 @@ namespace TesisProj.Areas.Modelo.Models
             {
             }
 
+            this.Valores = resultado;
             return resultado;
         }
 

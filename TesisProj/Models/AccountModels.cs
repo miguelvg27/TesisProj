@@ -28,6 +28,7 @@ namespace TesisProj.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
+        [Display(Name = "Usuario")]
         public string UserName { get; set; }
         [InverseProperty("Usuario")]
         public virtual List<Colaborador> Proyectos { get; set; }
