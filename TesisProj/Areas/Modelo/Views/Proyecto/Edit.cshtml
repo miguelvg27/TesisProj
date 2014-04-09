@@ -14,6 +14,10 @@
         <i class="icon-arrow-left icon-white"></i>Regresar
     </a><br /><br />
 </p>
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.calculator.package-2.0.0/jquery.calculator.css")"> 
+            @Scripts.Render("~/Content/jquery.calculator.package-2.0.0/jquery.plugin.js")
+            @Scripts.Render("~/Content/jquery.calculator.package-2.0.0/jquery.calculator.js")            
+            @Scripts.Render("~/Content/jquery.calculator.package-2.0.0/jquery.calculator-es.js")
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
@@ -85,6 +89,10 @@
         <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
 </p>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+<script type="text/javascript">
+    $(".calculator").calculator({
+        showOn: 'button',
+        buttonImageOnly: true, buttonImage: "@Url.Content("~/Content/jquery.calculator.package-2.0.0/calculator.png")"
+    });
+</script>

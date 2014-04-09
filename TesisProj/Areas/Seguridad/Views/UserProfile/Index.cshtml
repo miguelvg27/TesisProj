@@ -38,7 +38,7 @@
                 @Html.ActionLink("Desbloquear usuario", "Block", new { username=item.UserName, policy = false }, new { onclick="return UnBlockConfirm()" })
             }
             @Html.Raw(" | ")
-            if (Roles.IsUserInRole(item.UserName, "admin"))
+            @if (Roles.IsUserInRole(item.UserName, "admin"))
             {
                 @Html.ActionLink("Quitar privilegios de administración", "Prize", new { username=item.UserName, policy = false }, new { onclick="return UnPrizeConfirm()" })
             }

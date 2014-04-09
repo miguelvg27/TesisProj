@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Html.Telerik().ScriptRegistrar().Globalization(true)
+<link rel="stylesheet" type="text/css" href="@Url.Content("~/Content/jquery.calculator.package-2.0.0/jquery.calculator.css")"> 
+            @Scripts.Render("~/Content/jquery.calculator.package-2.0.0/jquery.plugin.js")
+            @Scripts.Render("~/Content/jquery.calculator.package-2.0.0/jquery.calculator.js")            
+            @Scripts.Render("~/Content/jquery.calculator.package-2.0.0/jquery.calculator-es.js")
+            
+
 <h2>Crear proyecto</h2>
 
 <p>
@@ -41,7 +47,7 @@
             @Html.LabelFor(model => model.Horizonte)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Horizonte)
+            @Html.TextBoxFor(model => model.Horizonte, new { @class="calculator" })
             @Html.ValidationMessageFor(model => model.Horizonte)
         </div>
 
@@ -95,6 +101,10 @@
     </a>
 </p>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script type="text/javascript">
+    $(".calculator").calculator({
+        showOn: 'button',
+        buttonImageOnly: true, buttonImage: "@Url.Content("~/Content/jquery.calculator.package-2.0.0/calculator.png")"
+    });
+</script>
+
