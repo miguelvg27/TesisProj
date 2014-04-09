@@ -43,7 +43,7 @@ namespace TesisProj.Areas.Modelo.Models
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        [DisplayName("Horizonte (años)")]
+        [DisplayName("Horizonte")]
         [Range(1, int.MaxValue, ErrorMessage = "El campo {0} debe ser mayor que 0")]
         public int Horizonte { get; set; }
 

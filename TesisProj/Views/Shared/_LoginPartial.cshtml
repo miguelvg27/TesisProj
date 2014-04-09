@@ -4,7 +4,7 @@
         <text>
             ¡Hola, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: new { Area = "" }, htmlAttributes: new { @class = "username", title = "Manage" })!
             <br />
-            @if (Roles.IsUserInRole("admin"))
+            @if (WebSecurity.Initialized && Roles.IsUserInRole("admin"))
             {
                 @Html.ActionLink("Administrar usuarios", "Index", "UserProfile", routeValues: new { Area = "Seguridad" }, htmlAttributes: new { id = "adminLink" })
             }

@@ -26,9 +26,10 @@
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary()
     <fieldset>
         <legend>Valores</legend>
+        <p>Ingresar los valores como números reales</p>
             <div style="overflow: auto; max-height: 600px; max-width: 1050px">
             <table class="table table-hover table-striped table-bordered">
                 <tr>
@@ -59,7 +60,7 @@
                 @foreach (var celda in Model.Where(c => c.IdParametro == parametro.Id).OrderBy(c => c.Periodo))
                 {
                     <td>
-                        @Html.TextBoxFor(model => model[Model.IndexOf(celda)].Valor, new { style="height:20px; width:55px; font-size:12px", @Value = String.Format("{0:0.##}", celda.Valor) })
+                        @Html.TextBoxFor(model => model[Model.IndexOf(celda)].Valor, new { style="height:20px; width:55px; font-size:12px", @Value = String.Format("{0:#,##0.##########}", celda.Valor) })
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].Id)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].IdParametro)
                         @Html.HiddenFor(model => model[Model.IndexOf(celda)].Periodo)

@@ -18,10 +18,10 @@
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary()
     <fieldset>
         <legend>Valores</legend>
-            
+            <p>Ingresar los valores como números reales</p>
             <div style="overflow: auto; max-height: 600px; max-width: 1050px">
             <table class="table table-hover table-striped table-bordered">
                 <tr>
@@ -32,7 +32,7 @@
                         Tipo
                     </th>
                     <th>
-                        Valor
+                        Valor inicial
                     </th>
                 </tr>
 
@@ -46,7 +46,7 @@
                         @Html.DisplayFor(model => model[i].Parametro.TipoDato.Nombre)
                     </td>
                     <td>
-                        @Html.TextBoxFor(model => model[i].Valor, new { style="width = 50px", @Value = String.Format("{0:0.##}", Model[i].Valor) })
+                        @Html.TextBoxFor(model => model[i].Valor, new { style="width = 50px", @Value = String.Format("{0:#,##0.##########}", Model[i].Valor) })
                         @Html.HiddenFor(model => model[i].IdParametro)
                         @Html.HiddenFor(model => model[i].Periodo)
                         @Html.HiddenFor(model => model[i].Id)

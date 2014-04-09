@@ -34,10 +34,14 @@ namespace TesisProj.Areas.Seguridad.Models
         [DisplayName("Solo lectura")]
         public bool SoloLectura { get; set; }
 
+        [DisplayName("Creador")]
+        public bool Creador { get; set; }
+
         public override string LogValues()
         {
             return "Colaborador = " + this.Usuario.UserName + Environment.NewLine +
-                "Solo lectura = " + this.SoloLectura;
+                "Solo lectura = " + this.SoloLectura + Environment.NewLine +
+                "Creador = " + this.Creador;
         }
     }
 }

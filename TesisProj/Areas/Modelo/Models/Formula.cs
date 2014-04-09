@@ -74,9 +74,19 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        [XmlIgnore]
         public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
 
+        [XmlIgnore]
         public List<double> Valores;
+
+        [XmlIgnore]
+        [NotMapped]
+        public int valPeriodoInicial { get; set; }
+
+        [XmlIgnore]
+        [NotMapped]
+        public int valPeriodoFinal { get; set; }
 
         public Formula() { }
 
@@ -101,6 +111,7 @@ namespace TesisProj.Areas.Modelo.Models
                 "Referencia = " + this.Referencia + Environment.NewLine +
                 "Secuencia = " + this.Secuencia + Environment.NewLine +
                 "Tipo fórmula = " + this.TipoFormula.Nombre + Environment.NewLine +
+                "Tipo dato = " + this.TipoDato.Nombre + Environment.NewLine +
                 "Visible = " + this.Visible + Environment.NewLine +
                 "Período inicial = " + this.PeriodoInicial + Environment.NewLine +
                 "Periodo final = " + this.PeriodoFinal + Environment.NewLine +
@@ -112,9 +123,8 @@ namespace TesisProj.Areas.Modelo.Models
             List<double> resultado = new List<double>();
             MathParserNet.Parser parser = new MathParserNet.Parser();
             formulas.OrderBy(f => f.Secuencia);
-            double valor, pinicial, pfinal;
+            double valor;
 
-            //
             //  Agrego al parser las funciones
 
             parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
@@ -146,18 +156,14 @@ namespace TesisProj.Areas.Modelo.Models
 
                     foreach (Formula formula in formulas)
                     {
-                        pinicial = parser.SimplifyInt(formula.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
-                        pfinal = parser.SimplifyInt(formula.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
-
-                        parser.AddVariable(formula.Referencia, (i >= pinicial && i <= pfinal) ? formula.Cadena : "0");
+                        parser.AddVariable(formula.Referencia, (i >= formula.valPeriodoInicial && i <= formula.valPeriodoFinal) ? formula.Valores[i - 1] : 0);
                     }
 
-                    pinicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
-                    pfinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
+                    this.valPeriodoInicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
+                    this.valPeriodoFinal = parser.SimplifyInt(this.PeriodoFinal, MathParserNet.Parser.RoundingMethods.Round);
 
-                    valor = (i >= pinicial && i <= pfinal) ? parser.SimplifyDouble(this.Cadena) : 0;
-                    valor = double.IsNaN(valor) ? 0 : valor;
-                    resultado.Add(valor);
+                    valor = (i >= this.valPeriodoInicial && i <= this.valPeriodoFinal) ? parser.SimplifyDouble(this.Cadena) : 0;
+                    resultado.Add(double.IsNaN(valor) ? 0 : valor);
                 }
             }
 
@@ -165,6 +171,7 @@ namespace TesisProj.Areas.Modelo.Models
             {
             }
 
+            this.Valores = resultado;
             return resultado;
         }
 
@@ -198,8 +205,7 @@ namespace TesisProj.Areas.Modelo.Models
                 }
 
                 Elemento elemento = context.Elementos.Find(this.IdElemento);
-
-                if (context.Formulas.Include("TipoFormula").Include("Elemento").Any(f => f.IdTipoFormula == this.IdTipoFormula && f.TipoFormula.Unico && f.Elemento.IdProyecto == elemento.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
+                if (context.Formulas.Include(f => f.IdTipoFormula).Include(f => f.Elemento).Any(f => f.IdTipoFormula == this.IdTipoFormula && f.TipoFormula.Unico && f.Elemento.IdProyecto == elemento.IdProyecto && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe una fórmula de este tipo en el proyecto. Dicho tipo de fórmula solo permite una por proyecto.", new string[] { "IdTipoFormula" });
                 }
@@ -207,24 +213,10 @@ namespace TesisProj.Areas.Modelo.Models
                 //  Valida cadena de la fórmula
 
                 MathParserNet.Parser parser = new MathParserNet.Parser();
-                var parametros = context.Parametros.Where(p => p.IdElemento == this.IdElemento);
-                var formulas = context.Formulas.Where(p => p.IdElemento == this.IdElemento && p.Secuencia < this.Secuencia);
-
-                foreach (Parametro parametro in parametros)
-                {
-                    parser.AddVariable(parametro.Referencia, 2);
-                }
-
-                foreach (Formula formula in formulas)
-                {
-                    parser.AddVariable(formula.Referencia, 2);
-                }
-
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
                 parser.AddVariable("PeriodosCierre", 1);
                 parser.AddVariable("PeriodosPreOperativos", 1);
-
                 parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
                 parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
                 parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);
@@ -232,13 +224,25 @@ namespace TesisProj.Areas.Modelo.Models
                 parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Generics.Syn);
                 parser.RegisterCustomDoubleFunction("ValorResidual", Generics.ResSln);
 
+                var parametros = context.Parametros.Where(p => p.IdElemento == this.IdElemento);
+                foreach (Parametro parametro in parametros)
+                {
+                    parser.AddVariable(parametro.Referencia, 2);
+                }
+
+                var formulas = context.Formulas.Where(p => p.IdElemento == this.IdElemento && p.Secuencia < this.Secuencia);
+                foreach (Formula formula in formulas)
+                {
+                    parser.AddVariable(formula.Referencia, 2);
+                }
+
                 if (!Generics.Validar(this.Cadena, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. La fórmula solo puede contener los parámetros y las fórmulas con menor secuencia del elemento.", new string[] { "Cadena" });
                 }
 
-                //
-                //  Valida períodos
+                //  Validar períodos
+                parser.RemoveVariable("Periodo");
                 if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });

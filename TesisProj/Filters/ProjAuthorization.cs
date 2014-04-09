@@ -11,7 +11,8 @@ namespace TesisProj.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            string actionName = (string)filterContext.RouteData.Values["action"];
+            string controllername = (string)filterContext.RouteData.Values["controller"];
+            string actionName = (string) filterContext.RouteData.Values["action"];
             bool idElemento = false;
             bool idProyecto = false;
             bool idFormula = false;

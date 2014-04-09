@@ -75,7 +75,7 @@ namespace TesisProj.Areas.Modelo.Models
             return "Elemento = " + this.Elemento.Nombre + Environment.NewLine +
                 "Nombre = " + this.Nombre + Environment.NewLine +
                 "Referencia = " + this.Referencia + Environment.NewLine +
-                "Tipo parámetro = " + this.TipoDato.Nombre + Environment.NewLine +
+                "Tipo dato = " + this.TipoDato.Nombre + Environment.NewLine +
                 "Sensible = " + this.Sensible + Environment.NewLine +
                 "Constante = " + this.Constante;
         }
@@ -92,11 +92,6 @@ namespace TesisProj.Areas.Modelo.Models
                 if (context.Formulas.Any(f => f.Referencia == this.Referencia && f.IdElemento == this.IdElemento && (this.Id > 0 ? f.Id != this.Id : true)))
                 {
                     yield return new ValidationResult("Ya existe una fórmula con el mismo nombre de referencia en el mismo elemento.", new string[] { "Referencia" });
-                }
-
-                if (context.Parametros.Any(p => p.Referencia == this.Referencia && p.IdElemento == this.IdElemento && (this.Id > 0 ? p.Id != this.Id : true)))
-                {
-                    yield return new ValidationResult("Ya existe un parámetro con el mismo nombre de referencia en el mismo elemento.", new string[] { "Referencia" });
                 }
 
                 if (context.Parametros.Any(p => p.Referencia == this.Referencia && p.IdElemento == this.IdElemento && (this.Id > 0 ? p.Id != this.Id : true)))

@@ -13,6 +13,7 @@ namespace TesisProj.Areas.Modelo.Models
     [Table("Celda")]
     public class Celda : DbObject
     {
+        [Required]
         [DisplayName("Período")]
         public int Periodo { get; set; }
 
@@ -20,6 +21,7 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Valor")]
         public decimal Valor { get; set; }
 
+        [Required]
         [DisplayName("Parámetro")]
         public int IdParametro { get; set; }
 

@@ -9,7 +9,7 @@
 
 <p>
     <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("Create", new { IdProyecto = ViewBag.ProyectoId } )"">
+    <a class="btn btn-inverse" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("Create", new { idProyecto = ViewBag.ProyectoId } )"">
   	    <i class="icon-plus icon-white"></i>Nuevo
     </a>
     <a style="margin:5px"></a>
@@ -45,17 +45,19 @@
             @Html.DisplayFor(modelItem => item.SoloLectura)
         </td>
         <td>
-            @if(item.SoloLectura)
-            {
-                @Html.ActionLink("Dar permisos de edición", "Edit", new { idColaborador=item.Id, policy = false }, new { onclick="return GiveConfirm()" })
-            }
-            else
-            {
-                @Html.ActionLink("Quitar permisos de edición", "Edit", new { idColaborador=item.Id, policy = true}, new { onclick="return TakeConfirm()" })
-            }
+            @if(!item.Creador){
+                if (item.SoloLectura)
+                {
+                    @Html.ActionLink("Dar permisos de edición", "Edit", new { idColaborador=item.Id, idProyecto = ViewBag.ProyectoId, policy = false }, new { onclick="return GiveConfirm()" })
+                } else {
+                    @Html.ActionLink("Quitar permisos de edición", "Edit", new { idColaborador = item.Id, idProyecto = ViewBag.ProyectoId, policy = true }, new { onclick = "return TakeConfirm()" })
+                }
                 
-                                                                 
-            | @Html.ActionLink("Eliminar", "Delete", new { id=item.Id }, new { onclick="return DeleteConfirm()" })
+            @Html.Raw(" | ")                                                     
+            @Html.ActionLink("Eliminar", "Delete", new { idColaborador = item.Id, idProyecto = ViewBag.ProyectoId }, new { onclick = "return DeleteConfirm()" })
+            } else {
+                @Html.Raw("Creador")  
+            }
         </td>
     </tr>
 }

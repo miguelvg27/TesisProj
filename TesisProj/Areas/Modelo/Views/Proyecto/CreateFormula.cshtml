@@ -87,6 +87,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoDato)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdTipoDato", String.Empty)
+            @Html.ValidationMessageFor(model => model.IdTipoDato)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Cadena)
         </div>
         <div class="editor-field">

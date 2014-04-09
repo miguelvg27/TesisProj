@@ -17,8 +17,6 @@ namespace TesisProj.Areas.Seguridad.Controllers
     {
         private TProjContext db = new TProjContext();
         private int userId = 0;
-        //
-        // GET: /Seguridad/Default1/
 
         private int getUserId()
         {
@@ -36,66 +34,49 @@ namespace TesisProj.Areas.Seguridad.Controllers
             return userId;
         }
 
-        public ActionResult Index(int id)
+        // Permisos: Creador
+        // GET: /Seguridad/Colaboradores/Index/5
+
+        public ActionResult Index(int id = 0)
         {
+            // Check url
             Proyecto proyecto = db.Proyectos.Find(id);
-            if(proyecto == null)
+            if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            var colaboradors = db.Colaboradores.Include(c => c.Usuario).Include(c => c.Proyecto).Where(c => c.IdProyecto == proyecto.Id);
+
+            // Check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || !current.Creador)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.ProyectoId = proyecto.Id;
 
-            return View(colaboradors.ToList());
+            var colaboradores = db.Colaboradores.Include(c => c.Usuario).Include(c => c.Proyecto).Where(c => c.IdProyecto == proyecto.Id);
+            return View(colaboradores.ToList());
         }
 
-        //
-        // GET: /Seguridad/Default1/Create
+        // Permisos: Creador
+        // GET: /Seguridad/Colaboradores/Create?idProyecto=5
 
-        public ActionResult Create(int IdProyecto)
-        {
-            Proyecto proyecto = db.Proyectos.Find(IdProyecto);
-            if (proyecto == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.Proyecto = proyecto.Nombre;
-            ViewBag.IdProyectoReturn = proyecto.Id;
-            ViewBag.IdUsuario = new SelectList(db.UserProfiles, "UserId", "UserName");
-            ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == IdProyecto), "Id", "Nombre", IdProyecto);
-            return View();
-        }
-
-        //
-        // POST: /Seguridad/Default1/Create
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(int idProyecto, string colaborador)
+        public ActionResult Create(int idProyecto = 0)
         {
             Proyecto proyecto = db.Proyectos.Find(idProyecto);
-            string creador = db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador).First().UserName;
-
-            if (!db.UserProfiles.Any(u => u.UserName.Equals(colaborador)))
+            if (proyecto == null)
             {
-                ModelState.AddModelError("IdUsuario", "No existe este nombre de usuario");
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            if (creador.Equals(colaborador) || db.Colaboradores.Include(c => c.Usuario).Any(c => c.Usuario.UserName.Equals(colaborador) && c.IdProyecto == idProyecto))
+
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || !current.Creador)
             {
-                ModelState.AddModelError("IdUsuario", "El usuario ya ha sido agregado al proyecto.");
-            }
-            
-            if (ModelState.IsValid)
-            {
-                int idUsuario = db.UserProfiles.First(u => u.UserName.Equals(colaborador)).UserId;
-
-                Colaborador uColaborador = new Colaborador { IdProyecto = idProyecto, IdUsuario = idUsuario, SoloLectura = true };
-                uColaborador.Usuario = db.UserProfiles.Find(idUsuario);
-
-                db.ColaboradoresRequester.AddElement(uColaborador, true, idProyecto, getUserId());
-
-                return RedirectToAction("Index", new { id = idProyecto });
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.Proyecto = proyecto.Nombre;
@@ -105,41 +86,81 @@ namespace TesisProj.Areas.Seguridad.Controllers
             return View();
         }
 
-        //
-        // GET: /Seguridad/Default1/Edit/5
+        // Permisos: Creador
+        // POST: /Seguridad/Colaboradores/Create?idProyecto=5&strColaborador="user"
 
-        public ActionResult Edit(int idColaborador, bool policy)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(int idProyecto = 0, string strColaborador = "")
         {
-            db.Configuration.ProxyCreationEnabled = false;
-            Colaborador colaborador = db.Colaboradores.AsNoTracking().First(c => c.Id == idColaborador);
-            colaborador.Usuario = db.UserProfiles.Find(colaborador.IdUsuario);
+            Proyecto proyecto = db.Proyectos.Find(idProyecto);
+            if (!db.UserProfiles.Any(u => u.UserName.Equals(strColaborador)))
+            {
+                ModelState.AddModelError("IdUsuario", "No existe este nombre de usuario");
+            }
+                        
             if (ModelState.IsValid)
             {
-                colaborador.SoloLectura = policy;
-                db.ColaboradoresRequester.ModifyElement(colaborador, true, colaborador.IdProyecto, getUserId());
+                UserProfile usuario = db.UserProfiles.First(u => u.UserName.Equals(strColaborador));
+                Colaborador colaborador = new Colaborador { IdProyecto = proyecto.Id, IdUsuario = usuario.UserId, SoloLectura = true, Creador = false };
+                colaborador.Usuario = usuario; // Logging issues
 
-                db.Configuration.ProxyCreationEnabled = true;
-                return RedirectToAction("Index", new { id = colaborador.IdProyecto });
+                db.ColaboradoresRequester.AddElement(colaborador, true, proyecto.Id, getUserId());
+                return RedirectToAction("Index", new { id = proyecto.Id });
             }
 
-            db.Configuration.ProxyCreationEnabled = true;
+            ViewBag.Proyecto = proyecto.Nombre;
+            ViewBag.IdProyectoReturn = proyecto.Id;
+            ViewBag.IdUsuario = new SelectList(db.UserProfiles, "UserId", "UserName");
+            ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == idProyecto), "Id", "Nombre", idProyecto);
+            return View();
+        }
+
+        // Permisos: Creador
+        // GET: /Seguridad/Colaboradores/Edit?idColaborador=5&idProyecto=5&policy=true
+
+        public ActionResult Edit(int idColaborador = 0, int idProyecto = 0, bool policy = false)
+        {
+            Proyecto proyecto = db.Proyectos.Find(idProyecto);
+            Colaborador colaborador = db.Colaboradores.Include(c => c.Usuario).FirstOrDefault(c => c.Id == idColaborador && c.IdProyecto == idProyecto);
+            if (proyecto == null || colaborador == null || colaborador.IdUsuario == proyecto.IdCreador || colaborador.Creador)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || !current.Creador)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            colaborador.SoloLectura = policy;
+            db.ColaboradoresRequester.ModifyElement(colaborador, true, colaborador.IdProyecto, getUserId());
+
             return RedirectToAction("Index", new { id = colaborador.IdProyecto });
         }
 
-        //
-        // GET: /Seguridad/Default1/Delete/5
+        // Permisos: Creador
+        // GET: /Seguridad/Colaboradores/Delete?idColaborador=5&idProyecto=5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int idColaborador = 0, int idProyecto = 0)
         {
-            Colaborador colaborador = db.Colaboradores.Find(id);
-
-            if (colaborador == null)
+            Proyecto proyecto = db.Proyectos.Find(idProyecto);
+            Colaborador colaborador = db.Colaboradores.FirstOrDefault(c => c.Id == idColaborador && c.IdProyecto == idProyecto);
+            if (proyecto == null || colaborador == null || colaborador.IdUsuario == proyecto.IdCreador || colaborador.Creador)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || !current.Creador)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+           
             db.ColaboradoresRequester.RemoveElementByID(colaborador.Id, true, true, colaborador.IdProyecto, getUserId());
-
             return RedirectToAction("Index", new { id = colaborador.IdProyecto });
         }
 

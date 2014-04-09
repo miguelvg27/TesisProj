@@ -80,9 +80,7 @@ namespace TesisProj.Areas.Modelo.Models
 
         public String ListName { get { return Nombre + "(" + Referencia + ")"; } }
 
-        public Operacion()
-        {
-        }
+        public Operacion() { }
 
         public Operacion(PlantillaOperacion plantilla, int idProyecto)
         {
@@ -104,6 +102,7 @@ namespace TesisProj.Areas.Modelo.Models
                 "Referencia = " + this.Referencia + Environment.NewLine +
                 "Secuencia = " + this.Secuencia + Environment.NewLine +
                 "Indicador = " + this.Indicador + Environment.NewLine +
+                "Tipo dato = " + this.TipoDato.Nombre + Environment.NewLine +
                 "Período inicial = " + this.PeriodoInicial + Environment.NewLine +
                 "Periodo final = " + this.PeriodoFinal + Environment.NewLine +
                 "Cadena = " + this.Cadena;
@@ -185,28 +184,30 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en el mismo proyecto.", new string[] { "Secuencia" });
                 }
 
+                if (Generics.Reservadas.Contains(this.Referencia))
+                {
+                    yield return new ValidationResult("Ya existe una palabra reservada con el mismo nombre.", new string[] { "Referencia" });
+                }
+
                 MathParserNet.Parser parser = new MathParserNet.Parser();
-                var tipoformulas = context.TipoFormulas;
-                var operaciones = context.Operaciones.Where(o => o.IdProyecto == this.IdProyecto && o.Secuencia < this.Secuencia);
 
                 parser.AddVariable("Periodo", 5);
                 parser.AddVariable("Horizonte", 10);
                 parser.AddVariable("PeriodosCierre", 1);
                 parser.AddVariable("PeriodosPreOperativos", 1);
-                parser.AddVariable("RiesgoPais", 1);
-                parser.AddVariable("RiesgoProyecto", 1);
 
+                var tipoformulas = context.TipoFormulas;
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {
                     parser.AddVariable(tipoformula.Referencia, 2);
                 }
 
+                var operaciones = context.Operaciones.Where(o => o.IdProyecto == this.IdProyecto && o.Secuencia < this.Secuencia);
                 foreach (Operacion operacion in operaciones)
                 {
                     parser.AddVariable(operacion.Referencia, 2);
                 }
 
-            //
             //  Valida si es Tir o Van
                 if (!Generics.Validar(this.Cadena, parser))
                 {
@@ -216,7 +217,8 @@ namespace TesisProj.Areas.Modelo.Models
                     }
                 }
 
-            //
+                parser.RemoveVariable("Periodo");
+
             //  Valida períodos
                 if (!Generics.Validar(this.PeriodoInicial, parser))
                 {

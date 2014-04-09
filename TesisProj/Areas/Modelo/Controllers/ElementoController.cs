@@ -21,7 +21,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.Proyecto = proyecto.Nombre;
@@ -44,48 +44,6 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         //
-        // GET: /Modelo/Proyecto/ResultadosElemento/5
-
-        public ActionResult Programa(int id = 0)
-        {
-            Elemento elemento = db.Elementos.Find(id);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-            if (elemento == null)
-            {
-                return HttpNotFound();
-            }
-
-            var formulas = db.Formulas.Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
-            var salidas = formulas.Where(s => s.Visible).ToList();
-
-            foreach (Formula salida in salidas)
-            {
-                var refs = formulas.Where(f => f.Secuencia < salida.Secuencia && f.IdElemento == elemento.Id).ToList();
-                var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
-                salida.Valores = salida.Evaluar(proyecto.Horizonte, proyecto.PeriodosPreOp, proyecto.PeriodosCierre, refs, parametros);
-            }
-
-            int idUser = getUserId();
-
-            bool IsCreador = (idUser == proyecto.IdCreador);
-            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
-            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
-
-            ViewBag.IsCreador = IsCreador;
-            ViewBag.IsEditor = IsEditor;
-            ViewBag.IsRevisor = IsRevisor;
-
-            ViewBag.IdElemento = elemento.Id;
-            ViewBag.Proyecto = proyecto.Nombre;
-            ViewBag.IdProyecto = elemento.IdProyecto;
-            ViewBag.Elemento = elemento.Nombre;
-            ViewBag.TipoElemento = db.TipoElementos.Find(elemento.IdTipoElemento).Nombre;
-            ViewBag.Horizonte = proyecto.Horizonte;
-
-            return View(salidas);
-        }
-
-        //
         // GET: /Modelo/Proyecto/CreateElemento?idProyecto=5&idTipoElemento=1
 
         public ActionResult CreateElemento(int idProyecto = 0, int idTipoElemento = 0)
@@ -94,7 +52,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             TipoElemento tipo = db.TipoElementos.Find(idTipoElemento);
             if (proyecto == null || tipo == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdPlantilla = new SelectList(db.PlantillaElementos.Where(p => p.IdTipoElemento == tipo.Id).OrderBy(p => p.Nombre), "Id", "Nombre");
@@ -175,7 +133,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Elemento elemento = db.Elementos.Find(id);
             if (elemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdTipoElemento = new SelectList(db.TipoElementos.Where(t => t.Id == elemento.IdTipoElemento), "Id", "Nombre", elemento.IdTipoElemento);

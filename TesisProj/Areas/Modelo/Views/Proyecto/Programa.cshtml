@@ -49,7 +49,7 @@
         @for (int periodo = 0; periodo < salida.Valores.Count; periodo++)
         {
             <td style="text-align:right;">
-                @String.Format("{0:#,##0.##}", salida.Valores[periodo])
+                @String.Format(salida.TipoDato.Formato, salida.Valores[periodo])
             </td>
         }
     </tr>

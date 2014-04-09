@@ -23,7 +23,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.Proyecto = proyecto.Nombre;
@@ -91,7 +91,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             if (salida == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion).ToList();
@@ -118,7 +118,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             SalidaProyecto salida = db.SalidaProyectos.Find(id);
             if (salida == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             var asociados = db.SalidaOperaciones.Include(p => p.Operacion).Where(p => p.IdSalida == salida.Id).OrderBy(p => p.Secuencia).Select(p => p.Operacion);
@@ -168,7 +168,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(idProyecto);
             if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == proyecto.Id), "Id", "Nombre", proyecto.Id);
@@ -215,7 +215,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             SalidaProyecto salidaproyecto = db.SalidaProyectos.Find(id);
             if (salidaproyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
             
             ViewBag.IdProyecto = new SelectList(db.Proyectos.Where(p => p.Id == salidaproyecto.IdProyecto), "Id", "Nombre", salidaproyecto.IdProyecto);
@@ -256,7 +256,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             if (proyecto == null)
             {
                 db.Configuration.ProxyCreationEnabled = true;
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             int horizonte = proyecto.Horizonte;
@@ -330,7 +330,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             if (salida == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
             string nombre = "Copia de " + salida.Nombre + " ";

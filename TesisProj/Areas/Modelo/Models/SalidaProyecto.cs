@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
 using TesisProj.Areas.Plantilla.Models;
+using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Modelo.Models
@@ -81,42 +82,20 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo número de secuencia en el proyecto.", new string[] { "Secuencia" });
                 }
 
-                //  Valida cadena de la fórmula
+                //  Valida cadena de los periodos
 
-                bool cadenavalida = true;
-                double testvalue = 0;
                 MathParserNet.Parser parser = new MathParserNet.Parser();
-
                 parser.AddVariable("Horizonte", 10);
-                parser.AddVariable("PeriodosPreOperativos", 10);
-                parser.AddVariable("PeriodosCierre", 10);
+                parser.AddVariable("PeriodosCierre", 1);
+                parser.AddVariable("PeriodosPreOperativos", 1);
 
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoInicial);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                //  Valida períodos
+                if (!Generics.Validar(this.PeriodoInicial, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoInicial" });
                 }
 
-                cadenavalida = true;
-
-                try
-                {
-                    testvalue = parser.SimplifyDouble(this.PeriodoFinal);
-                }
-                catch (Exception)
-                {
-                    cadenavalida = false;
-                }
-
-                if (!cadenavalida)
+                if (!Generics.Validar(this.PeriodoFinal, parser))
                 {
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }

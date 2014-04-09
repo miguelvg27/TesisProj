@@ -79,7 +79,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
             proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
             
@@ -150,7 +150,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                         }
                     }
                 }
-
+                db.ColaboradoresRequester.AddElement(new Colaborador { IdProyecto = proyecto.Id, Creador = true, SoloLectura = false, IdUsuario = getUserId() });
                 db.AuditsRequester.AddElement(new Audit { IdProyecto = proyecto.Id, Fecha = DateTime.Now, IdUsuario = getUserId(), Transaccion = "Crear", TipoObjeto = proyecto.GetType().ToString(), Original = proyecto.LogValues() });
 
                 return RedirectToAction("Console", new { id = proyecto.Id });
@@ -171,7 +171,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             if (proyecto == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador), "UserId", "UserName", proyecto.IdCreador);
             ViewBag.PreHorizonte = proyecto.Horizonte;

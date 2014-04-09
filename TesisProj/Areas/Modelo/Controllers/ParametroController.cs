@@ -6,68 +6,84 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.Modelo.Models;
+using TesisProj.Areas.Seguridad.Models;
 
 namespace TesisProj.Areas.Modelo.Controllers
 {
     public partial class ProyectoController : Controller
     {
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/Catalog/5
 
         public ActionResult Catalog(int id)
         {
+            // Check Url
             Elemento elemento = db.Elementos.Find(id);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
             if (elemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            var parametros = db.Parametros.Include("Elemento").Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre);
 
+            // Get project and check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+            
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.ElementoId = elemento.Id;
             ViewBag.ProyectoId = proyecto.Id;
 
+            var parametros = db.Parametros.Include(p => p.Elemento).Include(p => p.TipoDato).Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre);
             return View(parametros.ToList());
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/PutParametros/5
 
         public ActionResult PutParametros(int id = 0)
         {
             Elemento elemento = db.Elementos.Find(id);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
             if (elemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
-            // List<Celda> celdas = new List<Celda>();
+            // Get project and check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
 
+            var parametros = db.Parametros.Include(p => p.TipoDato).Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre).ToList();
             foreach(Parametro parametro in parametros)
             {
+                if(db.CeldasRequester.Any(c => c.IdParametro == parametro.Id))
+                {
+                    return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+                }
+
                 for (int periodo = 1; periodo <= proyecto.Horizonte; periodo++)
                 {
-                    db.Celdas.Add(new Celda { IdParametro = parametro.Id, Periodo = periodo, Valor = 0 });
+                    db.CeldasRequester.AddElement(new Celda { IdParametro = parametro.Id, Periodo = periodo, Valor = 0 });
                 }
             }
-
-            db.SaveChanges();
-
-            var celdas = db.Celdas.Include(c => c.Parametro).Where(c => c.Parametro.IdElemento == id && c.Periodo == 1).ToList();
 
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.IdElemento = elemento.Id;
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.Proyecto = proyecto.Nombre;
 
+            var celdas = db.Celdas.Include(c => c.Parametro).Include("Parametro.TipoDato").Where(c => c.Parametro.IdElemento == id && c.Periodo == 1).ToList();
             return View(celdas);
         }
 
-        //
+        // Permisos: Creador, Editor
         // POST: /Modelo/Proyecto/PutParametros
         
         [HttpPost]
@@ -79,7 +95,6 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             if (ModelState.IsValid)
             {
-
                 foreach (Celda celda in celdas)
                 {
                     Parametro parametro = db.Parametros.Find(celda.IdParametro);
@@ -97,7 +112,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             foreach (Celda celda in celdas)
             {
-                Parametro parametro = db.Parametros.Find(celda.IdParametro);
+                Parametro parametro = db.Parametros.Include(p => p.TipoDato).FirstOrDefault(p => p.Id == celda.IdParametro);
                 celda.Parametro = parametro;
             }
 
@@ -112,56 +127,66 @@ namespace TesisProj.Areas.Modelo.Controllers
             
         }
 
-        //
+        // Permisos: Creador, Editor, Revisor
         // GET: /Modelo/Proyecto/VerParametros/5
 
         public ActionResult VerParametros(int id = 0)
         {
             Elemento elemento = db.Elementos.Find(id);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
-            if (elemento == null || proyecto == null)
+            if (elemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
-            var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
+            // Get project and check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
 
-
-            int idUser = getUserId();
-
-            bool IsCreador = (idUser == proyecto.IdCreador);
-            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
-            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
-
+            bool IsCreador = current.Creador;
+            bool IsEditor = !current.Creador && !current.SoloLectura;
+            bool IsRevisor = current.SoloLectura;
             ViewBag.IsCreador = IsCreador;
             ViewBag.IsEditor = IsEditor;
             ViewBag.IsRevisor = IsRevisor;
 
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.IdElemento = elemento.Id;
-            ViewBag.Parametros = parametros.ToList();
-            ViewBag.Horizonte = celdas.Any(c => c.Periodo > 1) ? proyecto.Horizonte : 1;
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.Elemento = elemento.Nombre;
+
+            var parametros = db.Parametros.Include(p => p.TipoDato).Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
+            var celdas = db.Celdas.Include(c => c.Parametro).Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
+            ViewBag.Parametros = parametros.ToList();
+            ViewBag.Horizonte = celdas.Any(c => c.Periodo > 1) ? proyecto.Horizonte : 1;
 
             return View(celdas.ToList());
         }
 
-        //
+        //  Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/SetParametros/5
 
         public ActionResult SetParametros(int id = 0)
         {
             Elemento elemento = db.Elementos.Find(id);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
             if (elemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
-            var celdas = db.Celdas.Include("Parametro").Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
+            // Get project and check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            var parametros = db.Parametros.Include(p => p.TipoDato).Where(p => p.IdElemento == elemento.Id).OrderBy(p => p.Nombre); ;
+            var celdas = db.Celdas.Include(c => c.Parametro).Where(c => c.Parametro.IdElemento == id && (c.Parametro.Constante ? c.Periodo == 1 : true));
 
             ViewBag.IdProyecto = proyecto.Id;
             ViewBag.IdElemento = elemento.Id;
@@ -173,7 +198,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(celdas.ToList());
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/SetParametros
 
         [HttpPost]
@@ -191,7 +216,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("VerParametros", new { id = IdElemento });
             }
 
-            var parametros = db.Parametros.Include("TipoDato").Where(p => p.IdElemento == IdElemento).OrderBy(p => p.Nombre); ;
+            var parametros = db.Parametros.Include(p => p.TipoDato).Where(p => p.IdElemento == IdElemento).OrderBy(p => p.Nombre); ;
             Elemento elemento = db.Elementos.Find(IdElemento);
             Proyecto proyecto = db.Proyectos.Find(IdProyecto);
 
@@ -205,19 +230,26 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(celdas.ToList());    
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/CreateParametro/5
 
         public ActionResult CreateParametro(int idElemento = 0)
         {
             Elemento elemento = db.Elementos.Find(idElemento);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
             if (elemento == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre");
+            // Get project and check user
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos, "Id", "Nombre");
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == elemento.Id), "Id", "Nombre", elemento.Id);
             ViewBag.IdElementoReturn = elemento.Id;
             ViewBag.IdProyecto = proyecto.Id;
@@ -234,18 +266,10 @@ namespace TesisProj.Areas.Modelo.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateParametro(Parametro parametro, string ValorInicial, int IdProyecto)
         {
-            decimal valor = 0;
+            decimal valor;
             Proyecto proyecto = db.Proyectos.Find(IdProyecto);
-            try
-            {
-                valor = decimal.Parse(ValorInicial);
-            }
-            catch
-            {
-                ModelState.AddModelError("ValorInicial", "El valor inicial debe ser numérico.");
-            }
-
-            if (ModelState.IsValid)
+ 
+            if (decimal.TryParse(ValorInicial, out valor) && ModelState.IsValid)
             {
                 parametro.Elemento = db.Elementos.Find(parametro.IdElemento);
                 parametro.TipoDato = db.TipoDatos.Find(parametro.IdTipoDato);
@@ -259,7 +283,8 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("SetParametros", new { id = parametro.IdElemento });
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
+            ModelState.AddModelError("ValorInicial", "El valor inicial debe ser numérico.");
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 
@@ -271,7 +296,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(parametro);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/EditParametro/5
 
         public ActionResult EditParametro(int id = 0)
@@ -279,15 +304,21 @@ namespace TesisProj.Areas.Modelo.Controllers
             Parametro parametro = db.Parametros.Find(id);
             if (parametro == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
+            // Get project and check user
+            Elemento elemento = db.Elementos.Find(parametro.IdElemento);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
-
-            Elemento elemento = db.Elementos.Find(parametro.IdElemento);
-            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto);
 
             ViewBag.Elemento = elemento.Nombre;
             ViewBag.Proyecto = proyecto.Nombre;
@@ -295,7 +326,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(parametro);
         }
 
-        //
+        // Permisos: Creador, Editor
         // POST: /Modelo/Proyecto/EditParametro
 
         [HttpPost]
@@ -311,7 +342,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("SetParametros", new { id = parametro.IdElemento });
             }
 
-            ViewBag.IdTipoParametro = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
+            ViewBag.IdTipoDato = new SelectList(db.TipoDatos, "Id", "Nombre", parametro.IdTipoDato);
             ViewBag.IdElemento = new SelectList(db.Elementos.Where(e => e.Id == parametro.IdElemento), "Id", "Nombre", parametro.IdElemento);
             ViewBag.IdElementoReturn = parametro.IdElemento;
 
@@ -324,27 +355,33 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(parametro);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/DeleteParametro/5
 
-        public ActionResult DeleteParametro(int id)
+        public ActionResult DeleteParametro(int id = 0)
         {
             Parametro parametro = db.Parametros.Find(id);
-            try
+            if (parametro == null)
             {
-                var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id).ToList();
-                foreach (Celda celda in celdas)
-                {
-                    db.CeldasRequester.RemoveElementByID(celda.Id);
-                }
-
-                db.ParametrosRequester.RemoveElementByID(parametro.Id, true, true, parametro.Elemento.IdProyecto, getUserId());
-            }
-            catch (Exception)
-            {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
+            // Get project and check user
+            Elemento elemento = db.Elementos.Find(parametro.IdElemento);
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+           var celdas = db.Celdas.Where(c => c.IdParametro == parametro.Id).ToList();
+            foreach (Celda celda in celdas)
+            {
+                db.CeldasRequester.RemoveElementByID(celda.Id);
+            }
+
+            db.ParametrosRequester.RemoveElementByID(parametro.Id, true, true, parametro.Elemento.IdProyecto, getUserId());
             return RedirectToAction("Catalog", new { id = parametro.IdElemento });
         }
 
