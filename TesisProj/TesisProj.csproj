@@ -231,6 +231,7 @@
     <Compile Include="Areas\MonteCarlo\Models\MetodoMonteCarlo.cs" />
     <Compile Include="Areas\MonteCarlo\MonteCarloAreaRegistration.cs" />
     <Compile Include="Areas\Plantilla\Controllers\AnonPlantillaController.cs" />
+    <Compile Include="Areas\Plantilla\Controllers\ConstanteController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\PlantillaOperacionController.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Areas\Plantilla\Controllers\TipoElementoController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoFormulaController.cs" />
     <Compile Include="Areas\Plantilla\Controllers\TipoDatoController.cs" />
+    <Compile Include="Areas\Plantilla\Models\Constante.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaElemento.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaFormula.cs" />
     <Compile Include="Areas\Plantilla\Models\PlantillaOperacion.cs" />
@@ -732,6 +734,9 @@
     <Content Include="Areas\CompararProyecto\Views\CompararVersiones\_GraficoVanF.cshtml" />
     <Content Include="Areas\Plantilla\Views\AnonPlantilla\EditProyecto.cshtml" />
     <Content Include="Areas\Plantilla\Views\AnonPlantilla\EditElemento.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Constante\Index.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Constante\Edit.cshtml" />
+    <Content Include="Areas\Plantilla\Views\Constante\Create.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />

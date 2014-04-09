@@ -146,6 +146,13 @@
             <div>
                 @Html.ListBox("FuncionesList", ViewBag.FuncionesList as SelectList, new { @Size = 5, @class="Chooser" })
             </div>
+            
+            <div class="editor-label">
+                @Html.Label("Constantes")
+            </div>
+            <div>
+                @Html.ListBox("ConstantesList", ViewBag.ConstantesList as SelectList, new { @Size = 5, @class="Chooser" })
+            </div>
         </div>
     </div>
     @Html.HiddenFor(model => model.Id)

@@ -53,6 +53,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre");
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
+            ViewBag.ConstantesList = new SelectList(db.Constantes.OrderBy(c => c.Nombre), "Valor", "Nombre");
             ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == idPlantilla).OrderBy(o => o.Nombre).ToList(), "Referencia", "ListName");
             ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == idPlantilla).OrderBy(f => f.Secuencia).ToList(), "Referencia", "ListName");
 
@@ -89,6 +90,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoDato);
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
+            ViewBag.ConstantesList = new SelectList(db.Constantes.OrderBy(c => c.Nombre), "Valor", "Nombre");
             ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "ListName");
             ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaformula.IdPlantillaElemento && plantillaformula.Secuencia > f.Secuencia).OrderBy(f => f.Secuencia).ToList(), "Referencia", "ListName");
 
@@ -115,6 +117,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoDato);
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
+            ViewBag.ConstantesList = new SelectList(db.Constantes.OrderBy(c => c.Nombre), "Valor", "Nombre");
             ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "ListName");
             ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaformula.IdPlantillaElemento && plantillaformula.Secuencia > f.Secuencia).OrderBy(f => f.Secuencia).ToList(), "Referencia", "ListName");
 
@@ -143,6 +146,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
             ViewBag.IdTipoDato = new SelectList(db.TipoDatos.OrderBy(t => t.Nombre), "Id", "Nombre", plantillaformula.IdTipoDato);
             ViewBag.GlobalList = new SelectList(Generics.VariablesGlobales, "Value", "Text");
             ViewBag.FuncionesList = new SelectList(Generics.FormulasGlobales, "Value", "Text");
+            ViewBag.ConstantesList = new SelectList(db.Constantes.OrderBy(c => c.Nombre), "Valor", "Nombre");
             ViewBag.ListParametros = new SelectList(db.PlantillaParametros.Where(p => p.IdPlantillaElemento == plantillaformula.IdPlantillaElemento).OrderBy(o => o.Nombre).ToList(), "Referencia", "ListName");
             ViewBag.ListFormulas = new SelectList(db.PlantillaFormulas.Where(f => f.IdPlantillaElemento == plantillaformula.IdPlantillaElemento && plantillaformula.Secuencia > f.Secuencia).OrderBy(f => f.Secuencia).ToList(), "Referencia", "ListName");
 

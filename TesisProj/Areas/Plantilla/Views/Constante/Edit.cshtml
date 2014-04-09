@@ -1,11 +1,12 @@
-﻿@model TesisProj.Areas.Plantilla.Models.TipoDato
+﻿@model TesisProj.Areas.Plantilla.Models.Constante
 
 @{
-    ViewBag.Title = "Tipos de dato";
+    ViewBag.Title = "Constante";
+    double fValor = Model.Valor;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Editar tipo de dato</h2>
+<h2>Editar constante</h2>
 
 <p>
     <br />
@@ -19,7 +20,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Tipo de dato</legend>
+        <legend>Constante</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Nombre)
@@ -30,11 +31,11 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Formato)
+            @Html.LabelFor(model => model.Valor)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Formato)
-            @Html.ValidationMessageFor(model => model.Formato)
+            @Html.TextBoxFor(model => model.Valor, new { @Value = String.Format("{0:#,##0.##########}", fValor) })
+            @Html.ValidationMessageFor(model => model.Valor)
         </div>
 
         @Html.HiddenFor(model => model.Id)

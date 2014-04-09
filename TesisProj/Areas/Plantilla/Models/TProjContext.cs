@@ -20,6 +20,7 @@ namespace TesisProj.Models.Storage
         public DbSet<PlantillaSalidaOperacion> PlantillaSalidaOperaciones { get; set; }
         public DbSet<PlantillaSalidaProyecto> PlantillaSalidaProyectos { get; set; }
         public DbSet<PlantillaOperacion> PlantillaOperaciones { get; set; }
+        public DbSet<Constante> Constantes { get; set; }
 
         public DbRequester<TipoElemento> TipoElementosRequester { get; set; }
         public DbRequester<TipoFormula> TipoFormulasRequester { get; set; }
@@ -31,7 +32,7 @@ namespace TesisProj.Models.Storage
         public DbRequester<PlantillaSalidaOperacion> PlantillaSalidaOperacionesRequester { get; set; }
         public DbRequester<PlantillaSalidaProyecto> PlantillaSalidaProyectosRequester { get; set; }
         public DbRequester<PlantillaOperacion> PlantillaOperacionesRequester { get; set; }
-
+        public DbRequester<Constante> ConstantesRequester { get; set; }
         
 
         public void RegistrarTablasPlantilla()
@@ -46,11 +47,12 @@ namespace TesisProj.Models.Storage
             PlantillaSalidaOperacionesRequester = new DbRequester<PlantillaSalidaOperacion>(this, PlantillaSalidaOperaciones);
             PlantillaSalidaProyectosRequester = new DbRequester<PlantillaSalidaProyecto>(this, PlantillaSalidaProyectos);
             PlantillaOperacionesRequester = new DbRequester<PlantillaOperacion>(this, PlantillaOperaciones);
-            
+            ConstantesRequester = new DbRequester<Constante>(this, Constantes, Audits);
         }
 
         public void SeedPlantilla()
         {
+            SeedConstantes();
             SeedTipoElementos();
             SeedTipoFormulas();
             SeedTipoDatos();
@@ -61,6 +63,11 @@ namespace TesisProj.Models.Storage
             SeedPlantillaSalidaProyectos();
             SeedPlantillaOperaciones();
             SeedPlantillaSalidaOperaciones();
+        }
+
+        public void SeedConstantes()
+        {
+            ConstantesRequester.AddElement(new Constante { Id = 1, Nombre = "gr/oz", Valor = 31.1035 });
         }
 
         public void SeedTipoElementos()

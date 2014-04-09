@@ -33,12 +33,22 @@
             </ol>
         </td>
     </tr>
+    <tr>
+        <td>
+            <ol class="round">
+                <li class="three">
+                    <h5><a href="@Url.Action("Index", "Constante", new { Area = "Plantilla" })">Constantes</a></h5>
+                    Administrar las constantes que podrán ser usadas en fórmulas y operaciones
+                </li>
+            </ol>
+        </td>
+    </tr>
     @if (Roles.IsUserInRole("admin"))
     {
     <tr>
         <td>
             <ol class="round">
-             <li class="three">
+             <li class="four">
                     <h5><a href="@Url.Action("Index", "TipoElemento", new { Area = "Plantilla" })">Tipos de elemento</a></h5>
                     Administrar tipos de los elementos
                 </li>
@@ -48,7 +58,7 @@
     <tr>
         <td>
             <ol class="round">
-                <li class="four">
+                <li class="five">
                     <h5><a href="@Url.Action("Index", "TipoFormula", new { Area = "Plantilla" })">Tipo de fórmulas</a></h5>
                     Administrar tipos de las fórmulas
                 </li>
@@ -58,7 +68,7 @@
     <tr>
         <td>
             <ol class="round">
-                <li class="five">
+                <li class="six">
                     <h5><a href="@Url.Action("Index", "TipoDato", new { Area = "Plantilla" })">Tipos de dato</a></h5>
                     Administrar tipos de los parámetros
                 </li>
