@@ -37,7 +37,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             ViewBag.Proyecto = proyecto.Nombre;
             ViewBag.ProyectoId = proyecto.Id;
 
-            var operaciones = db.Operaciones.Include(o => o.TipoDato).Where(o => o.IdProyecto == proyecto.Id); 
+            var operaciones = db.Operaciones.Include(o => o.TipoDato).Where(o => o.IdProyecto == proyecto.Id).OrderBy(o => o.Secuencia); 
             return View(operaciones.ToList());
         }
 

@@ -153,7 +153,7 @@ namespace TesisProj.Areas.Modelo.Models
 
                     if (i >= this.valPeriodoInicial && i <= this.valPeriodoFinal)
                     {
-                        if ((this.Cadena.StartsWith("Tir(") || (this.Cadena.StartsWith("Van(")) && this.Cadena.EndsWith(")")))
+                        if ((this.Cadena.StartsWith("Tir(") || this.Cadena.StartsWith("Van(") || this.Cadena.StartsWith("Tri(")) && this.Cadena.EndsWith(")"))
                         {
                             valor = Generics.ComplexParse(this.Cadena, operaciones);
                         }

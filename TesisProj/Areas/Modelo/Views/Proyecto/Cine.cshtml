@@ -9,6 +9,7 @@
     bool IsRevisor = ViewBag.IsRevisor;
     DateTime LastCalculated = ViewBag.LastCalculated;
     DateTime LastModified = ViewBag.LastModified;
+    bool showPopup = LastModified > LastCalculated;
 }
 
 <h2>Resultados de @ViewBag.Proyecto</h2>
@@ -62,7 +63,7 @@
             @Html.DisplayFor(modelItem => item.Secuencia)
         </td>
         <td>
-            @Html.ActionLink("Ver", "Pelicula", new { id = item.Id }) 
+            @Html.ActionLink("Ver", "Pelicula", new { id = item.Id }, new { onclick = "return ShowConfirm()" }) 
             
             @if(!IsRevisor) {
                 @Html.Raw(" | ") @Html.ActionLink("Asociar operaciones", "Assoc", new { id = item.Id })
@@ -100,6 +101,15 @@
 
     function CopyConfirm() {
         if (confirm("¿Está seguro que desea copiar el registro?"))
+            return true;
+        else
+            return false;
+    }
+
+    function ShowConfirm() {
+        var showPopup = "@showPopup";
+        if(showPopup == "False") return;
+        if (confirm("El proyecto ha sido modificado desde la última vez que se calcularon los resultados. ¿Está seguro que desea ver resultados desactualizados? Apretar el botón calcular para verlo de nuevo."))
             return true;
         else
             return false;

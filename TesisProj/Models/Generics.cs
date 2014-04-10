@@ -11,7 +11,7 @@ namespace TesisProj.Models
 {
     public class Generics
     {
-        public static string[] Reservadas = { "Horizonte", "PeriodosPreOperativos", "PeriodosCierre", "RiesgoPais", "RiesgoProyecto", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van" };
+        public static string[] Reservadas = { "Horizonte", "PeriodosPreOperativos", "PeriodosCierre", "Amortizacion", "Intereses", "Cuota", "DepreciacionLineal", "DepreciacionAcelerada", "ValorResidual", "Periodo", "Tir", "Van", "Tri" };
         
         public static List<SelectListItem> VariablesGlobales = new List<SelectListItem>(){
                 new SelectListItem { Text = "Horizonte", Value = "Horizonte" },
@@ -30,7 +30,8 @@ namespace TesisProj.Models
 
         public static List<SelectListItem> OperacionesGlobales = new List<SelectListItem>(){
                 new SelectListItem { Text = "Tasa interna de retorno", Value = "Tir(saldo))" },
-                new SelectListItem { Text = "Valor actual neto", Value = "Van(tasa, saldo)" }
+                new SelectListItem { Text = "Valor actual neto", Value = "Van(tasa, saldo)" },
+                new SelectListItem { Text = "Tiempo de retorno de la inversión", Value = "Tri(tasa, saldo)" }
             };
 
         public static double Ppmt(double i, double p, double N, double V)
@@ -73,6 +74,19 @@ namespace TesisProj.Models
         public static double Irr(double[] saldo)
         {
             return Financial.IRR(ref saldo);
+        }
+
+        public static double IRT(double rate, double[] saldo)
+        {
+            double inpv = 0;
+
+            for (int i = 0; i < saldo.Length; i++)
+            {
+                inpv = i == 0? saldo[0] : saldo[0] + Npv(rate, saldo.Take(i + 1).Skip(1).ToArray());
+                if (inpv >= 0) return i + 1;
+            }
+
+            return -1;
         }
 
         public static bool Validar(string cadena, MathParserNet.Parser parser)
@@ -130,6 +144,15 @@ namespace TesisProj.Models
                     ret = saldo[0] + Npv(k, saldo.Skip(1).ToArray());
                 }
 
+                if (f.Equals("Tri"))
+                {
+                    string[] parametros = toTest.Split(',');
+                    List<double> saldo = operaciones.FirstOrDefault(o => o.Referencia == parametros[1]).Valores;
+                    double k = operaciones.FirstOrDefault(o => o.Referencia == parametros[0]).Valores[0];
+
+                    ret = IRT(k, saldo.ToArray());
+                }
+
                 if (f.Equals("Tir"))
                 {
                     List<double> saldo = operaciones.FirstOrDefault(o => o.Referencia == toTest).Valores;
@@ -154,6 +177,15 @@ namespace TesisProj.Models
                 toTest = toTest.Substring(0, toTest.Length - 1);
 
                 if (f.Equals("Van"))
+                {
+                    string[] parametros = toTest.Split(',');
+                    bool saldo = operaciones.Any(o => o.Referencia == parametros[1]);
+                    bool k = operaciones.Any(o => o.Referencia == parametros[0]);
+                    bool num = parametros.Count() == 2;
+                    test = (saldo && k && num);
+                }
+
+                if (f.Equals("Tri"))
                 {
                     string[] parametros = toTest.Split(',');
                     bool saldo = operaciones.Any(o => o.Referencia == parametros[1]);
@@ -187,6 +219,15 @@ namespace TesisProj.Models
                 toTest = toTest.Substring(0, toTest.Length - 1);
 
                 if (f.Equals("Van"))
+                {
+                    string[] parametros = toTest.Split(',');
+                    bool saldo = operaciones.Any(o => o.Referencia == parametros[1]);
+                    bool k = operaciones.Any(o => o.Referencia == parametros[0]);
+                    bool num = parametros.Count() == 2;
+                    test = (saldo && k && num);
+                }
+
+                if (f.Equals("Tri"))
                 {
                     string[] parametros = toTest.Split(',');
                     bool saldo = operaciones.Any(o => o.Referencia == parametros[1]);
