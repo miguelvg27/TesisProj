@@ -29,6 +29,9 @@
         <th>
             @Html.DisplayNameFor(model => model.IdUsuario)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comentarios)
+        </th>
         <th></th>
     </tr>
 
@@ -44,8 +47,13 @@
             @Html.DisplayFor(modelItem => item.Creador.UserName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Comentarios)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "EditVersion", new { id=item.Id }) | 
             @Html.ActionLink("Restaurar", "RestaurarVersion", new { id=item.Id }, new { onclick = " return RestoreConfirm()" }) | 
-            @Html.ActionLink("Duplicar", "DuplicarVersion", new { id = item.Id }, new { onclick = " return DuplicateConfirm()" })
+            @Html.ActionLink("Duplicar", "DuplicarVersion", new { id = item.Id }, new { onclick = " return DuplicateConfirm()" }) |
+            @Html.ActionLink("Eliminar", "DeleteVersion", new { id=item.Id }, new { onclick = " return DeleteConfirm()" }) 
         </td>
     </tr>
 }
@@ -76,6 +84,13 @@
 
     function DuplicateConfirm() {
         if (confirm("¿Está seguro que desea crear un nuevo proyecto?"))
+            return true;
+        else
+            return false;
+    }
+
+    function DeleteConfirm() {
+        if (confirm("¿Está seguro que desea eliminar la versión? No se podrá recuperar."))
             return true;
         else
             return false;

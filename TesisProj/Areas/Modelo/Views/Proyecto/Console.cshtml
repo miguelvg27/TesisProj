@@ -12,6 +12,12 @@
 
 <h2>Proyecto: @Model.Nombre</h2>
 
+<p>
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Index", "Proyecto", new { Area = "Modelo" })">
+  			<i class=" icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
+
 @if (IsCreador)
 {
     <table class="table table-hover table-striped table-bordered table-condensed">

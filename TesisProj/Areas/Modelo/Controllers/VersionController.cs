@@ -43,6 +43,48 @@ namespace TesisProj.Areas.Modelo.Controllers
         }
 
         // Permisos: Creador, Editor
+        // GET: /Modelo/Proyecto/EditVersion/5
+
+        public ActionResult EditVersion(int id = 0)
+        {
+            var version = db.DbVersions.Find(id);
+            if (version == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            // Check user
+            Proyecto proyecto = db.Proyectos.Find(version.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.AsNoTracking().FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            ViewBag.ProyectoId = proyecto.Id;
+            ViewBag.Proyecto = proyecto.Nombre;
+            return View(version);
+        }
+
+        // 
+        // POST: /Modelo/Proyecto/EditVersion/5
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditVersion(DbVersion dbversion)
+        {
+            if (ModelState.IsValid)
+            {
+                db.DbVersionsRequester.ModifyElement(dbversion);
+                return RedirectToAction("Origenes", new { id = dbversion.IdProyecto });
+            }
+
+            ViewBag.ProyectoId = dbversion.IdProyecto;
+            ViewBag.Proyecto = db.Proyectos.Find(dbversion.IdProyecto).Nombre;
+            return View(dbversion);
+        }
+
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/GuardarVersion/5
 
         public ActionResult GuardarVersion(int id = 0)
@@ -95,12 +137,12 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             // Save version register
 
-            db.DbVersionsRequester.AddElement(new DbVersion { IdProyecto = proyecto.Id, IdUsuario = getUserId(), Data = memStream.ToArray(), Extension = "xml", Mime = "application/xml", Fecha = DateTime.Now, Version = proyecto.Version });
+            int idVersion = db.DbVersionsRequester.AddElement(new DbVersion { IdProyecto = proyecto.Id, IdUsuario = getUserId(), Data = memStream.ToArray(), Extension = "xml", Mime = "application/xml", Fecha = DateTime.Now, Version = proyecto.Version, Comentarios = proyecto.Nombre + ": Versión " + proyecto.Version });
             db.Configuration.ProxyCreationEnabled = true;
 
             // Fin: Zona crítica
 
-            return RedirectToAction("Origenes", new { id = proyecto.Id });
+            return RedirectToAction("EditVersion", new { id = idVersion });
         }
 
         // Permisos: Creador, Editor
@@ -177,7 +219,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             // Save current version
 
-            db.DbVersionsRequester.AddElement(new DbVersion { IdProyecto = proyecto.Id, IdUsuario = getUserId(), Data = memStream.ToArray(), Extension = "xml", Mime = "application/xml", Fecha = DateTime.Now, Version = restversion });
+            db.DbVersionsRequester.AddElement(new DbVersion { IdProyecto = proyecto.Id, IdUsuario = getUserId(), Data = memStream.ToArray(), Extension = "xml", Mime = "application/xml", Fecha = DateTime.Now, Version = restversion, Comentarios = proyecto.Nombre + ": Versión " + proyecto.Version + " - Antes de restaurar." });
 
             // Wipe the project related entities
 
@@ -355,6 +397,26 @@ namespace TesisProj.Areas.Modelo.Controllers
                 db.Configuration.ProxyCreationEnabled = true;
             }
 
+            return RedirectToAction("Origenes", new { id = version.IdProyecto });
+        }
+
+        public ActionResult DeleteVersion(int id = 0)
+        {
+            var version = db.DbVersions.Find(id);
+            if (version == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            // Check user
+            Proyecto proyecto = db.Proyectos.Find(version.IdProyecto); int currentId = getUserId();
+            Colaborador current = db.Colaboradores.AsNoTracking().FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            db.DbVersionsRequester.RemoveElementByID(version.Id);
             return RedirectToAction("Origenes", new { id = version.IdProyecto });
         }
     }

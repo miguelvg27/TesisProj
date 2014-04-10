@@ -1,0 +1,63 @@
+﻿@model TesisProj.Areas.Modelo.Models.DbVersion
+
+@{
+    ViewBag.Title = "Versiones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Editar versión de @ViewBag.Proyecto</h2>
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Origenes", new { id = ViewBag.ProyectoId })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a><br /><br />
+</p>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Version</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Version)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Version, new { @Readonly = "readonly" })
+            @Html.ValidationMessageFor(model => model.Version)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comentarios)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Comentarios)
+            @Html.ValidationMessageFor(model => model.Version)
+        </div>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IdProyecto)
+        @Html.HiddenFor(model => model.Fecha)
+        @Html.HiddenFor(model => model.Data)
+        @Html.HiddenFor(model => model.Extension)
+        @Html.HiddenFor(model => model.Mime)
+        @Html.HiddenFor(model => model.IdUsuario)
+        
+
+        <p>
+            <input type="submit" value="Guardar" />
+        </p>
+    </fieldset>
+}
+
+<p>
+    <br />
+    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Origenes", new { id = ViewBag.ProyectoId })"">
+        <i class="icon-arrow-left icon-white"></i>Regresar
+    </a>
+</p>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

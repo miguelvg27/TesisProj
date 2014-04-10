@@ -765,6 +765,7 @@
     <Content Include="Areas\Plantilla\Views\Constante\Index.cshtml" />
     <Content Include="Areas\Plantilla\Views\Constante\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\Constante\Create.cshtml" />
+    <Content Include="Areas\Modelo\Views\Proyecto\EditVersion.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />

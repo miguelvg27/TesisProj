@@ -32,6 +32,10 @@ namespace TesisProj.Areas.Modelo.Models
         [ForeignKey("IdUsuario")]
         public virtual UserProfile Creador { get; set; }
 
+        [DisplayName("Comentarios")]
+        [StringLength(1024, MinimumLength = 0, ErrorMessage = "El campo {0} debe tener un máximo de {1} carácteres.")]
+        public string Comentarios { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Fecha de creación")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm:ss}", ApplyFormatInEditMode = true)]
