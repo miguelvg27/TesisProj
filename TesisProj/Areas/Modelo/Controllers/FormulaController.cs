@@ -62,6 +62,14 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
+            bool IsCreador = current.Creador;
+            bool IsEditor = !current.Creador && !current.SoloLectura;
+            bool IsRevisor = current.SoloLectura;
+
+            ViewBag.IsCreador = IsCreador;
+            ViewBag.IsEditor = IsEditor;
+            ViewBag.IsRevisor = IsRevisor;
+
             var formulas = db.Formulas.Include(f => f.TipoDato).Where(s => s.IdElemento == elemento.Id).OrderBy(s => s.Secuencia).ToList();
             var parametros = db.Parametros.Include(p => p.Celdas).Where(p => p.IdElemento == elemento.Id).ToList();
             var salidas = new List<Formula>();
@@ -71,14 +79,6 @@ namespace TesisProj.Areas.Modelo.Controllers
                 formula.Evaluar(proyecto.Horizonte, proyecto.PeriodosPreOp, proyecto.PeriodosCierre, salidas, parametros);
                 salidas.Add(formula);
             }
-
-            bool IsCreador = current.Creador;
-            bool IsEditor = !current.Creador && !current.SoloLectura;
-            bool IsRevisor = current.SoloLectura;
-
-            ViewBag.IsCreador = IsCreador;
-            ViewBag.IsEditor = IsEditor;
-            ViewBag.IsRevisor = IsRevisor;
 
             ViewBag.IdElemento = elemento.Id;
             ViewBag.Proyecto = proyecto.Nombre;

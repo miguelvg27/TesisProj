@@ -93,7 +93,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 }
                 //Aca las celdas para los elementos y sus parametros ya estan simuladoas con un modelo
                 //Debo Almacenar los resultados que me da Miguel en cada simulacion
-                SimAns r = MetodoMiguel(proy, Parametrossensibles);
+                //SimAns r = MetodoMiguel(proy, Parametrossensibles);
+                SimAns r = MetodoMiguel(proy, proy.Elementos);
                 vanE.Add(new Result { ValorObtenidoD = r.VanE});
                 vanF.Add(new Result { ValorObtenidoD = r.VanF });
                 tirE.Add(new Result { ValorObtenidoD = r.TirE * 100 });
@@ -213,7 +214,22 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return Convert.ToInt32(Math.Round(minimo + n * ((maximo - minimo) / TotalIntrervalo), 1));
         }
 
-        private SimAns MetodoMiguel(Proyecto proy, List<Parametro> parametros)
+        //private SimAns MetodoMiguel(Proyecto proy, List<Parametro> parametros)
+        //{
+        //    context.Configuration.ProxyCreationEnabled = false;
+
+        //    int horizonte = proy.Horizonte;
+        //    int preoperativos = proy.PeriodosPreOp;
+        //    int cierre = proy.PeriodosCierre;
+
+        //    var operaciones = context.Operaciones.Where(o => o.IdProyecto == proy.Id).OrderBy(s => s.Secuencia).ToList();
+        //    var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proy.Id).ToList();
+        //    var tipoformulas = context.TipoFormulas.ToList();
+
+        //    return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
+        //}
+
+        private SimAns MetodoMiguel(Proyecto proy, List<Elemento> elementos)
         {
             context.Configuration.ProxyCreationEnabled = false;
 
@@ -222,10 +238,11 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             int cierre = proy.PeriodosCierre;
 
             var operaciones = context.Operaciones.Where(o => o.IdProyecto == proy.Id).OrderBy(s => s.Secuencia).ToList();
-            var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proy.Id).ToList();
+            //var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proy.Id).ToList();
             var tipoformulas = context.TipoFormulas.ToList();
 
-            return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
+            //return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
+            return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, true);
         }
 
         public  List<Celda> RetornarCeldas(ModeloSimulacion modelo, int cantidad, Celda celda)

@@ -6,7 +6,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int Horizonte = ViewBag.Horizonte;
     int Inicio = ViewBag.Inicio > 0 ? ViewBag.Inicio : 1;
-    string format;
 }
 
 <h2>@ViewBag.Salida (@ViewBag.Proyecto)</h2>
@@ -43,7 +42,7 @@
             @for (int periodo = Inicio; (periodo <= salida.Valores.Count) && (periodo <= Horizonte); periodo++)
             {
                 <td style="text-align:right;">
-                    @String.Format("{0:#,##0}", salida.Valores[periodo - 1])
+                    @String.Format(salida.TipoDato.Formato, salida.Valores[periodo - 1])
                 </td>
             }
         </tr>
@@ -80,15 +79,7 @@
                 @salida.Nombre
             </td>
             <td>
-                @if (salida.Referencia.Equals("TIRE") || salida.Referencia.Equals("TIRF") || salida.Referencia.Equals("TIRB") || salida.Referencia.Equals("KE") || salida.Referencia.Equals("KF"))
-                {
-                    format = "{0:P2}";
-                }
-                else
-                {
-                    format = "{0:#,##0}";
-                }
-                @String.Format(format, salida.Valores.Count > 0 ? salida.Valores[0] : 0)
+                @String.Format(salida.TipoDato.Formato, salida.Valores.Count > 0 ? salida.Valores[0] : 0)
             </td>
         </tr>
     }

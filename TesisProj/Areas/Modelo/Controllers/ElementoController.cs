@@ -148,7 +148,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
             
             // Check user
-            Proyecto proyecto = db.Proyectos.Find(elemento.Id); int currentId = getUserId();
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
             Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
             if (current == null || current.SoloLectura)
             {
@@ -195,7 +195,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             // Check user
-            Proyecto proyecto = db.Proyectos.Find(elemento.Id); int currentId = getUserId();
+            Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
             Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
             if (current == null || current.SoloLectura)
             {

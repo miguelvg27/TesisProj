@@ -63,11 +63,13 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 int cierre = proyecto.PeriodosCierre;
 
                 var operaciones = context.Operaciones.Where(o => o.IdProyecto == proyecto.Id).OrderBy(s => s.Secuencia).ToList();
-                var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
-                var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == proyecto.Id).ToList();
+                //var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
+                //var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == proyecto.Id).ToList();
+                var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == proyecto.Id).ToList();
                 var tipoformulas = context.TipoFormulas.ToList();
 
-                SimAns resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
+                SimAns resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, false);
+                //SimAns resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
 
                 graficosVanE.Add(Asignar(proyecto.Id, resultado.VanE));
                 graficosVanF.Add(Asignar(proyecto.Id, resultado.VanF));

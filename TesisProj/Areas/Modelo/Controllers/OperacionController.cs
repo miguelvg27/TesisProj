@@ -15,7 +15,7 @@ namespace TesisProj.Areas.Modelo.Controllers
     public partial class ProyectoController : Controller
     {
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Operacion/Corolario/5
 
         public ActionResult Corolario(int id = 0)
@@ -41,7 +41,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(operaciones.ToList());
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Operacion/Create?idProyecto=5
 
         public ActionResult CreateOperacion(int idProyecto = 0)
@@ -81,7 +81,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View();
         }
 
-        //
+        // Permisos: Creador, Editor
         // POST: /Modelo/Operacion/Create
 
         [HttpPost]
@@ -109,7 +109,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(operacion);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Operacion/Edit/5
 
         public ActionResult EditOperacion(int id = 0)
@@ -140,7 +140,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(operacion);
         }
 
-        //
+        // Permisos: Creador, Editor
         // POST: /Modelo/Operacion/Edit/5
 
         [HttpPost]
@@ -166,7 +166,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(operacion);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Operacion/Delete/5
 
         public ActionResult DeleteOperacion(int id = 0)

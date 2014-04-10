@@ -87,7 +87,7 @@ namespace TesisProj.Areas.Modelo.Models
         [NotMapped]
         public int valPeriodoFinal { get; set; }
 
-        public String ListName { get { return Nombre + "(" + Referencia + ")"; } }
+        public String ListName { get { return Nombre + " (" + Referencia + ")"; } }
 
         public Operacion() { }
 
@@ -117,7 +117,7 @@ namespace TesisProj.Areas.Modelo.Models
                 "Cadena = " + this.Cadena;
         }
 
-        public List<double> Evaluar(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<TipoFormula> tipoformulas, List<Formula> formulas, List<Parametro> parametros)
+        public List<double> Evaluar(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<TipoFormula> tipoformulas)
         {
             List<double> resultado = new List<double>();
 
@@ -142,7 +142,7 @@ namespace TesisProj.Areas.Modelo.Models
 
                     foreach (Operacion operacion in operaciones)
                     {
-                        parser.AddVariable(operacion.Referencia, operacion.Valores[i - 1]);
+                        parser.AddVariable(operacion.Referencia, (i >= operacion.valPeriodoInicial && i <= operacion.valPeriodoFinal) ? operacion.Valores[i - 1] : 0);
                     }
 
                     this.valPeriodoInicial = parser.SimplifyInt(this.PeriodoInicial, MathParserNet.Parser.RoundingMethods.Round);
