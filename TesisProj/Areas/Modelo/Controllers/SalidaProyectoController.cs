@@ -57,13 +57,9 @@ namespace TesisProj.Areas.Modelo.Controllers
         // GET: /Modelo/Proyecto/Calcular/5
         public ActionResult Calcular(int id = 0)
         {
-
-            //  Comienza zona crítica 
-            db.Configuration.ProxyCreationEnabled = false;
             Proyecto proyecto = db.Proyectos.Find(id);
             if (proyecto == null)
             {
-                db.Configuration.ProxyCreationEnabled = true;
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
@@ -72,79 +68,14 @@ namespace TesisProj.Areas.Modelo.Controllers
             Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
             if (current == null)
             {
-                db.Configuration.ProxyCreationEnabled = true;
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            int horizonte = proyecto.Horizonte;
-            int preoperativos = proyecto.PeriodosPreOp;
-            int cierre = proyecto.PeriodosCierre;
-
-            var operaciones = db.Operaciones.Where(o => o.IdProyecto == id).OrderBy(s => s.Secuencia).ToList();
-
-            var elementos = db.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == id).ToList();
-            var tipoformulas = db.TipoFormulas.ToList();
-
-            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas);
-            db.Configuration.ProxyCreationEnabled = true;
-
-            //  Finaliza zona crítica
-
-            foreach (Operacion operacion in operaciones)
-            {
-                operacion.strValores = ArrayToString(operacion);
-                db.OperacionesRequester.ModifyElement(operacion);
-            }
-
+            CalcularResultados(id);
             proyecto.Calculado = DateTime.Now;
             db.ProyectosRequester.ModifyElement(proyecto);
 
             return RedirectToAction("Cine", new { id = id });
-        }
-
-        // Permisos: Creador, Editor, Revisor
-        // horizonte: Horizonte del proyecto
-        // preoperativos: Períodos preoperativos del proyecto
-        // cierre: Períodos de cierre del proyecto
-        // operaciones: Operaciones del proyecto ordenadas por secuencia
-        // parámetros: Parámetros de todos los elementos del proyecto
-        // formulas: Fórmulas de todos los elementos del proyecto
-        // tipoformulas: Arreglo de todos los tipo de fórmula
-        // simular: Flag de simulación
-
-        public static List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool simular = false)
-        {
-            foreach (TipoFormula tipoformula in tipoformulas)
-            {
-                tipoformula.Valores = new double[horizonte];
-                Array.Clear(tipoformula.Valores, 0, horizonte);
-            }
-            
-            foreach (Elemento elemento in elementos)
-            {
-                var refFormulas = new List<Formula>();
-                var valFormulas = elemento.Formulas;
-                var refParametros = elemento.Parametros;
-
-                foreach (Formula formula in valFormulas)
-                {
-                    formula.Evaluar(horizonte, preoperativos, cierre, refFormulas, refParametros, simular);
-                    refFormulas.Add(formula);
-
-                    //  Sumo los elementos
-                    var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
-                    tipoformula.Valores = tipoformula.Valores.Zip(formula.Valores, (x, y) => x + y).ToArray();
-                }
-            }
-
-            var refOperaciones = new List<Operacion>();
-            foreach (Operacion operacion in operaciones)
-            {
-                operacion.Evaluar(horizonte, preoperativos, cierre, refOperaciones, tipoformulas);
-                refOperaciones.Add(operacion);
-            }
-
-            return operaciones;
         }
 
         // Permisos: Creador, Editor, Revisor
@@ -167,6 +98,12 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             var exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion).Include(o => o.TipoDato).ToList();
+            if (exoperaciones.Any(o => o.strValores == null))
+            {
+                CalcularResultados(proyecto.Id);
+                proyecto.Calculado = DateTime.Now;
+                db.ProyectosRequester.ModifyElement(proyecto);
+            }
 
             ViewBag.IdProyecto = salida.IdProyecto;
             ViewBag.Proyecto = proyecto.Nombre;
@@ -176,7 +113,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             foreach(Operacion operacion in exoperaciones)
             {
-                operacion.Valores = operacion.strValores != null ? StringToArray(operacion) : new List<double>();
+                operacion.Valores = StringToArray(operacion);
             }
 
             return View(exoperaciones.ToList());
@@ -331,18 +268,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(salidaproyecto);
         }  
 
-        private string ArrayToString(Operacion operacion)
-        {
-            string str = String.Join(",", operacion.Valores.Select(p => p.ToString()).ToArray());
-            return str;
-        }
-
-        private List<double> StringToArray(Operacion operacion)
-        {
-            List<double> arr = operacion.strValores.Split(',').Select(s => double.Parse(s)).ToList();
-            return arr;
-        }
-
         // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/DeleteSalidaProyecto/5
 
@@ -409,6 +334,90 @@ namespace TesisProj.Areas.Modelo.Controllers
             }
 
             return RedirectToAction("EditSalidaProyecto", new { id = idCopia });
+        }
+
+        private string ArrayToString(Operacion operacion)
+        {
+            string str = String.Join(",", operacion.Valores.Select(p => p.ToString()).ToArray());
+            return str;
+        }
+
+        private List<double> StringToArray(Operacion operacion)
+        {
+            List<double> arr = operacion.strValores.Split(',').Select(s => double.Parse(s)).ToList();
+            return arr;
+        }
+
+        private void CalcularResultados(int id)
+        {
+            Proyecto proyecto = db.Proyectos.Find(id);
+            if (proyecto == null)
+            {
+                db.Configuration.ProxyCreationEnabled = true;
+                return;
+            }
+
+            int horizonte = proyecto.Horizonte;
+            int preoperativos = proyecto.PeriodosPreOp;
+            int cierre = proyecto.PeriodosCierre;
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == id).ToList();
+            var elementos = db.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == id).ToList();
+            var tipoformulas = db.TipoFormulas.ToList();
+
+            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas);
+
+            foreach (Operacion operacion in operaciones)
+            {
+                operacion.strValores = ArrayToString(operacion);
+                db.OperacionesRequester.ModifyElement(operacion);
+            }
+
+            return;
+        }
+
+        // Permisos: Creador, Editor, Revisor
+        // horizonte: Horizonte del proyecto
+        // preoperativos: Períodos preoperativos del proyecto
+        // cierre: Períodos de cierre del proyecto
+        // operaciones: Operaciones del proyecto
+        // elementos: Elementos del proyecto con los parámetros y fórmulas incluidos
+        // tipoformulas: Arreglo de todos los tipo de fórmula
+        // simular: Flag de simulación
+
+        public static List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool simular = false)
+        {
+            foreach (TipoFormula tipoformula in tipoformulas)
+            {
+                tipoformula.Valores = new double[horizonte];
+                Array.Clear(tipoformula.Valores, 0, horizonte);
+            }
+
+            foreach (Elemento elemento in elementos)
+            {
+                var refFormulas = new List<Formula>();
+                var valFormulas = elemento.Formulas.OrderBy(f => f.Secuencia);
+                var refParametros = elemento.Parametros;
+
+                foreach (Formula formula in valFormulas)
+                {
+                    formula.Evaluar(horizonte, preoperativos, cierre, refFormulas, refParametros, simular);
+                    refFormulas.Add(formula);
+
+                    //  Sumo los elementos
+                    var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
+                    tipoformula.Valores = tipoformula.Valores.Zip(formula.Valores, (x, y) => x + y).ToArray();
+                }
+            }
+
+            var refOperaciones = new List<Operacion>();
+            var valOperaciones = operaciones.OrderBy(o => o.Secuencia);
+            foreach (Operacion operacion in operaciones)
+            {
+                operacion.Evaluar(horizonte, preoperativos, cierre, refOperaciones, tipoformulas);
+                refOperaciones.Add(operacion);
+            }
+
+            return operaciones;
         }
     }
 }

@@ -53,12 +53,11 @@ namespace TesisProj.Areas.Modelo.Models
 
         public string XML_ModeloAsignado { get; set; }
 
+        [XmlIgnore]
         [NotMapped]
         public virtual List<Celda> CeldasSensibles { get; set; }
 
-        public Parametro()
-        {
-        }
+        public Parametro() { }
 
         public Parametro(PlantillaParametro plantilla, int idElemento)
         {

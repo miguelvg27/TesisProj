@@ -47,9 +47,7 @@ namespace TesisProj.Areas.Modelo.Models
         [InverseProperty("Salida")]
         public List<SalidaOperacion> Operaciones { get; set; }
 
-        public SalidaProyecto()
-        {
-        }
+        public SalidaProyecto() { }
 
         public SalidaProyecto(PlantillaSalidaProyecto plantilla, int IdProyecto)
         {

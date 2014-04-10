@@ -36,6 +36,7 @@ namespace TesisProj.Areas.Modelo.Models
         [ForeignKey("IdSalida")]
         public virtual SalidaProyecto Salida { get; set; }
 
+        [XmlIgnore]
         public String Nombre { get { return Operacion.Nombre; } }
 
         public override string LogValues()

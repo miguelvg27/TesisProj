@@ -81,7 +81,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View();
         }
 
-        // Permisos: Creador, Editor
+        // 
         // POST: /Modelo/Operacion/Create
 
         [HttpPost]
@@ -140,7 +140,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(operacion);
         }
 
-        // Permisos: Creador, Editor
+        // 
         // POST: /Modelo/Operacion/Edit/5
 
         [HttpPost]
@@ -193,12 +193,6 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             db.OperacionesRequester.RemoveElementByID(operacion.Id, true, true, operacion.IdProyecto, getUserId());
             return RedirectToAction("Corolario", new { id = operacion.IdProyecto });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }

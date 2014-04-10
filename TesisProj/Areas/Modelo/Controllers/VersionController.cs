@@ -67,9 +67,12 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
+            CalcularResultados(id);
+
             // Set new version
 
             proyecto.Version = proyecto.Version + 1;
+            proyecto.Calculado = DateTime.Now;
             db.ProyectosRequester.ModifyElement(proyecto, true, proyecto.Id, getUserId());
 
             // Get project (no proxy)
@@ -250,7 +253,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View();
         }
 
-        // Permisos: Anon
+        // 
         // POST: /Modelo/Proyecto/LoadXml
 
         [HttpPost]
@@ -270,6 +273,8 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                 db.Configuration.ValidateOnSaveEnabled = false;
                 db.ProyectosRequester.AddElement(proyecto_dirty);
+                db.ColaboradoresRequester.AddElement(new Colaborador { IdProyecto = proyecto_dirty.Id, Creador = true, SoloLectura = false, IdUsuario = getUserId() });
+                db.AuditsRequester.AddElement(new Audit { IdProyecto = proyecto_dirty.Id, Fecha = DateTime.Now, IdUsuario = getUserId(), Transaccion = "Crear", TipoObjeto = proyecto_dirty.GetType().ToString(), Original = proyecto_dirty.LogValues() });
                 db.Configuration.ValidateOnSaveEnabled = true;
                 return RedirectToAction("Console", new { id = proyecto_dirty.Id });
 

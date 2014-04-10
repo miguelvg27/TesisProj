@@ -83,7 +83,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(celdas);
         }
 
-        // Permisos: Creador, Editor
+        // 
         // POST: /Modelo/Proyecto/PutParametros
         
         [HttpPost]
@@ -166,7 +166,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(celdas.ToList());
         }
 
-        //  Permisos: Creador, Editor
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/SetParametros/5
 
         public ActionResult SetParametros(int id = 0)
@@ -180,7 +180,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             // Get project and check user
             Proyecto proyecto = db.Proyectos.Find(elemento.IdProyecto); int currentId = getUserId();
             Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
-            if (current == null)
+            if (current == null || current.SoloLectura)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
@@ -198,8 +198,8 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(celdas.ToList());
         }
 
-        // Permisos: Creador, Editor
-        // GET: /Modelo/Proyecto/SetParametros
+        // 
+        // POST: /Modelo/Proyecto/SetParametros
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -326,7 +326,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(parametro);
         }
 
-        // Permisos: Creador, Editor
+        // 
         // POST: /Modelo/Proyecto/EditParametro
 
         [HttpPost]

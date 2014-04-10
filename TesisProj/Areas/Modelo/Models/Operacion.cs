@@ -87,6 +87,7 @@ namespace TesisProj.Areas.Modelo.Models
         [NotMapped]
         public int valPeriodoFinal { get; set; }
 
+        [XmlIgnore]
         public String ListName { get { return Nombre + " (" + Referencia + ")"; } }
 
         public Operacion() { }

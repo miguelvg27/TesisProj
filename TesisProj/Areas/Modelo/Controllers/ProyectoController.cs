@@ -18,49 +18,8 @@ namespace TesisProj.Areas.Modelo.Controllers
         private TProjContext db = new TProjContext();
         private int userId = 0;
 
-        public static SimAns simular(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool siSimular = true)
-        {
-            SimAns resultado = new SimAns { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
-
-            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, siSimular);
-
-            Operacion tire = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
-            Operacion tirf = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
-            Operacion vane = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
-            Operacion vanf = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
-
-            try
-            {
-                resultado.TirE = tire == null ? 0 : tire.Valores[0];
-                resultado.TirF = tirf == null ? 0 : tirf.Valores[0];
-                resultado.VanE = vane == null ? 0 : vane.Valores[0];
-                resultado.VanF = vanf == null ? 0 : vanf.Valores[0];
-            }
-            catch (Exception)
-            {
-            }
-        
-            return resultado;
-        }
-
-        //
+        // Permisos: Anon
         // GET: /Modelo/Proyecto/
-
-        private int getUserId()
-        {
-            if(userId < 1){
-                try
-                {
-                    userId = db.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-                }
-                catch (Exception)
-                {
-                    return 0;
-                }
-            }
-
-            return userId;
-        }
 
         public ActionResult Index()
         {
@@ -71,23 +30,28 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(proyectos.Union(colab).ToList());
         }
 
-        //
-        // GET: /Modelo/Console/5
+        // Permisos: Creador, Editor, Revisor
+        // GET: /Modelo/Proyecto/Console/5
 
         public ActionResult Console(int id = 0)
         {
-            Proyecto proyecto = db.Proyectos.Find(id);
+            Proyecto proyecto = db.Proyectos.Include(p => p.Creador).FirstOrDefault(p => p.Id == id);
             if (proyecto == null)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
-            proyecto.Creador = db.UserProfiles.Find(proyecto.IdCreador);
-            
-            int idUser = getUserId();
 
-            bool IsCreador = (idUser == proyecto.IdCreador);
-            bool IsEditor = IsCreador ? false : db.Colaboradores.Any(c => c.IdProyecto == proyecto.Id && c.IdUsuario == idUser && !c.SoloLectura);
-            bool IsRevisor = (IsCreador || IsEditor) ? false : true;
+            // Get project and check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            bool IsCreador = current.Creador;
+            bool IsEditor = !current.Creador && !current.SoloLectura;
+            bool IsRevisor = current.SoloLectura;
 
             ViewBag.IsCreador = IsCreador;
             ViewBag.IsEditor = IsEditor;
@@ -163,7 +127,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(proyecto);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/Edit/5
 
         public ActionResult Edit(int id = 0)
@@ -173,6 +137,15 @@ namespace TesisProj.Areas.Modelo.Controllers
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
+
+            // Get project and check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || current.SoloLectura)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
             ViewBag.IdCreador = new SelectList(db.UserProfiles.Where(u => u.UserId == proyecto.IdCreador), "UserId", "UserName", proyecto.IdCreador);
             ViewBag.PreHorizonte = proyecto.Horizonte;
             return View(proyecto);
@@ -191,7 +164,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                 if (PreHorizonte < proyecto.Horizonte)
                 {
-                    var parametros = db.Parametros.Include("Elemento").Where(p => p.Elemento.IdProyecto == proyecto.Id).ToList();
+                    var parametros = db.Parametros.Include(p => p.Elemento).Where(p => p.Elemento.IdProyecto == proyecto.Id).ToList();
                     foreach (Parametro parametro in parametros)
                     {
                         Celda celda = db.Celdas.Where(c => c.IdParametro == parametro.Id).OrderByDescending(c => c.Periodo).FirstOrDefault();
@@ -211,93 +184,137 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(proyecto);
         }
 
-        //
+        // Permisos: Creador
         // GET: /Modelo/Proyecto/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             Proyecto proyecto = db.Proyectos.Find(id);
+            if (proyecto == null)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+
+            // Get project and check user
+            int currentId = getUserId();
+            Colaborador current = db.Colaboradores.FirstOrDefault(c => c.IdUsuario == currentId && c.IdProyecto == proyecto.Id);
+            if (current == null || !current.Creador)
+            {
+                return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
+            }
+            
+            var colaboradores = db.Colaboradores.Where(c => c.IdProyecto == proyecto.Id).ToList();
+            foreach (Colaborador colaborador in colaboradores)
+            {
+                db.ColaboradoresRequester.RemoveElementByID(colaborador.Id);
+            }
+
+            var versions = db.DbVersions.Where(v => v.IdProyecto == proyecto.Id).ToList();
+            foreach (DbVersion version in versions)
+            {
+                db.DbVersionsRequester.RemoveElementByID(version.Id);
+            }
+
+            var audits = db.Audits.Where(a => a.IdProyecto == proyecto.Id).ToList();
+            foreach (Audit audit in audits)
+            {
+                db.AuditsRequester.RemoveElementByID(audit.Id);
+            }
+
+            var salidaoperaciones = db.SalidaOperaciones.Where(sxp => sxp.Operacion.IdProyecto == proyecto.Id).ToList();
+            foreach (SalidaOperacion salidaoperacion in salidaoperaciones)
+            {
+                db.SalidaOperacionesRequester.RemoveElementByID(salidaoperacion.Id);
+            }
+
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == proyecto.Id).ToList();
+            foreach (Operacion operacion in operaciones)
+            {
+                db.OperacionesRequester.RemoveElementByID(operacion.Id);
+            }
+
+            var salidas = db.SalidaProyectos.Where(s => s.IdProyecto == proyecto.Id).ToList();
+            foreach (SalidaProyecto salida in salidas)
+            {
+                db.SalidaProyectosRequester.RemoveElementByID(salida.Id);
+            }
+
+            var formulas = db.Formulas.Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
+            foreach (Formula formula in formulas)
+            {
+                db.FormulasRequester.RemoveElementByID(formula.Id);
+            }
+
+            var celdas = db.Celdas.Where(c => c.Parametro.Elemento.IdProyecto == proyecto.Id).ToList();
+            foreach (Celda celda in celdas)
+            {
+                db.CeldasRequester.RemoveElementByID(celda.Id);
+            }
+
+            var parametros = db.Parametros.Where(p => p.Elemento.IdProyecto == proyecto.Id).ToList();
+            foreach (Parametro parametro in parametros)
+            {
+                db.ParametrosRequester.RemoveElementByID(parametro.Id);
+            }
+
+            var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id).ToList();
+            foreach (Elemento elemento in elementos)
+            {
+                db.ElementosRequester.RemoveElementByID(elemento.Id);
+            }
+
+            db.ProyectosRequester.RemoveElementByID(id);
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+
+        public static SimAns simular(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool siSimular = true)
+        {
+            SimAns resultado = new SimAns { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
+
+            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, siSimular);
+
+            Operacion tire = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
+            Operacion tirf = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
+            Operacion vane = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
+            Operacion vanf = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
+
             try
             {
-                var colaboradores = db.Colaboradores.Where(c => c.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Colaborador colaborador in colaboradores)
-                {
-                    db.ColaboradoresRequester.RemoveElementByID(colaborador.Id);
-                }
-
-                var versions = db.DbVersions.Where(v => v.IdProyecto == proyecto.Id).ToList();
-
-                foreach (DbVersion version in versions)
-                {
-                    db.DbVersionsRequester.RemoveElementByID(version.Id);
-                }
-
-                var audits = db.Audits.Where(a => a.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Audit audit in audits)
-                {
-                    db.AuditsRequester.RemoveElementByID(audit.Id);
-                }
-
-                var salidaoperaciones = db.SalidaOperaciones.Where(sxp => sxp.Operacion.IdProyecto == proyecto.Id).ToList();
-
-                foreach (SalidaOperacion salidaoperacion in salidaoperaciones)
-                {
-                    db.SalidaOperacionesRequester.RemoveElementByID(salidaoperacion.Id);
-                }
-
-                var operaciones = db.Operaciones.Where(o => o.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Operacion operacion in operaciones)
-                {
-                    db.OperacionesRequester.RemoveElementByID(operacion.Id);
-                }
-
-                var salidas = db.SalidaProyectos.Where(s => s.IdProyecto == proyecto.Id).ToList();
-
-                foreach (SalidaProyecto salida in salidas)
-                {
-                    db.SalidaProyectosRequester.RemoveElementByID(salida.Id);
-                }
-
-                var formulas = db.Formulas.Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Formula formula in formulas)
-                {
-                    db.FormulasRequester.RemoveElementByID(formula.Id);
-                }
-
-                var celdas = db.Celdas.Where(c => c.Parametro.Elemento.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Celda celda in celdas)
-                {
-                    db.CeldasRequester.RemoveElementByID(celda.Id);
-                }
-
-                var parametros = db.Parametros.Where(p => p.Elemento.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Parametro parametro in parametros)
-                {
-                    db.ParametrosRequester.RemoveElementByID(parametro.Id);
-                }
-
-                var elementos = db.Elementos.Where(e => e.IdProyecto == proyecto.Id).ToList();
-
-                foreach (Elemento elemento in elementos)
-                {
-                    db.ElementosRequester.RemoveElementByID(elemento.Id);
-                }
-
-                db.ProyectosRequester.RemoveElementByID(id);
+                resultado.TirE = tire == null ? 0 : tire.Valores[0];
+                resultado.TirF = tirf == null ? 0 : tirf.Valores[0];
+                resultado.VanE = vane == null ? 0 : vane.Valores[0];
+                resultado.VanF = vanf == null ? 0 : vanf.Valores[0];
             }
             catch (Exception)
             {
-                ModelState.AddModelError("Nombre", "No se puede eliminar porque existen registros dependientes.");
-                return RedirectToAction("Console", new { id = proyecto.Id });
             }
 
-            return RedirectToAction("Index");
+            return resultado;
         }
+
+        private int getUserId()
+        {
+            if (userId < 1)
+            {
+                try
+                {
+                    userId = db.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
+                }
+                catch (Exception)
+                {
+                    return 0;
+                }
+            }
+
+            return userId;
+        }
+
+        
     }
 }

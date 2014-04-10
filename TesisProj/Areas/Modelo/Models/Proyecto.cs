@@ -71,6 +71,7 @@ namespace TesisProj.Areas.Modelo.Models
         [InverseProperty("Proyecto")]
         public virtual List<Operacion> Operaciones { get; set; }
 
+        [XmlIgnore]
         [InverseProperty("Proyecto")]
         public virtual List<Colaborador> Colaboradores { get; set; }
 
@@ -108,5 +109,4 @@ namespace TesisProj.Areas.Modelo.Models
         public double VanE { get; set; }
         public double VanF { get; set; }
     }
-
 }

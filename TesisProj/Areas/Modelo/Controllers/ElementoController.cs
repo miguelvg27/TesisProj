@@ -136,7 +136,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(elemento);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/EditElemento/5
 
         public ActionResult EditElemento(int id = 0)
@@ -183,7 +183,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(elemento);
         }
 
-        //
+        // Permisos: Creador, Editor
         // GET: /Modelo/Proyecto/DeleteElemento/5
 
         public ActionResult DeleteElemento(int id = 0)

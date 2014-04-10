@@ -129,7 +129,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View();
         }
 
-        // Permisos: Creador, Editor
+        // 
         // POST: /Modelo/Proyecto/CreateFormula
 
         [HttpPost]
@@ -200,7 +200,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             return View(formula);
         }
 
-        // Permisos: Creador, Editor
+        // 
         // POST: /Modelo/Proyecto/EditFormula
 
         [HttpPost]

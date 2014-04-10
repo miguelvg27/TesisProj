@@ -56,7 +56,6 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Ya existe un registro con el mismo nombre en el proyecto.", new string[] { "Nombre" });
                 }
             }
-        }
-        
+        }     
     }
 }
