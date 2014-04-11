@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.Modelo;
 using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.MonteCarlo.Models;
@@ -242,7 +243,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             var tipoformulas = context.TipoFormulas.ToList();
 
             //return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, true);
-            return ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, true);
+            return StaticProyecto.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, true);
         }
 
         public  List<Celda> RetornarCeldas(ModeloSimulacion modelo, int cantidad, Celda celda)

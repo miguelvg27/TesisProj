@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using TesisProj.Areas.CompararProyecto.Models;
 using TesisProj.Areas.IridiumTest.Models;
+using TesisProj.Areas.Modelo;
 using TesisProj.Areas.Modelo.Controllers;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Models.Storage;
@@ -68,7 +69,7 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == proyecto.Id).ToList();
                 var tipoformulas = context.TipoFormulas.ToList();
 
-                ProyectoLite resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, false);
+                ProyectoLite resultado = StaticProyecto.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, false);
                 //ProyectoLite resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
 
                 graficosVanE.Add(Asignar(proyecto.Id, resultado.VanE));

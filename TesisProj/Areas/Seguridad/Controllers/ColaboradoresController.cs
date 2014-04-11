@@ -5,9 +5,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TesisProj.Areas.Modelo;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Seguridad.Models;
-using TesisProj.Models;
 using TesisProj.Models.Storage;
 
 namespace TesisProj.Areas.Seguridad.Controllers

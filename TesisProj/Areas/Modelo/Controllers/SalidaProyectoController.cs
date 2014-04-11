@@ -384,7 +384,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         // tipoformulas: Arreglo de todos los tipo de fórmula
         // simular: Flag de simulación
 
-        public static List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool simular = false)
+        public List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool simular = false)
         {
             foreach (TipoFormula tipoformula in tipoformulas)
             {

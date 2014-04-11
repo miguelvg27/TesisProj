@@ -207,6 +207,7 @@
     <Compile Include="Areas\IridiumTest\Models\Param.cs" />
     <Compile Include="Areas\IridiumTest\Models\Result.cs" />
     <Compile Include="Areas\IridiumTest\Models\TProjContext.cs" />
+    <Compile Include="Areas\Modelo\StaticProyecto.cs" />
     <Compile Include="Areas\Modelo\Controllers\AuditController.cs" />
     <Compile Include="Areas\Modelo\Controllers\ElementoController.cs" />
     <Compile Include="Areas\Modelo\Controllers\FormulaController.cs" />
