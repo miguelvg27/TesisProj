@@ -102,8 +102,12 @@ namespace TesisProj.Areas.Modelo.Models
         }
     }
 
-    public class SimAns
+    public class ProyectoLite
     {
+        public int Id { get; set; }
+        public string Nombre { get; set;}
+        public DateTime Fecha { get; set; }
+        public int Version { get; set; }
         public double TirE { get; set; }
         public double TirF { get; set; }
         public double VanE { get; set; }

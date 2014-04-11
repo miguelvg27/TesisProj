@@ -68,8 +68,8 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
                 var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == proyecto.Id).ToList();
                 var tipoformulas = context.TipoFormulas.ToList();
 
-                SimAns resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, false);
-                //SimAns resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
+                ProyectoLite resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, false);
+                //ProyectoLite resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
 
                 graficosVanE.Add(Asignar(proyecto.Id, resultado.VanE));
                 graficosVanF.Add(Asignar(proyecto.Id, resultado.VanF));

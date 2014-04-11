@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Serialization;
 using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.Plantilla.Models;
 using TesisProj.Areas.Seguridad.Models;
@@ -273,9 +275,9 @@ namespace TesisProj.Areas.Modelo.Controllers
             base.Dispose(disposing);
         }
 
-        public static SimAns simular(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool siSimular = true)
+        public static ProyectoLite simular(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool siSimular = true)
         {
-            SimAns resultado = new SimAns { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
+            ProyectoLite resultado = new ProyectoLite { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
 
             CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, siSimular);
 
@@ -315,6 +317,87 @@ namespace TesisProj.Areas.Modelo.Controllers
             return userId;
         }
 
-        
+        public List<ProyectoLite> getProyectoList()
+        {
+            int idUser = getUserId();
+            var proyectos = db.Proyectos.Include(p => p.Creador).Where(p => p.Creador.UserName.Equals(User.Identity.Name)).ToList();
+            var colab = db.Colaboradores.Include(c => c.Proyecto).Where(c => c.IdUsuario == idUser).Select(c => c.Proyecto).Include(p => p.Creador).ToList();
+            proyectos = proyectos.Union(colab).ToList();
+
+            List<ProyectoLite> resultados = new List<ProyectoLite>();
+
+            foreach (Proyecto proyecto in proyectos)
+            {
+                var operaciones = db.Operaciones.Where(o => o.IdProyecto == proyecto.Id).ToList();
+                if (operaciones.Any(o => o.strValores == null))
+                {
+                    CalcularResultados(proyecto.Id);
+                    proyecto.Calculado = DateTime.Now;
+                    db.ProyectosRequester.ModifyElement(proyecto);
+                }
+
+                ProyectoLite resultado = new ProyectoLite();
+                resultado.Nombre = proyecto.Nombre;
+                resultado.Fecha = proyecto.Creacion;
+                resultado.Version = proyecto.Version;
+
+                Operacion op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
+                resultado.TirE = op != null ? StringToArray(op)[0] : 0;
+
+                op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
+                resultado.TirF = op != null ? StringToArray(op)[0] : 0;
+
+                op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
+                resultado.VanE = op != null ? StringToArray(op)[0] : 0;
+
+                op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
+                resultado.VanF = op != null ? StringToArray(op)[0] : 0;
+
+                resultados.Add(resultado);
+            }
+
+            return resultados;
+        }
+
+        public List<ProyectoLite> getVersionesList(int id)
+        {
+            List<ProyectoLite> resultados = new List<ProyectoLite>();
+            Proyecto proyecto = db.Proyectos.Find(id);
+            if (proyecto == null)
+            {
+                return resultados;
+            }
+
+            var versiones = db.DbVersions.Where(v => v.IdProyecto == proyecto.Id);
+
+            foreach (DbVersion version in versiones)
+            {
+                XmlSerializer s = new XmlSerializer(typeof(Proyecto));
+                MemoryStream memStream = new MemoryStream(version.Data);
+                Proyecto proyecto_dirty = (Proyecto)s.Deserialize(memStream);
+                var operaciones = proyecto_dirty.Operaciones;
+
+                ProyectoLite resultado = new ProyectoLite();
+                resultado.Nombre = version.Comentarios;
+                resultado.Fecha = version.Fecha;
+                resultado.Version = version.Version;
+
+                Operacion op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
+                resultado.TirE = op != null ? StringToArray(op)[0] : 0;
+
+                op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
+                resultado.TirF = op != null ? StringToArray(op)[0] : 0;
+
+                op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
+                resultado.VanE = op != null ? StringToArray(op)[0] : 0;
+
+                op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
+                resultado.VanF = op != null ? StringToArray(op)[0] : 0;
+
+                resultados.Add(resultado);
+            }
+
+            return resultados;
+        }
     }
 }
