@@ -28,7 +28,7 @@ namespace TesisProj.Areas.Modelo
 
         public static ProyectoLite simular(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool siSimular = true)
         {
-            ProyectoLite resultado = new ProyectoLite { TirE = 0, TirF = 0, VanE = 0, VanF = 0 };
+            ProyectoLite resultado = new ProyectoLite();
 
             CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, siSimular);
 
@@ -52,7 +52,6 @@ namespace TesisProj.Areas.Modelo
             Proyecto proyecto = context.Proyectos.Find(id);
             if (proyecto == null)
             {
-                context.Configuration.ProxyCreationEnabled = true;
                 return;
             }
 

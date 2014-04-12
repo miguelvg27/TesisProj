@@ -103,6 +103,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 CalcularResultados(proyecto.Id);
                 proyecto.Calculado = DateTime.Now;
                 db.ProyectosRequester.ModifyElement(proyecto);
+                exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion).Include(o => o.TipoDato).ToList();
             }
 
             ViewBag.IdProyecto = salida.IdProyecto;
@@ -353,7 +354,6 @@ namespace TesisProj.Areas.Modelo.Controllers
             Proyecto proyecto = db.Proyectos.Find(id);
             if (proyecto == null)
             {
-                db.Configuration.ProxyCreationEnabled = true;
                 return;
             }
 

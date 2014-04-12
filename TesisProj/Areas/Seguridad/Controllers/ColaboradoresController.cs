@@ -99,10 +99,15 @@ namespace TesisProj.Areas.Seguridad.Controllers
             {
                 ModelState.AddModelError("IdUsuario", "No existe este nombre de usuario");
             }
-                        
+
+            UserProfile usuario = db.UserProfiles.First(u => u.UserName.Equals(strColaborador));
+            if (db.ColaboradoresRequester.Any(c => c.IdProyecto == idProyecto && c.IdUsuario == usuario.UserId))
+            {
+                ModelState.AddModelError("IdUsuario", "Ya se agregó este usuario al proyecto.");
+            }
+
             if (ModelState.IsValid)
             {
-                UserProfile usuario = db.UserProfiles.First(u => u.UserName.Equals(strColaborador));
                 Colaborador colaborador = new Colaborador { IdProyecto = proyecto.Id, IdUsuario = usuario.UserId, SoloLectura = true, Creador = false };
                 colaborador.Usuario = usuario; // Logging issues
 

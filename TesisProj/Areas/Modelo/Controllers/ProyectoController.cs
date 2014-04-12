@@ -26,10 +26,11 @@ namespace TesisProj.Areas.Modelo.Controllers
         public ActionResult Index()
         {
             int idUser = getUserId();
-            var proyectos = db.Proyectos.Include(p => p.Creador).Where(p => p.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = db.Colaboradores.Include(c => c.Proyecto).Where(c => c.IdUsuario == idUser).Select(c => c.Proyecto).Include(p => p.Creador).ToList();
+            var creador = db.Proyectos.Where(p => p.IdCreador == idUser).Include(p => p.Creador).OrderByDescending(p => p.Creacion).ToList();
+            var editor = db.Colaboradores.Where(c => c.IdUsuario == idUser && !c.Creador && !c.SoloLectura).Select(c => c.Proyecto).Include(p => p.Creador).OrderByDescending(p => p.Creacion).ToList();
+            var revisor = db.Colaboradores.Where(c => c.IdUsuario == idUser && c.SoloLectura).Select(c => c.Proyecto).Include(p => p.Creador).OrderByDescending(p => p.Creacion).ToList();
 
-            return View(proyectos.Union(colab).ToList());
+            return View(creador.Union(editor.Union(revisor)));
         }
 
         // Permisos: Creador, Editor, Revisor
@@ -273,9 +274,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
-        }
-
-        
+        } 
 
         private int getUserId()
         {
