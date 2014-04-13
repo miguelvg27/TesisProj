@@ -23,34 +23,82 @@
                         {
                             @Html.ValidationSummary(true)
                             <div class="portlet-body">
-                                <table class="table table-hover">
-                                    <tbody>
-                                        @{if ((int)Session["Opcion"]==1)
-                                          {
-                                            <tr><td>@Model.ParamsIN[0].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[0].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[0].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[1].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[1].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[1].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[2].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[2].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(1)</td><td>@Model.ParamsIN[2].rango</td></tr>  
-                                          }else
-                                          {
-                                              <tr><td>@Model.ParamsIN[0].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[0].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[0].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[2].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[2].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(1)</td><td>@Model.ParamsIN[2].rango</td></tr> 
-                                            <tr><td></td> <td>Des Str [valor]</td><td>Frec de Ocurrencia[f]</td></tr>
-                                              <tr><td>@Model.ParamsIN[6].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[6].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[6].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[7].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[7].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[7].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[8].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[8].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[8].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[9].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[9].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[9].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[10].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[10].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[10].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[11].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[11].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[11].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[12].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[12].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[12].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[13].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[13].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[13].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[14].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[14].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[14].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[15].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[15].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[15].rango</td></tr>
-                                             
-                                          }
-                                          }
-                                        
-                                    </tbody>
-                                </table>
+                                @{if ((int)Session["Opcion"] == 1)
+                                  {
+                                      <div class="row-fluid">
+                                        <div class="span3">@Model.ParamsIN[0].nombre</div>
+                                        <div class="span3">@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[0].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</div>
+                                        <div class="span3">@Model.ParamsIN[0].rango</div>
+                                        <div class="span3"></div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span3">@Model.ParamsIN[1].nombre</div>
+                                        <div class="span3">@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[1].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</div>
+                                        <div class="span3">@Model.ParamsIN[1].rango</div>
+                                        <div class="span3"></div>
+                                    </div>
+                                   <div class="row-fluid">
+                                        <div class="span3">@Model.ParamsIN[2].nombre</div>
+                                        <div class="span3">@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[2].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(1)</div>
+                                        <div class="span3">@Model.ParamsIN[2].rango</div>
+                                        <div class="span3"></div>
+                                    </div>
+                                  }
+                                  else
+                                  {
+                                    <div class="row-fluid">
+                                        <div class="span3">@Model.ParamsIN[0].nombre</div>
+                                        <div class="span3">@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[0].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</div>
+                                        <div class="span3">@Model.ParamsIN[0].rango</div>
+                                        <div class="span3"></div>
+                                    </div>
+                                    <br />
+                                    <div class="row-fluid">
+                                        <div class="span3">@Model.ParamsIN[2].nombre</div>
+                                        <div class="span3">@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[2].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(1)</div>
+                                        <div class="span3">@Model.ParamsIN[2].rango</div>
+                                        <div class="span3"></div>
+                                    </div>
+                                    <div class="row-fluid">
+                                        <div class="span3">Desde</div>
+                                        <div class="span3">Hasta</div>
+                                        <div class="span3">% Ocurrencia</div>
+                                        <div class="span3"></div>
+                                    </div>
+                                    <div id="div1" class="row-fluid" style="display:normal" >
+                                        <div class="span3"><input id="D1" type="text" style="width:50%" /></div>
+                                        <div class="span3"><input id="H1" type="text" style="width:50%"  /></div>
+                                        <div class="span3"><input id="F1" type="text" style="width:50%"  /></div>
+                                        <div class="span3" id="B1" ><a href="javascript:void(0)" class="btn btn-inverse" onclick="Cambiar(1,2)" style="color: #E6F0F2" >+</a></div>
+                                    </div>
+                                    <div id="div2" class="row-fluid" style="display:none">
+                                        <div class="span3"><input id="D2" type="text" style="width:50%" /></div>
+                                        <div class="span3"><input id="H2" type="text" style="width:50%"  /></div>
+                                        <div class="span3"><input id="F2" type="text" style="width:50%"  /></div>
+                                        <div class="span3" id="B2"><a href="javascript:void(0)" class="btn btn-inverse" onclick="Cambiar(2,3)" style="color: #E6F0F2" >+</a></div>
+                                    </div>
+                                    <div id="div3" class="row-fluid" style="display:none">
+                                        <div class="span3"><input id="D3" type="text" style="width:50%" /></div>
+                                        <div class="span3"><input id="H3" type="text" style="width:50%"  /></div>
+                                        <div class="span3"><input id="F3" type="text" style="width:50%"  /></div>
+                                        <div class="span3" id="B3"><a href="javascript:void(0)" class="btn btn-inverse" onclick="Cambiar(3,4)" style="color: #E6F0F2" >+</a></div>
+                                    </div>
+                                    <div id="div4" class="row-fluid" style="display:none">
+                                        <div class="span3"><input id="D4" type="text" style="width:50%" /></div>
+                                        <div class="span3"><input id="H4" type="text" style="width:50%"  /></div>
+                                        <div class="span3"><input id="F4" type="text" style="width:50%"  /></div>
+                                        <div class="span3" id="B4"><a href="javascript:void(0)" class="btn btn-inverse" onclick="Cambiar(4,5)" style="color: #E6F0F2" >+</a></div>
+                                    </div>
+                                    <div id="div5" class="row-fluid" style="display:none">
+                                        <div class="span3"><input id="D5" type="text" style="width:50%" /></div>
+                                        <div class="span3"><input id="H5" type="text" style="width:50%"  /></div>
+                                        <div class="span3"><input id="F5" type="text" style="width:50%"  /></div>
+                                        <div class="span3" id="B5"><a href="javascript:void(0)" class="btn btn-inverse" onclick="Cambiar(5,6)" style="color: #E6F0F2" >+</a></div>
+                                    </div>
+                                    
+                                  }
+                                  }
+                                @Html.Telerik().AutoCompleteFor(m=>m.ParamsIN[3].nombre)
                             </div>
                             <div class="span12">
                                 <div class="span6"><button type="submit" class="btn btn-inverse" value="Create">Calcular</button></div>
@@ -120,3 +168,30 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    function Cambiar(a, b) {
+        var ant = $("#ParamsIN_3__nombre").val();
+
+        if (ant == "Precision")
+            ant = "";
+
+        var divb = "#div" + b;
+        $(divb).show()
+        var boton = "#B" + a;
+        $(boton).hide();
+        var D = "#D" + a;
+        var DD = $(D).val();
+        var H = "#H" + a;
+        var HH = $(H).val();
+        var F = "#F" + a;
+        var FF = $(F).val();
+
+        if (ant == "")
+            $("#ParamsIN_3__nombre").val(DD + "|" + HH + "|" + FF);
+        else
+            $("#ParamsIN_3__nombre").val(DD + "|" + HH + "|" + FF + "=" + ant);
+        
+    }
+
+</script>
