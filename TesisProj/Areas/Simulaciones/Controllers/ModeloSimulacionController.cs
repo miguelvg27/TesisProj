@@ -215,11 +215,14 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
         public ActionResult Asignacion(string Name, int ProyectoId, int ParametroId, int Opcion)
         {
-            Session["Opcion"] = Opcion;
+            //Session["Opcion"] = Opcion;
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == Name).ToList();
             ModeloSimulacion modelo = new ModeloSimulacion(Name, lista);
-            return RedirectToAction("Index", Name, new { ProyectoId = ProyectoId,ParametroId = ParametroId });
+            if(Opcion==1)
+                return RedirectToAction("Index", Name, new { ProyectoId = ProyectoId,ParametroId = ParametroId });
+            else
+                return RedirectToAction("Index2", Name, new { ProyectoId = ProyectoId, ParametroId = ParametroId });
         }
 
         public FileContentResult getImg(string nombre)

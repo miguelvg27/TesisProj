@@ -95,6 +95,16 @@
             <td>
                 <ol class="round">
                     <li class="eight">
+                        <h5><a href="@Url.Action("Index", "CompararVersiones", new { Area = "CompararProyecto", id = @Model.Id })">Comparar Versiones</a></h5>
+                        Realiza una comparacion entre versiones de un proyecto
+                    </li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <ol class="round">
+                    <li class="nine">
                         <h5><a href="@Url.Action("Muro", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Auditoría</a></h5>
                         Visualiza los cambios realizados en el proyecto.
                     </li>
@@ -104,7 +114,7 @@
         <tr>
             <td>
                 <ol class="round">
-                    <li class="nine">
+                    <li class="ten">
                         <h5><a onclick="return DeleteConfirm()" href="@Url.Action("Delete", "Proyecto", new { Area = "Modelo", id = @Model.Id })">Eliminar</a></h5>
                         Elimina <b>definitivamente</b> el proyecto.
                     </li>

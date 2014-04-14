@@ -729,6 +729,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\images\Thumbs.db" />
+    <Content Include="Images\orderedList10.png" />
     <Content Include="Images\Thumbs.db" />
     <Content Include="Areas\IridiumTest\Views\Web.config" />
     <Content Include="Images\_Beta\Thumbs.db" />
@@ -767,6 +768,7 @@
     <Content Include="Areas\Plantilla\Views\Constante\Edit.cshtml" />
     <Content Include="Areas\Plantilla\Views\Constante\Create.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\EditVersion.cshtml" />
+    <Content Include="Areas\Simulaciones\Views\Normal\Index2.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />

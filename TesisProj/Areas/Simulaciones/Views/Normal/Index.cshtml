@@ -25,30 +25,9 @@
                             <div class="portlet-body">
                                 <table class="table table-hover">
                                     <tbody>
-                                        @{if ((int)Session["Opcion"]==1)
-                                          {
                                             <tr><td>@Model.ParamsIN[0].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[0].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[0].rango</td></tr>
                                             <tr><td>@Model.ParamsIN[1].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[1].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[1].rango</td></tr>
                                             <tr><td>@Model.ParamsIN[2].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[2].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(1)</td><td>@Model.ParamsIN[2].rango</td></tr>  
-                                          }else
-                                          {
-                                              <tr><td>@Model.ParamsIN[0].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[0].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[0].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[2].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[2].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(1)</td><td>@Model.ParamsIN[2].rango</td></tr> 
-                                            <tr><td></td> <td>Des Str [valor]</td><td>Frec de Ocurrencia[f]</td></tr>
-                                              <tr><td>@Model.ParamsIN[6].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[6].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[6].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[7].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[7].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[7].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[8].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[8].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[8].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[9].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[9].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[9].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[10].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[10].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[10].rango</td></tr>
-                                              <tr><td>@Model.ParamsIN[11].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[11].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[11].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[12].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[12].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[12].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[13].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[13].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[13].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[14].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[14].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[14].rango</td></tr>
-                                            <tr><td>@Model.ParamsIN[15].nombre</td><td>@Html.Telerik().NumericTextBoxFor(m=>m.ParamsIN[15].valorD).InputHtmlAttributes(new { style = "width: 50px;" }).MinValue(0).IncrementStep(0.01)</td><td>@Model.ParamsIN[15].rango</td></tr>
-                                             
-                                          }
-                                          }
-                                        
                                     </tbody>
                                 </table>
                             </div>

@@ -5,6 +5,7 @@ using System.Linq;
 using TesisProj.Models.Storage;
 using TesisProj.Areas.IridiumTest.Models;
 using TesisProj.Areas.IridiumTest.Models.Continuous;
+using System;
 
 namespace TesisProj.Areas.Simulaciones.Controllers
 {
@@ -21,10 +22,88 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             ModeloSimulacion modelo = new ModeloSimulacion("Normal", lista);
             Session["_GraficoProbabilidad"] = null;
             Session["_GraficoMuestra"] = null;
+            Session["Opcion"] = 2;
             Session["ParametroId"] = ParametroId;
             Session["ProyectoId"] = ProyectoId;
             ViewBag.ParametroId = ParametroId;
             ViewBag.ProyectoId = ProyectoId;
+            return View(modelo.normal);
+        }
+        
+        [HttpGet]
+        public ActionResult Index2(int ProyectoId, int ParametroId)
+        {
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Normal", lista);
+            Session["Opcion"] = 2;
+            Session["ParametroId"] = ParametroId;
+            Session["ProyectoId"] = ProyectoId;
+            ViewBag.ParametroId = ParametroId;
+            ViewBag.ProyectoId = ProyectoId;
+            if (Session["Index2"] == null)
+            {
+                Session["_GraficoProbabilidad"] = null;
+                Session["_GraficoMuestra"] = null;
+                return View(modelo.normal);
+            }
+            else
+            {
+                _Normal ss = (_Normal)Session["Index2"];
+                Session["Index2"] = null;
+                return View((ss));
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Index2(string precision)
+        {
+            string[] valores1 = precision.Split('*');
+            double media = Convert.ToDouble(valores1[0]);
+            int muestras = Convert.ToInt32(valores1[1]);
+            string[] Intervalos = valores1[2].Split('='); //27|28|.30
+            double acumulaPromedio = 0;
+            double acumulaFrecuecia = 0;
+            foreach (string s in Intervalos)
+            {
+                double min = Convert.ToDouble(s.Split('|')[0]);
+                double max = Convert.ToDouble(s.Split('|')[1]);
+                double fre = Convert.ToDouble(s.Split('|')[2]);
+                double promedio = (min + max)/2.0;
+                acumulaPromedio += promedio * fre;
+                acumulaFrecuecia += fre;
+            }
+            double xi = acumulaPromedio / acumulaFrecuecia;
+            int contadorN = 0;
+            double Sumatoria = 0;
+            foreach (string s in Intervalos)
+            {
+                double min = Convert.ToDouble(s.Split('|')[0]);
+                double max = Convert.ToDouble(s.Split('|')[1]);
+                double promedio = (min + max) / 2.0;
+                contadorN++;
+                Sumatoria+=Math.Pow(xi - promedio, 2);
+            }
+            double DS = Math.Sqrt(Sumatoria / contadorN);
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Normal", media, DS, 0, 0,lista);
+            modelo.normal.GetModelo();
+            modelo.normal.GetSimulacion(muestras);
+            modelo.normal.GetResumen();
+            
+            Session["_GraficoProbabilidad"] = modelo.normal.Graphics;
+            Session["_GraficoMuestra"] = modelo.normal.Results;
+
+            ViewBag.ParametroId = (int)Session["ParametroId"];
+            ViewBag.ProyectoId = (int)Session["ProyectoId"];
+
+            modelo.normal.ParamsIN[0].valorD = media;
+            modelo.normal.ParamsIN[1].valorD = Math.Round(DS,2);
+            Asignar((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", media, DS, 0, 0, modelo.normal.ParamsIN);
+
+            Session["Index2"] = modelo.normal;
+            //return RedirectToAction("Index2", new { ProyectoId = (int)Session["ParametroId"], ParametroId=(int)Session["ProyectoId"]});
             return View(modelo.normal);
         }
 
@@ -38,7 +117,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
             ModeloSimulacion modelo = new ModeloSimulacion("Normal", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0,lista);
             modelo.normal.GetModelo();
-            modelo.normal.GetSimulacion(u.ParamsIN[2].valorI);
+            modelo.normal.GetSimulacion(Convert.ToInt32(Math.Round(u.ParamsIN[2].valorD)));
             modelo.normal.GetResumen();
             
             Session["_GraficoProbabilidad"] = modelo.normal.Graphics;
@@ -46,7 +125,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
 
             ViewBag.ParametroId = (int)Session["ParametroId"];
             ViewBag.ProyectoId = (int)Session["ProyectoId"];
-
+            
             for (int i = 0; i < modelo.normal.ParamsIN.Count; i++)
             {
                 try

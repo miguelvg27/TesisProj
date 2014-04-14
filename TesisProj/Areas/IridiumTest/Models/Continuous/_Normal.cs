@@ -53,17 +53,6 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
                             new Param { indice=4, nombre = "Precision", rango="P > 0",valorD=0.0004 },
                             new Param { indice=5, nombre = "Cola Izquierda", rango="-inf < CI < +inf",valorD=0 },
                             new Param { indice=6, nombre = "Cola Derecha", rango="-inf < CD < +inf",valorD=0 },
-                            new Param { indice=7, nombre = "Rango 1:", rango="[0% - 10%[",valorD=0 },
-                            new Param { indice=8, nombre = "Rango 2", rango="[10% - 20%[",valorD=0 },
-                            new Param { indice=9, nombre = "Rango 3", rango="[20% - 30%[",valorD=0 },
-                            new Param { indice=10, nombre = "Rango 4", rango="[30% - 40%[",valorD=0 },
-                            new Param { indice=11, nombre = "Rango 5", rango="[40% - 50%[",valorD=0 },
-                            new Param { indice=12, nombre = "Rango 6", rango="[50% - 60%[",valorD=0 },
-                            new Param { indice=13, nombre = "Rango 7", rango="[60% - 70%[",valorD=0 },
-                            new Param { indice=14, nombre = "Rango 8", rango="[70% - 80%[",valorD=0 },
-                            new Param { indice=15, nombre = "Rango 9", rango="[80% - 90%[",valorD=0 },
-                            new Param { indice=16, nombre = "Rango 10", rango="[90% - 100%]",valorD=0 }
-
             };
 
             this.ParamsOUT = new List<Param> {
@@ -139,7 +128,7 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
                        select new Result()
                        {
                            ValorObtenidoI = g.Key.ValorObtenidoI,
-                           cantidad = g.Count(),
+                           cantidad = Convert.ToInt32(Math.Round(g.Count()*total/100)),
                            Probabilidad = Math.Round((g.Count()*100/total),2)
                        }).OrderBy(u => u.ValorObtenidoI).ToList();
         }

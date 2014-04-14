@@ -196,6 +196,9 @@ ol.round {
         ol.round li.nine {
             background: url("../Images/orderedList9.png") no-repeat;
         }
+        ol.round li.ten {
+            background: url("../Images/orderedList10.png") no-repeat;
+        }
 
 /* content */
 article {

@@ -1,4 +1,4 @@
-﻿@model ICollection<TesisProj.Areas.CompararProyecto.Models.Comparar>
+﻿@model ICollection<TesisProj.Areas.Modelo.Models.ProyectoLite>
 @using Telerik.Web.Mvc.UI
 
 @{
@@ -30,7 +30,7 @@
 <h3>Versiones del proyecto (<span id="IdProyecto">@Session["Id"] </span>)</h3>
 @{
     Html.BeginForm();
-    Html.Telerik().Grid((IEnumerable<TesisProj.Areas.CompararProyecto.Models.Comparar>)ViewData["Versiones"])
+    Html.Telerik().Grid((IEnumerable<TesisProj.Areas.Modelo.Models.ProyectoLite>)ViewData["Versiones"])
         .Name("Versiones")
         .Columns(columns =>
         {
@@ -48,10 +48,10 @@
                    .Width(20)
                    .HtmlAttributes(new { style = "text-align:center" });
 
-            columns.Bound(o => o.proyecto.Id).Width(20);
-            columns.Bound(o => o.proyecto.Nombre).Width(100);
-            columns.Bound(o => o.proyecto.Version).Width(200);
-            columns.Bound(o => o.proyecto.Creacion).Format("{0:dd/MM/yyyy}").Width(120);
+            columns.Bound(o => o.Id).Width(20);
+            columns.Bound(o => o.Nombre).Width(100);
+            columns.Bound(o => o.Version).Width(200);
+            columns.Bound(o => o.Fecha).Format("{0:dd/MM/yyyy}").Width(120);
         })
         .Pageable()
         .Scrollable()
@@ -94,7 +94,7 @@
             success: function (data) {
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
+                
             }
         });
         
