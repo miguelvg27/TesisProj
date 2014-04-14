@@ -15,7 +15,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         // GET: /Normal/
 
         [HttpGet]
-        public ActionResult Index(int ProyectoId, int ParametroId)
+        public ActionResult Index(/*int ProyectoId, int ParametroId*/)
         {
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
@@ -23,10 +23,17 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             Session["_GraficoProbabilidad"] = null;
             Session["_GraficoMuestra"] = null;
             Session["Opcion"] = 2;
+<<<<<<< HEAD
             Session["ParametroId"] = ParametroId;
             Session["ProyectoId"] = ProyectoId;
             ViewBag.ParametroId = ParametroId;
             ViewBag.ProyectoId = ProyectoId;
+=======
+            //Session["ParametroId"] = ParametroId;
+            //Session["ProyectoId"] = ProyectoId;
+            //ViewBag.ParametroId = ParametroId;
+            //ViewBag.ProyectoId = ProyectoId;
+>>>>>>> 78070b3c5a026b0218c8ca6009461d94109c315e
             return View(modelo.normal);
         }
         
