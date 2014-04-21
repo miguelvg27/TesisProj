@@ -53,6 +53,7 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
                             new Param { indice=4, nombre = "Precision", rango="P > 0",valorD=0.0004 },
                             new Param { indice=5, nombre = "Cola Izquierda", rango="-inf < CI < +inf",valorD=0 },
                             new Param { indice=6, nombre = "Cola Derecha", rango="-inf < CD < +inf",valorD=0 },
+                            new Param { indice=7, nombre = "Estimacion", rango="-inf < ET < +inf",valorD=-999999999999 }
             };
 
             this.ParamsOUT = new List<Param> {
@@ -88,7 +89,7 @@ namespace TesisProj.Areas.IridiumTest.Models.Continuous
         public void GetModelo()
         {
             IEnumerable<double> salida = modelo.Samples();
-            for (double i = minimo; i <= maximo; i = i + modelo.Precision*10)
+            for (double i = minimo; i <= maximo; i = i + 0.0004* 10)
             {
                 Graphic g = new Graphic();
                 g.fx = modelo.Density(i);

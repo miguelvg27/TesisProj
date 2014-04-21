@@ -25,6 +25,11 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             Session["idProyecto"] = idProyecto;
             ViewBag.idProyecto = idProyecto;
             MetodoMonteCarlo mc = new MetodoMonteCarlo();
+            Session["_GraficoVanInversionista"] = null;
+            Session["_GraficoVanProyecto"] = null;
+            Session["_GraficoTirProyecto"] = null;
+            Session["_GraficoTirInversionista"] = null;
+
             //mc.Parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).Where(oo => oo.Sensible == true).ToList();
             return View(mc);
         }
@@ -39,6 +44,11 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             List<Result> vanF = new List<Result>();
             List<Result> tirE = new List<Result>();
             List<Result> tirF = new List<Result>();
+
+            List<Graphic> GraficoVanE = new List<Graphic>();
+            List<Graphic> GraficoVanF = new List<Graphic>();
+            List<Graphic> GraficoTirE = new List<Graphic>();
+            List<Graphic> GraficoTirF = new List<Graphic>();
 
             for (int u = 1; u <= mc.NumeroSimulaciones; u++)
             {
@@ -96,6 +106,11 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 //Debo Almacenar los resultados que me da Miguel en cada simulacion
                 //ProyectoLite r = MetodoMiguel(proy, Parametrossensibles);
                 ProyectoLite r = MetodoMiguel(proy, proy.Elementos);
+                GraficoVanE.Add(new Graphic { N = u, fx = r.VanE });
+                GraficoVanF.Add(new Graphic { N = u, fx = r.VanF });
+                GraficoTirE.Add(new Graphic { N = u, fx = r.TirE * 100 });
+                GraficoTirF.Add(new Graphic { N = u, fx = r.TirF * 100 });
+
                 vanE.Add(new Result { ValorObtenidoD = r.VanE});
                 vanF.Add(new Result { ValorObtenidoD = r.VanF });
                 tirE.Add(new Result { ValorObtenidoD = r.TirE * 100 });
@@ -104,70 +119,82 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             //ya tengo los valores obtenidos
             //los agrupo en intervalos 
 
-            List<Graphic> GraficoVanE = new List<Graphic>();
-            List<Graphic> GraficoVanF = new List<Graphic>();
-            List<Graphic> GraficoTirE = new List<Graphic>();
-            List<Graphic> GraficoTirF = new List<Graphic>();
+            //List<Graphic> GraficoVanE = new List<Graphic>();
+            //List<Graphic> GraficoVanF = new List<Graphic>();
+            //List<Graphic> GraficoTirE = new List<Graphic>();
+            //List<Graphic> GraficoTirF = new List<Graphic>();
 
 
-            double Rango=vanE.Max(i=>i.ValorObtenidoD)-vanE.Min(i=>i.ValorObtenidoD);
-            double Amplitud=(Rango)/((mc.NumeroIntervalos)*1.0);
-            double minimo=vanE.Min(i=>i.ValorObtenidoD);
-            double _fx_;
+            //double Rango=vanE.Max(i=>i.ValorObtenidoD)-vanE.Min(i=>i.ValorObtenidoD);
+            //double Amplitud=(Rango)/((mc.NumeroIntervalos)*1.0);
+            //double minimo=vanE.Min(i=>i.ValorObtenidoD);
+            //double _fx_;
 
-            for (int u = 1; u <= mc.NumeroIntervalos; u++)
-            {
-                _fx_= vanE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
-                GraficoVanE.Add(new Graphic { fx = _fx_, N = u });
-            }
+            //for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            //{
+            //    _fx_ = vanE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Average(R=>R.ValorObtenidoD);
+            //    GraficoVanE.Add(new Graphic { fx = _fx_, N = u });
+            //}
 
-            Rango = vanF.Max(i => i.ValorObtenidoD) - vanF.Min(i => i.ValorObtenidoD);
-            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
-            minimo = vanF.Min(i => i.ValorObtenidoD);
-
-
-            for (int u = 1; u <= mc.NumeroIntervalos; u++)
-            {
-                _fx_ = vanF.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
-                GraficoVanF.Add(new Graphic { fx = _fx_, N = u });
-            }
-
-            Rango = tirE.Max(i => i.ValorObtenidoD) - tirE.Min(i => i.ValorObtenidoD);
-            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
-            minimo = tirE.Min(i => i.ValorObtenidoD);
+            //Rango = vanF.Max(i => i.ValorObtenidoD) - vanF.Min(i => i.ValorObtenidoD);
+            //Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            //minimo = vanF.Min(i => i.ValorObtenidoD);
 
 
-            for (int u = 1; u <= mc.NumeroIntervalos; u++)
-            {
-                _fx_ = tirE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
-                GraficoTirE.Add(new Graphic { fx = _fx_, N = u });
-            }
+            //for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            //{
+            //    _fx_ = vanF.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Average(R => R.ValorObtenidoD);
+            //    GraficoVanF.Add(new Graphic { fx = _fx_, N = u });
+            //}
 
-            Rango = tirF.Max(i => i.ValorObtenidoD) - tirF.Min(i => i.ValorObtenidoD);
-            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
-            minimo = tirF.Min(i => i.ValorObtenidoD);
+            //Rango = tirE.Max(i => i.ValorObtenidoD) - tirE.Min(i => i.ValorObtenidoD);
+            //Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            //minimo = tirE.Min(i => i.ValorObtenidoD);
 
 
-            for (int u = 1; u <= mc.NumeroIntervalos; u++)
-            {
-                _fx_ = tirF.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
-                GraficoTirF.Add(new Graphic { fx = _fx_, N = u });
-            }
+            //for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            //{
+            //    _fx_ = tirE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Average(R => R.ValorObtenidoD);
+            //    GraficoTirE.Add(new Graphic { fx = _fx_, N = u });
+            //}
+
+            //Rango = tirF.Max(i => i.ValorObtenidoD) - tirF.Min(i => i.ValorObtenidoD);
+            //Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            //minimo = tirF.Min(i => i.ValorObtenidoD);
+
+
+            //for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            //{
+            //    _fx_ = tirF.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Average(R => R.ValorObtenidoD);
+            //    GraficoTirF.Add(new Graphic { fx = _fx_, N = u });
+            //}
 
             mc.VanEconomico = GraficoVanE;
             mc.VanFinanciero = GraficoVanF;
             mc.TirEconomico = GraficoTirE;
             mc.TirFinanciero = GraficoTirF;
 
-            mc.MaxVanEconomico = Math.Round(vanE.Max(n => n.ValorObtenidoD),2);
-            mc.MaxVanFinanciero =Math.Round( vanF.Max(n => n.ValorObtenidoD),2);
-            mc.MaxTirEconomico = Math.Round(tirE.Max(n => n.ValorObtenidoD),2);
-            mc.MaxTirFinanciero =Math.Round( tirF.Max(n => n.ValorObtenidoD),2);
+            mc.MaxVanEconomico = vanE.Max(n => n.ValorObtenidoD);
+            mc.MaxVanFinanciero = vanF.Max(n => n.ValorObtenidoD);
+            mc.MaxTirEconomico = tirE.Max(n => n.ValorObtenidoD);
+            mc.MaxTirFinanciero = tirF.Max(n => n.ValorObtenidoD);
 
-            mc.MinVanEconomico =Math.Round( vanE.Min(n => n.ValorObtenidoD),2);
-            mc.MinVanFinanciero =Math.Round( vanF.Min(n => n.ValorObtenidoD),2);
-            mc.MinTirEconomico =Math.Round( tirE.Min(n => n.ValorObtenidoD),2);
-            mc.MinTirFinanciero = Math.Round(tirF.Min(n => n.ValorObtenidoD), 2);
+            mc.MinVanEconomico = vanE.Min(n => n.ValorObtenidoD);
+            mc.MinVanFinanciero = vanF.Min(n => n.ValorObtenidoD);
+            mc.MinTirEconomico = tirE.Min(n => n.ValorObtenidoD);
+            mc.MinTirFinanciero = tirF.Min(n => n.ValorObtenidoD);
+
+
+
+            //mc.MaxVanEconomico = Math.Round(vanE.Max(n => n.ValorObtenidoD),2);
+            //mc.MaxVanFinanciero =Math.Round( vanF.Max(n => n.ValorObtenidoD),2);
+            //mc.MaxTirEconomico = Math.Round(tirE.Max(n => n.ValorObtenidoD),2);
+            //mc.MaxTirFinanciero =Math.Round( tirF.Max(n => n.ValorObtenidoD),2);
+
+            //mc.MinVanEconomico =Math.Round( vanE.Min(n => n.ValorObtenidoD),2);
+            //mc.MinVanFinanciero =Math.Round( vanF.Min(n => n.ValorObtenidoD),2);
+            //mc.MinTirEconomico =Math.Round( tirE.Min(n => n.ValorObtenidoD),2);
+            //mc.MinTirFinanciero = Math.Round(tirF.Min(n => n.ValorObtenidoD), 2);
 
             Session["_GraficoVanInversionista"] = mc.VanEconomico;
             Session["_GraficoVanProyecto"] = mc.VanFinanciero;

@@ -16,14 +16,14 @@
 			.CategoryAxis(axis => axis
 			.Categories(s => s.N) //ETIQUETA DE LAS X
 			)
-			.ValueAxis(axis => axis
-				.Numeric().Labels(labels => labels.Format("{0:N}"))//ETIQUETA DE LAS Y
-				.MajorGridLines(majorGridLines => majorGridLines.Visible(false))
-				.PlotBands(plotBands =>
-					  {
-                          plotBands.Add().Color("#13558E").From(0).To(12000).Opacity(0.3);
-					  })
-				  )
+            //.ValueAxis(axis => axis
+            //    //.Numeric().Labels(labels => labels.Format("{0:N}"))//ETIQUETA DE LAS Y
+            //    .MajorGridLines(majorGridLines => majorGridLines.Visible(false))
+            //    //.PlotBands(plotBands =>
+            //    //      {
+            //    //          plotBands.Add().Color("#13558E").From(0).To(12000).Opacity(0.3);
+            //    //      })
+            //      )
 			.Tooltip(tooltip => tooltip
 				.Visible(true)
 				.Format("{0:N}")

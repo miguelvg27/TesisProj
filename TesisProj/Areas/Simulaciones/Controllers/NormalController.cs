@@ -29,6 +29,59 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             ViewBag.ProyectoId = ProyectoId;
             return View(modelo.normal);
         }
+
+        [HttpPost]
+        public ActionResult Index(_Normal u)
+        {
+            //u.ParamsIN[0].valorI  MINIMO
+            //u.ParamsIN[1].valorI  MAXIMO
+            //u.ParamsIN[2].valorI  MUESTRA
+            TProjContext db = new TProjContext();
+            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
+            ModeloSimulacion modelo = new ModeloSimulacion("Normal", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0, lista);
+            modelo.normal.GetModelo();
+            modelo.normal.GetSimulacion(u.ParamsIN[2].valorI);
+            modelo.normal.GetResumen();
+
+            Session["_GraficoProbabilidad"] = modelo.normal.Graphics;
+            Session["_GraficoMuestra"] = modelo.normal.Results;
+
+            ViewBag.ParametroId = (int)Session["ParametroId"];
+            ViewBag.ProyectoId = (int)Session["ProyectoId"];
+
+            for (int i = 0; i < modelo.normal.ParamsIN.Count; i++)
+            {
+                try
+                {
+                    modelo.normal.ParamsIN[i].valorD = u.ParamsIN[i].valorD;
+                    modelo.normal.ParamsIN[i].valorI = u.ParamsIN[i].valorI;
+                }
+                catch
+                {
+                    break;
+                }
+            }
+
+            Asignar((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0, modelo.normal.ParamsIN);
+            return View(modelo.normal);
+        }
+
+        public void Asignar(int ProyectoId, int ParametroId, string Nombre, double a, double b, double c, double d, List<Param> parametros)
+        {
+            string cadena = "";
+            using (TProjContext context = new TProjContext())
+            {
+                var parametro = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == ParametroId).Where(oo => oo.Sensible == true).FirstOrDefault();
+                parametro.XML_ModeloAsignado = Nombre + "|" + a + "|" + b + "|" + c + "|" + d + "|";
+                foreach (Param p in parametros)
+                {
+                    cadena += "°" + p.indice + "?" + p.nombre + "?" + p.rango + "?" + p.valorD + "?" + p.valorI;
+                }
+                cadena = cadena.Replace("-999999999999", "0");
+                parametro.XML_ModeloAsignado += cadena;
+                context.ParametrosRequester.ModifyElement(parametro, true, ProyectoId, context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId);
+            }
+        }
         
         [HttpGet]
         public ActionResult Index2(int ProyectoId, int ParametroId)
@@ -64,11 +117,13 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             string[] Intervalos = valores1[2].Split('='); //27|28|.30
             double acumulaPromedio = 0;
             double acumulaFrecuecia = 0;
+            string almacenar = ""; ;
             foreach (string s in Intervalos)
             {
                 double min = Convert.ToDouble(s.Split('|')[0]);
                 double max = Convert.ToDouble(s.Split('|')[1]);
                 double fre = Convert.ToDouble(s.Split('|')[2]);
+                almacenar += "[" + min.ToString() + ";" + max.ToString() + "]  -  " + fre.ToString() + ";";
                 double promedio = (min + max)/2.0;
                 acumulaPromedio += promedio * fre;
                 acumulaFrecuecia += fre;
@@ -87,7 +142,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             double DS = Math.Sqrt(Sumatoria / contadorN);
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
-            ModeloSimulacion modelo = new ModeloSimulacion("Normal", media, DS, 0, 0,lista);
+            ModeloSimulacion modelo = new ModeloSimulacion("Normal", Math.Round(xi,2), DS, 0, 0,lista);
             modelo.normal.GetModelo();
             modelo.normal.GetSimulacion(muestras);
             modelo.normal.GetResumen();
@@ -98,67 +153,34 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             ViewBag.ParametroId = (int)Session["ParametroId"];
             ViewBag.ProyectoId = (int)Session["ProyectoId"];
 
-            modelo.normal.ParamsIN[0].valorD = media;
+            modelo.normal.ParamsIN[0].valorD = Math.Round(xi, 2);
             modelo.normal.ParamsIN[1].valorD = Math.Round(DS,2);
-            Asignar((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", media, DS, 0, 0, modelo.normal.ParamsIN);
+            Asignar2((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", xi.ToString(), DS.ToString(), "0", "0", modelo.normal.ParamsIN,almacenar);
 
             Session["Index2"] = modelo.normal;
             //return RedirectToAction("Index2", new { ProyectoId = (int)Session["ParametroId"], ParametroId=(int)Session["ProyectoId"]});
             return View(modelo.normal);
         }
-
-        [HttpPost]
-        public ActionResult Index(_Normal u)
-        {
-            //u.ParamsIN[0].valorI  MINIMO
-            //u.ParamsIN[1].valorI  MAXIMO
-            //u.ParamsIN[2].valorI  MUESTRA
-            TProjContext db = new TProjContext();
-            List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
-            ModeloSimulacion modelo = new ModeloSimulacion("Normal", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0,lista);
-            modelo.normal.GetModelo();
-            modelo.normal.GetSimulacion(Convert.ToInt32(Math.Round(u.ParamsIN[2].valorD)));
-            modelo.normal.GetResumen();
-            
-            Session["_GraficoProbabilidad"] = modelo.normal.Graphics;
-            Session["_GraficoMuestra"] = modelo.normal.Results;
-
-            ViewBag.ParametroId = (int)Session["ParametroId"];
-            ViewBag.ProyectoId = (int)Session["ProyectoId"];
-            
-            for (int i = 0; i < modelo.normal.ParamsIN.Count; i++)
-            {
-                try
-                {
-                    modelo.normal.ParamsIN[i].valorD = u.ParamsIN[i].valorD;
-                    modelo.normal.ParamsIN[i].valorI = u.ParamsIN[i].valorI;
-                }
-                catch
-                {
-                    break;
-                }
-            }
-
-            Asignar((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", u.ParamsIN[0].valorD, u.ParamsIN[1].valorD, 0, 0, modelo.normal.ParamsIN);
-            return View(modelo.normal);
-        }
-
-        public void Asignar(int ProyectoId, int ParametroId, string Nombre, double a, double b, double c, double d, List<Param> parametros)
+        public void Asignar2(int ProyectoId, int ParametroId, string Nombre, string a, string b, string c, string d, List<Param> parametros,string estimacion)
         {
             string cadena = "";
             using (TProjContext context = new TProjContext())
             {
                 var parametro = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Id == ParametroId).Where(oo => oo.Sensible == true).FirstOrDefault();
-                parametro.XML_ModeloAsignado = Nombre + "|" + a + "|" + b + "|" + c + "|" + d+"|";
+                parametro.XML_ModeloAsignado = Nombre + "|" + a + "|" + b + "|" + c + "|" + d + "|";
                 foreach (Param p in parametros)
                 {
-                    cadena+="°"+p.indice + "?" + p.nombre + "?" + p.rango + "?" + p.valorD + "?" + p.valorI;
+                    cadena += "°" + p.indice + "?" + p.nombre + "?" + p.rango + "?" + p.valorD + "?" + p.valorI;
                 }
+                cadena = cadena.Replace("-999999999999", estimacion);
                 parametro.XML_ModeloAsignado += cadena;
 
                 context.ParametrosRequester.ModifyElement(parametro, true, ProyectoId, context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId);
             }
         }
+
+
+        
 
         [ChildActionOnly]
         public ActionResult _GraficoProbabilidad()

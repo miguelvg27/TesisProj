@@ -21,23 +21,14 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            List<Comparar> c = new List<Comparar>();
+            List<ProyectoLite> c = new List<ProyectoLite>();
 
-            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
-
-            List<Proyecto> lista = proyectos.Union(colab).ToList();
-            int cont = 0;
-            int[] i = new int[100];
-
-            foreach (Proyecto p in lista)
-            {
-                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
-                i[cont] = p.Id;
-                cont = +1;
-            }
-
+            int[] i;
+            i = new int[100];
+            int id=context.UserProfiles.Where(n=>n.UserName==User.Identity.Name).FirstOrDefault().UserId;
+            c = StaticProyecto.getProyectoList(context, id);
+            Session["Nombre"] = context.Proyectos.Where(y => y.Id == id).FirstOrDefault().Nombre;
+            ViewData["Proyectos"]  = c;
             ViewData["checkedRecords"] = i;
 
             return View(c);
@@ -46,37 +37,39 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
         [HttpPost]
         public ActionResult Index(int[] checkedRecords)
         {
-            List<Proyecto> lista = new List<Proyecto>();
-            foreach (int i in checkedRecords)
+            int id = context.UserProfiles.Where(n => n.UserName == User.Identity.Name).FirstOrDefault().UserId;
+            List<ProyectoLite> listaProyectos = StaticProyecto.getProyectoList(context,id);
+            ViewData["Proyectos"] = listaProyectos;
+
+            if (checkedRecords == null)
             {
-                lista.Add(context.Proyectos.Find(i));
+                ViewData["checkedRecords"] = new int[100];
+                Session["_GraficoVanF"] = null;
+                Session["_GraficoVanE"] = null;
+                Session["_GraficoTirE"] = null;
+                Session["_GraficoTirF"] = null;
+                return View(new List<ProyectoLite>());
             }
+
+            List<ProyectoLite> lista = new List<ProyectoLite>();
+            foreach (int i in checkedRecords)
+                foreach (ProyectoLite p in listaProyectos)
+                    if (i == p.Id)
+                        lista.Add(p);
 
             List<Graphic> graficosVanE = new List<Graphic>();
             List<Graphic> graficosVanF = new List<Graphic>();
             List<Graphic> graficosTirE = new List<Graphic>();
             List<Graphic> graficosTirF = new List<Graphic>();
 
-            foreach (Proyecto proyecto in lista)
+            foreach (ProyectoLite proyecto in lista)
             {
-                int horizonte = proyecto.Horizonte;
-                int preoperativos = proyecto.PeriodosPreOp;
-                int cierre = proyecto.PeriodosCierre;
-
-                var operaciones = context.Operaciones.Where(o => o.IdProyecto == proyecto.Id).OrderBy(s => s.Secuencia).ToList();
-                //var formulas = context.Formulas.Include("Elemento").Where(f => f.Elemento.IdProyecto == proyecto.Id).ToList();
-                //var parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == proyecto.Id).ToList();
-                var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == proyecto.Id).ToList();
-                var tipoformulas = context.TipoFormulas.ToList();
-
-                ProyectoLite resultado = StaticProyecto.simular(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas, false);
-                //ProyectoLite resultado = ProyectoController.simular(horizonte, preoperativos, cierre, operaciones, parametros, formulas, tipoformulas, false);
-
-                graficosVanE.Add(Asignar(proyecto.Id, resultado.VanE));
-                graficosVanF.Add(Asignar(proyecto.Id, resultado.VanF));
-                graficosTirF.Add(Asignar(proyecto.Id, resultado.TirF));
-                graficosTirE.Add(Asignar(proyecto.Id, resultado.TirE));
+                graficosVanE.Add(new Graphic { N = proyecto.Id, fx = proyecto.VanE });
+                graficosVanF.Add(new Graphic { N = proyecto.Id, fx = proyecto.VanF });
+                graficosTirE.Add(new Graphic { N = proyecto.Id, fx = proyecto.TirE });
+                graficosTirF.Add(new Graphic { N = proyecto.Id, fx = proyecto.TirF });
             }
+
             Session["_GraficoVanE"] = graficosVanE;
             Session["_GraficoVanF"] = graficosVanF;
             Session["_GraficoTirE"] = graficosTirE;
@@ -85,21 +78,7 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             checkedRecords = checkedRecords ?? new int[] { 3, 4, 5 };
             ViewData["checkedRecords"] = checkedRecords;
 
-            List<Comparar> c = new List<Comparar>();
-
-            int idUser = context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId;
-            var proyectos = context.Proyectos.Include(rp => rp.Creador).Where(pr => pr.Creador.UserName.Equals(User.Identity.Name)).ToList();
-            var colab = context.Colaboradores.Include(rc => rc.Proyecto).Where(cr => cr.IdUsuario == idUser).Select(cr => cr.Proyecto).Include(p => p.Creador).ToList();
-
-            List<Proyecto> lproyecto = proyectos.Union(colab).ToList();
-            //List<Proyecto> lproyecto = context.Proyectos.ToList();
-
-            foreach (Proyecto p in lproyecto)
-            {
-                c.Add(new Comparar { proyecto = p, Compara = false, Id = p.Id });
-            }
-
-            return View(c);
+            return View(new List<ProyectoLite>());
         }
 
         [ChildActionOnly]

@@ -60,11 +60,19 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                     string[] todo = parametro.XML_ModeloAsignado.Split('°');
                     
                     List<Param> parametrosalmacenados = new List<Param>();
-
+                    Session["Parche"] = null;
                     for(int i=1; i<todo.Count();i++)
                     {
                         string[] p = todo[i].Split('?');
-                        parametrosalmacenados.Add(new Param { indice = Convert.ToInt16(p[0]), nombre = p[1], rango = p[2], valorD = Math.Round(Convert.ToDouble(p[3]),2), valorI = Convert.ToInt32(p[4]) });
+                        try
+                        {
+                            parametrosalmacenados.Add(new Param { indice = Convert.ToInt16(p[0]), nombre = p[1], rango = p[2], valorD = Math.Round(Convert.ToDouble(p[3]), 2), valorI = Convert.ToInt32(p[4]) });
+                        }
+                        catch
+                        {
+                            parametrosalmacenados.Add(new Param { indice = Convert.ToInt16(p[0]), nombre = p[1], rango = p[2], valorD = 0, valorI = Convert.ToInt32(p[4]) });
+                            Session["Parche"] = p[3];
+                        }
                     }
                     TProjContext db = new TProjContext();
                     List<ListField> lista = db.ListFields.Where(p => p.Modelo == nombre).ToList();

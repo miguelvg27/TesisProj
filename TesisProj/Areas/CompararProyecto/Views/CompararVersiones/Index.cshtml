@@ -10,24 +10,7 @@
 <h2>Comparar Rentabilidad de las versiones</h2>
 <br />
 
-<table style="width:50%">
-    <tr><td style="width:100%">
-            @(Html.Telerik().DropDownList()
-                .Name("DropDownListProyectos")
-                .DataBinding(binding => binding.Ajax().Select("_AjaxLoading", "CompararVersiones"))
-                .ClientEvents(events => events.OnChange("OnChange"))
-                .HtmlAttributes(new { style = "width:100%"})
-        )
-        </td>
-        <td>
-            <button class="t-widget t-header" onclick="refresh()" type="button">Refrescar</button>
-        </td>
-
-    </tr>
-</table>
- 
-
-<h3>Versiones del proyecto (<span id="IdProyecto">@Session["Id"] </span>)</h3>
+<h3>Versiones del proyecto (<span id="IdProyecto">@Session["Nombre"] </span>)</h3>
 @{
     Html.BeginForm();
     Html.Telerik().Grid((IEnumerable<TesisProj.Areas.Modelo.Models.ProyectoLite>)ViewData["Versiones"])

@@ -65,6 +65,14 @@
                 }
             </tr>
         </table>
+        if (Session["Parche"] != null)
+        {<table class="table table-hover table-striped table-bordered">
+            <tr>
+                <td>Valores Ingresados</td>
+                <td>@(Server.HtmlEncode(((string)Session["Parche"])))</td>
+            </tr>
+         </table>
+        }
     }
     
 
