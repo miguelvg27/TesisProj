@@ -20,7 +20,7 @@
     
     <div class="conteiner">
         <div class="span4 label label-inverse"><table><tr><td>@Html.DisplayNameFor(model => model.NumeroSimulaciones)</td><td>@Html.Telerik().IntegerTextBoxFor(model => model.NumeroSimulaciones).InputHtmlAttributes(new { style = "width: 80px" }).IncrementStep(1).MinValue(0).MaxValue(1000)</td></tr></table></div>
-        <div class="span4 label label-inverse"><table><tr><td>@Html.DisplayNameFor(model => model.NumeroIntervalos)</td><td>@Html.Telerik().IntegerTextBoxFor(model => model.NumeroIntervalos).InputHtmlAttributes(new { style = "width: 80px" }).IncrementStep(1).MinValue(0).MaxValue(100)</td></tr></table></div>
+        
         <div class="span4"><button class="btn" type="submit">Calcular</button> </div> 
     </div>
 </fieldset>
