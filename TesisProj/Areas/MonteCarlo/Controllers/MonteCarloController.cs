@@ -29,6 +29,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             Session["_GraficoVanProyecto"] = null;
             Session["_GraficoTirProyecto"] = null;
             Session["_GraficoTirInversionista"] = null;
+            Session["graphicListVanE"] = null;
+            Session["graphicListVanF"] = null;
 
             //mc.Parametros = context.Parametros.Include("Elemento").Include("Celdas").Where(e => e.Elemento.IdProyecto == idProyecto).Where(oo => oo.Sensible == true).ToList();
             return View(mc);
@@ -115,25 +117,75 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 vanF.Add(new Result { ValorObtenidoD = r.VanF });
                 tirE.Add(new Result { ValorObtenidoD = r.TirE * 100 });
                 tirF.Add(new Result { ValorObtenidoD = r.TirF * 100 });
+
+
+                if (r.VanE > 0) mc.probabilidadVanE++;
+                if (r.VanF > 0) mc.probabilidadVanF++;
             }
             //ya tengo los valores obtenidos
             //los agrupo en intervalos 
+            mc.probabilidadVanE = Math.Round((100.0*mc.probabilidadVanE) / (mc.NumeroSimulaciones * 1.0), 4);
+            mc.probabilidadVanF = Math.Round((100.0*mc.probabilidadVanF) / (mc.NumeroSimulaciones * 1.0), 4);
 
-            //List<Graphic> GraficoVanE = new List<Graphic>();
-            //List<Graphic> GraficoVanF = new List<Graphic>();
-            //List<Graphic> GraficoTirE = new List<Graphic>();
-            //List<Graphic> GraficoTirF = new List<Graphic>();
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Nuevo requerimiento de intervalos
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            List<GraphicList> graphicListVanE = new List<GraphicList>();
+            List<GraphicList> graphicListVanF = new List<GraphicList>();
+            //List<GraphicList> GraficoVanE = new List<Graphic>();
+            //List<GraphicList> GraficoVanF = new List<Graphic>();
+            //List<GraphicList> GraficoTirE = new List<Graphic>();
+            //List<GraphicList> GraficoTirF = new List<Graphic>();
 
-            //double Rango=vanE.Max(i=>i.ValorObtenidoD)-vanE.Min(i=>i.ValorObtenidoD);
-            //double Amplitud=(Rango)/((mc.NumeroIntervalos)*1.0);
-            //double minimo=vanE.Min(i=>i.ValorObtenidoD);
+            GraficoVanE = GraficoVanE.OrderBy(i => i.fx).ToList();
+            GraficoVanF = GraficoVanF.OrderBy(i => i.fx).ToList();
+            GraficoTirE = GraficoTirE.OrderBy(i => i.fx).ToList();
+            GraficoTirF = GraficoTirF.OrderBy(i => i.fx).ToList();
+
+            double Rango = vanE.Max(i => i.ValorObtenidoD) - vanE.Min(i => i.ValorObtenidoD);
+            System.Console.Write(Rango);
+            double Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            System.Console.Write(Amplitud);
+            double minimo = vanE.Min(i => i.ValorObtenidoD);
+
+            double _fx_;
+            double _Ax_=0;
+
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = vanE.Where(n => n.ValorObtenidoD >= minimo + Amplitud * (u - 1) && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                _Ax_ = _Ax_+_fx_;
+                GraphicList glist = new GraphicList(minimo, minimo + Amplitud * u, (100.0 * _fx_) / (mc.NumeroSimulaciones * 1.0), (100.0 * _Ax_) / (mc.NumeroSimulaciones * 1.0));
+                graphicListVanE.Add(glist);
+            }
+
+            Rango = vanF.Max(i => i.ValorObtenidoD) - vanF.Min(i => i.ValorObtenidoD);
+            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            minimo = vanF.Min(i => i.ValorObtenidoD);
+            _Ax_ = 0;
+
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = vanF.Where(n => n.ValorObtenidoD >= minimo + Amplitud * (u-1) && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                _Ax_ = _Ax_ + _fx_;
+                GraphicList glist = new GraphicList(minimo, minimo + Amplitud * u, (100.0 * _fx_) / (mc.NumeroSimulaciones * 1.0), (100.0 * _Ax_) / (mc.NumeroSimulaciones * 1.0));
+                graphicListVanF.Add(glist);
+            }
+
+            Session["graphicListVanE"] = graphicListVanE;
+            Session["graphicListVanF"] = graphicListVanF;
+
+            //double Rango = vanE.Max(i => i.ValorObtenidoD) - vanE.Min(i => i.ValorObtenidoD);
+            //double Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            //double minimo = vanE.Min(i => i.ValorObtenidoD);
             //double _fx_;
 
             //for (int u = 1; u <= mc.NumeroIntervalos; u++)
             //{
-            //    _fx_ = vanE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Average(R=>R.ValorObtenidoD);
-            //    GraficoVanE.Add(new Graphic { fx = _fx_, N = u });
+            //    _fx_ = vanE.Where(n => n.ValorObtenidoD > minimo && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+            //    GraphicList
+            //    graphicList.Add( );
             //}
 
             //Rango = vanF.Max(i => i.ValorObtenidoD) - vanF.Min(i => i.ValorObtenidoD);
@@ -235,6 +287,17 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return PartialView((List<Graphic>)Session["_GraficoTirInversionista"]);
         }
 
+        [ChildActionOnly]
+        public ActionResult _ResumenVANE()
+        {
+            return PartialView((List<GraphicList>)Session["graphicListVanE"]);
+        }
+
+        [ChildActionOnly]
+        public ActionResult _ResumenVANF()
+        {
+            return PartialView((List<GraphicList>)Session["graphicListVanF"]);
+        }
 
         private int PuntoIntervalo(double minimo, double maximo, int TotalIntrervalo, int n)
         {

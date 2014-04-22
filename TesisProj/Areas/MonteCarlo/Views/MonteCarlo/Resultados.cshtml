@@ -2,9 +2,11 @@
 @using TesisProj.Areas.Modelo.Models
 @using Telerik.Web.Mvc.UI
 
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <h2>Resultados de la Simulacion de Monte Carlo</h2>
@@ -44,16 +46,22 @@
                                         <p>@Math.Round(Model.MinVanEconomico,4)</p>
                                     </div>
                                 </li>
-                                <li class="span3">
+                                <li class="span2">
                                     <div class="thumbnail">
                                         <h4>TIR Maximo</h4>
                                         <p>@Math.Round(Model.MaxTirEconomico,4) %</p>
                                     </div>
                                 </li>
-                                <li class="span3">
+                                <li class="span2">
                                     <div class="thumbnail">
                                         <h4>TIR Minimo</h4>
                                         <p>@Math.Round(Model.MinTirEconomico,4) %</p>
+                                    </div>
+                                </li>
+                                <li class="span2">
+                                    <div class="thumbnail">
+                                        <h4>Prob Exito</h4>
+                                        <p>@Math.Round(Model.probabilidadVanE,4) %</p>
                                     </div>
                                 </li>
                             </ul>
@@ -64,6 +72,9 @@
                     <div class="span5">@{Html.RenderAction("_GraficoVanInversionista", "MonteCarlo");}</div>
                     <div class="span5">@{Html.RenderAction("_GraficoTirInversionista", "MonteCarlo");}</div>
                </div>
+                <div class="span12">
+                    @{Html.RenderAction("_ResumenVANE", "MonteCarlo");}
+                </div>
             </div>
             <div class="tab-pane" id="2"> 
                 <div class="span12">
@@ -88,26 +99,36 @@
                                         <p>@Math.Round(Model.MinVanFinanciero,4)</p>
                                     </div>
                                 </li>
-                                <li class="span3">
+                                <li class="span2">
                                     <div class="thumbnail">
                                         <h4>TIR Maximo</h4>
                                         <p>@Math.Round(Model.MaxTirFinanciero,4) %</p>
                                     </div>
                                 </li>
-                                <li class="span3">
+                                <li class="span2">
                                     <div class="thumbnail">
                                         <h4>TIR Minimo</h4>
                                         <p>@Math.Round(Model.MinTirFinanciero,4) %</p>
+                                    </div>
+                                </li>
+                                <li class="span2">
+                                    <div class="thumbnail">
+                                        <h4>Prob Exito</h4>
+                                        <p>@Math.Round(Model.probabilidadVanF,4) %</p>
                                     </div>
                                 </li>
                             </ul>
                         </li>
                     </ul>
                 </div>
+                
             <div class="span12">
                 <div class="span5">@{Html.RenderAction("_GraficoVanProyecto", "MonteCarlo");}</div>
                 <div class="span5">@{Html.RenderAction("_GraficoTirProyecto", "MonteCarlo");}</div>
            </div>
+                <div class="span12">
+                    @{Html.RenderAction("_ResumenVANF", "MonteCarlo");}
+                </div>  
             </div>
         </div>
     </div>

@@ -31,9 +31,8 @@
                    .Width(20)
                    .HtmlAttributes(new { style = "text-align:center" });
 
-            columns.Bound(o => o.Id).Width(20);
-            columns.Bound(o => o.Nombre).Width(100);
-            columns.Bound(o => o.Version).Width(200);
+            columns.Bound(o => o.Version).Width(50);
+            columns.Bound(o => o.Nombre).Width(300);
             columns.Bound(o => o.Fecha).Format("{0:dd/MM/yyyy}").Width(120);
         })
         .Pageable()

@@ -1,0 +1,20 @@
+﻿@using TesisProj.Areas.IridiumTest.Models
+@{
+    List<GraphicList> salida = (List<GraphicList>)Session["graphicListVanF"];
+}
+@using Telerik.Web.Mvc.UI;
+@( Html.Telerik().Grid(salida)
+                        .Name("GridVANF")
+                        .Filterable()
+                        .Columns(columns =>
+                        {
+                            columns.Bound(c => c.N).Title("Intervalo");
+                            columns.Bound(c => c.fx).Title("Frecuencia");
+                            columns.Bound(c => c.Ac).Title("Acumulado");
+                        })
+                        .Pageable(paging => paging.Enabled(true).PageSize(2000).Style(GridPagerStyles.Status))
+                        //.Selectable(selectable => selectable.Enabled(true))
+                        //.Groupable(grouping => grouping.Enabled(true))
+                        .Scrollable(scrolling => scrolling.Height(250))
+                        .Filterable(filtering => filtering.Enabled(true))
+                        )

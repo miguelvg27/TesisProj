@@ -769,6 +769,8 @@
     <Content Include="Areas\Plantilla\Views\Constante\Create.cshtml" />
     <Content Include="Areas\Modelo\Views\Proyecto\EditVersion.cshtml" />
     <Content Include="Areas\Simulaciones\Views\Normal\Index2.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_ResumenVANE.cshtml" />
+    <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_ResumenVANF.cshtml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />

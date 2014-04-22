@@ -29,6 +29,10 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             Session["Nombre"] = context.Proyectos.Where(y => y.Id == id).FirstOrDefault().Nombre;
             ViewData["Versiones"] = c;
             ViewData["checkedRecords"] = i;
+            Session["_GraficoVanF"] = null;
+            Session["_GraficoVanE"] = null;
+            Session["_GraficoTirE"] = null;
+            Session["_GraficoTirF"] = null;
             return View(c);
         }
 

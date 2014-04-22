@@ -25,6 +25,9 @@ namespace TesisProj.Areas.MonteCarlo.Models
         public List<Graphic> TirEconomico { get; set; }
         public List<Graphic> TirFinanciero { get; set; }
 
+        public double probabilidadVanE { get; set; }
+        public double probabilidadVanF { get; set; }
+
         public double MaxVanEconomico { get; set; }
         public double MaxVanFinanciero { get; set; }
         public double MaxTirEconomico { get; set; }
