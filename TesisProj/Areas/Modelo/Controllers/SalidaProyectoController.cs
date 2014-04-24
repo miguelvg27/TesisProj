@@ -103,7 +103,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 CalcularResultados(proyecto.Id);
                 proyecto.Calculado = DateTime.Now;
                 db.ProyectosRequester.ModifyElement(proyecto);
-                exoperaciones = db.SalidaOperaciones.Where(s => s.IdSalida == salida.Id).OrderBy(s => s.Secuencia).Select(s => s.Operacion).Include(o => o.TipoDato).ToList();
+                return RedirectToAction("Pelicula", new { id = id });
             }
 
             ViewBag.IdProyecto = salida.IdProyecto;
@@ -378,7 +378,7 @@ namespace TesisProj.Areas.Modelo.Controllers
         // tipoformulas: Arreglo de todos los tipo de fórmula
         // simular: Flag de simulación
 
-        public List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas, bool simular = false)
+        public List<Operacion> CalcularProyecto(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas)
         {
             foreach (TipoFormula tipoformula in tipoformulas)
             {
@@ -395,7 +395,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                 foreach (Formula formula in valFormulas)
                 {
-                    formula.Evaluar(horizonte, preoperativos, cierre, refFormulas, refParametros, simular);
+                    formula.Evaluar(horizonte, preoperativos, cierre, refFormulas, refParametros, false);
                     
                     //  Sumo los elementos
                     var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);

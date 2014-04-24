@@ -14,15 +14,15 @@ namespace TesisProj.Areas.Modelo
 {
     public class StaticProyecto
     {
-        private static List<double> StringToArray(Operacion operacion)
+        private static List<double> StringToArray(string str)
         {
-            List<double> arr = operacion.strValores.Split(',').Select(s => double.Parse(s)).ToList();
+            List<double> arr = str.Split(',').Select(s => double.Parse(s)).ToList();
             return arr;
         }
 
-        private static string ArrayToString(Operacion operacion)
+        private static string ArrayToString(double[] arr)
         {
-            string str = String.Join(",", operacion.Valores.Select(p => p.ToString()).ToArray());
+            string str = String.Join(",", arr.Select(p => p.ToString()).ToArray());
             return str;
         }
 
@@ -66,7 +66,7 @@ namespace TesisProj.Areas.Modelo
 
             foreach (Operacion operacion in operaciones)
             {
-                operacion.strValores = ArrayToString(operacion);
+                operacion.strValores = ArrayToString(operacion.Valores.ToArray());
                 context.OperacionesRequester.ModifyElement(operacion);
             }
 
@@ -131,16 +131,16 @@ namespace TesisProj.Areas.Modelo
                 resultado.Version = proyecto.Version;
 
                 Operacion op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
-                resultado.TirE = op != null ? StringToArray(op)[0] : 0;
+                resultado.TirE = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
-                resultado.TirF = op != null ? StringToArray(op)[0] : 0;
+                resultado.TirF = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
-                resultado.VanE = op != null ? StringToArray(op)[0] : 0;
+                resultado.VanE = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
-                resultado.VanF = op != null ? StringToArray(op)[0] : 0;
+                resultado.VanF = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 resultados.Add(resultado);
             }
@@ -173,16 +173,16 @@ namespace TesisProj.Areas.Modelo
                 resultado.Version = version.Version;
 
                 Operacion op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
-                resultado.TirE = op != null ? StringToArray(op)[0] : 0;
+                resultado.TirE = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
-                resultado.TirF = op != null ? StringToArray(op)[0] : 0;
+                resultado.TirF = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
-                resultado.VanE = op != null ? StringToArray(op)[0] : 0;
+                resultado.VanE = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
-                resultado.VanF = op != null ? StringToArray(op)[0] : 0;
+                resultado.VanF = op != null ? StringToArray(op.strValores)[0] : 0;
 
                 resultados.Add(resultado);
             }
