@@ -61,6 +61,9 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        [DisplayName("Sensible")]
+        public bool Sensible { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo de dato")]
         public int IdTipoDato { get; set; }
@@ -72,6 +75,9 @@ namespace TesisProj.Areas.Modelo.Models
         [StringLength(2048)]
         [DisplayName("Valores")]
         public string strValores { get; set; }
+
+        [StringLength(2048)]
+        public string strValoresInvariante { get; set; }
 
         [InverseProperty("Operacion")]
         public List<SalidaOperacion> Salidas { get; set; }
@@ -241,6 +247,38 @@ namespace TesisProj.Areas.Modelo.Models
                     yield return new ValidationResult("Cadena inválida. Solo puede contener Horizonte o números.", new string[] { "PeriodoFinal" });
                 }
             }
+        }
+
+        public bool EsSensible(List<Operacion> operacionesInvariantes, List<TipoFormula> tipoformulasInvariantes)
+        {
+            bool resultado = false;
+
+            MathParserNet.Parser parser = new MathParserNet.Parser();
+            parser.AddVariable("Periodo", 5);
+            parser.AddVariable("Horizonte", 10);
+            parser.AddVariable("PeriodosCierre", 1);
+            parser.AddVariable("PeriodosPreOperativos", 1);
+
+            foreach (TipoFormula tipoformula in tipoformulasInvariantes)
+            {
+                parser.AddVariable(tipoformula.Referencia, 2);
+            }
+
+            foreach (Operacion operacion in operacionesInvariantes)
+            {
+                parser.AddVariable(operacion.Referencia, 2);
+            }
+
+            //  Valida si es Tir o Van
+            if (!Generics.Validar(this.Cadena, parser))
+            {
+                if (!Generics.TestComplexParse(this.Cadena, operacionesInvariantes.ToList()))
+                {
+                    resultado = true;
+                }
+            }
+
+            return resultado;
         }
     }
 }

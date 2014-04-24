@@ -114,7 +114,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             foreach(Operacion operacion in exoperaciones)
             {
-                operacion.Valores = StringToArray(operacion);
+                operacion.Valores = StringToArray(operacion.strValores);
             }
 
             return View(exoperaciones.ToList());
@@ -337,15 +337,15 @@ namespace TesisProj.Areas.Modelo.Controllers
             return RedirectToAction("EditSalidaProyecto", new { id = idCopia });
         }
 
-        private string ArrayToString(Operacion operacion)
+        private string ArrayToString(double[] arr)
         {
-            string str = String.Join(",", operacion.Valores.Select(p => p.ToString()).ToArray());
+            string str = String.Join(",", arr.Select(p => p.ToString()).ToArray());
             return str;
         }
 
-        private List<double> StringToArray(Operacion operacion)
+        private List<double> StringToArray(string str)
         {
-            List<double> arr = operacion.strValores.Split(',').Select(s => double.Parse(s)).ToList();
+            List<double> arr = str.Split(',').Select(s => double.Parse(s)).ToList();
             return arr;
         }
 
@@ -366,12 +366,6 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas);
 
-            foreach (Operacion operacion in operaciones)
-            {
-                operacion.strValores = ArrayToString(operacion);
-                db.OperacionesRequester.ModifyElement(operacion);
-            }
-
             return;
         }
 
@@ -389,6 +383,7 @@ namespace TesisProj.Areas.Modelo.Controllers
             foreach (TipoFormula tipoformula in tipoformulas)
             {
                 tipoformula.Valores = new double[horizonte];
+                tipoformula.Sensible = false;
                 Array.Clear(tipoformula.Valores, 0, horizonte);
             }
 
@@ -401,12 +396,26 @@ namespace TesisProj.Areas.Modelo.Controllers
                 foreach (Formula formula in valFormulas)
                 {
                     formula.Evaluar(horizonte, preoperativos, cierre, refFormulas, refParametros, simular);
-                    refFormulas.Add(formula);
-
+                    
                     //  Sumo los elementos
                     var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
                     tipoformula.Valores = tipoformula.Valores.Zip(formula.Valores, (x, y) => x + y).ToArray();
+
+                //  Inicio: Calcular para simulación
+
+                    formula.Sensible = formula.EsSensible(refFormulas.Where(f => !f.Sensible).ToList(), refParametros.Where(p => !p.Sensible).ToList());
+                    formula.strValoresInvariante = !formula.Sensible ? ArrayToString(formula.Valores.ToArray()) : null;
+                    db.FormulasRequester.ModifyElement(formula);
+
+                    tipoformula.Sensible = tipoformula.Sensible || formula.Sensible;
+                   
+                    refFormulas.Add(formula);
                 }
+
+                elemento.Sensible = elemento.Formulas.Any(f => f.Sensible);
+                db.ElementosRequester.ModifyElement(elemento);
+
+                //  Fin: Calcular para simulación
             }
 
             var refOperaciones = new List<Operacion>();
@@ -414,7 +423,18 @@ namespace TesisProj.Areas.Modelo.Controllers
             foreach (Operacion operacion in operaciones)
             {
                 operacion.Evaluar(horizonte, preoperativos, cierre, refOperaciones, tipoformulas);
+
+                //  Inicio: Calcular para simulación
+
+                operacion.Sensible = operacion.EsSensible(refOperaciones.Where(o => !o.Sensible).ToList(), tipoformulas.Where(t => !t.Sensible).ToList());
+
                 refOperaciones.Add(operacion);
+                operacion.strValores = ArrayToString(operacion.Valores.ToArray());
+                operacion.strValoresInvariante = !operacion.Sensible ? operacion.strValores : null;
+
+                //  Fin: Calcular para simulación
+
+                db.OperacionesRequester.ModifyElement(operacion);
             }
 
             return operaciones;

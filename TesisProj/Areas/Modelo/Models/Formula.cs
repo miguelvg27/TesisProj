@@ -74,6 +74,12 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Cadena")]
         public string Cadena { get; set; }
 
+        [DisplayName("Sensible")]
+        public bool Sensible { get; set; }
+
+        [StringLength(2048)]
+        public string strValoresInvariante { get; set; }
+
         [XmlIgnore]
         public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
 
@@ -254,5 +260,40 @@ namespace TesisProj.Areas.Modelo.Models
                 }
             }
         }
+
+        public bool EsSensible(List<Formula> formulasInvariantes, List<Parametro> parametrosInvariantes)
+        {
+            bool resultado = false;
+
+            MathParserNet.Parser parser = new MathParserNet.Parser();
+            parser.AddVariable("Periodo", 5);
+            parser.AddVariable("Horizonte", 10);
+            parser.AddVariable("PeriodosCierre", 1);
+            parser.AddVariable("PeriodosPreOperativos", 1);
+            parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
+            parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
+            parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);
+            parser.RegisterCustomDoubleFunction("DepreciacionLineal", Generics.Sln);
+            parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Generics.Syn);
+            parser.RegisterCustomDoubleFunction("ValorResidual", Generics.ResSln);
+
+            foreach (Parametro parametro in parametrosInvariantes)
+            {
+                parser.AddVariable(parametro.Referencia, 2);
+            }
+
+            foreach (Formula formula in formulasInvariantes)
+            {
+                parser.AddVariable(formula.Referencia, 2);
+            }
+
+            if (!Generics.Validar(this.Cadena, parser))
+            {
+                resultado = true;
+            }
+
+            return resultado;
+        }
+
     }
 }

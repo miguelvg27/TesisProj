@@ -41,6 +41,9 @@ namespace TesisProj.Areas.Modelo.Models
         [InverseProperty("Elemento")]
         public virtual List<Formula> Formulas { get; set; }
 
+        [DisplayName("Sensible")]
+        public bool Sensible { get; set; }
+
         public override string LogValues()
         {
             return "Nombre = " + this.Nombre + Environment.NewLine +

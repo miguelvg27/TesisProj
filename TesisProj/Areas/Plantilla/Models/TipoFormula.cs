@@ -38,6 +38,10 @@ namespace TesisProj.Areas.Plantilla.Models
 
         public double[] Valores;
 
+        public double[] ValoresInvariante;
+
+        public bool Sensible;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())
