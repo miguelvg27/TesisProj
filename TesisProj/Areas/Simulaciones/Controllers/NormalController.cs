@@ -86,6 +86,9 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         [HttpGet]
         public ActionResult Index2(int ProyectoId, int ParametroId)
         {
+            //int ProyectoId = 1; int ParametroId = 1;
+
+           
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
             ModeloSimulacion modelo = new ModeloSimulacion("Normal", lista);
@@ -115,14 +118,18 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             double media = Convert.ToDouble(valores1[0]);
             int muestras = Convert.ToInt32(valores1[1]);
             string[] Intervalos = valores1[2].Split('='); //27|28|.30
+            Session["precision"] = valores1[2];
             double acumulaPromedio = 0;
             double acumulaFrecuecia = 0;
             string almacenar = ""; ;
             foreach (string s in Intervalos)
             {
-                double min = Convert.ToDouble(s.Split('|')[0]);
-                double max = Convert.ToDouble(s.Split('|')[1]);
-                double fre = Convert.ToDouble(s.Split('|')[2]);
+                double min = 0;
+                double max = 0;
+                double fre = 0;
+                try{min=Convert.ToDouble(s.Split('|')[0]);}catch{min=0;}
+                try{max=Convert.ToDouble(s.Split('|')[1]);}catch{max=0;}
+                try{fre=Convert.ToDouble(s.Split('|')[2]);}catch{fre=0;}
                 almacenar += "[" + min.ToString() + ";" + max.ToString() + "]  -  " + fre.ToString() + ";";
                 double promedio = (min + max)/2.0;
                 acumulaPromedio += promedio * fre;
@@ -133,8 +140,10 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             double Sumatoria = 0;
             foreach (string s in Intervalos)
             {
-                double min = Convert.ToDouble(s.Split('|')[0]);
-                double max = Convert.ToDouble(s.Split('|')[1]);
+                double min = 0;
+                double max = 0;
+                try { min = Convert.ToDouble(s.Split('|')[0]); }catch { min = 0; }
+                try { max = Convert.ToDouble(s.Split('|')[1]); }catch { max = 0; }
                 double promedio = (min + max) / 2.0;
                 contadorN++;
                 Sumatoria+=Math.Pow(xi - promedio, 2);

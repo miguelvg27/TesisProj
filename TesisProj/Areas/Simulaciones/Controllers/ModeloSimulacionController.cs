@@ -30,6 +30,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                 var elemento = context.Elementos.Where(o => o.Id == ElementoId ).FirstOrDefault();
                 var parametro = context.Parametros.Where(o => o.Id == ParametroId).FirstOrDefault();
                 ViewBag.Titulo = "Proyecto: " + proyecto.Nombre + "    Elemento: " + elemento.Nombre + "    Parametro: " + parametro.Nombre;
+                Session["ViewBag.Titulo"] = "    Elemento: " + elemento.Nombre + "    Parametro: " + parametro.Nombre;
                 string CronogramaTitulo= "";
                 string CronogramaValor = "";
 
