@@ -42,6 +42,8 @@ namespace TesisProj.Areas.Plantilla.Models
 
         public bool Sensible;
 
+        public bool Simular;
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             using (TProjContext context = new TProjContext())

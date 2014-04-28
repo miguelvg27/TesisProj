@@ -117,12 +117,6 @@ namespace TesisProj.Areas.Modelo
             foreach (Proyecto proyecto in proyectos)
             {
                 var operaciones = context.Operaciones.Where(o => o.IdProyecto == proyecto.Id).ToList();
-                if (operaciones.Any(o => o.strValores == null))
-                {
-                    CalcularResultados(proyecto.Id, context);
-                    proyecto.Calculado = DateTime.Now;
-                    context.ProyectosRequester.ModifyElement(proyecto);
-                }
 
                 ProyectoLite resultado = new ProyectoLite();
                 resultado.Id = proyecto.Id;
@@ -131,16 +125,16 @@ namespace TesisProj.Areas.Modelo
                 resultado.Version = proyecto.Version;
 
                 Operacion op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRE"));
-                resultado.TirE = op != null ? StringToArray(op.strValores)[0] : 0;
+                resultado.TirE = op != null && op.strValores != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("TIRF"));
-                resultado.TirF = op != null ? StringToArray(op.strValores)[0] : 0;
+                resultado.TirF = op != null && op.strValores != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANE"));
-                resultado.VanE = op != null ? StringToArray(op.strValores)[0] : 0;
+                resultado.VanE = op != null && op.strValores != null ? StringToArray(op.strValores)[0] : 0;
 
                 op = operaciones.FirstOrDefault(o => o.Referencia.Equals("VANF"));
-                resultado.VanF = op != null ? StringToArray(op.strValores)[0] : 0;
+                resultado.VanF = op != null && op.strValores != null ? StringToArray(op.strValores)[0] : 0;
 
                 resultados.Add(resultado);
             }

@@ -64,6 +64,9 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Sensible")]
         public bool Sensible { get; set; }
 
+        [DisplayName("Simular")]
+        public bool Simular { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [DisplayName("Tipo de dato")]
         public int IdTipoDato { get; set; }
@@ -75,9 +78,6 @@ namespace TesisProj.Areas.Modelo.Models
         [StringLength(2048)]
         [DisplayName("Valores")]
         public string strValores { get; set; }
-
-        [StringLength(2048)]
-        public string strValoresInvariante { get; set; }
 
         [InverseProperty("Operacion")]
         public List<SalidaOperacion> Salidas { get; set; }

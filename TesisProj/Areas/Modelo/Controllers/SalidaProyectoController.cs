@@ -369,6 +369,69 @@ namespace TesisProj.Areas.Modelo.Controllers
             return;
         }
 
+        public List<Operacion> CalcularRutaOperaciones(List<Operacion> operaciones, List<TipoFormula> tipoformulas)
+        {
+            string[] targets = { "TIRE", "VANE", "TIRF", "VANF" };
+            Queue<Operacion> queueOperaciones = new Queue<Operacion>();
+
+            //  Vaciamos una posible ruta anterior
+            foreach (Operacion o in operaciones) o.Simular = false;
+
+            //  Metemos en la cola las operaciones de los indicadores objetivo
+            //  Encolaremos todas las operaciones que son necesarias para el cálculo de las operaciones target
+            foreach (string strOperacion in targets)
+            {
+                Operacion operacion = operaciones.FirstOrDefault(o => o.Referencia.Equals(strOperacion));
+                if (operacion != null) queueOperaciones.Enqueue(operacion);
+            }
+
+            //  Mientras hayan objetos en la cola...
+            while (queueOperaciones.Count > 0)
+            {
+                //  Desapilamos una operación y la marcamos
+                Operacion operacion = queueOperaciones.Dequeue();
+                operacion.Simular = true;
+
+                //  Recopilamos las operaciones de menor secuencia que la desapilada para marcar las necesarias para su cálculo
+                List<Operacion> refOperaciones = operaciones.Where(o => o.Secuencia < operacion.Secuencia).OrderBy(o => o.Secuencia).ToList();
+
+                //  Evaluamos la operación para saber si realmente es necesaria dicha operación
+                //  En caso sea necesaria (si no se logró calcular la operación sin ella), se encola
+                foreach (Operacion refOperacion in refOperaciones)
+                {
+                    List<Operacion> wrapperOperacion = new List<Operacion>(); wrapperOperacion.Add(refOperacion);
+                    refOperacion.Simular = operacion.EsSensible(refOperaciones.Except(wrapperOperacion).ToList(), tipoformulas);
+
+                    if (refOperacion.Simular) queueOperaciones.Enqueue(refOperacion);
+                }
+            }
+
+            foreach (Operacion o in operaciones)  db.OperacionesRequester.ModifyElement(o);
+            return operaciones;
+        }
+
+        //  Precondición: Deben llegar las operaciones marcadas para la simulación
+        public List<TipoFormula> CalcularRutaTipoFormulas(List<Operacion> operacionesSimular, List<TipoFormula> tipoformulas)
+        {
+            //  Vaciamos una posible ruta anterior
+            foreach (TipoFormula tipoformula in tipoformulas) tipoformula.Simular = false;
+
+            foreach (TipoFormula tipoformula in tipoformulas)
+            {
+                List<TipoFormula> wrapperTipoFormula = new List<TipoFormula>(); wrapperTipoFormula.Add(tipoformula);
+
+                foreach (Operacion operacion in operacionesSimular)
+                {
+                    //  Recopilamos las operaciones de menor secuencia que la desapilada para marcar las necesarias para su cálculo
+                    List<Operacion> refOperaciones = operacionesSimular.Where(o => o.Secuencia < operacion.Secuencia).OrderBy(o => o.Secuencia).ToList();
+                    tipoformula.Simular = operacion.EsSensible(refOperaciones, tipoformulas.Except(wrapperTipoFormula).ToList());
+                    if (tipoformula.Simular) break;
+                }
+            }
+
+            return tipoformulas;
+        }
+
         // Permisos: Creador, Editor, Revisor
         // horizonte: Horizonte del proyecto
         // preoperativos: Períodos preoperativos del proyecto
@@ -404,7 +467,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 //  Inicio: Calcular para simulación
 
                     formula.Sensible = formula.EsSensible(refFormulas.Where(f => !f.Sensible).ToList(), refParametros.Where(p => !p.Sensible).ToList());
-                    formula.strValoresInvariante = !formula.Sensible ? ArrayToString(formula.Valores.ToArray()) : null;
+                    formula.strValores = ArrayToString(formula.Valores.ToArray());
                     db.FormulasRequester.ModifyElement(formula);
 
                     tipoformula.Sensible = tipoformula.Sensible || formula.Sensible;
@@ -420,7 +483,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             var refOperaciones = new List<Operacion>();
             var valOperaciones = operaciones.OrderBy(o => o.Secuencia);
-            foreach (Operacion operacion in operaciones)
+            foreach (Operacion operacion in valOperaciones)
             {
                 operacion.Evaluar(horizonte, preoperativos, cierre, refOperaciones, tipoformulas);
 
@@ -430,8 +493,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
                 refOperaciones.Add(operacion);
                 operacion.strValores = ArrayToString(operacion.Valores.ToArray());
-                operacion.strValoresInvariante = !operacion.Sensible ? operacion.strValores : null;
-
+ 
                 //  Fin: Calcular para simulación
 
                 db.OperacionesRequester.ModifyElement(operacion);
@@ -439,5 +501,6 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             return operaciones;
         }
+
     }
 }

@@ -77,8 +77,11 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Sensible")]
         public bool Sensible { get; set; }
 
+        [DisplayName("Simular")]
+        public bool Simular { get; set; }
+
         [StringLength(2048)]
-        public string strValoresInvariante { get; set; }
+        public string strValores { get; set; }
 
         [XmlIgnore]
         public string ListName { get { return Nombre + " (" + Referencia + ")"; } }
