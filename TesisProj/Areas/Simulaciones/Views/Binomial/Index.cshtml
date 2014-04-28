@@ -5,7 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2>@((String)Session["ViewBag.Titulo"])</h2>
 <h2>@Model.Titulo &nbsp; &nbsp; <a href=@(Model.link) ><img alt="@Model.Formulates[0].NombreFormula" src="@Url.Action("getImg", "Binomial", new { Id=-1})" height="80" width="100" class="item"></img></a></h2>
+
 <div class="row-fluid">
     <div class="span12">
         @Html.TextAreaFor(m => m.Definicion, new {style="width:100%" })
