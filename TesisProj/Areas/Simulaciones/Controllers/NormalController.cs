@@ -82,13 +82,13 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                 context.ParametrosRequester.ModifyElement(parametro, true, ProyectoId, context.UserProfiles.First(u => u.UserName == User.Identity.Name).UserId);
             }
         }
-        
+
         [HttpGet]
         public ActionResult Index2(int ProyectoId, int ParametroId)
         {
             //int ProyectoId = 1; int ParametroId = 1;
 
-           
+
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
             ModeloSimulacion modelo = new ModeloSimulacion("Normal", lista);
@@ -127,35 +127,51 @@ namespace TesisProj.Areas.Simulaciones.Controllers
                 double min = 0;
                 double max = 0;
                 double fre = 0;
-                try{min=Convert.ToDouble(s.Split('|')[0]);}catch{min=0;}
-                try{max=Convert.ToDouble(s.Split('|')[1]);}catch{max=0;}
-                try{fre=Convert.ToDouble(s.Split('|')[2]);}catch{fre=0;}
+                try { min = Convert.ToDouble(s.Split('|')[0]); }
+                catch { min = 0; }
+                try { max = Convert.ToDouble(s.Split('|')[1]); }
+                catch { max = 0; }
+                try { fre = Convert.ToDouble(s.Split('|')[2]); }
+                catch { fre = 0; }
                 almacenar += "[" + min.ToString() + ";" + max.ToString() + "]  -  " + fre.ToString() + ";";
-                double promedio = (min + max)/2.0;
+                double promedio = (min + max) / 2.0;
                 acumulaPromedio += promedio * fre;
                 acumulaFrecuecia += fre;
             }
             double xi = acumulaPromedio / acumulaFrecuecia;
             int contadorN = 0;
             double Sumatoria = 0;
+            List<Double> simulacionMuestras = new List<Double>();
+
             foreach (string s in Intervalos)
             {
                 double min = 0;
                 double max = 0;
-                try { min = Convert.ToDouble(s.Split('|')[0]); }catch { min = 0; }
-                try { max = Convert.ToDouble(s.Split('|')[1]); }catch { max = 0; }
+                int fre = 0;
+                try { min = Convert.ToDouble(s.Split('|')[0]); }
+                catch { min = 0; }
+                try { max = Convert.ToDouble(s.Split('|')[1]); }
+                catch { max = 0; }
+                try { fre = Convert.ToInt16(Math.Round(Convert.ToDouble(s.Split('|')[2]) * 100)); }
+                catch { fre = 0; }
                 double promedio = (min + max) / 2.0;
-                contadorN++;
-                Sumatoria+=Math.Pow(xi - promedio, 2);
+                if (promedio > 0)
+                {
+                    for (int i = 0; i < fre; i++)
+                    {
+                        contadorN++;
+                        Sumatoria += Math.Pow(xi - promedio, 2);
+                    }
+                }
             }
             double DS = Math.Sqrt(Sumatoria / contadorN);
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
-            ModeloSimulacion modelo = new ModeloSimulacion("Normal", Math.Round(xi,2), DS, 0, 0,lista);
+            ModeloSimulacion modelo = new ModeloSimulacion("Normal", Math.Round(xi, 2), DS, 0, 0, lista);
             modelo.normal.GetModelo();
             modelo.normal.GetSimulacion(muestras);
             modelo.normal.GetResumen();
-            
+
             Session["_GraficoProbabilidad"] = modelo.normal.Graphics;
             Session["_GraficoMuestra"] = modelo.normal.Results;
 
@@ -163,14 +179,14 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             ViewBag.ProyectoId = (int)Session["ProyectoId"];
 
             modelo.normal.ParamsIN[0].valorD = Math.Round(xi, 2);
-            modelo.normal.ParamsIN[1].valorD = Math.Round(DS,2);
-            Asignar2((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", xi.ToString(), DS.ToString(), "0", "0", modelo.normal.ParamsIN,almacenar);
+            modelo.normal.ParamsIN[1].valorD = Math.Round(DS, 2);
+            Asignar2((int)Session["ProyectoId"], (int)Session["ParametroId"], "Normal", xi.ToString(), DS.ToString(), "0", "0", modelo.normal.ParamsIN, almacenar);
 
             Session["Index2"] = modelo.normal;
             //return RedirectToAction("Index2", new { ProyectoId = (int)Session["ParametroId"], ParametroId=(int)Session["ProyectoId"]});
             return View(modelo.normal);
         }
-        public void Asignar2(int ProyectoId, int ParametroId, string Nombre, string a, string b, string c, string d, List<Param> parametros,string estimacion)
+        public void Asignar2(int ProyectoId, int ParametroId, string Nombre, string a, string b, string c, string d, List<Param> parametros, string estimacion)
         {
             string cadena = "";
             using (TProjContext context = new TProjContext())
@@ -189,7 +205,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         }
 
 
-        
+
 
         [ChildActionOnly]
         public ActionResult _GraficoProbabilidad()
