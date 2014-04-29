@@ -117,6 +117,11 @@ namespace TesisProj.Areas.Modelo.Controllers
             var tipoformulas = db.TipoFormulas.ToList();
 
             CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas);
+            foreach (Operacion operacion in operaciones)
+            {
+                operacion.strValores = ArrayToString(operacion.Valores.ToArray());
+                db.OperacionesRequester.ModifyElement(operacion);
+            }
 
             // Set new version
 

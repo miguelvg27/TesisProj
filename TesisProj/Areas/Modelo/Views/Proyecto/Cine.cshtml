@@ -28,14 +28,17 @@
         <a class="btn btn-inverse" onclick="return DuplicateConfirm()" style="color: #E6F0F2;"href="@Url.Action("VolverPlantilla", "PlantillaProyecto", new { Area = "Plantilla", id = ViewBag.ProyectoId })">
   	        <i class="icon-briefcase icon-white"></i>Volver plantilla
         </a>
-        <a style="margin:5px"></a>
     }
-    <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Calcular", new { id = ViewBag.ProyectoId })"">
+    <a style="margin:5px"></a>
+    <a class="btn btn-inverse" onclick="ShowLoadingImage()" style="color: #E6F0F2" href="@Url.Action("Calcular", new { id = ViewBag.ProyectoId })"">
         <i class="icon-screenshot icon-white"></i>Calcular
     </a>
+    <img hidden="hidden" id="loadingImage" src="@Url.Content("~/Images/ajax-loader.gif")" />
+    <a style="margin:5px"></a>
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", new { id = ViewBag.ProyectoId })"">
         <i class="icon-arrow-left icon-white"></i>Regresar
     </a>
+
     <br /> <br />
     Última vez calculado: @LastCalculated
     <br />
@@ -85,6 +88,11 @@
 </p>
 
 <script>
+    function ShowLoadingImage() {
+        $("#loadingImage").show();
+        return false;
+    }
+
     function DeleteConfirm(){
         if (confirm("¿Está seguro que desea eliminar el registro?"))
             return true;

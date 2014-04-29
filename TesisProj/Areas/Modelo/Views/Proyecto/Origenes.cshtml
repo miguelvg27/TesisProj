@@ -9,9 +9,10 @@
 
 <p>
     <br />
-    <a class="btn btn-inverse" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("GuardarVersion", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId } )"">
+    <a class="btn btn-inverse"  onclick="ShowLoadingImage()" style="color: #E6F0F2" onclick="return CreateConfirm()" href="@Url.Action("GuardarVersion", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId } )"">
   	    <i class="icon-plus icon-white"></i>Guardar versión actual
     </a>
+    <img hidden="hidden" id="loadingImage" src="@Url.Content("~/Images/ajax-loader.gif")" />
     <a style="margin:5px"></a>
     <a class="btn btn-inverse" style="color: #E6F0F2"href="@Url.Action("Console", "Proyecto", new { Area = "Modelo", id = ViewBag.ProyectoId   })"">
   			<i class="icon-arrow-left icon-white"></i>Regresar
@@ -68,6 +69,11 @@
 </p>
 
 <script>
+    function ShowLoadingImage() {
+        $("#loadingImage").show();
+        return false;
+    }
+
     function CreateConfirm(){
         if (confirm("¿Está seguro que desea guardar el estado actual del proyecto como una versión?"))
             return true;

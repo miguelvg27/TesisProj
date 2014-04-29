@@ -504,6 +504,7 @@
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\ajax-loader.gif" />
     <Content Include="Images\calculator.png" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
@@ -729,6 +730,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\images\Thumbs.db" />
+    <Content Include="Images\favicon.ico" />
     <Content Include="Images\orderedList10.png" />
     <Content Include="Images\Thumbs.db" />
     <Content Include="Areas\IridiumTest\Views\Web.config" />
