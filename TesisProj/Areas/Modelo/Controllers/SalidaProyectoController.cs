@@ -437,6 +437,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         //  Precondición: Los elementos deben estar con los parámetros y fórmulas incluidos
         //  Postcondición: Los elementos, fórmulas (y sus tipos) y operaciones que utilicen parámetros sensibles serán marcados
+        //  Recorre el árbol hacia arriba
 
         public void MarcarRutaSensible(List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas)
         {
@@ -474,11 +475,11 @@ namespace TesisProj.Areas.Modelo.Controllers
 
         //  Precondición: Se debe haber marcado la ruta sensible. No se hará verificación
         //  Precondición: Los elementos deben estar con los parámetros y fórmulas incluidos
-        //  Postcondición: Los elementos, fórmulas, operaciones y parámetros variantes serán marcados
+        //  Postcondición: Los elementos, fórmulas, operaciones y parámetros cuya referencia es necesaria para el cálculo serán marcados
+        //  Recorre el árbol hacia abajo 
 
         public void MarcarRutaSimulable(List<Operacion> operaciones, List<Elemento> elementos, List<TipoFormula> tipoformulas)
         {
-            string[] targets = { "TIRE", "VANE", "TIRF", "VANF" };
             Queue<Operacion> queueOperaciones = new Queue<Operacion>();
 
             //  Vaciamos una posible ruta anterior
@@ -486,7 +487,7 @@ namespace TesisProj.Areas.Modelo.Controllers
 
             //  Metemos en la cola las operaciones de los indicadores objetivo
             //  Encolaremos todas las operaciones que son necesarias para el cálculo de las operaciones target
-            foreach (string strOperacion in targets)
+            foreach (string strOperacion in StaticProyecto.targets)
             {
                 Operacion operacion = operaciones.FirstOrDefault(o => o.Referencia.Equals(strOperacion));
                 if (operacion != null && operacion.Sensible) queueOperaciones.Enqueue(operacion);
@@ -506,7 +507,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                 //  En caso sea necesaria (si no se logró calcular la operación sin ella), se encola
                 foreach (Operacion refOperacion in refOperaciones)
                 {
-                    if (!refOperacion.Sensible || refOperacion.Simular) continue;
+                    if (refOperacion.Simular) continue;
                     
                     List<Operacion> wrapperOperacion = new List<Operacion>(); wrapperOperacion.Add(refOperacion);
                     refOperacion.Simular = operacion.EsSensible(refOperaciones.Except(wrapperOperacion).ToList(), tipoformulas);
@@ -563,7 +564,7 @@ namespace TesisProj.Areas.Modelo.Controllers
                     //  En caso sea necesaria (si no se logró calcular la operación sin ella), se encola
                     foreach (Formula refFormula in refFormulas)
                     {
-                        if (!refFormula.Sensible || refFormula.Simular) continue;
+                        if (refFormula.Simular) continue;
 
                         List<Formula> wrapperFormula = new List<Formula>(); wrapperFormula.Add(refFormula);
                         refFormula.Simular = formula.EsSensible(refFormulas.Except(wrapperFormula).ToList(), refParametros);
