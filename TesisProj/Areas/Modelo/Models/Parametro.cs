@@ -48,6 +48,9 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Disponible para sensibilidad")]
         public bool Sensible { get; set; }
 
+        [DisplayName("Simular")]
+        public bool Simular { get; set; }
+
         [InverseProperty("Parametro")]
         public virtual List<Celda> Celdas { get; set; }
 

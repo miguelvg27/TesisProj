@@ -44,6 +44,9 @@ namespace TesisProj.Areas.Modelo.Models
         [DisplayName("Sensible")]
         public bool Sensible { get; set; }
 
+        [DisplayName("Simular")]
+        public bool Simular { get; set; }
+
         public override string LogValues()
         {
             return "Nombre = " + this.Nombre + Environment.NewLine +

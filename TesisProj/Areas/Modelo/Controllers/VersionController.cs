@@ -109,7 +109,14 @@ namespace TesisProj.Areas.Modelo.Controllers
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });
             }
 
-            CalcularResultados(id);
+            int horizonte = proyecto.Horizonte;
+            int preoperativos = proyecto.PeriodosPreOp;
+            int cierre = proyecto.PeriodosCierre;
+            var operaciones = db.Operaciones.Where(o => o.IdProyecto == id).ToList();
+            var elementos = db.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == id).ToList();
+            var tipoformulas = db.TipoFormulas.ToList();
+
+            CalcularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas);
 
             // Set new version
 
