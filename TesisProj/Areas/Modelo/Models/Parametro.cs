@@ -60,6 +60,10 @@ namespace TesisProj.Areas.Modelo.Models
         [NotMapped]
         public virtual List<Celda> CeldasSensibles { get; set; }
 
+        [XmlIgnore]
+        [NotMapped]
+        public virtual ModeloSimulacion Modelo { get; set; }
+
         public Parametro() { }
 
         public Parametro(PlantillaParametro plantilla, int idElemento)

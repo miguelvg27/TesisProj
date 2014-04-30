@@ -86,11 +86,9 @@ namespace TesisProj.Areas.Modelo.Models
         public List<double> Valores;
 
         [XmlIgnore]
-        [NotMapped]
         public int valPeriodoInicial { get; set; }
 
         [XmlIgnore]
-        [NotMapped]
         public int valPeriodoFinal { get; set; }
 
         [XmlIgnore]

@@ -39,13 +39,13 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return View(mc);
         }
 
-        private static List<double> StringToArray(string str)
+        private List<double> StringToArray(string str)
         {
             List<double> arr = str.Split(',').Select(s => double.Parse(s)).ToList();
             return arr;
         }
 
-        private static string ArrayToString(double[] arr)
+        private string ArrayToString(double[] arr)
         {
             string str = String.Join(",", arr.Select(p => p.ToString()).ToArray());
             return str;
@@ -64,7 +64,6 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             List<Result> tirE = new List<Result>();
             List<Result> tirF = new List<Result>();
 
-            List<ProyectoLite> resultados = new List<ProyectoLite>();
             Proyecto proyecto = context.Proyectos.Find(idProyecto);
             int horizonte = proyecto.Horizonte;
             int preoperativos = proyecto.PeriodosPreOp;
@@ -74,26 +73,36 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             var operaciones = context.Operaciones.Where(o => o.IdProyecto == idProyecto && o.Simular).ToList();
             var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == idProyecto).ToList();
             var tipoformulas = context.TipoFormulas.ToList();
-
+            
             //  Sólo precalcular operaciones NO sensibles
             foreach (Operacion operacion in operaciones)
             {
                 if (!operacion.Sensible) operacion.Valores = StringToArray(operacion.strValores);
             }
 
+            foreach (TipoFormula tipoformula in tipoformulas)
+            {
+                tipoformula.Valores = new double[horizonte];
+                tipoformula.ValoresInvariante = new double[horizonte];
+                Array.Clear(tipoformula.ValoresInvariante, 0, horizonte);
+            }
 
-            //  Sólo precalcular fórmulas NO sensibles
+
+            //  Sólo precalcular fórmulas NO sensibles y asignar modelos de distribución a parámetros sensibles
             foreach (Elemento elemento in elementos)
             {
-                foreach (Formula formula in elemento.Formulas)
+                foreach (Formula formula in elemento.Formulas.Where(f => !f.Sensible))
                 {
-                    if (!formula.Sensible)
-                    {
                         formula.Valores = StringToArray(formula.strValores);
-
                         TipoFormula tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
                         tipoformula.ValoresInvariante = tipoformula.ValoresInvariante.Zip(formula.Valores, (x, y) => x + y).ToArray();
-                    }
+                }
+
+                foreach (Parametro parametro in elemento.Parametros.Where(p => p.Sensible))
+                {
+                    String[] z = parametro.XML_ModeloAsignado.Split('|');
+                    List<ListField> lista = context.ListFields.Where(pe => pe.Modelo == z[0]).ToList();
+                    parametro.Modelo = new ModeloSimulacion(z[0], Convert.ToDouble(z[1]), Convert.ToDouble(z[2]), Convert.ToDouble(z[3]), Convert.ToDouble(z[4]), lista);
                 }
 
                 //  Filtrar parámetros y fórmulas que no van a la simulación
@@ -109,7 +118,6 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 // K * #tipoformulas
                 foreach (TipoFormula tipoformula in tipoformulas)
                 {
-                    tipoformula.Valores = new double[horizonte];
                     Array.Clear(tipoformula.Valores, 0, horizonte);
                     tipoformula.Valores = tipoformula.Valores.Zip(tipoformula.ValoresInvariante, (x, y) => x + y).ToArray();
                 }
@@ -122,13 +130,8 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                     {
                         if (parametro.Sensible)
                         {
-                            String[] z = parametro.XML_ModeloAsignado.Split('|');
-                            TProjContext db = new TProjContext();
-                            List<ListField> lista = db.ListFields.Where(pe => pe.Modelo == z[0]).ToList();
-                            ModeloSimulacion modelo = new ModeloSimulacion(z[0], Convert.ToDouble(z[1]), Convert.ToDouble(z[2]), Convert.ToDouble(z[3]), Convert.ToDouble(z[4]), lista);
-                            parametro.CeldasSensibles = new List<Celda>();
-                            parametro.CeldasSensibles = RetornarCeldas(modelo, parametro.Celdas.Count, parametro.Celdas[2]);
                             //  SENSIBILIZAR CELDAS
+                            parametro.CeldasSensibles = RetornarCeldasNEW(parametro.Modelo, horizonte);
                         }
                     }
                 }
@@ -148,8 +151,6 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
 
                 if (r.VanE > 0) mc.probabilidadVanE++;
                 if (r.VanF > 0) mc.probabilidadVanF++;
-
-                resultados.Add(r);
 
                 // E = K * (1 + #elementos * #parametros + #tipoformulas)
             }
@@ -761,6 +762,110 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             }
             
             return new List<Celda>();
+        }
+
+        public List<Celda> RetornarCeldasNEW(ModeloSimulacion modelo, int cantidad)
+        {
+            List<Celda> salida = new List<Celda>();
+
+            for (int i = 1; i <= cantidad; i++)
+            {
+                Celda c = new Celda { Periodo = i };
+                salida.Add(c);
+
+                if (modelo.beta != null) 
+                {
+                    c.Valor = Convert.ToDecimal(modelo.beta.Sample());
+                    continue;
+                }
+
+                if (modelo.binomial != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.binomial.Sample());
+                    continue;
+                }
+                    
+                if (modelo.chicuadrado != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.chicuadrado.Sample());
+                    continue;
+                }
+
+                if (modelo.exponencial != null)
+                {
+                    
+                        c.Valor = Convert.ToDecimal(modelo.exponencial.Sample());
+                        continue;
+                }
+
+                if (modelo.f != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.f.Sample());
+                    continue;
+                }
+
+                if (modelo.gamma != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.gamma.Sample());
+                    continue;
+                }
+
+                if (modelo.geometrica != null)
+                {                      
+                    c.Valor = Convert.ToDecimal(modelo.geometrica.Sample());
+                    continue;
+                }
+
+                if (modelo.hipergeometrica != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.hipergeometrica.Sample());
+                    continue;
+                }
+
+                if (modelo.normal != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.normal.Sample());
+                    continue;
+                }
+
+                if (modelo.pareto != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.pareto.Sample());
+                    continue;
+                }
+
+                if (modelo.poisson != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.poisson.Sample());
+                    continue;
+                }
+
+                if (modelo.tstudent != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.tstudent.Sample());
+                    continue;
+                }
+
+                if (modelo.uniformecontinua != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.uniformecontinua.Sample());
+                    continue;
+                }
+
+                if (modelo.uniformediscreta != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.uniformediscreta.Sample());
+                    continue;
+                }
+
+                if (modelo.weibull != null)
+                {
+                    c.Valor = Convert.ToDecimal(modelo.weibull.Sample());
+                    continue;
+                }
+            }
+
+            return salida;
         }
 
     }
