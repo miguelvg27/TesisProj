@@ -10,6 +10,9 @@ using TesisProj.Areas.Modelo.Models;
 using TesisProj.Areas.MonteCarlo.Models;
 using TesisProj.Areas.Simulaciones.Models;
 using TesisProj.Models.Storage;
+using System.IO;
+using System.Data.Entity;
+using TesisProj.Areas.Plantilla.Models;
 
 namespace TesisProj.Areas.MonteCarlo.Controllers
 {
@@ -36,8 +39,213 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return View(mc);
         }
 
+        private static List<double> StringToArray(string str)
+        {
+            List<double> arr = str.Split(',').Select(s => double.Parse(s)).ToList();
+            return arr;
+        }
+
+        private static string ArrayToString(double[] arr)
+        {
+            string str = String.Join(",", arr.Select(p => p.ToString()).ToArray());
+            return str;
+        }
+
         [HttpPost]
         public ActionResult Index(MetodoMonteCarlo mc, int idProyecto)
+        {
+            List<Graphic> GraficoVanE = new List<Graphic>();
+            List<Graphic> GraficoVanF = new List<Graphic>();
+            List<Graphic> GraficoTirE = new List<Graphic>();
+            List<Graphic> GraficoTirF = new List<Graphic>();
+
+            List<Result> vanE = new List<Result>();
+            List<Result> vanF = new List<Result>();
+            List<Result> tirE = new List<Result>();
+            List<Result> tirF = new List<Result>();
+
+            List<ProyectoLite> resultados = new List<ProyectoLite>();
+            Proyecto proyecto = context.Proyectos.Find(idProyecto);
+            int horizonte = proyecto.Horizonte;
+            int preoperativos = proyecto.PeriodosPreOp;
+            int cierre = proyecto.PeriodosCierre;
+
+            //  Sólo operaciones que van a la simulación. Elementos se filtrarán más adelante
+            var operaciones = context.Operaciones.Where(o => o.IdProyecto == idProyecto && o.Simular).ToList();
+            var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == idProyecto).ToList();
+            var tipoformulas = context.TipoFormulas.ToList();
+
+            //  Sólo precalcular operaciones NO sensibles
+            foreach (Operacion operacion in operaciones)
+            {
+                if (!operacion.Sensible) operacion.Valores = StringToArray(operacion.strValores);
+            }
+
+
+            //  Sólo precalcular fórmulas NO sensibles
+            foreach (Elemento elemento in elementos)
+            {
+                foreach (Formula formula in elemento.Formulas)
+                {
+                    if (!formula.Sensible)
+                    {
+                        formula.Valores = StringToArray(formula.strValores);
+
+                        TipoFormula tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
+                        tipoformula.ValoresInvariante = tipoformula.ValoresInvariante.Zip(formula.Valores, (x, y) => x + y).ToArray();
+                    }
+                }
+
+                //  Filtrar parámetros y fórmulas que no van a la simulación
+                elemento.Formulas = elemento.Formulas.Where(f => f.Simular).ToList();
+                elemento.Parametros = elemento.Parametros.Where(p => p.Simular).ToList();
+            }
+
+            //  Filtrar elementos que no van a la simulación
+            elementos = elementos.Where(e => e.Simular).ToList();
+
+            for (int i = 0; i < mc.NumeroSimulaciones; i++)
+            {
+                // K * #tipoformulas
+                foreach (TipoFormula tipoformula in tipoformulas)
+                {
+                    tipoformula.Valores = new double[horizonte];
+                    Array.Clear(tipoformula.Valores, 0, horizonte);
+                    tipoformula.Valores = tipoformula.Valores.Zip(tipoformula.ValoresInvariante, (x, y) => x + y).ToArray();
+                }
+
+                // K * #elementos * #parametros
+
+                foreach (Elemento elemento in elementos)
+                {
+                    foreach (Parametro parametro in elemento.Parametros)
+                    {
+                        if (parametro.Sensible)
+                        {
+                            String[] z = parametro.XML_ModeloAsignado.Split('|');
+                            TProjContext db = new TProjContext();
+                            List<ListField> lista = db.ListFields.Where(pe => pe.Modelo == z[0]).ToList();
+                            ModeloSimulacion modelo = new ModeloSimulacion(z[0], Convert.ToDouble(z[1]), Convert.ToDouble(z[2]), Convert.ToDouble(z[3]), Convert.ToDouble(z[4]), lista);
+                            parametro.CeldasSensibles = new List<Celda>();
+                            parametro.CeldasSensibles = RetornarCeldas(modelo, parametro.Celdas.Count, parametro.Celdas[2]);
+                            //  SENSIBILIZAR CELDAS
+                        }
+                    }
+                }
+
+                // GUARDAR RESULTADOS
+                ProyectoLite r = StaticProyecto.SimularProyecto(horizonte, preoperativos, cierre, operaciones, elementos, tipoformulas);
+                GraficoVanE.Add(new Graphic { N = i, fx = r.VanE });
+                GraficoVanF.Add(new Graphic { N = i, fx = r.VanF });
+                GraficoTirE.Add(new Graphic { N = i, fx = r.TirE * 100 });
+                GraficoTirF.Add(new Graphic { N = i, fx = r.TirF * 100 });
+
+                vanE.Add(new Result { ValorObtenidoD = r.VanE });
+                vanF.Add(new Result { ValorObtenidoD = r.VanF });
+                tirE.Add(new Result { ValorObtenidoD = r.TirE * 100 });
+                tirF.Add(new Result { ValorObtenidoD = r.TirF * 100 });
+
+
+                if (r.VanE > 0) mc.probabilidadVanE++;
+                if (r.VanF > 0) mc.probabilidadVanF++;
+
+                resultados.Add(r);
+
+                // E = K * (1 + #elementos * #parametros + #tipoformulas)
+            }
+
+            //ya tengo los valores obtenidos
+            //los agrupo en intervalos 
+            mc.probabilidadVanE = Math.Round((100.0 * mc.probabilidadVanE) / (mc.NumeroSimulaciones * 1.0), 4);
+            mc.probabilidadVanF = Math.Round((100.0 * mc.probabilidadVanF) / (mc.NumeroSimulaciones * 1.0), 4);
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            // Nuevo requerimiento de intervalos
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            List<GraphicList> graphicListVanE = new List<GraphicList>();
+            List<GraphicList> graphicListVanF = new List<GraphicList>();
+
+            GraficoVanE = GraficoVanE.OrderBy(i => i.fx).ToList();
+            GraficoVanF = GraficoVanF.OrderBy(i => i.fx).ToList();
+            GraficoTirE = GraficoTirE.OrderBy(i => i.fx).ToList();
+            GraficoTirF = GraficoTirF.OrderBy(i => i.fx).ToList();
+
+            double Rango = vanE.Max(i => i.ValorObtenidoD) - vanE.Min(i => i.ValorObtenidoD);
+            System.Console.Write(Rango);
+            double Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            System.Console.Write(Amplitud);
+            double minimo = vanE.Min(i => i.ValorObtenidoD);
+
+            double _fx_;
+            double _Ax_ = 0;
+
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = vanE.Where(n => n.ValorObtenidoD >= minimo + Amplitud * (u - 1) && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                _Ax_ = _Ax_ + _fx_;
+                GraphicList glist = new GraphicList(minimo, minimo + Amplitud * u, (100.0 * _fx_) / (mc.NumeroSimulaciones * 1.0), (100.0 * _Ax_) / (mc.NumeroSimulaciones * 1.0));
+                graphicListVanE.Add(glist);
+            }
+
+            Rango = vanF.Max(i => i.ValorObtenidoD) - vanF.Min(i => i.ValorObtenidoD);
+            Amplitud = (Rango) / ((mc.NumeroIntervalos) * 1.0);
+            minimo = vanF.Min(i => i.ValorObtenidoD);
+            _Ax_ = 0;
+
+            for (int u = 1; u <= mc.NumeroIntervalos; u++)
+            {
+                _fx_ = vanF.Where(n => n.ValorObtenidoD >= minimo + Amplitud * (u - 1) && n.ValorObtenidoD <= minimo + Amplitud * u).Count();
+                _Ax_ = _Ax_ + _fx_;
+                GraphicList glist = new GraphicList(minimo, minimo + Amplitud * u, (100.0 * _fx_) / (mc.NumeroSimulaciones * 1.0), (100.0 * _Ax_) / (mc.NumeroSimulaciones * 1.0));
+                graphicListVanF.Add(glist);
+            }
+
+            Session["graphicListVanE"] = graphicListVanE;
+            Session["graphicListVanF"] = graphicListVanF;
+
+            mc.VanEconomico = GraficoVanE;
+            mc.VanFinanciero = GraficoVanF;
+            mc.TirEconomico = GraficoTirE;
+            mc.TirFinanciero = GraficoTirF;
+
+            mc.MaxVanEconomico = vanE.Max(n => n.ValorObtenidoD);
+            mc.MaxVanFinanciero = vanF.Max(n => n.ValorObtenidoD);
+            mc.MaxTirEconomico = tirE.Max(n => n.ValorObtenidoD);
+            mc.MaxTirFinanciero = tirF.Max(n => n.ValorObtenidoD);
+
+            mc.MinVanEconomico = vanE.Min(n => n.ValorObtenidoD);
+            mc.MinVanFinanciero = vanF.Min(n => n.ValorObtenidoD);
+            mc.MinTirEconomico = tirE.Min(n => n.ValorObtenidoD);
+            mc.MinTirFinanciero = tirF.Min(n => n.ValorObtenidoD);
+
+            mc.VanEconomico = GraficoVanE;
+            mc.VanFinanciero = GraficoVanF;
+            mc.TirEconomico = GraficoTirE;
+            mc.TirFinanciero = GraficoTirF;
+
+            mc.MaxVanEconomico = vanE.Max(n => n.ValorObtenidoD);
+            mc.MaxVanFinanciero = vanF.Max(n => n.ValorObtenidoD);
+            mc.MaxTirEconomico = tirE.Max(n => n.ValorObtenidoD);
+            mc.MaxTirFinanciero = tirF.Max(n => n.ValorObtenidoD);
+
+            mc.MinVanEconomico = vanE.Min(n => n.ValorObtenidoD);
+            mc.MinVanFinanciero = vanF.Min(n => n.ValorObtenidoD);
+            mc.MinTirEconomico = tirE.Min(n => n.ValorObtenidoD);
+            mc.MinTirFinanciero = tirF.Min(n => n.ValorObtenidoD);
+
+            Session["_GraficoVanInversionista"] = mc.VanEconomico;
+            Session["_GraficoVanProyecto"] = mc.VanFinanciero;
+            Session["_GraficoTirProyecto"] = mc.TirFinanciero;
+            Session["_GraficoTirInversionista"] = mc.TirEconomico;
+
+            Session["idProyectop"] = idProyecto;
+
+            return RedirectToAction("Resultados", mc);
+        }
+
+        [HttpPost]
+        public ActionResult IndexOLD(MetodoMonteCarlo mc, int idProyecto)
         {
             ViewBag.idProyecto = (int)Session["idProyecto"];
 
@@ -122,6 +330,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 if (r.VanE > 0) mc.probabilidadVanE++;
                 if (r.VanF > 0) mc.probabilidadVanF++;
             }
+
             //ya tengo los valores obtenidos
             //los agrupo en intervalos 
             mc.probabilidadVanE = Math.Round((100.0*mc.probabilidadVanE) / (mc.NumeroSimulaciones * 1.0), 4);
@@ -258,6 +467,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             return RedirectToAction("Resultados", mc);
 
         }
+        
         public ActionResult Resultados(MetodoMonteCarlo salida)
         {
             return View(salida);

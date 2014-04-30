@@ -27,7 +27,7 @@ namespace TesisProj.Areas.CompararProyecto.Controllers
             i = new int[100];
             int id=context.UserProfiles.Where(n=>n.UserName==User.Identity.Name).FirstOrDefault().UserId;
             c = StaticProyecto.getProyectoList(context, id);
-            Session["Nombre"] = context.Proyectos.Where(y => y.Id == id).FirstOrDefault().Nombre;
+           // Session["Nombre"] = context.Proyectos.Where(y => y.Id == id).FirstOrDefault().Nombre;
             ViewData["Proyectos"]  = c;
             ViewData["checkedRecords"] = i;
             Session["_GraficoVanF"] = null;
