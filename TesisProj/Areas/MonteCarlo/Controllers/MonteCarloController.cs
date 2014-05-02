@@ -127,16 +127,12 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 }
 
                 // K * #elementos * #parametros
-
                 foreach (Elemento elemento in elementos)
                 {
-                    foreach (Parametro parametro in elemento.Parametros)
+                    foreach (Parametro parametro in elemento.Parametros.Where(p => p.Sensible))
                     {
-                        if (parametro.Sensible)
-                        {
-                            //  SENSIBILIZAR CELDAS
-                            parametro.CeldasSensibles = RetornarCeldasNEW(parametro.Modelo, horizonte);
-                        }
+                        //  SENSIBILIZAR CELDAS
+                        parametro.CeldasSensibles = RetornarCeldasNEW(parametro.Modelo, horizonte);
                     }
                 }
 
