@@ -278,5 +278,56 @@ namespace TesisProj.Areas.Modelo.Models
 
             return resultado;
         }
+
+        public static void BulkEvaluar(int horizonte, int preoperativos, int cierre, List<Operacion> operaciones, List<TipoFormula> tipoformulas)
+        {
+            MathParserNet.Parser parser = new MathParserNet.Parser();
+            double valor;
+
+            for (int i = 1; i <= horizonte; i++)
+            {
+                parser.RemoveAllVariables();
+
+                parser.AddVariable("Periodo", i);
+                parser.AddVariable("Horizonte", horizonte);
+                parser.AddVariable("PeriodosCierre", cierre);
+                parser.AddVariable("PeriodosPreOperativos", preoperativos);
+
+                foreach (TipoFormula tipoformula in tipoformulas)
+                {
+                    parser.AddVariable(tipoformula.Referencia, tipoformula.Valores[i - 1]);
+                }
+
+                foreach (Operacion operacion in operaciones)
+                {
+                    valor = 0;
+                    if (i >= operacion.valPeriodoInicial && i <= operacion.valPeriodoFinal)
+                    {
+                        if (operacion.Sensible)
+                        {
+                            if ((operacion.Cadena.StartsWith("Tir(") || operacion.Cadena.StartsWith("Van(") || operacion.Cadena.StartsWith("Tri(")) && operacion.Cadena.EndsWith(")"))
+                            {
+                                valor = Generics.ComplexParse(operacion.Cadena, operaciones);
+                            }
+                            else
+                            {
+                                valor = (i >= operacion.valPeriodoInicial && i <= operacion.valPeriodoFinal) ? parser.SimplifyDouble(operacion.Cadena) : 0;
+                                valor = double.IsNaN(valor) ? 0 : valor;
+                            }
+
+                            operacion.Valores[i - 1] = valor;
+                        }
+                        else
+                        {
+                            valor = operacion.Valores[i - 1];
+                        }
+                    }
+
+                    parser.AddVariable(operacion.Referencia, valor);
+                }
+            }
+
+            return;
+        }
     }
 }

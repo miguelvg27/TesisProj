@@ -117,31 +117,10 @@ namespace TesisProj.Areas.Modelo
         {
             foreach (Elemento elemento in elementos)
             {
-                var refFormulas = new List<Formula>();
-                var valFormulas = elemento.Formulas.OrderBy(f => f.Secuencia);
-                var refParametros = elemento.Parametros;
-
-                foreach (Formula formula in valFormulas)
-                {
-                    //  Calcularla y acumularla solo si es Sensible
-                    if (formula.Sensible)
-                    {
-                        formula.Evaluar(horizonte, preoperativos, cierre, refFormulas, refParametros, true);
-                        var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
-                        tipoformula.Valores = tipoformula.Valores.Zip(formula.Valores, (x, y) => x + y).ToArray();
-                    }
-
-                    refFormulas.Add(formula);                    
-                }
+                Formula.BulkEvaluar(horizonte, preoperativos, cierre, elemento.Formulas, elemento.Parametros, tipoformulas);
             }
 
-            var refOperaciones = new List<Operacion>();
-            var valOperaciones = operaciones.OrderBy(o => o.Secuencia);
-            foreach (Operacion operacion in operaciones)
-            {
-                if(operacion.Sensible) operacion.Evaluar(horizonte, preoperativos, cierre, refOperaciones, tipoformulas);
-                refOperaciones.Add(operacion);
-            }
+            Operacion.BulkEvaluar(horizonte, preoperativos, cierre, operaciones, tipoformulas);
 
             ProyectoLite resultado = new ProyectoLite();
 

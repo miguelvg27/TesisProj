@@ -296,5 +296,53 @@ namespace TesisProj.Areas.Modelo.Models
             return resultado;
         }
 
+        public static void BulkEvaluar(int horizonte, int preoperativos, int cierre, List<Formula> formulas, List<Parametro> parametros, List<TipoFormula> tipoformulas)
+        {
+            MathParserNet.Parser parser = new MathParserNet.Parser();
+            double valor;
+
+            //  Agrego al parser las funciones
+
+            parser.RegisterCustomDoubleFunction("Amortizacion", Generics.Ppmt);
+            parser.RegisterCustomDoubleFunction("Intereses", Generics.IPmt);
+            parser.RegisterCustomDoubleFunction("Cuota", Generics.Pmt);
+            parser.RegisterCustomDoubleFunction("DepreciacionLineal", Generics.Sln);
+            parser.RegisterCustomDoubleFunction("DepreciacionAcelerada", Generics.Syn);
+            parser.RegisterCustomDoubleFunction("ValorResidual", Generics.ResSln);
+
+            for (int i = 1; i <= horizonte; i++)
+            {
+                parser.RemoveAllVariables();
+
+                parser.AddVariable("Periodo", i);
+                parser.AddVariable("Horizonte", horizonte);
+                parser.AddVariable("PeriodosCierre", cierre);
+                parser.AddVariable("PeriodosPreOperativos", preoperativos);
+
+                //
+                //  Agrego al parser el Horizonte, Período, los parámetros y las fórmulas de referencia
+
+                foreach (Parametro parametro in parametros)
+                {
+                    var celdas = parametro.Sensible ? parametro.CeldasSensibles : parametro.Celdas;
+                    parser.AddVariable(parametro.Referencia, (double)celdas.First(c => c.Periodo == (parametro.Constante ? 1 : i)).Valor);
+                }
+
+                foreach (Formula formula in formulas)
+                {
+                    valor = (i >= formula.valPeriodoInicial && i <= formula.valPeriodoFinal) ? (formula.Sensible ? parser.SimplifyDouble(formula.Cadena) : formula.Valores[i - 1]) : 0;
+                    parser.AddVariable(formula.Referencia, valor);
+
+                    if (formula.Sensible)
+                    {
+                        formula.Valores[i - 1] = valor;
+                        var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
+                        tipoformula.Valores[i - 1] = tipoformula.Valores[i - 1] + valor;
+                    }
+                }
+            }
+
+            return;
+        }
     }
 }

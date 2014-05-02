@@ -70,14 +70,14 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             int cierre = proyecto.PeriodosCierre;
 
             //  Sólo operaciones que van a la simulación. Elementos se filtrarán más adelante
-            var operaciones = context.Operaciones.Where(o => o.IdProyecto == idProyecto && o.Simular).ToList();
+            var operaciones = context.Operaciones.Where(o => o.IdProyecto == idProyecto && o.Simular).OrderBy(o => o.Secuencia).ToList();
             var elementos = context.Elementos.Include(f => f.Formulas).Include(f => f.Parametros).Include("Parametros.Celdas").Where(e => e.IdProyecto == idProyecto).ToList();
             var tipoformulas = context.TipoFormulas.ToList();
             
             //  Sólo precalcular operaciones NO sensibles
             foreach (Operacion operacion in operaciones)
             {
-                if (!operacion.Sensible) operacion.Valores = StringToArray(operacion.strValores);
+                operacion.Valores = StringToArray(operacion.strValores);
             }
 
             foreach (TipoFormula tipoformula in tipoformulas)
@@ -91,11 +91,15 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
             //  Sólo precalcular fórmulas NO sensibles y asignar modelos de distribución a parámetros sensibles
             foreach (Elemento elemento in elementos)
             {
-                foreach (Formula formula in elemento.Formulas.Where(f => !f.Sensible))
+                foreach (Formula formula in elemento.Formulas)
                 {
-                        formula.Valores = StringToArray(formula.strValores);
+                    formula.Valores = StringToArray(formula.strValores);
+
+                    if (!formula.Sensible)
+                    {
                         TipoFormula tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
                         tipoformula.ValoresInvariante = tipoformula.ValoresInvariante.Zip(formula.Valores, (x, y) => x + y).ToArray();
+                    }
                 }
 
                 foreach (Parametro parametro in elemento.Parametros.Where(p => p.Sensible))
@@ -106,7 +110,7 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 }
 
                 //  Filtrar parámetros y fórmulas que no van a la simulación
-                elemento.Formulas = elemento.Formulas.Where(f => f.Simular).ToList();
+                elemento.Formulas = elemento.Formulas.Where(f => f.Simular).OrderBy(f => f.Secuencia).ToList();
                 elemento.Parametros = elemento.Parametros.Where(p => p.Simular).ToList();
             }
 
