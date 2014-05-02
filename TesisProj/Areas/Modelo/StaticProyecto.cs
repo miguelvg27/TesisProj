@@ -120,7 +120,7 @@ namespace TesisProj.Areas.Modelo
                 Formula.BulkEvaluar(horizonte, preoperativos, cierre, elemento.Formulas, elemento.Parametros, tipoformulas);
             }
 
-            Operacion.BulkEvaluar(horizonte, preoperativos, cierre, operaciones, tipoformulas);
+            Operacion.BulkEvaluar(horizonte, preoperativos, cierre, operaciones, tipoformulas) ;
 
             ProyectoLite resultado = new ProyectoLite();
 
