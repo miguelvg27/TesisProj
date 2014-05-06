@@ -94,11 +94,11 @@ namespace TesisProj.Areas.MonteCarlo.Controllers
                 foreach (Formula formula in elemento.Formulas)
                 {
                     formula.Valores = StringToArray(formula.strValores);
+                    formula.TipoFormula = tipoformulas.First(f => f.Id == formula.IdTipoFormula);
 
                     if (!formula.Sensible)
                     {
-                        TipoFormula tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
-                        tipoformula.ValoresInvariante = tipoformula.ValoresInvariante.Zip(formula.Valores, (x, y) => x + y).ToArray();
+                        formula.TipoFormula.ValoresInvariante = formula.TipoFormula.ValoresInvariante.Zip(formula.Valores, (x, y) => x + y).ToArray();
                     }
                 }
 

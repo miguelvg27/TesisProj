@@ -336,8 +336,7 @@ namespace TesisProj.Areas.Modelo.Models
                     if (formula.Sensible)
                     {
                         formula.Valores[i - 1] = valor;
-                        var tipoformula = tipoformulas.First(t => t.Id == formula.IdTipoFormula);
-                        tipoformula.Valores[i - 1] = tipoformula.Valores[i - 1] + valor;
+                        formula.TipoFormula.Valores[i - 1] = formula.TipoFormula.Valores[i - 1] + valor;
                     }
                 }
             }
