@@ -15,8 +15,8 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         // GET: /Normal/
 
         [HttpGet]
-        public ActionResult Index(int ProyectoId, int ParametroId, int ElementoId)
-        {
+        public ActionResult Index(int ProyectoId, int ParametroId)
+        { 
             TProjContext db = new TProjContext();
             List<ListField> lista = db.ListFields.Where(p => p.Modelo == "Normal").ToList();
             ModeloSimulacion modelo = new ModeloSimulacion("Normal", lista);
@@ -27,7 +27,6 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             Session["ProyectoId"] = ProyectoId;
             ViewBag.ParametroId = ParametroId;
             ViewBag.ProyectoId = ProyectoId;
-            ViewBag.ElementoId = ElementoId;
             return View(modelo.normal);
         }
 
@@ -85,7 +84,7 @@ namespace TesisProj.Areas.Simulaciones.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index2(int ProyectoId, int ParametroId, int ElementoId)
+        public ActionResult Index2(int ProyectoId, int ParametroId)
         {
             //int ProyectoId = 1; int ParametroId = 1;
 
@@ -98,7 +97,6 @@ namespace TesisProj.Areas.Simulaciones.Controllers
             Session["ProyectoId"] = ProyectoId;
             ViewBag.ParametroId = ParametroId;
             ViewBag.ProyectoId = ProyectoId;
-            ViewBag.ElementoId = ElementoId;
             if (Session["Index2"] == null)
             {
                 Session["_GraficoProbabilidad"] = null;
