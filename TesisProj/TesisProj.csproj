@@ -14,7 +14,7 @@
     <RootNamespace>TesisProj</RootNamespace>
     <AssemblyName>TesisProj</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <MvcBuildViews>true</MvcBuildViews>
+    <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -773,6 +773,7 @@
     <Content Include="Areas\Simulaciones\Views\Normal\Index2.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_ResumenVANE.cshtml" />
     <Content Include="Areas\MonteCarlo\Views\MonteCarlo\_ResumenVANF.cshtml" />
+    <None Include="Properties\PublishProfiles\ProyEval.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\bullet.png" />
