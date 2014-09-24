@@ -82,7 +82,7 @@ namespace TesisProj.Areas.Plantilla.Controllers
         public ActionResult EditElemento(int id = 0, int idElemento = 0)
         {
             PlantillaElemento plantillaelemento = db.PlantillaElementos.Find(id);
-            Elemento elemento = db.Elementos.Find(id);
+            Elemento elemento = db.Elementos.Find(idElemento);
             if (plantillaelemento == null || elemento == null)
             {
                 return RedirectToAction("DeniedWhale", "Error", new { Area = "" });

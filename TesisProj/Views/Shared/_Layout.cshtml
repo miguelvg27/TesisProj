@@ -40,9 +40,10 @@
                     @(Html.Telerik().Menu()
 	                    .Name("menu")
 	                    .Items(menu => {
-                            menu.Add().Text("Proyectos").Url("../../../Modelo/Proyecto");
-                            menu.Add().Text("Comparar Proyectos").Url("../../../CompararProyecto/CompararProyectos");
-                            menu.Add().Text("Plantillas").Url("../../../Admin");
+                            //menu.Add().Text("Proyectos").Url("../../../Modelo/Proyecto");
+                            menu.Add().Text("Proyectos").Url(Url.Action("Index", "Proyecto", new { Area = "Modelo" }));
+                            menu.Add().Text("Comparar Proyectos").Url(Url.Action("Index", "CompararProyectos", new { Area = "CompararProyecto" }));
+                            menu.Add().Text("Plantillas").Url(Url.Action("Index", "Admin", new { Area = "" }));
 	            }))
                 </div>
             </div>
